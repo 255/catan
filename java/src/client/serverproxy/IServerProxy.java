@@ -44,7 +44,7 @@ public interface IServerProxy {
      *
      * @param player
      */
-    public void joinGame(PlayerInfo player);
+    public void joinGame(IPlayer player);
 
     /**
      *
