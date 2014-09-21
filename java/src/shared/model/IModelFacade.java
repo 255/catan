@@ -1,9 +1,16 @@
 package shared.model;
 
+import client.communication.LogEntry;
 import client.data.PlayerInfo;
+import shared.definitions.CatanColor;
+import shared.definitions.HexType;
+import shared.definitions.PortType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Spencer Weight on 9/20/2014.
@@ -36,15 +43,6 @@ public interface IModelFacade {
      * @return a boolean value that reports if the user can place a city
      */
     public boolean canPlaceCity(VertexLocation vertex);
-
-    /**
-     * Takes a hex location and determines if the robber can be placed on it
-     *
-     * @param hex the location of a terrain hex
-     *
-     * @return a boolean value that reports if the user can place the robber on the specified hex
-     */
-    public boolean canPlaceRobber(HexLocation hex);
 
     /**
      * Takes an edge location and places a road on it
@@ -95,14 +93,14 @@ public interface IModelFacade {
      *
      * @return the log initialized with all the chat messages
      */
-    public ILog getChatHistory();
+    public List<LogEntry> getChatHistory();
 
     /**
      * Returns the move/action history of the game
      *
      * @return the log initialized with all the move/action messages
      */
-    public ILog getMoveHistory();
+    public List<LogEntry> getMoveHistory();
 
     /**
      * Returns the info for the current player
@@ -116,21 +114,35 @@ public interface IModelFacade {
      *
      * @return the RoadInfo object initialized with all the locations of the current player's roads
      */
-    public RoadInfo getRoads();
+    public Collection<MapInfo<EdgeLocation, CatanColor>> getRoads();
 
     /**
      * Returns the info for the current player's placed settlements
      *
-     * @return the TownInfo object initialized with all the locations of the current player's settlements
+     * @return the TownInfo object initialized with all the locations of the placed settlements
      */
-    public TownInfo getSettlements();
+    public Collection<MapInfo<VertexLocation, CatanColor>> getSettlements();
 
     /**
      * Returns the info for the current player's placed cities
      *
-     * @return the TownInfo object initialized with all the locations of the current player's cities
+     * @return the TownInfo object initialized with all the locations of the placed cities
      */
-    public TownInfo getCities();
+    public Collection<MapInfo<VertexLocation, CatanColor>> getCities();
+
+    /**
+     * Returns the info for the number pieces
+     *
+     * @return the TownInfo object initialized with all the locations of the placed cities
+     */
+    public Collection<MapInfo<HexLocation, Integer>> getNumberPieces();
+
+    /**
+     * Returns the info for the terrain hexes
+     *
+     * @return the MapInfo object initialized with all the locations and types of terrain hexes
+     */
+    public Collection<MapInfo<HexLocation, HexType>> getHexes();
 
     /**
      * Returns the terrain hex location for the current location of the robber
@@ -144,7 +156,14 @@ public interface IModelFacade {
      *
      * @return the ResourceBundle object containing the counts for the current player
      */
-    public IResourceBundle getCurPlayerResources();
+    public IResourceBundle getPlayerResources();
+
+    /**
+     * Returns the ports the current player has
+     *
+     * @return the ports that the current player has
+     */
+    public Collection<PortType> getPlayerPorts();
 
     /**
      * Takes in a chat message to be added to the chat log
@@ -152,10 +171,4 @@ public interface IModelFacade {
      * @param message the string of text to add to the chat log
      */
     public void sendChat(String message);
-
-
-
-
-
-
 }

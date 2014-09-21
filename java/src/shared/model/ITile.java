@@ -37,7 +37,7 @@ public interface ITile
      *
      * @return number of token
      */
-    public NumberToken numberToken();
+    public int numberToken();
 
     /**
      * Determines if this tile has the robber placed on it.

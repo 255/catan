@@ -1,6 +1,5 @@
-package client.serverproxy;
+package client.network;
 
-import client.data.*;
 import shared.locations.VertexLocation;
 import shared.definitions.*;
 import shared.locations.*;
@@ -28,7 +27,7 @@ public interface IServerProxy {
      *
      * @return list of games
      */
-    public List<Game> listGames();
+    public List<IGame> listGames();
 
     /**
      *
@@ -38,7 +37,7 @@ public interface IServerProxy {
      * @param name
      * @return game info
      */
-    public Game createGame(boolean randTiles, boolean randNum, boolean randPorts, String name);
+    public IGame createGame(boolean randTiles, boolean randNum, boolean randPorts, String name);
 
     /**
      *
@@ -50,13 +49,13 @@ public interface IServerProxy {
      *
      * @return current game state
      */
-    public Game getGameState();
+    public IGame getGameState();
 
     /**
      *
      * @return current game state
      */
-    public Game resetGame();
+    public IGame resetGame();
 
 //    //params List<Command> - return List<Command>
 //    public sendCommands();
@@ -101,7 +100,7 @@ public interface IServerProxy {
      * @param playerIndex
      * @param discardedCards
      */
-    public void discardCards(int playerIndex, ResourceBundle discardedCards);
+    public void discardCards(int playerIndex, IResourceBundle discardedCards);
 
     /**
      *
@@ -140,7 +139,7 @@ public interface IServerProxy {
      * @param offer
      * @param receiver
      */
-    public void offerTrade(int playerIndex, ResourceBundle offer, int receiver);
+    public void offerTrade(int playerIndex, IResourceBundle offer, int receiver);
 
     /**
      *

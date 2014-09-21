@@ -1,7 +1,7 @@
-package client.httpclient;
+package client.network;
 
 
-public interface IHttpClient {
+public interface IHttpCommunicator {
 
     /**
      *
