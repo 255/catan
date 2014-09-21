@@ -1,4 +1,6 @@
 # Created by https://www.gitignore.io
+# IntelliJ metadirectory
+.idea/
 
 ### Windows ###
 # Windows image file caches
