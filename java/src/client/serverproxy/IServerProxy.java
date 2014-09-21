@@ -1,91 +1,201 @@
 package client.serverproxy;
 
 import client.data.*;
+import shared.locations.VertexLocation;
+import shared.definitions.*;
+import shared.locations.*;
+import shared.model.*;
+import java.util.List;
 
 
 public interface IServerProxy {
 
-    //params with password
-    PlayerInfo login();
+    /**
+     *
+     * @param player
+     * @return player info
+     */
+    public IPlayer login(IPlayer player);
 
-    //params with password
-    PlayerInfo register();
+    /**
+     *
+     * @param player
+     * @return player info
+     */
+    public IPlayer register(IPlayer player);
 
-    //import List
-    List<GameInfo> listGames();
+    /**
+     *
+     * @return list of games
+     */
+    public List<Game> listGames();
 
-    //params with 3 booleans and game name
-    GameInfo createGame();
+    /**
+     *
+     * @param randTiles
+     * @param randNum
+     * @param randPorts
+     * @param name
+     * @return game info
+     */
+    public Game createGame(boolean randTiles, boolean randNum, boolean randPorts, String name);
 
-    //done
-    void joinGame(PlayerInfo player);
+    /**
+     *
+     * @param player
+     */
+    public void joinGame(PlayerInfo player);
 
-    //return GameState
-    getGameState();
+    /**
+     *
+     * @return current game state
+     */
+    public Game getGameState();
 
-    //return GameState
-    resetGame();
+    /**
+     *
+     * @return current game state
+     */
+    public Game resetGame();
 
-    //params List<Command> - return List<Command>
-    sendCommands();
+//    //params List<Command> - return List<Command>
+//    public sendCommands();
+//
+//    //return unknown
+//    public executeCommands();
 
-    //return unknown
-    executeCommands();
+    /**
+     *
+     * @return list of AI
+     */
+    public List<String> listAI();
 
-    //done
-    List<String> listAI();
+    /**
+     *
+     * @param name
+     */
+    public void addAI(String name);
 
-    //done
-    void addAI(String name);
+    /**
+     *
+     * @param logLevel
+     */
+    public void changeLogLevel(String logLevel);
 
-    //done
-    void changeLogLevel(String logLevel);
+    /**
+     *
+     * @param playerIndex
+     * @param message
+     */
+    public void sendChat(int playerIndex, String message);
 
-    //params chat obj with playerIndex and chat content
-    void sendChat();
+    /**
+     *
+     * @param playerIndex
+     * @param willAccept
+     */
+    public void acceptTrade(int playerIndex, boolean willAccept);
 
-    //params playerIndex and bool willAccept
-    void acceptTrade();
+    /**
+     *
+     * @param playerIndex
+     * @param discardedCards
+     */
+    public void discardCards(int playerIndex, ResourceBundle discardedCards);
 
-    //params playerIndex and resourceHand discardedCards
-    void discardCards();
+    /**
+     *
+     * @param playerIndex
+     * @param number
+     */
+    public void rollNumber(int playerIndex, int number);
 
-    //params playerIndex and int number
-    void rollNumber();
+    /**
+     *
+     * @param playerIndex
+     * @param edgeLoc
+     * @param free
+     */
+    public void buildRoad(int playerIndex, EdgeLocation edgeLoc, boolean free);
 
-    //params int playerIndex, EdgeLocation edgeLoc, bool free
-    void buildRoad();
+    /**
+     *
+     * @param playerIndex
+     * @param location
+     * @param free
+     */
+    public void buildSettlement(int playerIndex, VertexLocation location, boolean free);
 
-    //params playerIndex, VertexLocation verLoc, bool free
-    void buildSettlement();
+    /**
+     *
+     * @param playerIndex
+     * @param location
+     * @param free
+     */
+    public void buildCity(int playerIndex, VertexLocation location, boolean free);
 
-    //params int playerIndex, VertexLocation verLoc, bool free
-    void buildCity();
+    /**
+     *
+     * @param playerIndex
+     * @param offer
+     * @param receiver
+     */
+    public void offerTrade(int playerIndex, ResourceBundle offer, int receiver);
 
-    //params int playerIndex, ResourceHand offer,int receiver
-    void offerTrade();
+    /**
+     *
+     * @param playerIndex
+     * @param ratio
+     * @param input
+     * @param output
+     */
+    public void maritimeTrade(int playerIndex, int ratio, ResourceType input, ResourceType output);
 
-    //params int playerIndex, int ratio, Resource input, Resource output
-    void maritimeTrade();
+    /**
+     *
+     */
+    public void finishTurn();
 
-    //done
-    void finishTurn();
+    /**
+     *
+     * @param playerIndex
+     */
+    public void buyDevCard(int playerIndex);
 
-    //params int playerIndex
-    void buyDevCard();
+    /**
+     *
+     * @param playerIndex
+     * @param resource1
+     * @param resource2
+     */
+    public void playYear_of_Plenty(int playerIndex, ResourceType resource1, ResourceType resource2);
 
-    //params int playerIndex, Resource resource1, Resource resource2
-    void playYear_of_Plenty();
+    /**
+     *
+     * @param playerIndex
+     * @param location1
+     * @param location2
+     */
+    public void playRoad_Building(int playerIndex, EdgeLocation location1, EdgeLocation location2);
 
-    //params int playerIndex, EdgeLocation spot1, EdgeLocation spot2
-    void playRoad_Building();
+    /**
+     *
+     * @param playerIndex
+     * @param location
+     * @param victim
+     */
+    public void playSoldier(int playerIndex, HexLocation location, int victim);
 
-    //params int playerIndex, HexLocation, int victim
-    void playSoldier();
+    /**
+     *
+     * @param playerIndex
+     * @param resource
+     */
+    public void playMonopoly(int playerIndex, ResourceType resource);
 
-    //params int playerIndex, Resource resource
-    void playMonopoly();
-
-    //params int playerIndex
-    void playMonument();
+    /**
+     *
+     * @param playerIndex
+     */
+    public void playMonument(int playerIndex);
 }
