@@ -1,6 +1,14 @@
-# Created by https://www.gitignore.io
+#####################################
+# Project-specific .gitignore items #
+#####################################
 # IntelliJ metadirectory
-.idea/
+.idea/ 
+# Java docs
+docs/java
+
+############################
+# Generic .gitignore items #
+############################
 
 ### Windows ###
 # Windows image file caches
