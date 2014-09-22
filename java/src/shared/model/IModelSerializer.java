@@ -16,8 +16,7 @@ public interface IModelSerializer {
     public IGame convertJSONtoModel(String json);
 
     /**
-     * Takes in a String of text formatted as JSON, parses it and stores it in
-     *  the game object which keeps track of the status of the game pieces
+     * Takes in a Game object and formats it as JSON.
      *
      * @param theGame an object that stores all the information about the current state of the game
      *
