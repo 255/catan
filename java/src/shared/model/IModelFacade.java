@@ -8,12 +8,12 @@ import shared.definitions.PortType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
-
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by Spencer Weight on 9/20/2014.
+ * This is the interface for the ModelFacade which is the class that the GUI
+ * will interact with when it needs to modify something in the Model
  */
 public interface IModelFacade {
 

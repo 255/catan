@@ -1,7 +1,8 @@
 package shared.model;
 
 /**
- * Created by Spencer Weight on 9/20/2014.
+ * This is the interface for the Serializer which is in charge of converting a
+ * JSON string into a Game object and a Game object into a JSON string
  */
 public interface ISerializer {
     /**
