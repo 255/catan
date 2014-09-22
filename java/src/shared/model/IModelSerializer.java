@@ -4,7 +4,7 @@ package shared.model;
  * This is the interface for the Serializer which is in charge of converting a
  * JSON string into a Game object and a Game object into a JSON string
  */
-public interface ISerializer {
+public interface IModelSerializer {
     /**
      * Takes in a String of text formatted as JSON, parses it and stores it in
      *  the game object which keeps track of the status of the game pieces

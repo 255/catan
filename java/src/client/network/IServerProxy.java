@@ -20,7 +20,7 @@ public interface IServerProxy {
      * @param password password of player attempting to login
      * @return an IPlayer object of the user with the matching username and password
      */
-    public IPlayer login(String username, String password);
+    public String login(String username, String password);
 
     /**
      * Creates a new user account and logs the new
@@ -172,25 +172,33 @@ public interface IServerProxy {
 
     /**
      *
+     *
      * @param playerIndex
      */
     public void buyDevCard(int playerIndex);
 
     /**
+     * One player plays the year of plenty card. This player can then
+     * take resource cards of his choosing from the
+     * bank.
      *
-     * @param playerIndex
-     * @param resource1
-     * @param resource2
+     * @param playerIndex index of player playing the card
+     * @param resource1 the first type of resource
+     * @param resource2 the second type of resource
+     * @return a JSON object representing the Catan Model
      */
-    public void playYearOfPlenty(int playerIndex, ResourceType resource1, ResourceType resource2);
+    public String playYearOfPlenty(int playerIndex, ResourceType resource1, ResourceType resource2);
 
     /**
+     * One player plays a road building card. The player can then place
+     * two roads on the board free of charge.
      *
-     * @param playerIndex
-     * @param location1
-     * @param location2
+     * @param playerIndex index of player playing the card
+     * @param location1 location of the first road to be placed
+     * @param location2 location of the second road to be placed
+     * @return a JSON object representing the Catan Model
      */
-    public void playRoadBuilding(int playerIndex, EdgeLocation location1, EdgeLocation location2);
+    public String playRoadBuilding(int playerIndex, EdgeLocation location1, EdgeLocation location2);
 
     /**
      * One player plays a soldier development card. The player moves the
