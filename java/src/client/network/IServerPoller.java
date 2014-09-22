@@ -4,7 +4,7 @@ package client.network;
  * The server poller periodically updates the game state.
  * It is constructed with references to the Model Serializer and the Server Proxy.
  *
- * Created by Wyatt on 9/21/2014.
+ * @author Wyatt 
  */
 public interface IServerPoller {
     /**

@@ -5,7 +5,7 @@ import shared.locations.EdgeLocation;
 /**
  * This is a placed road. Road objects are not created for roads in a player's piece bank.
  *
- * Created by Wyatt on 9/21/2014.
+ * @author Wyatt
  */
 public interface IRoad {
     /**

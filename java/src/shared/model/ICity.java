@@ -5,7 +5,7 @@ package shared.model;
  *
  * An empty interface is pretty useless... this really should be a concrete class.
  *
- * Created by Wyatt on 9/21/2014.
+ * @author Wyatt
  */
 public interface ICity extends ITown {
 }

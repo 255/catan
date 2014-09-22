@@ -4,6 +4,7 @@ import shared.definitions.DevCardType;
 
 /**
  * A collection of development cards.
+ * The game's bank and each player have a hand of development cards.
  * @author Wyatt
  */
 public interface IDevCardHand {

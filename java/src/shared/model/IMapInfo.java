@@ -7,7 +7,7 @@ package shared.model;
  * @param <Location> the type of location object to use (edge, vertex, or hex)
  * @param <Type> type/appearance of the object (color, number, etc.)
  *
- * Created by Wyatt on 9/21/2014.
+ * @author Wyatt
  */
 public interface IMapInfo<Location, Type> {
 }
