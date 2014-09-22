@@ -33,7 +33,13 @@ public interface IGame {
      * Get the list of players in turn order.
      * @return the list of players in turn order
      */
-     public List<IPlayer> getPlayers();
+    public List<IPlayer> getPlayers();
+
+    /**
+     * Get the available resources.
+     * @return the available resources
+     */
+    public IResourceBundle getResourceBank();
 
     /**
      * Get a reference to the map.
