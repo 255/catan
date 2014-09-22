@@ -6,9 +6,15 @@ import shared.locations.HexLocation;
 
 /**
  * Created by sdaltonb on 9/20/14.
+ *
+ * Class representing a tile on the board.
+ * A tile contains a certain type of resource, and
+ * will provide that resource to towns that are on a
+ * vertex adjacent to that tile. A tile also contains
+ * a number indicating the probability that that number
+ * will be rolled.
  */
-public interface ITile
-{
+public interface ITile {
     /**
      * Returns the type of this tile
      *

@@ -5,8 +5,7 @@ package shared.model;
  *
  * Interface representing one of the four players in an ongoing game
  */
-public interface IPlayer
-{
+public interface IPlayer {
     /**
      * Calculates how many victory points this player has
      *

@@ -3,12 +3,14 @@ package shared.model;
 import shared.definitions.PieceType;
 
 /**
- * Interface that represents a town on the board
+ * Interface that represents a town on the board.
+ * A town is placed on a vertex, and provides resources and
+ * victory points to a player.
  *
  * Created by sdaltonb on 9/20/14.
  */
-public interface ITown
-{
+public interface ITown {
+
     /**
      * Returns the number of victory points this town is worth
      *
