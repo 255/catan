@@ -7,7 +7,7 @@ import shared.definitions.PieceType;
  * A town is placed on a vertex, and provides resources and
  * victory points to a player.
  *
- * Created by sdaltonb on 9/20/14.
+ * @author StevenBarnett
  */
 public interface ITown {
 

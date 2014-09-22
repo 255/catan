@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * The Catan map. It is initialized in the concrete class constructor.
  *
- * Created by sdaltonb on 9/20/14.
+ * @author StevenBarnett
  */
 public interface IMap {
     /**

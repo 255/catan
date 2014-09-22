@@ -1,9 +1,9 @@
 package shared.model;
 
 /**
- * Created by sdaltonb on 9/20/14.
- *
  * Interface representing one of the four players in an ongoing game
+ *
+ * @author StevenBarnett
  */
 public interface IPlayer {
     /**
@@ -23,13 +23,13 @@ public interface IPlayer {
      * Get the resources the player has.
      * @return the resources currently held by the player.
      */
-    public IResourceBundle getResources();
+    public IResourceBundle resources();
 
     /**
      * Get the pieces (roads, settlements, cities) that the player has remaining in their "bank".
      * @return the piece bank with the counts of the player's pieces
      */
-    public IPieceBank getPieceBank();
+    public IPieceBank pieceBank();
 
     /**
      * Give the player a road.
