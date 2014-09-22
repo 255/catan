@@ -3,9 +3,9 @@ package shared.model;
 import shared.definitions.PieceType;
 
 /**
- * Created by sdaltonb on 9/20/14.
- *
  * Interface that represents a town on the board
+ *
+ * Created by sdaltonb on 9/20/14.
  */
 public interface ITown
 {

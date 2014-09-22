@@ -1,7 +1,6 @@
 package shared.model;
 
-import com.sun.javafx.sg.prism.NGShape;
-import shared.model.ModelException;
+import client.network.NetworkException;
 
 /**
  * A bank of pieces. Each player has a fixed number of pieces available to them.
@@ -14,9 +13,8 @@ public interface IPieceBank {
      *
      * This will only be used server-side.
      * @return the new road
-     * @throws ModelException if no roads are available
      */
-    public IRoad takeRoad() throws ModelException;
+    public IRoad takeRoad();
 
     /**
      * Set the number of roads that will be available in the piece bank.
@@ -38,9 +36,8 @@ public interface IPieceBank {
      *
      * This will only be used server-side.
      * @return the new city
-     * @throws ModelException if no cities are available
      */
-    public ICity takeCity() throws ModelException;
+    public ICity takeCity();
 
     /**
      * Set the number of cities that will be available in the piece bank.
@@ -61,9 +58,8 @@ public interface IPieceBank {
      *
      * This will only be used server-side.
      * @return the new settlement
-     * @throws ModelException if no settlements are available
      */
-    public ISettlement takeSettlement() throws ModelException;
+    public ISettlement takeSettlement();
 
     /**
      * Set the number of settlements that will be available in the piece bank.

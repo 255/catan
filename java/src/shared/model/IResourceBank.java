@@ -17,7 +17,6 @@ public interface IResourceBank extends IResourceCollection {
      * If the number of resources being subtracted exceeds the number of
      * resources in the resource bank, an exception is thrown.
      * @param resources the bundle of resources to remove from the bank
-     * @throws ModelException if more resources are subtracted than are available
      */
     public void subtract(IResourceBundle resources);
 }

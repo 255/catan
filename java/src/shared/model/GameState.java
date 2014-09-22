@@ -1,8 +1,7 @@
 package shared.model;
 
 /**
- * The possible states during game play. The game's current state and the
- * current player
+ * The possible states during a player's turn.
  * @author Wyatt
  */
 public enum GameState {

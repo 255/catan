@@ -167,7 +167,7 @@ public interface IServerProxy {
      * @param resource1
      * @param resource2
      */
-    public void playYear_of_Plenty(int playerIndex, ResourceType resource1, ResourceType resource2);
+    public void playYearOfPlenty(int playerIndex, ResourceType resource1, ResourceType resource2);
 
     /**
      *
@@ -175,7 +175,7 @@ public interface IServerProxy {
      * @param location1
      * @param location2
      */
-    public void playRoad_Building(int playerIndex, EdgeLocation location1, EdgeLocation location2);
+    public void playRoadBuilding(int playerIndex, EdgeLocation location1, EdgeLocation location2);
 
     /**
      *

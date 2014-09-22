@@ -12,7 +12,7 @@ public interface ISerializer {
      *
      * @return the Game object that has all the JSON values parsed and stored in it
      */
-    public void convertJSONtoModel(String json);
+    public IGame convertJSONtoModel(String json);
 
     /**
      * Takes in a String of text formatted as JSON, parses it and stores it in
