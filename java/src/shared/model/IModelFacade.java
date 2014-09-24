@@ -112,37 +112,37 @@ public interface IModelFacade {
     /**
      * Returns the info for the current player's placed roads
      *
-     * @return the RoadInfo object initialized with all the locations of the current player's roads
+     * @return the Collection of IRoad objects initialized with all the locations of the current player's roads
      */
-    public Collection<MapInfo<EdgeLocation, CatanColor>> getRoads();
+    public Collection<IRoad> getRoads();
 
     /**
      * Returns the info for the current player's placed settlements
      *
-     * @return the TownInfo object initialized with all the locations of the placed settlements
+     * @return the Collection of ITown objects initialized with all the locations of the placed settlements
      */
-    public Collection<MapInfo<VertexLocation, CatanColor>> getSettlements();
+    public Collection<ITown> getSettlements();
 
     /**
      * Returns the info for the current player's placed cities
      *
-     * @return the TownInfo object initialized with all the locations of the placed cities
+     * @return the Collection of ITown objects initialized with all the locations of the placed cities
      */
-    public Collection<MapInfo<VertexLocation, CatanColor>> getCities();
+    public Collection<ITown> getCities();
 
     /**
      * Returns the info for the number pieces
      *
-     * @return the TownInfo object initialized with all the locations of the placed cities
+     * @return the Collection of ITile terrain hex objects initialized with all the locations of the number pieces
      */
-    public Collection<MapInfo<HexLocation, Integer>> getNumberPieces();
+    public Collection<ITile> getNumberPieces();
 
     /**
      * Returns the info for the terrain hexes
      *
-     * @return the MapInfo object initialized with all the locations and types of terrain hexes
+     * @return the Collection of ITile objects initialized with all the locations and types of terrain hexes
      */
-    public Collection<MapInfo<HexLocation, HexType>> getHexes();
+    public Collection<ITile> getHexes();
 
     /**
      * Returns the terrain hex location for the current location of the robber
