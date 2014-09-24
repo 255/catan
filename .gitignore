@@ -3,6 +3,8 @@
 #####################################
 # IntelliJ metadirectory
 .idea/ 
+.idea/workspace.xml
+
 # Java docs
 docs/java
 
@@ -52,6 +54,7 @@ Temporary Items
 
 ### Linux ###
 *~
+*.swp   # vim swap file
 
 # KDE directory preferences
 .directory

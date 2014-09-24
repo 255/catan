@@ -41,6 +41,30 @@ public interface IMap {
     public ITown getTownAt(VertexLocation vertexLoc);
 
     /**
+     * Determine if a player can place a road at the specified location.
+     * @param player the player to look at
+     * @param edge the location where the player wants to place a road
+     * @return a boolean value that reports if the player can place a road
+     */
+    public boolean canPlaceRoad(IPlayer player, EdgeLocation edge);
+
+    /**
+     * Determine if a player can place a road at the specified location.
+     * @param player the player to look at
+     * @param vertex the location where the player wants to place a settlement
+     * @return a boolean value that reports if the player can place a settlement
+     */
+    public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex);
+
+    /**
+     * Determine if a player can place a city at the specified location.
+     * @param player the player to look at
+     * @param vertex the location where the player wants to place a city
+     * @return a boolean value that reports if the player can place a city
+     */
+    public boolean canPlaceCity(IPlayer player, VertexLocation vertex);
+
+    /**
      * Get the roads adjacent to the specified vertex location. The collection
      * will be empty if there are no roads adjacent to the vertex.
      *
