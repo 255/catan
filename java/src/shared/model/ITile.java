@@ -49,4 +49,16 @@ public interface ITile {
      * @return a flag indicating whether the tile has the robber
      */
     public boolean hasRobber();
+
+    /**
+     * Place the robber on this hex.
+     * The hex must not already have the robber on it.
+     */
+    public void placeRobber();
+
+    /**
+     * Remove the robber from this hex.
+     * The hex must already have the robber on it.
+     */
+    public void removeRobber();
 }
