@@ -3,7 +3,9 @@
 #####################################
 # IntelliJ metadirectory
 .idea/ 
+.idea/*
 .idea/workspace.xml
+.idea/uiDesigner.xml
 
 # Java docs
 docs/java

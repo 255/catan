@@ -1,7 +1,5 @@
 package shared.model;
 
-import client.network.NetworkException;
-
 /**
  * A bank of pieces. Each player has a fixed number of pieces available to them.
  * @author Wyatt
@@ -59,7 +57,7 @@ public interface IPieceBank {
      * This will only be used server-side.
      * @return the new settlement
      */
-    public ISettlement takeSettlement();
+    public Settlement takeSettlement();
 
     /**
      * Set the number of settlements that will be available in the piece bank.

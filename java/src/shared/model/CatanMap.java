@@ -1,40 +1,58 @@
 package shared.model;
 
-import shared.definitions.HexType;
+import shared.definitions.PortType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The Catan map.
  *
  * @author Wyatt
  */
-public class Map implements IMap {
+public class CatanMap implements IMap {
+    private Map<HexLocation, ITile> m_tiles;
+    private Map<VertexLocation, ITown> m_towns;
+    private Map<EdgeLocation, IRoad> m_roads;
+    private Map<EdgeLocation, PortType> m_ports;
+    private HexLocation robber;
+
+    public CatanMap() {
+        m_tiles = new HashMap<>();
+        m_towns = new HashMap<>();
+        m_roads = new HashMap<>();
+        m_ports = new HashMap<>();
+    }
+
     /**
      * Get all of the towns placed on the map.
      * @return the towns placed on the map
      */
+    @Override
     public Collection<ITown> getTowns() {
-      return null; //TODO
+        return m_towns.values();
     }
 
     /**
      * Get all of the roads placed on the map.
      * @return the roads placed on the map
      */
+    @Override
     public Collection<IRoad> getRoads() {
-      return null; //TODO
+        return m_roads.values();
     }
 
     /**
      * Get all of the terrain tiles in the map
      * @return the tiles in the map
      */
+    @Override
     public Collection<ITile> getTiles() {
-      return null; //TODO
+        return m_tiles.values();
     }
 
     /**
@@ -43,8 +61,9 @@ public class Map implements IMap {
      * @param vertexLoc the location of the town to get
      * @return a reference to the town at vertexLoc or null of the vertex is empty
      */
+    @Override
     public ITown getTownAt(VertexLocation vertexLoc) {
-      return null; //TODO
+        return m_towns.get(vertexLoc);
     }
 
     /**
@@ -53,6 +72,7 @@ public class Map implements IMap {
      * @param edge the location where the player wants to place a road
      * @return a boolean value that reports if the player can place a road
      */
+    @Override
     public boolean canPlaceRoad(IPlayer player, EdgeLocation edge) {
       return false; //TODO
     }
@@ -63,6 +83,7 @@ public class Map implements IMap {
      * @param vertex the location where the player wants to place a settlement
      * @return a boolean value that reports if the player can place a settlement
      */
+    @Override
     public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex) {
       return false; //TODO
     }
@@ -73,8 +94,18 @@ public class Map implements IMap {
      * @param vertex the location where the player wants to place a city
      * @return a boolean value that reports if the player can place a city
      */
+    @Override
     public boolean canPlaceCity(IPlayer player, VertexLocation vertex) {
       return false; //TODO
+    }
+
+    @Override
+    public void placeRoad(IRoad road, EdgeLocation edge) {
+        assert !m_roads.containsKey(edge) :  "There is already a road placed at " + edge.toString();
+        assert road.getLocation() == null : "The road " + road.toString() + " already thinks it's placed!";
+
+        m_roads.put(edge, road);
+        road.setLocation(edge);
     }
 
     /**
@@ -85,6 +116,7 @@ public class Map implements IMap {
      * @param vertexLoc the vertex location around which to look for roads
      * @return the roads adjacent to the vertex
      */
+    @Override
     public Collection<IRoad> getRoadsAdjacentToVertex(VertexLocation vertexLoc) {
       return null; //TODO
     }
@@ -94,6 +126,7 @@ public class Map implements IMap {
      * @param vertexLoc the location around which to look for cities
      * @return true if the vertex has cities on adjacent vertices, false otherwise
      */
+    @Override
     public boolean hasAdjacentCities(VertexLocation vertexLoc) {
       return false; //TODO
     }
@@ -103,8 +136,9 @@ public class Map implements IMap {
      * @param edge the edge from which to get the road
      * @return the road placed on the specified edge, or null if there is none
      */
-    public boolean getRoad(EdgeLocation edge) {
-      return false; //TODO
+    @Override
+    public IRoad getRoad(EdgeLocation edge) {
+        return m_roads.get(edge);
     }
 
     /**
@@ -114,6 +148,7 @@ public class Map implements IMap {
      * @param edge the edge around which to check for adjacent roads
      * @return the roads adjacent to the specified edge, excluding the road on the edge, if any
      */
+    @Override
     public Collection<IRoad> getConnectingRoads(EdgeLocation edge) {
       return null; //TODO
     }
@@ -122,6 +157,7 @@ public class Map implements IMap {
      * Get the location of the robber.
      * @return the location of the robber
      */
+    @Override
     public HexLocation getRobber() {
       return null; //TODO
     }
@@ -130,7 +166,13 @@ public class Map implements IMap {
      * Change the location of the robber.
      * @param location the new hex location of the robber
      */
+    @Override
     public void moveRobber(HexLocation location) {
-      //TODO
+        assert m_tiles.containsKey(location);
+
+        m_tiles.get(robber).removeRobber();
+
+        robber = location;
+        m_tiles.get(location).placeRobber();
     }
 }

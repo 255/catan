@@ -57,6 +57,14 @@ public interface IMap {
     public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex);
 
     /**
+     * Place a road object at the specified edge.
+     * The road is placed in the map's data structure AND the road's location is set to edge.
+     * @param road the road that is being placed
+     * @param edge the edge on which to place the road.
+     */
+    public void placeRoad(IRoad road, EdgeLocation edge);
+
+    /**
      * Determine if a player can place a city at the specified location.
      * @param player the player to look at
      * @param vertex the location where the player wants to place a city
@@ -86,7 +94,7 @@ public interface IMap {
      * @param edge the edge from which to get the road
      * @return the road placed on the specified edge, or null if there is none
      */
-    public boolean getRoad(EdgeLocation edge);
+    public IRoad getRoad(EdgeLocation edge);
 
     /**
      * Get the roads that connect to the specified edge, excluding the road on the edge,

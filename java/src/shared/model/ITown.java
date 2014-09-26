@@ -12,28 +12,35 @@ import shared.definitions.PieceType;
 public interface ITown {
 
     /**
-     * Returns the number of victory points this town is worth
-     *
-     * @return number of victory points
-     */
-    public int victoryPoints();
-
-    /**
-     * Returns the player that owns this town
+     * Returns the player that owns this town.
      *
      * @return player who owns town
      */
-    public IPlayer owner();
+    public IPlayer getOwner();
 
     /**
-     * Returns the resources that this house
+     * Returns the location of this town.
+     *
+     * @return player who owns town
+     */
+    public IPlayer getLocation();
+
+    /**
+     * Returns the number of victory points this town is worth.
+     *
+     * @return number of victory points
+     */
+    public int getVictoryPoints();
+
+    /**
+     * Returns the resources that this house.
      *
      * @return bundle of resources
      */
     public IResourceBundle getResources();
 
     /**
-     * Returns what type of piece this town is
+     * Returns what type of piece this town is.
      *
      * @return type of piece
      */

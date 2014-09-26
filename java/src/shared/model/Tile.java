@@ -54,6 +54,7 @@ public class Tile implements ITile {
      *
      * @return hex type of this tile
      */
+    @Override
     public HexType type() {
       return m_type;
     }
@@ -63,6 +64,7 @@ public class Tile implements ITile {
      *
      * @return location of this tile
      */
+    @Override
     public HexLocation location() {
       return m_location;
     }
@@ -72,6 +74,7 @@ public class Tile implements ITile {
      *
      * @return resource type
      */
+    @Override
     public ResourceType resource() {
       return m_type.getResource();
     }
@@ -82,6 +85,7 @@ public class Tile implements ITile {
      *
      * @return number of token
      */
+    @Override
     public int numberToken() {
       return m_number;
     }
@@ -91,6 +95,7 @@ public class Tile implements ITile {
      *
      * @return a flag indicating whether the tile has the robber
      */
+    @Override
     public boolean hasRobber() {
       return m_robber;
     }
@@ -99,6 +104,7 @@ public class Tile implements ITile {
      * Place the robber on this hex.
      * The hex must not already have the robber on it.
      */
+    @Override
     public void placeRobber() {
       assert !m_robber : "Attempted to place the robber on a tile that already has the robber.";
 
@@ -109,6 +115,7 @@ public class Tile implements ITile {
      * Remove the robber from this hex.
      * The hex must already have the robber on it.
      */
+    @Override
     public void removeRobber() {
       assert m_robber : "Attempted to remove the robber from a tile with no robber.";
 
