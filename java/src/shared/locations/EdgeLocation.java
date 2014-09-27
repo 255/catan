@@ -1,5 +1,7 @@
 package shared.locations;
 
+import com.sun.javafx.geom.Edge;
+
 /**
  * Represents the location of an edge on a hex map
  */
@@ -106,5 +108,45 @@ public class EdgeLocation
 				return null;
 		}
 	}
+
+    /**
+     * Get the "other" equivalent edge that is on the same hex.
+     * @return the equivalent edge
+     */
+    public EdgeLocation getEquivalentEdge() {
+        return new EdgeLocation(hexLoc.getNeighborLoc(dir), dir.getOppositeDirection());
+    }
+
+    /**
+     * Get the normalized edge that is clockwise around the hex from this edge.
+     * @return the normalized clockwise edge
+     */
+    public EdgeLocation getNormalizedClockwise() {
+        return new EdgeLocation(hexLoc, dir.getClockwise()).getNormalizedLocation();
+    }
+
+    /**
+     * Get the normalized edge that is counterclockwise around the hex from this edge.
+     * @return the normalized counterclockwise edge
+     */
+    public EdgeLocation getNormalizedCounterClockwise() {
+        return new EdgeLocation(hexLoc, dir.getCounterclockwise()).getNormalizedLocation();
+    }
+
+    /**
+     * Get the edges adjacent or connecting to the specified edge.
+     * Some of these edges may be off the map for boundary edges.
+     * @return the four adjacent edges as an array
+     */
+     public EdgeLocation[] getAdjacentEdges() {
+        EdgeLocation other = getEquivalentEdge();
+
+        return new EdgeLocation[] {
+                getNormalizedClockwise(),
+                getNormalizedCounterClockwise(),
+                other.getNormalizedClockwise(),
+                other.getNormalizedCounterClockwise(),
+        };
+    }
 }
 

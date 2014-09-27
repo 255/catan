@@ -19,4 +19,12 @@ public interface IRoad {
      * @return the location at which this road is placed
      */
     public EdgeLocation getLocation();
+
+
+    /**
+     * Set where the road is placed.
+     * This function should only ever be called once. (Roads cannot be moved.)
+     * @param edge the edge where the road is placed
+     */
+    public void setLocation(EdgeLocation edge);
 }
