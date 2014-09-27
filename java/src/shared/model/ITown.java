@@ -1,6 +1,7 @@
 package shared.model;
 
 import shared.definitions.PieceType;
+import shared.locations.VertexLocation;
 
 /**
  * Interface that represents a town on the board.
@@ -21,9 +22,16 @@ public interface ITown {
     /**
      * Returns the location of this town.
      *
-     * @return player who owns town
+     * @return VertexLocation the location of the town
      */
-    public IPlayer getLocation();
+    public VertexLocation getLocation();
+
+    /**
+     * Sets the location of this town.
+     * The location must only be set once.
+     * @param location the location of the town
+     */
+    public void setLocation(VertexLocation location);
 
     /**
      * Returns the number of victory points this town is worth.
