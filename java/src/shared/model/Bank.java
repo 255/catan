@@ -33,4 +33,9 @@ public class Bank implements IBank{
     public IResourceBundle drawResources(IResourceBundle requestedResources) {
         return m_resources.subtract(requestedResources);
     }
+
+    @Override
+    public IResourceBundle getResources() {
+        return m_resources.getResources();
+    }
 }

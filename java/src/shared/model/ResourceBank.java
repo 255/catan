@@ -88,40 +88,48 @@ public class ResourceBank implements IResourceBank{
 
     @Override
     public IResourceBundle subtract(IResourceBundle resources) {
+        IResourceBundle bundle = new ResourceBundle(resources.getWood(), resources.getBrick(), resources.getSheep(),
+                resources.getWheat(), resources.getOre());
+
         if (m_wood >= resources.getWood()) {
             setWood(m_wood - resources.getWood());
         } else {
-            resources.setWood(m_wood);
+            bundle.setWood(m_wood);
             setWood(0);
         }
 
         if (m_brick >= resources.getBrick()) {
             setBrick(m_brick - resources.getBrick());
         } else {
-            resources.setBrick(m_brick);
+            bundle.setBrick(m_brick);
             setBrick(0);
         }
 
         if (m_sheep >= resources.getSheep()) {
             setSheep(m_sheep - resources.getSheep());
         } else {
-            resources.setSheep(m_sheep);
+            bundle.setSheep(m_sheep);
             setSheep(0);
         }
 
         if (m_wheat >= resources.getWheat()) {
             setWheat(m_wheat - resources.getWheat());
         } else {
-            resources.setWheat(m_wheat);
+            bundle.setWheat(m_wheat);
             setWheat(0);
         }
 
         if (m_ore >= resources.getOre()) {
             setOre(m_ore - resources.getOre());
         } else {
-            resources.setOre(m_ore);
+            bundle.setOre(m_ore);
             setOre(0);
         }
-        return resources;
+        return bundle;
+    }
+
+    @Override
+    public IResourceBundle getResources() {
+        return new ResourceBundle(m_wood, m_brick, m_sheep, m_wheat, m_ore);
     }
 }
