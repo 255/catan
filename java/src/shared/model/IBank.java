@@ -39,4 +39,10 @@ public interface IBank {
      * @return the resources that were
      */
     public IResourceBundle drawResources(IResourceBundle requestedResources);
+
+    /**
+     * Gets all the resources in the bank
+     * @return the resources in the bank
+     */
+    public IResourceBundle getResources();
 }

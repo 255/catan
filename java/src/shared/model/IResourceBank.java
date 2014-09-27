@@ -18,5 +18,11 @@ public interface IResourceBank extends IResourceCollection {
      * resources in the resource bank, an exception is thrown.
      * @param resources the bundle of resources to remove from the bank
      */
-    public void subtract(IResourceBundle resources);
+    public IResourceBundle subtract(IResourceBundle resources);
+
+    /**
+     * Gets all the resources in the resource bank
+     * @return the resources in the resource bank
+     */
+    public IResourceBundle getResources();
 }
