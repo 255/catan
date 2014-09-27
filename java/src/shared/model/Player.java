@@ -1,6 +1,9 @@
 package shared.model;
 
+import shared.definitions.DevCardType;
+
 import java.util.Collection;
+import java.util.ArrayList;
 
 /**
  * This class represents a Player Object
@@ -8,12 +11,40 @@ import java.util.Collection;
 public class Player implements IPlayer {
 
     private int m_id;
+    private int m_index;
+    private String m_color;
+    private String m_name;
+    private int m_victoryPoints;
+    private boolean m_discarded;
+    private int m_monuments;
+    private int m_soldiers;
+    private boolean m_playedDevCard;
     private IResourceBank m_resources;
     private IDevCardHand m_newDevCards;
     private IDevCardHand m_playableDevCards;
-    private Collection<IRoad> m_roads;
+    private Collection<Road> m_roads;
     private Collection<Settlement> m_settlements;
     private Collection<City> m_cities;
+
+
+    Player(String name, int id, String color, int index) {
+        m_id = id;
+        m_index = index;
+        m_color = color;
+        m_name = name;
+
+        m_victoryPoints = 0;
+        m_monuments = 0;
+        m_soldiers = 0;
+        m_discarded = false;
+        m_playedDevCard = false;
+        m_resources = new ResourceBank();
+        m_newDevCards = new DevCardHand(new ArrayList<DevCardType>());
+        m_playableDevCards = new DevCardHand(new ArrayList<DevCardType>());
+        m_roads = new ArrayList<Road>();
+        m_settlements = new ArrayList<Settlement>();
+        m_cities = new ArrayList<City>();
+    }
 
 
     /**
@@ -23,7 +54,10 @@ public class Player implements IPlayer {
      */
     @Override
     public int victoryPoints() {
-        return 0;
+
+        // these are going to be retrieved from the server?
+
+        return m_victoryPoints;
     }
 
     /**
