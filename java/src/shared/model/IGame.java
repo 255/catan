@@ -51,11 +51,11 @@ public interface IGame {
      * Get the history of gameplay messages.
      * @return the list of gameplay log entries in order from oldest to newest
      */
-    public List<ILogMessage> getGameplayLog();
+    public ILog getGameplayLog();
 
     /**
      * Get the history of chat messages.
      * @return the list of chat entries in order from oldest to newest
      */
-    public List<ILogMessage> getChatHistory();
+    public ILog getChatHistory();
 }

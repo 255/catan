@@ -108,12 +108,12 @@ public class Game implements IGame {
     }
 
     @Override
-    public List<ILogMessage> getGameplayLog() {
+    public ILog getGameplayLog() {
         return null;
     }
 
     @Override
-    public List<ILogMessage> getChatHistory() {
+    public ILog getChatHistory() {
         return null;
     }
 }
