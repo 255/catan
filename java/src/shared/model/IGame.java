@@ -45,7 +45,7 @@ public interface IGame {
      * Get a reference to the map.
      * @return the map
      */
-    public IMap getMap();
+    public ICatanMap getMap();
 
     /**
      * Get the history of gameplay messages.

@@ -12,6 +12,14 @@ public class ResourceBank implements IResourceBank{
     private int m_wheat;
     private int m_ore;
 
+    public ResourceBank() {
+        setWood(0);
+        setBrick(0);
+        setSheep(0);
+        setWheat(0);
+        setOre(0);
+    }
+
     public ResourceBank(int wood, int brick, int sheep, int wheat, int ore) {
         setWood(wood);
         setBrick(brick);

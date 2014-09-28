@@ -11,7 +11,7 @@ public class Game implements IGame {
     private IPlayer m_localPlayer;
     private List<IPlayer> m_players;
     private IBank m_bank;
-    private IMap m_map;
+    private ICatanMap m_map;
     private IPlayer m_longestRoad;
     private IPlayer m_largestArmy;
     private ITradeOffer m_tradeOffer;
@@ -19,7 +19,7 @@ public class Game implements IGame {
     private ILog m_chatHistory;
 
     public Game(GameState state, IPlayer currentPlayer, IPlayer localPlayer, List<IPlayer> players, IBank bank,
-                IMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer, ILog gameplayLog, ILog chatHistory) {
+                ICatanMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer, ILog gameplayLog, ILog chatHistory) {
         setGameState(state);
         setCurrentPlayer(currentPlayer);
         setLocalPlayer(localPlayer);
@@ -79,11 +79,11 @@ public class Game implements IGame {
     }
 
     @Override
-    public IMap getMap() {
+    public ICatanMap getMap() {
         return m_map;
     }
 
-    private void setMap(IMap map) {
+    private void setMap(ICatanMap map) {
         m_map = map;
     }
 

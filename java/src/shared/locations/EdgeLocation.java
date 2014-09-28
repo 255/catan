@@ -135,7 +135,7 @@ public class EdgeLocation
 
     /**
      * Get the edges adjacent or connecting to the specified edge.
-     * Some of these edges may be off the map for boundary edges.
+     * For boundary edges, some of the edges returned may be off the map.
      * @return the four adjacent edges as an array
      */
      public EdgeLocation[] getAdjacentEdges() {
@@ -147,6 +147,37 @@ public class EdgeLocation
                 other.getNormalizedClockwise(),
                 other.getNormalizedCounterClockwise(),
         };
+    }
+
+    /**
+     * Get the vertices connected to the specified edge.
+     * @return the two adjacent vertices as an array
+     */
+    public VertexLocation[] getAdjacentVertices() {
+        VertexDirection[] vertexDirs = getDir().getNeighboringVertexDirections();
+        return new VertexLocation[] {
+                new VertexLocation(getHexLoc(), vertexDirs[0]).getNormalizedLocation(),
+                new VertexLocation(getHexLoc(), vertexDirs[1]).getNormalizedLocation(),
+        };
+    }
+
+    /**
+     * Return the vertex between the two specified edges, or null if there is none
+     * @param edge1 one edge
+     * @param edge2 the other edge
+     * @return the vertex between the edges or null if there is none
+     */
+    public static VertexLocation getVertexBetweenEdges(EdgeLocation edge1, EdgeLocation edge2) {
+        // check if the two edges share a vertex
+        for (VertexLocation vertex1 : edge1.getAdjacentVertices()) {
+            for (VertexLocation vertex2 : edge2.getAdjacentVertices()) {
+                if (vertex1.equals(vertex2)) {
+                    return vertex1;
+                }
+            }
+        }
+
+        return null;
     }
 }
 

@@ -1,5 +1,8 @@
 package shared.locations;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * Represents the location of a vertex on a hex map
  */
@@ -85,13 +88,11 @@ public class VertexLocation
 	 * 
 	 * @return Normalized vertex location
 	 */
-	public VertexLocation getNormalizedLocation()
-	{
+	public VertexLocation getNormalizedLocation() {
 		
 		// Return location that has direction NW or NE
 		
-		switch (dir)
-		{
+		switch (dir) {
 			case NorthWest:
 			case NorthEast:
 				return this;
@@ -116,5 +117,61 @@ public class VertexLocation
 				return null;
 		}
 	}
+
+    /**
+     * Get the three normalized vertices adjacent to this vertex.
+     * The vertices may not be on the map for boundary vertices.
+     * @return an array containing the three vertices adjacent to this vertex
+     */
+    public VertexLocation[] getAdjacentVertices() {
+        VertexLocation normalized = getNormalizedLocation();
+        Collection<VertexLocation> vertices = new ArrayList<>();
+
+        // to make life easier, look at the vertices that are adjacent to
+        // this vertex and add them (excluding this vertex)
+        for (EdgeLocation edge : getAdjacentEdges()) {
+            for (VertexLocation vertex : edge.getAdjacentVertices()) {
+                if (!vertex.equals(normalized)) {
+                    vertices.add(vertex);
+                }
+            }
+        }
+
+        assert vertices.size() == 3 : "Failed to find 3 adjacent vertices!";
+
+        return vertices.toArray(new VertexLocation[3]);
+    }
+
+    /**
+     * Get the two edges that connect to this vertex.
+     * @return the edges that connect to this vertex as an array
+     */
+    public EdgeLocation[] getAdjacentEdges() {
+        switch (getDir()) {
+            case NorthWest:
+                return createEdgeLocations(hexLoc, EdgeDirection.NorthWest, EdgeDirection.North);
+            case NorthEast:
+                return createEdgeLocations(hexLoc, EdgeDirection.North, EdgeDirection.NorthEast);
+            case East:
+                return createEdgeLocations(hexLoc, EdgeDirection.NorthEast, EdgeDirection.SouthEast);
+            case SouthEast:
+                return createEdgeLocations(hexLoc, EdgeDirection.SouthEast, EdgeDirection.South);
+            case SouthWest:
+                return createEdgeLocations(hexLoc, EdgeDirection.South, EdgeDirection.SouthWest);
+            case West:
+                return createEdgeLocations(hexLoc, EdgeDirection.SouthWest, EdgeDirection.NorthWest);
+            default:
+                assert false;
+                return null;
+        }
+    }
+
+    /** A helper function for creating an array of two edges */
+    private static EdgeLocation[] createEdgeLocations(HexLocation hexLoc, EdgeDirection dir1, EdgeDirection dir2) {
+        return new EdgeLocation[] {
+               new EdgeLocation(hexLoc, dir1).getNormalizedLocation(),
+               new EdgeLocation(hexLoc, dir2).getNormalizedLocation(),
+        };
+    }
 }
 

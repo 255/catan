@@ -3,13 +3,9 @@ package shared.model;
 import shared.definitions.PortType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
-import shared.locations.VertexDirection;
 import shared.locations.VertexLocation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The Catan map.
@@ -18,13 +14,14 @@ import java.util.Map;
  *
  * @author Wyatt
  */
-public class CatanMap implements IMap {
+public class CatanMap implements ICatanMap {
     private Map<HexLocation, ITile> m_tiles;
     private Map<VertexLocation, ITown> m_towns;
     private Map<EdgeLocation, IRoad> m_roads;
     private Map<EdgeLocation, PortType> m_ports;
     private HexLocation robber;
 
+    /** Construct a new, empty Catan Map */
     public CatanMap() {
         m_tiles = new HashMap<>();
         m_towns = new HashMap<>();
@@ -60,6 +57,15 @@ public class CatanMap implements IMap {
     }
 
     /**
+     * Get all of the ports on the map by location.
+     * @return an unmodifiable map of ports mapping location to type
+     */
+    @Override
+    public Map<EdgeLocation, PortType> getPorts() {
+        return Collections.unmodifiableMap(m_ports);
+    }
+
+    /**
      * Get a reference to the town that is placed at the specified location.
      * If there is no town at vertexLoc, null is returned.
      * @param vertexLoc the location of the town to get
@@ -68,6 +74,37 @@ public class CatanMap implements IMap {
     @Override
     public ITown getTownAt(VertexLocation vertexLoc) {
         return m_towns.get(vertexLoc.getNormalizedLocation());
+    }
+
+    /**
+     * Get the road placed on an edge.
+     * @param edge the edge from which to get the road
+     * @return the road placed on the specified edge, or null if there is none
+     */
+    @Override
+    public IRoad getRoad(EdgeLocation edge) {
+        return m_roads.get(edge.getNormalizedLocation());
+    }
+
+    /**
+     * Get the port types to which the specified player has access.
+     *
+     * @param player the player whose ports to get
+     * @return the ports belonging to the specified player
+     */
+    @Override
+    public Set<PortType> getPlayersPorts(IPlayer player) {
+        Set<PortType> ports = new HashSet<>();
+
+        for (Map.Entry<EdgeLocation, PortType> entry : m_ports.entrySet()) {
+            for (ITown town : getAdjacentTowns(entry.getKey())) {
+                if (player.equals(town.getOwner())) {
+                    ports.add(entry.getValue());
+                }
+            }
+        }
+
+        return ports;
     }
 
     /**
@@ -94,22 +131,37 @@ public class CatanMap implements IMap {
         }
 
         // check if there is a neighboring town
-        for (ITown neighborTown : getAdjacentTowns(edge)) {
-            if (neighborTown.getOwner().equals(player)) {
+        Collection<ITown> neighbors = getAdjacentTowns(edge);
+        for (ITown neighborTown : neighbors) {
+            if (player.equals(neighborTown.getOwner())) {
                 return true;
             }
         }
 
         // TODO: Verify rules w/ regard to roads broken by opponent's settlement
-        // TODO: this does NOT check from "broken" roads
         // check if there is a connecting road
         for (IRoad neighborRoad : getAdjacentRoads(edge)) {
-            if (neighborRoad.getOwner().equals(player)) {
+            if (player.equals(neighborRoad.getOwner())
+                    && roadIsNotBrokenByOpponentTown(player, edge, neighborRoad)) {
                 return true;
             }
         }
 
-        return false; //TODO
+        return false;
+    }
+
+
+    /**
+     * A player cannot build a road off of an opponent's settlement, even if they have a road on the other side.
+     * @param player the player who wants to build a road`
+     * @param proposedRoadLocation the edge where they want to build
+     * @param currentRoad the current road that connects to this edge
+     * @return whether the new road would be broken by an opponent's town
+     */
+    private boolean roadIsNotBrokenByOpponentTown(IPlayer player, EdgeLocation proposedRoadLocation, IRoad currentRoad) {
+        ITown town = getTownBetweenEdges(proposedRoadLocation, currentRoad.getLocation());
+
+        return town == null || player.equals(town.getOwner());
     }
 
     /**
@@ -120,7 +172,26 @@ public class CatanMap implements IMap {
      */
     @Override
     public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex) {
-        return false; //TODO
+        vertex = vertex.getNormalizedLocation();
+
+        // check if the vertex is occupied
+        if (m_towns.containsKey(vertex)) {
+            return false;
+        }
+
+        // check if there are any adjacent towns
+        if (!getAdjacentTowns(vertex).isEmpty()) {
+            return false;
+        }
+
+        // check that the player has a road connecting to this vertex
+        for (IRoad road : getAdjacentRoads(vertex)) {
+            if (player.equals(road.getOwner())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -131,9 +202,21 @@ public class CatanMap implements IMap {
      */
     @Override
     public boolean canPlaceCity(IPlayer player, VertexLocation vertex) {
-      return false; //TODO
+        assert player != null && vertex != null;
+
+        vertex = vertex.getNormalizedLocation();
+
+        ITown town = m_towns.get(vertex);
+
+        return town != null && player.equals(town.getOwner());
     }
 
+    /**
+     * Place a road object at the specified edge.
+     * The road is placed in the map's data structure AND the road's location is set to edge.
+     * @param road the road that is being placed
+     * @param edge the edge on which to place the road.
+     */
     @Override
     public void placeRoad(IRoad road, EdgeLocation edge) {
         assert road != null && edge != null;
@@ -184,51 +267,6 @@ public class CatanMap implements IMap {
     }
 
     /**
-     * Get the roads adjacent to the specified vertex location. The collection
-     * will be empty if there are no roads adjacent to the vertex.
-     *
-     * This is useful for checking if a vertex is a valid site for a settlement.
-     * @param vertexLoc the vertex location around which to look for roads
-     * @return the roads adjacent to the vertex
-     */
-    @Override
-    public Collection<IRoad> getRoadsAdjacentToVertex(VertexLocation vertexLoc) {
-        return null; //TODO
-    }
-
-    /**
-     * Determine whether the specified vertex location has towns placed at adjacent vertices.
-     * @param vertexLoc the location around which to look for cities
-     * @return true if the vertex has cities on adjacent vertices, false otherwise
-     */
-    @Override
-    public boolean hasAdjacentCities(VertexLocation vertexLoc) {
-        return false; //TODO
-    }
-
-    /**
-     * Get the road placed on an edge.
-     * @param edge the edge from which to get the road
-     * @return the road placed on the specified edge, or null if there is none
-     */
-    @Override
-    public IRoad getRoad(EdgeLocation edge) {
-        return m_roads.get(edge.getNormalizedLocation());
-    }
-
-    /**
-     * Get the roads that connect to the specified edge, excluding the road on the edge,
-     * if there is one.
-     * This will be used for canPlaceTown functions and players will use this to find their longest road.
-     * @param edge the edge around which to check for adjacent roads
-     * @return the roads adjacent to the specified edge, excluding the road on the edge, if any
-     */
-    @Override
-    public Collection<IRoad> getConnectingRoads(EdgeLocation edge) {
-        return null; //TODO
-    }
-
-    /**
      * Get the location of the robber.
      * @return the location of the robber
      */
@@ -253,8 +291,8 @@ public class CatanMap implements IMap {
 
     /**
      * Get the tiles adjacent to the specified edge.
-     * @param edge
-     * @return
+     * @param edge the edge around which to check for tiles
+     * @return the tiles around the edge
      */
     private Collection<ITile> getAdjacentTiles(EdgeLocation edge) {
         edge = edge.getNormalizedLocation();
@@ -278,22 +316,10 @@ public class CatanMap implements IMap {
     }
 
     /**
-     * Get the vertices connected to the specified edge.
-     * @param edge the edge whose adjacent vertices to get
-     * @return the two adjacent vertices
-     */
-    private static VertexLocation[] getAdjacentVertices(EdgeLocation edge) {
-        VertexDirection[] vertexDirs = edge.getDir().getNeighboringVertexDirections();
-        return new VertexLocation[] {
-                new VertexLocation(edge.getHexLoc(), vertexDirs[0]).getNormalizedLocation(),
-                new VertexLocation(edge.getHexLoc(), vertexDirs[1]).getNormalizedLocation(),
-        };
-    }
-
-    /**
-     * Get the roads adjacent/connected to the specified road.
-     * @param edge
-     * @return
+     * Get the roads that connect to the specified edge, excluding the road on the edge,
+     * if there is one.
+     * @param edge the edge around which to check for adjacent roads
+     * @return the roads adjacent to the specified edge, excluding the road on the edge, if any
      */
     private Collection<IRoad> getAdjacentRoads(EdgeLocation edge) {
         Collection<IRoad> roads = new ArrayList<>();
@@ -307,18 +333,62 @@ public class CatanMap implements IMap {
     }
 
     /**
-     * Get the roads adjacent/connected to the specified road.
-     * @param edge
-     * @return
+     * Get the roads adjacent/connected to the specified vertex.
+     * @param vertex the vertex around which to get adjacent roads
+     * @return the roads connecting to the vertex, if any
+     */
+    private Collection<IRoad> getAdjacentRoads(VertexLocation vertex) {
+        Collection<IRoad> roads = new ArrayList<>();
+        for (EdgeLocation neighbor : vertex.getAdjacentEdges()) {
+            if (m_roads.containsKey(neighbor)) {
+                roads.add(m_roads.get(neighbor));
+            }
+        }
+
+        return roads;
+    }
+
+    /**
+     * Get the towns adjacent/connected to the specified edge.
+     * @param edge edge around which to get towns
+     * @return the towns the road leads to, if any
      */
     private Collection<ITown> getAdjacentTowns(EdgeLocation edge) {
         Collection<ITown> towns = new ArrayList<>();
-        for (VertexLocation neighbor : getAdjacentVertices(edge)) {
+
+        for (VertexLocation neighbor : edge.getAdjacentVertices()) {
             if (m_towns.containsKey(neighbor)) {
                 towns.add(m_towns.get(neighbor));
             }
         }
 
         return towns;
+    }
+
+    /**
+     * Get the towns adjacent/connected to the specified vertex.
+     * @param vertex the vertex around which to get towns
+     * @return the towns adjacent to the vertex, if any
+     */
+    private Collection<ITown> getAdjacentTowns(VertexLocation vertex) {
+        Collection<ITown> towns = new ArrayList<>();
+
+        for (VertexLocation neighbor : vertex.getAdjacentVertices()) {
+            if (m_towns.containsKey(neighbor)) {
+                towns.add(m_towns.get(neighbor));
+            }
+        }
+
+        return towns;
+    }
+
+    /**
+     * Get the town between the specified edges, if there is one.
+     * @param edge1 an edge
+     * @param edge2 the other edge
+     * @return the town between the two edges, or null if there is none
+     */
+    private ITown getTownBetweenEdges(EdgeLocation edge1, EdgeLocation edge2) {
+        return m_towns.get(EdgeLocation.getVertexBetweenEdges(edge1, edge2));
     }
 }

@@ -1,6 +1,7 @@
 package shared.model;
 
 import shared.definitions.PieceType;
+import shared.locations.VertexLocation;
 
 /**
  * A city is a town that is worth two victory points and produces two resource per tile.
@@ -8,6 +9,16 @@ import shared.definitions.PieceType;
  * @author Wyatt
  */
 public class City extends Town {
+    /**
+     * Construct a new city.
+     *
+     * @param owner    the player who owns the city
+     * @param location the place where the city is located
+     */
+    public City(IPlayer owner, VertexLocation location) {
+        super(owner, location);
+    }
+
     @Override
     public int getVictoryPoints() {
         return 2;

@@ -1,19 +1,21 @@
 package shared.model;
 
 import shared.definitions.HexType;
+import shared.definitions.PortType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The Catan map. It is initialized in the concrete class constructor.
  *
  * @author StevenBarnett
  */
-public interface IMap {
+public interface ICatanMap {
     /**
      * Get all of the towns placed on the map.
      * @return the towns placed on the map
@@ -31,6 +33,26 @@ public interface IMap {
      * @return the tiles in the map
      */
     public Collection<ITile> getTiles();
+
+    /**
+     * Get all of the ports on the map by location.
+     * @return a map of ports mapping location to type
+     */
+    public Map<EdgeLocation, PortType> getPorts();
+
+    /**
+     * Get the road placed on an edge.
+     * @param edge the edge from which to get the road
+     * @return the road placed on the specified edge, or null if there is none
+     */
+    public IRoad getRoad(EdgeLocation edge);
+
+    /**
+     * Get the port types to which the specified player has access.
+     * @param player the player whose ports to get
+     * @return the ports belonging to the specified player
+     */
+    public Set<PortType> getPlayersPorts(IPlayer player);
 
     /**
      * Get a reference to the town that is placed at the specified location.
@@ -57,6 +79,14 @@ public interface IMap {
     public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex);
 
     /**
+     * Determine if a player can place a city at the specified location.
+     * @param player the player to look at
+     * @param vertex the location where the player wants to place a city
+     * @return a boolean value that reports if the player can place a city
+     */
+    public boolean canPlaceCity(IPlayer player, VertexLocation vertex);
+
+    /**
      * Place a road object at the specified edge.
      * The road is placed in the map's data structure AND the road's location is set to edge.
      * @param road the road that is being placed
@@ -79,47 +109,6 @@ public interface IMap {
      * @param vertex the vertex on which to place the city.
      */
     public void placeCity(City city, VertexLocation vertex);
-   
-    /**
-     * Determine if a player can place a city at the specified location.
-     * @param player the player to look at
-     * @param vertex the location where the player wants to place a city
-     * @return a boolean value that reports if the player can place a city
-     */
-    public boolean canPlaceCity(IPlayer player, VertexLocation vertex);
-
-    /**
-     * Get the roads adjacent to the specified vertex location. The collection
-     * will be empty if there are no roads adjacent to the vertex.
-     *
-     * This is useful for checking if a vertex is a valid site for a settlement.
-     * @param vertexLoc the vertex location around which to look for roads
-     * @return the roads adjacent to the vertex
-     */
-    public Collection<IRoad> getRoadsAdjacentToVertex(VertexLocation vertexLoc);
-
-    /**
-     * Determine whether the specified vertex location has towns placed at adjacent vertices.
-     * @param vertexLoc the location around which to look for cities
-     * @return true if the vertex has cities on adjacent vertices, false otherwise
-     */
-    public boolean hasAdjacentCities(VertexLocation vertexLoc);
-
-    /**
-     * Get the road placed on an edge.
-     * @param edge the edge from which to get the road
-     * @return the road placed on the specified edge, or null if there is none
-     */
-    public IRoad getRoad(EdgeLocation edge);
-
-    /**
-     * Get the roads that connect to the specified edge, excluding the road on the edge,
-     * if there is one.
-     * This will be used for canPlaceTown functions and players will use this to find their longest road.
-     * @param edge the edge around which to check for adjacent roads
-     * @return the roads adjacent to the specified edge, excluding the road on the edge, if any
-     */
-    public Collection<IRoad> getConnectingRoads(EdgeLocation edge);
 
     /**
      * Get the location of the robber.
