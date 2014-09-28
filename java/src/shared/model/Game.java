@@ -15,9 +15,11 @@ public class Game implements IGame {
     private IPlayer m_longestRoad;
     private IPlayer m_largestArmy;
     private ITradeOffer m_tradeOffer;
+    private ILog m_gameplayLog;
+    private ILog m_chatHistory;
 
     public Game(GameState state, IPlayer currentPlayer, IPlayer localPlayer, List<IPlayer> players, IBank bank,
-                IMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer) {
+                IMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer, ILog gameplayLog, ILog chatHistory) {
         setGameState(state);
         setCurrentPlayer(currentPlayer);
         setLocalPlayer(localPlayer);
@@ -27,6 +29,8 @@ public class Game implements IGame {
         setLongestRoad(longestRoad);
         setLargestArmy(largestArmy);
         setTradeOffer(tradeOffer);
+        setGameplayLog(gameplayLog);
+        setChatHistory(chatHistory);
     }
 
     @Override
@@ -109,11 +113,19 @@ public class Game implements IGame {
 
     @Override
     public ILog getGameplayLog() {
-        return null;
+        return m_gameplayLog;
+    }
+
+    private void setGameplayLog(ILog gameplayLog) {
+        m_gameplayLog = gameplayLog;
     }
 
     @Override
     public ILog getChatHistory() {
-        return null;
+        return m_chatHistory;
+    }
+
+    private void setChatHistory(ILog chatHistory) {
+        m_chatHistory = chatHistory;
     }
 }
