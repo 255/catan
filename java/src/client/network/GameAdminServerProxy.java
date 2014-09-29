@@ -60,10 +60,10 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
     }
 
     @Override
-    public String joinGame(int playerId, String playerColor) throws NetworkException {
+    public String joinGame(int gameId, String playerColor) throws NetworkException {
         String request =
                 "{" +
-                        "\"id\":" + playerId + "," +
+                        "\"id\":" + gameId + "," +
                         "\"color\":" + playerColor + "," +
                 "}";
         String response = m_httpCommunicator.post("/games/join", request);

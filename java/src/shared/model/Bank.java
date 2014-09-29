@@ -21,7 +21,7 @@ public class Bank implements IBank{
 
     @Override
     public DevCardType drawDevCard() {
-        return m_devCards.drawRandom();
+        return null; //m_devCards.drawRandom();
     }
 
     @Override

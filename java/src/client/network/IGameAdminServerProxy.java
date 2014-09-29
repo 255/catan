@@ -55,13 +55,13 @@ public interface IGameAdminServerProxy {
     /**
      * Adds a player to the game and sets their game cookie
      *
-     * @param playerId id of user attempting to join the game
+     * @param gameId id of game user is attempting to join
      * @param playerColor color of user attempting to join game
      * @return a JSON object representing the current Catan Model after this method has been called
      *
      * @throws NetworkException something went wrong when attempting to communicate with the server
      */
-    public String joinGame(int playerId, String playerColor) throws NetworkException;
+    public String joinGame(int gameId, String playerColor) throws NetworkException;
 
     /**
      *
