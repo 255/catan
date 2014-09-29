@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d5a7096a-8e84-4bb4-bc7b-7f6e633ba893" name="Default" comment="Added/Modified some constructors, filled in PieceBank">
+    <list default="true" id="d5a7096a-8e84-4bb4-bc7b-7f6e633ba893" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/City.java" afterPath="$PROJECT_DIR$/java/src/shared/model/City.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/DevCardHand.java" afterPath="$PROJECT_DIR$/java/src/shared/model/DevCardHand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/IDevCardHand.java" afterPath="$PROJECT_DIR$/java/src/shared/model/IDevCardHand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/IPieceBank.java" afterPath="$PROJECT_DIR$/java/src/shared/model/IPieceBank.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/PieceBank.java" afterPath="$PROJECT_DIR$/java/src/shared/model/PieceBank.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/Player.java" afterPath="$PROJECT_DIR$/java/src/shared/model/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/Road.java" afterPath="$PROJECT_DIR$/java/src/shared/model/Road.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/Settlement.java" afterPath="$PROJECT_DIR$/java/src/shared/model/Settlement.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/java/src/shared/model/Town.java" afterPath="$PROJECT_DIR$/java/src/shared/model/Town.java" />
     </list>
     <ignored path="catan.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -557,7 +548,11 @@
       <created>1411844480955</created>
       <updated>1411844480955</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added/Modified some constructors, filled in PieceBank">
+      <created>1411964471011</created>
+      <updated>1411964471011</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
