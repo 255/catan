@@ -155,11 +155,12 @@ public interface IServerProxy {
     /**
      * Indicates that a player has finished their turn, and
      * the next player should start their next turn.
+     * @param playerIndex index of player finishing their turn
      * @return a JSON object representing the current Catan Model after this method has been called
      *
      * @throws NetworkException indicates that an error occurred while attempting to communicate with the server
      */
-    public String finishTurn() throws NetworkException;
+    public String finishTurn(int playerIndex) throws NetworkException;
 
     /**
      * Player buys a development card. Player must have

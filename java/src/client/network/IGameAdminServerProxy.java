@@ -6,7 +6,7 @@ import java.util.List;
  * Interface for interacting with the server. This interface
  * largely mimics the server api for game administration.
  */
-public interface IServerGameProxy {
+public interface IGameAdminServerProxy {
     /**
      * Logs an existing user into the game server
      *
@@ -55,13 +55,13 @@ public interface IServerGameProxy {
     /**
      * Adds a player to the game and sets their game cookie
      *
-     * @param username username of user attempting to join the game
-     * @param password password of user attempting to join game
+     * @param playerId id of user attempting to join the game
+     * @param playerColor color of user attempting to join game
      * @return a JSON object representing the current Catan Model after this method has been called
      *
      * @throws NetworkException something went wrong when attempting to communicate with the server
      */
-    public String joinGame(String username, String password) throws NetworkException;
+    public String joinGame(int playerId, String playerColor) throws NetworkException;
 
     /**
      *
@@ -70,7 +70,7 @@ public interface IServerGameProxy {
      *
      * @throws NetworkException indicates that an error occurred while attempting to communicate with the server
      */
-    public List<String> listAI() throws NetworkException;
+    public String listAI() throws NetworkException;
 
     /**
      * Adds an AI to the game

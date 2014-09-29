@@ -16,70 +16,11 @@ import java.util.List;
  * @author StevenBarnett
  */
 public class ServerProxy implements IServerProxy {
-    /**
-     * Logs an existing user into the game server
-     *
-     * @param username username of player attempting to login
-     * @param password password of player attempting to login
-     * @return flag indicating whether the login was successful or not
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public boolean login(String username, String password) throws NetworkException {
-        return false;
-    }
 
-    /**
-     * Creates a new user account and logs the new
-     * user into the game server.
-     *
-     * @param username the username of the user attempting to register
-     * @param password the password of the user attempting to register
-     * @return a flag indicating whether the registration of this user was successful
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public boolean register(String username, String password) throws NetworkException {
-        return false;
-    }
+    private IHttpCommunicator m_httpCommunicator;
 
-    /**
-     * Returns information of all the current games on the server
-     *
-     * @return a list of games
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public String listGames() throws NetworkException {
-        return null;
-    }
-
-    /**
-     * Creates an empty game on the game server
-     *
-     * @param randTiles flag indicating whether the tiles in the game should be assigned randomly
-     * @param randNum   flag indicating whether the number tokens on the tiles should be assigned randomly
-     * @param randPorts flag indicating whether the ports in the game should be assigned randomly
-     * @param name      name to give the game on the server
-     * @return a JSON object representing the current Catan Model after this method has been called
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public String createGame(boolean randTiles, boolean randNum, boolean randPorts, String name) throws NetworkException {
-        return null;
-    }
-
-    /**
-     * Adds a player to the game and sets their game cookie
-     *
-     * @param username username of user attempting to join the game
-     * @param password password of user attempting to join game
-     * @return a JSON object representing the current Catan Model after this method has been called
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public String joinGame(String username, String password) throws NetworkException {
-        return null;
+    public ServerProxy(IHttpCommunicator httpCommunicator) {
+        m_httpCommunicator = httpCommunicator;
     }
 
     /**
@@ -90,7 +31,9 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String getGameState() throws NetworkException {
-        return null;
+        String response = m_httpCommunicator.get("/game/model");
+
+        return response;
     }
 
     /**
@@ -101,28 +44,13 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String resetGame() throws NetworkException {
-        return null;
-    }
+        String request =
+                "{" +
+                "}";
 
-    /**
-     * @return a JSON object representing the current Catan Model after this method has been called
-     * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
-     */
-    @Override
-    public List<String> listAI() throws NetworkException {
-        return null;
-    }
+        String response = m_httpCommunicator.post("/game/reset", request);
 
-    /**
-     * Adds an AI to the game
-     *
-     * @param name name to give the AI
-     * @return a flag indicating whether the AI was added to the game successfully
-     * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
-     */
-    @Override
-    public String addAI(String name) throws NetworkException {
-        return null;
+        return response;
     }
 
     /**
@@ -134,7 +62,14 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public boolean changeLogLevel(String logLevel) throws NetworkException {
-        return false;
+        String request =
+                "{" +
+                    "\"logLevel\":" + logLevel +
+                "}";
+
+        String response = m_httpCommunicator.post("/util/changeLogLevel", request);
+
+        return (response != null ? true : false);
     }
 
     /**
@@ -147,7 +82,16 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String sendChat(int playerIndex, String message) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "sendChat" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"content\":" + message + "," +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/sendChat", request);
+
+        return response;
     }
 
     /**
@@ -161,7 +105,16 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String acceptTrade(int playerIndex, boolean willAccept) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "willAccept" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"willAccept\":" + willAccept + "," +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/acceptTrade", request);
+
+        return response;
     }
 
     /**
@@ -174,7 +127,22 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String discardCards(int playerIndex, IResourceBundle discardedCards) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "deiscardCards" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"discardedCards\": " + "{" +
+                        "\"brick\":" + discardedCards.getBrick() + "," +
+                        "\"ore\":" + discardedCards.getOre() + "," +
+                        "\"sheep\":" + discardedCards.getSheep() +
+                        "\"wheat\":" + discardedCards.getWheat() +
+                        "\"wood\":" + discardedCards.getWood() +
+                    "}" +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/discardCards", request);
+
+        return response;
     }
 
     /**
@@ -188,7 +156,16 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String rollNumber(int playerIndex, int number) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "rollNumber" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"number\":" + number +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/rollNumber", request);
+
+        return response;
     }
 
     /**
@@ -203,7 +180,21 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buildRoad(int playerIndex, EdgeLocation edgeLoc, boolean free) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "buildRoad" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"vertexLocation\":" + "{" +
+                        "\"x\":" + edgeLoc.getHexLoc().getX() +
+                        "\"y\":" + edgeLoc.getHexLoc().getY() +
+                        "\"direction\":" + edgeLoc.getDir().name() +
+                    "}," +
+                    "\"free\":" + free +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/buildRoad", request);
+
+        return response;
     }
 
     /**
@@ -219,7 +210,21 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buildSettlement(int playerIndex, VertexLocation location, boolean free) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "buildSettlement" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"vertexLocation\":" + "{" +
+                        "\"x\":" + location.getHexLoc().getX() +
+                        "\"y\":" + location.getHexLoc().getY() +
+                        "\"direction\":" + location.getDir().name() +
+                    "}," +
+                    "\"free\":" + free +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/buildSettlement", request);
+
+        return response;
     }
 
     /**
@@ -233,7 +238,20 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buildCity(int playerIndex, VertexLocation location) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "buildCity" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"vertexLocation\":" + "{" +
+                        "\"x\":" + location.getHexLoc().getX() +
+                        "\"y\":" + location.getHexLoc().getY() +
+                        "\"direction\":" + location.getDir().name() +
+                    "}" +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/buildCity", request);
+
+        return response;
     }
 
     /**
@@ -249,7 +267,23 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String offerTrade(int playerIndex, IResourceBundle offer, int receiver) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "offerTrade" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"spot1\": " + "{" +
+                        "\"brick\":" + offer.getBrick() + "," +
+                        "\"ore\":" + offer.getOre() + "," +
+                        "\"sheep\":" + offer.getSheep() +
+                        "\"wheat\":" + offer.getWheat() +
+                        "\"wood\":" + offer.getWood() +
+                    "}" +
+                    "\"receiver\":" + receiver + "," +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/offerTrade", request);
+
+        return response;
     }
 
     /**
@@ -266,7 +300,18 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String maritimeTrade(int playerIndex, int ratio, ResourceType input, ResourceType output) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "maritimeTrade" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"ratio\":" + ratio + "," +
+                    "\"inputResource\":" + input.name() + "," +
+                    "\"outputResource\":" + output.name() + "," +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/maritimeTrade", request);
+
+        return response;
     }
 
     /**
@@ -277,8 +322,16 @@ public class ServerProxy implements IServerProxy {
      * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
      */
     @Override
-    public String finishTurn() throws NetworkException {
-        return null;
+    public String finishTurn(int playerIndex) throws NetworkException {
+        String request =
+                "{" +
+                    "\"type\":" + "finishTurn" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/finishTurn", request);
+
+        return response;
     }
 
     /**
@@ -292,7 +345,15 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buyDevCard(int playerIndex) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "buyDevCard" + "," +
+                    "\"playerIndex\":" + playerIndex +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/buyDevCard", request);
+
+        return response;
     }
 
     /**
@@ -308,7 +369,17 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playYearOfPlenty(int playerIndex, ResourceType resource1, ResourceType resource2) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "Year_of_Plenty" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"resource1\":" + resource1.name() + "," +
+                    "\"resource2\":" + resource2.name() +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/Year_of_Plenty", request);
+
+        return response;
     }
 
     /**
@@ -323,7 +394,23 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playRoadBuilding(int playerIndex, EdgeLocation location1, EdgeLocation location2) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "Road_Building" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"spot1\": " + "{" +
+                        "\"x\":" + location1.getHexLoc().getX() + "," +
+                        "\"y\":" + location1.getHexLoc().getY() +
+                    "}" +
+                    "\"spot2\": " + "{" +
+                        "\"x\":" + location2.getHexLoc().getX() + "," +
+                        "\"y\":" + location2.getHexLoc().getY() +
+                    "}" +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/Road_Building", request);
+
+        return response;
     }
 
     /**
@@ -339,7 +426,20 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playSoldier(int playerIndex, HexLocation location, int victim) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "Soldier" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                    "\"victimIndex\":" + victim + "," +
+                    "\"location\": " + "{" +
+                        "\"x\":" + location.getX() + "," +
+                        "\"y\":" + location.getY() +
+                    "}" +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/Soldier", request);
+
+        return response;
     }
 
     /**
@@ -354,7 +454,16 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playMonopoly(int playerIndex, ResourceType resource) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "Monopoly" + "," +
+                    "\"resource\":" + resource.name() + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/Monopoly", request);
+
+        return response;
     }
 
     /**
@@ -367,6 +476,14 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playMonument(int playerIndex) throws NetworkException {
-        return null;
+        String request =
+                "{" +
+                    "\"type\":" + "Monument" + "," +
+                    "\"playerIndex\":" + playerIndex + "," +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/Monument", request);
+
+        return response;
     }
 }

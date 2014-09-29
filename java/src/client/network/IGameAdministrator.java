@@ -1,4 +1,4 @@
-package client.gameAdministrator;
+package client.network;
 
 import java.util.List;
 

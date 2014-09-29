@@ -17,72 +17,6 @@ import java.util.List;
  */
 public class TestServerProxy implements IServerProxy {
     /**
-     * Logs an existing user into the game server
-     *
-     * @param username username of player attempting to login
-     * @param password password of player attempting to login
-     * @return flag indicating whether the login was successful or not
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public boolean login(String username, String password) throws NetworkException {
-        return false;
-    }
-
-    /**
-     * Creates a new user account and logs the new
-     * user into the game server.
-     *
-     * @param username the username of the user attempting to register
-     * @param password the password of the user attempting to register
-     * @return a flag indicating whether the registration of this user was successful
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public boolean register(String username, String password) throws NetworkException {
-        return false;
-    }
-
-    /**
-     * Returns information of all the current games on the server
-     *
-     * @return a list of games
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public String listGames() throws NetworkException {
-        return null;
-    }
-
-    /**
-     * Creates an empty game on the game server
-     *
-     * @param randTiles flag indicating whether the tiles in the game should be assigned randomly
-     * @param randNum   flag indicating whether the number tokens on the tiles should be assigned randomly
-     * @param randPorts flag indicating whether the ports in the game should be assigned randomly
-     * @param name      name to give the game on the server
-     * @return a JSON object representing the current Catan Model after this method has been called
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public String createGame(boolean randTiles, boolean randNum, boolean randPorts, String name) throws NetworkException {
-        return null;
-    }
-
-    /**
-     * Adds a player to the game and sets their game cookie
-     *
-     * @param username username of user attempting to join the game
-     * @param password password of user attempting to join game
-     * @return a JSON object representing the current Catan Model after this method has been called
-     * @throws client.network.NetworkException something went wrong when attempting to communicate with the server
-     */
-    @Override
-    public String joinGame(String username, String password) throws NetworkException {
-        return null;
-    }
-
-    /**
      * Returns the current Catan Model in a JSON object
      *
      * @return a JSON object representing the current Catan Model after this method has been called
@@ -101,27 +35,6 @@ public class TestServerProxy implements IServerProxy {
      */
     @Override
     public String resetGame() throws NetworkException {
-        return null;
-    }
-
-    /**
-     * @return a JSON object representing the current Catan Model after this method has been called
-     * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
-     */
-    @Override
-    public List<String> listAI() throws NetworkException {
-        return null;
-    }
-
-    /**
-     * Adds an AI to the game
-     *
-     * @param name name to give the AI
-     * @return a flag indicating whether the AI was added to the game successfully
-     * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
-     */
-    @Override
-    public String addAI(String name) throws NetworkException {
         return null;
     }
 
@@ -277,7 +190,7 @@ public class TestServerProxy implements IServerProxy {
      * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
      */
     @Override
-    public String finishTurn() throws NetworkException {
+    public String finishTurn(int playerIndex) throws NetworkException {
         return null;
     }
 

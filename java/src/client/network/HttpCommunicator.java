@@ -24,7 +24,7 @@ public class HttpCommunicator implements IHttpCommunicator {
     public String get(String commandName) throws NetworkException {
         assert (commandName != null & commandName.length() > 0);
 
-        String result = null;
+        String response = null;
         HttpURLConnection connection = null;
 
         try {
@@ -39,6 +39,7 @@ public class HttpCommunicator implements IHttpCommunicator {
                     byte[] buffer = new byte[inputStream.available()];
                     inputStream.read(buffer);
                     connection.getInputStream().close();
+                    response = new String(buffer);
                 }
             } else {
                 throw new NetworkException();
@@ -52,14 +53,14 @@ public class HttpCommunicator implements IHttpCommunicator {
             connection.disconnect();
         }
 
-        return result;
+        return response;
     }
 
     @Override
     public String post(String commandName, String postData) throws NetworkException {
         assert (commandName != null && commandName.length() > 0 && postData != null);
 
-        String response = new String();
+        String response = null;
         HttpURLConnection connection = null;
 
         try {
@@ -75,6 +76,7 @@ public class HttpCommunicator implements IHttpCommunicator {
                 byte[] buffer = new byte[inputStream.available()];
                 inputStream.read(buffer);
                 connection.getInputStream().close();
+                response = new String(buffer);
             } else {
                 throw new NetworkException();
             }
