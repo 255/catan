@@ -11,6 +11,14 @@ public class Road implements IRoad {
     private EdgeLocation m_location;
 
     /**
+     * Creates a road that has no owner and no location
+     */
+    Road() {
+        setOwner(null);
+        setLocation(null);
+    }
+
+    /**
      * Creates a road with an owner and a location
      *
      * @param owner the IPlayer that owns the road

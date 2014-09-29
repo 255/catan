@@ -65,21 +65,6 @@ public class DevCardHand implements IDevCardHand {
         }
     }
 
-    /**
-     * Select a random development card to remove from this dev card hand.
-     *
-     * @return the type of card that was drawn, or null if no cards are in the hand
-     */
-    @Override
-    public DevCardType drawRandom() {
-        // how do we want to handle this?
-        //      create the random logic from here
-        //      or
-        //      create a random function in the controller and use it to draw a specific card
-
-        return null;
-    }
-
     //*********//
     // Setters //
     //*********//

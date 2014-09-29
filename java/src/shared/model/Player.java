@@ -19,6 +19,7 @@ public class Player implements IPlayer {
     private int m_monuments;
     private int m_soldiers;
     private boolean m_playedDevCard;
+    private IPieceBank m_pieceBank;
     private IResourceBank m_resources;
     private IDevCardHand m_newDevCards;
     private IDevCardHand m_playableDevCards;
@@ -26,7 +27,14 @@ public class Player implements IPlayer {
     private Collection<Settlement> m_settlements;
     private Collection<City> m_cities;
 
-
+    /**
+     * Creates a player from a string name, integer id, string color, and integer index
+     *
+     * @param name the display name of the player
+     * @param id the player's unique id
+     * @param color the color of the player's pieces
+     * @param index the position in the list of players in a game
+     */
     Player(String name, int id, String color, int index) {
         m_id = id;
         m_index = index;
@@ -38,6 +46,7 @@ public class Player implements IPlayer {
         m_soldiers = 0;
         m_discarded = false;
         m_playedDevCard = false;
+        m_pieceBank = new PieceBank();
         m_resources = new ResourceBank();
         m_newDevCards = new DevCardHand(new ArrayList<DevCardType>());
         m_playableDevCards = new DevCardHand(new ArrayList<DevCardType>());
@@ -54,8 +63,6 @@ public class Player implements IPlayer {
      */
     @Override
     public int victoryPoints() {
-
-        // these are going to be retrieved from the server?
 
         return m_victoryPoints;
     }

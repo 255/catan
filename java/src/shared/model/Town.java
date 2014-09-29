@@ -18,7 +18,7 @@ public abstract class Town implements ITown {
         assert owner != null && location != null;
 
         m_owner = owner;
-        m_location = location;
+        setLocation(location);
     }
 
     /**

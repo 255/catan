@@ -4,6 +4,34 @@ package shared.model;
  * Represents the pieces that a player has left to place on the map
  */
 public class PieceBank implements IPieceBank {
+
+    private int m_numRoads;
+    private int m_numSettlements;
+    private int m_numCities;
+
+    /**
+     * Constructs an empty PieceBank
+     */
+    PieceBank() {
+        setAvailableRoads(0);
+        setAvailableSettlements(0);
+        setAvailableCities(0);
+    }
+
+    /**
+     * Constructs a PieceBank that has specified numbers
+     *
+     * @param numRoads is the number to set the available roads
+     * @param numSettlements is the number to set the available settlements
+     * @param numCities is the number to set the available cities
+     */
+    PieceBank(int numRoads, int numSettlements, int numCities) {
+        setAvailableRoads(numRoads);
+        setAvailableSettlements(numSettlements);
+        setAvailableCities(numCities);
+    }
+
+
     /**
      * Take a road from the piece bank. The bank's road count variable is decremented,
      * and a new city object is returned.
@@ -14,7 +42,8 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public IRoad takeRoad() {
-        return null;
+        m_numRoads--;
+        return new Road();
     }
 
     /**
@@ -24,7 +53,7 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public void setAvailableRoads(int availableRoads) {
-
+        m_numCities = availableRoads;
     }
 
     /**
@@ -34,7 +63,7 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public int availableRoads() {
-        return 0;
+        return m_numRoads;
     }
 
     /**
@@ -47,8 +76,8 @@ public class PieceBank implements IPieceBank {
      * @return the new city
      */
     @Override
-    public ICity takeCity() {
-        return null;
+    public City takeCity() {
+        return new City();
     }
 
     /**
@@ -58,7 +87,7 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public void setAvailableCities(int availableCities) {
-
+        m_numCities = availableCities;
     }
 
     /**
@@ -68,7 +97,7 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public int availableCities() {
-        return 0;
+        return m_numCities;
     }
 
     /**
@@ -81,7 +110,7 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public Settlement takeSettlement() {
-        return null;
+        return new Settlement();
     }
 
     /**
@@ -91,7 +120,7 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public void setAvailableSettlements(int availableSettlements) {
-
+        m_numSettlements = availableSettlements;
     }
 
     /**
@@ -101,6 +130,6 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public int availableSettlements() {
-        return 0;
+        return m_numSettlements;
     }
 }

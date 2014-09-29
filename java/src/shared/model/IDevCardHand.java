@@ -34,10 +34,4 @@ public interface IDevCardHand {
      * @param devCardHand the dev card hand to which to transfer the cards in this hand
      */
     public void transferAllCardsToHand(IDevCardHand devCardHand);
-
-    /**
-     * Select a random development card to remove from this dev card hand.
-     * @return the type of card that was drawn, or null if no cards are in the hand
-     */
-    public DevCardType drawRandom();
 }

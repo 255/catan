@@ -35,7 +35,7 @@ public interface IPieceBank {
      * This will only be used server-side.
      * @return the new city
      */
-    public ICity takeCity();
+    public City takeCity();
 
     /**
      * Set the number of cities that will be available in the piece bank.

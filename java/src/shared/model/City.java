@@ -9,6 +9,14 @@ import shared.locations.VertexLocation;
  * @author Wyatt
  */
 public class City extends Town {
+
+    /**
+     * Construct a new city with no owner and no location
+     */
+    public City() {
+        super(null, null);
+    }
+
     /**
      * Construct a new city.
      *
