@@ -14,12 +14,6 @@ public interface IPlayer {
     public int victoryPoints();
 
     /**
-     * Calculate the longest continuous road owned by this player.
-     * @return the (acyclic) length of the longest continuous road owned by this player
-     */
-    public int roadLength();
-
-    /**
      * Get the resources the player has.
      * @return the resources currently held by the player.
      */

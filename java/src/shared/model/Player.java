@@ -12,13 +12,13 @@ public class Player implements IPlayer {
 
     private int m_id;
     private int m_index;
-    private String m_color;
-    private String m_name;
     private int m_victoryPoints;
-    private boolean m_discarded;
     private int m_monuments;
     private int m_soldiers;
+    private boolean m_discarded;
     private boolean m_playedDevCard;
+    private String m_name;
+    private String m_color;
     private IPieceBank m_pieceBank;
     private IResourceBank m_resources;
     private IDevCardHand m_newDevCards;
@@ -63,18 +63,7 @@ public class Player implements IPlayer {
      */
     @Override
     public int victoryPoints() {
-
         return m_victoryPoints;
-    }
-
-    /**
-     * Calculate the longest continuous road owned by this player.
-     *
-     * @return the (acyclic) length of the longest continuous road owned by this player
-     */
-    @Override
-    public int roadLength() {
-        return 0;
     }
 
     /**
@@ -84,7 +73,13 @@ public class Player implements IPlayer {
      */
     @Override
     public IResourceBundle resources() {
-        return null;
+        return new ResourceBundle(
+                m_resources.getWood(),
+                m_resources.getBrick(),
+                m_resources.getSheep(),
+                m_resources.getWheat(),
+                m_resources.getOre()
+        );
     }
 
     /**
@@ -94,7 +89,7 @@ public class Player implements IPlayer {
      */
     @Override
     public IPieceBank pieceBank() {
-        return null;
+        return m_pieceBank;
     }
 
     /**
@@ -105,7 +100,7 @@ public class Player implements IPlayer {
      */
     @Override
     public void addRoad(IRoad road) {
-
+        m_roads.add((Road)road);
     }
 
     /**
@@ -116,6 +111,45 @@ public class Player implements IPlayer {
      */
     @Override
     public void addTown(ITown town) {
-
+        if(town instanceof Settlement) {
+            m_settlements.add((Settlement) town);
+        }
+        else if (town instanceof  City) {
+            m_cities.add((City) town);
+        }
+        else {
+            //TODO not sure how we handle errors yet
+        }
     }
+
+    //*********//
+    // Setters //
+    //*********//
+
+    // integers
+    public void setId(int num) { m_id = num; }
+    public void setIndex(int num) { m_index = num; }
+    public void setMonuments(int num) { m_monuments = num; }
+    public void setSoldiers(int num) { m_soldiers = num;}
+    public void setVictoryPoints(int num) { m_victoryPoints = num;}
+
+    // booleans
+    public void setDiscarded(boolean actionCompleted) { m_discarded = actionCompleted; }
+    public void setPlayedDevCard(boolean actionCompleted) { m_playedDevCard = actionCompleted; }
+
+    // Strings
+    public void setName(String name) { m_name = name; }
+    public void setColor(String color) { m_color = color; }
+
+    // Lists
+    public void setRoads(Road r) { m_roads.add(r); }
+    public void setSettlements(Settlement s) { m_settlements.add(s); }
+    public void setCities(City c) { m_cities.add(c); }
+
+    // other
+    public void setPieceBank(IPieceBank pb) { m_pieceBank = pb; }
+    public void setResources(IResourceBank rb) { m_resources = rb; }
+    public void setNewDevCards(IDevCardHand newDevCards) { m_newDevCards = newDevCards; }
+    public void setPlayableDevCards(IDevCardHand playableCards) { m_playableDevCards = playableCards; }
+
 }
