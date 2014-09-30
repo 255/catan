@@ -19,7 +19,7 @@ public class CatanMap implements ICatanMap {
     private Map<VertexLocation, ITown> m_towns;
     private Map<EdgeLocation, IRoad> m_roads;
     private Map<EdgeLocation, PortType> m_ports;
-    private HexLocation robber;
+    private HexLocation m_robber;
 
     /** Construct a new, empty Catan Map */
     public CatanMap() {
@@ -27,6 +27,16 @@ public class CatanMap implements ICatanMap {
         m_towns = new HashMap<>();
         m_roads = new HashMap<>();
         m_ports = new HashMap<>();
+    }
+
+    /** Construct a map with the specified objects and tiles */
+    public CatanMap(Map<HexLocation, ITile> tiles, Map<VertexLocation, ITown> towns, Map<EdgeLocation, IRoad> roads,
+                    Map<EdgeLocation, PortType> ports, HexLocation robber) {
+        this.m_tiles = tiles;
+        this.m_towns = towns;
+        this.m_roads = roads;
+        this.m_ports = ports;
+        this.m_robber = robber;
     }
 
     /**
@@ -272,7 +282,7 @@ public class CatanMap implements ICatanMap {
      */
     @Override
     public HexLocation getRobber() {
-        return robber;
+        return m_robber;
     }
 
     /**
@@ -283,9 +293,9 @@ public class CatanMap implements ICatanMap {
     public void moveRobber(HexLocation location) {
         assert m_tiles.containsKey(location);
 
-        m_tiles.get(robber).removeRobber();
+        m_tiles.get(m_robber).removeRobber();
 
-        robber = location;
+        m_robber = location;
         m_tiles.get(location).placeRobber();
     }
 

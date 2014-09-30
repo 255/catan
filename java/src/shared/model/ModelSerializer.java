@@ -6,14 +6,14 @@ import shared.definitions.HexType;
 import shared.definitions.PortType;
 import shared.locations.*;
 
-import javax.imageio.event.IIOReadProgressListener;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
 
-
 /**
  * @author Wyatt
+ *
+ * TODO: decompose this class
  */
 public class ModelSerializer implements IModelSerializer {
     /*
@@ -34,14 +34,17 @@ public class ModelSerializer implements IModelSerializer {
         // read the players first since some objects refer to players by name
         //     and others refer to players by id
 
-        try (
-            JsonReader playerReader = new JsonReader(new StringReader(json));
-            JsonReader reader = new JsonReader(new StringReader(json))
-        ) {
+        try (JsonReader playerReader = new JsonReader(new StringReader(json))) {
             initializePlayers(playerReader);
+        }
+        catch (IOException | IllegalStateException e) {
+            throw new ModelException("Error reading player information in JSON.", e);
+        }
+
+        try (JsonReader reader = new JsonReader(new StringReader(json))) {
             readClientModel(reader);
         }
-        catch (IOException e) {
+        catch (IOException | IllegalStateException e) {
             throw new ModelException("Error deserializing JSON.", e);
         }
 
@@ -53,20 +56,24 @@ public class ModelSerializer implements IModelSerializer {
 
         reader.beginObject();
         while (reader.hasNext()) {
-            if (reader.nextName() == "players") {
+            String name = reader.nextName();
+            if (name.equals("players")) {
                 reader.beginArray();
-
                 while (reader.hasNext()) {
                     IPlayer player = readPlayer(reader);
                     m_players.put(player.getIndex(), player);
                 }
-
                 reader.endArray();
+
+                return;
+            }
+            else {
+                reader.skipValue();
             }
         }
         reader.endObject();
 
-        throw new ModelException("Failed to find players in JSON.");
+        throw new ModelException("Player information was not found in the JSON.");
     }
 
     IPlayer readPlayer(JsonReader reader) throws IOException, ModelException {
@@ -108,7 +115,7 @@ public class ModelSerializer implements IModelSerializer {
                 case "oldDevCards":
                     oldDevCards = readDevCards(reader);
                     break;
-                case "playerindex":
+                case "playerIndex":
                     playerIndex = reader.nextInt();
                     break;
                 case "playedDevCard":
@@ -123,7 +130,7 @@ public class ModelSerializer implements IModelSerializer {
                 case "soldiers":
                     soldiers = reader.nextInt();
                     break;
-                case "getVictoryPoints":
+                case "victoryPoints":
                     victoryPoints = reader.nextInt();
                     break;
                 case "settlements":
@@ -182,6 +189,9 @@ public class ModelSerializer implements IModelSerializer {
                 case "bank":
                     newGame.setResourceBank(readResourceBank(reader));
                     break;
+                case "deck":
+                    newGame.setDevCards(readDevCards(reader));
+                    break;
                 case "chat":
                     newGame.setChatHistory(readHistory(reader));
                     break;
@@ -192,15 +202,45 @@ public class ModelSerializer implements IModelSerializer {
                     newGame.setMap(readMap(reader));
                     break;
                 case "players":
+                    reader.skipValue(); // already read players
                     break;
                 case "tradeOffer":
                     newGame.setTradeOffer(readTradeOffer(reader));
                     break;
                 case "turnTracker":
+                    reader.beginObject();
+                    while (reader.hasNext()) {
+                        String next = reader.nextName();
+                        switch (next) {
+                            case "currentTurn":
+                                int currentPlayer = reader.nextInt();
+                                newGame.setCurrentPlayer(m_players.get(currentPlayer));
+                                break;
+                            case "status":
+                                newGame.setGameState(GameState.fromString(reader.nextString()));
+                                break;
+                            case "longestRoad":
+                                newGame.setLongestRoad(m_players.get(reader.nextInt()));
+                                assert newGame.getLongestRoad() != null;
+                                break;
+                            case "largestArmy":
+                                newGame.setLargestArmy(m_players.get(reader.nextInt()));
+                                assert newGame.getLargestArmy() != null;
+                                break;
+                            default:
+                                throw new ModelException("Unrecognized token \"" + name + "\" turn tracker json.");
+                        }
+                    }
+                    reader.endObject();
                     break;
                 case "version":
+                    newGame.setVersion(reader.nextInt());
                     break;
                 case "winner":
+                    int winner = reader.nextInt();
+                    if (winner != -1) {
+                        newGame.setWinner(m_players.get(winner));
+                    }
                     break;
                 default:
                     throw new ModelException("Unrecognized token \"" + name + "\".");
@@ -276,7 +316,7 @@ public class ModelSerializer implements IModelSerializer {
 
         reader.beginObject();
 
-        if (reader.nextName() != "lines") {
+        if (!reader.nextName().equals("lines")) {
             throw new ModelException("Error parsing history.");
         };
         reader.beginArray();
@@ -319,17 +359,38 @@ public class ModelSerializer implements IModelSerializer {
         return log;
     }
 
-    private ITradeOffer readTradeOffer(JsonReader reader) throws IOException {
+    private ITradeOffer readTradeOffer(JsonReader reader) throws IOException, ModelException {
+        IPlayer sender = null;
+        IPlayer receiver = null;
+        IResourceBank offer = null;
+
         reader.beginObject();
-        Integer sender = null;
-        Integer receiver = null;
-        IResourceBank resourceBank = null;
-
-
-
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            switch (name) {
+                case "sender":
+                    sender = m_players.get(reader.nextInt());
+                    break;
+                case "receiver":
+                    receiver = m_players.get(reader.nextInt());
+                    break;
+                case "offer":
+                    offer = readResourceBank(reader);
+                    break;
+                default:
+                    throw new ModelException("Unrecognized token \"" + name + "\" in trade offer json.");
+            }
+        }
         reader.endObject();
 
-        return null;
+        if (anyIsNull(sender, receiver, offer)) {
+            throw new ModelException("Failed reading trade offer.");
+        }
+
+        // TODO: THIS IS QUITE BAD! I am casting a resource bank to a bundle
+        // WE ONLY NEED ONE CLASS for this
+        // Separate bank / bundles just makes things to complicated
+        return new TradeOffer(sender, receiver, /* FIXME! This is bad */(ResourceBundle)offer);
     }
 
     private ICatanMap readMap(JsonReader reader) throws IOException, ModelException {
@@ -378,19 +439,18 @@ public class ModelSerializer implements IModelSerializer {
                     reader.endArray();
                     break;
                 case "radius":
-                    //TODO: is this needed???
+                    reader.skipValue();
                     break;
                 case "robber":
                     robber = readHexLocation(reader);
-                    break; //TODO
+                    break;
                 default:
                     throw new ModelException("Unrecognized token \"" + name + "\" in map json.");
             }
         }
         reader.endObject();
 
-        // TODO: I don't check this one...
-        return new CatanMap();
+        return new CatanMap(tiles, towns, roads, ports, robber);
     }
 
     private ITile readMapTile(JsonReader reader) throws IOException, ModelException {
@@ -442,7 +502,7 @@ public class ModelSerializer implements IModelSerializer {
         reader.beginObject();
 
         while (reader.hasNext()) {
-            String name = reader.nextString();
+            String name = reader.nextName();
             switch (name) {
                 case "x":
                     x = reader.nextInt();
@@ -482,11 +542,11 @@ public class ModelSerializer implements IModelSerializer {
                         portType = PortType.THREE;
                     }
                     break;
-                case "location:":
+                case "location":
                     hexLoc = readHexLocation(reader);
                     break;
                 case "direction":
-                    edge = EdgeDirection.valueOf(reader.nextString());
+                    edge = EdgeDirection.fromAbbreviation(reader.nextString());
                     break;
                 default:
                     throw new ModelException("Unrecognized token \"" + name + "\" in port json.");
@@ -543,7 +603,7 @@ public class ModelSerializer implements IModelSerializer {
                     y = reader.nextInt();
                     break;
                 case "direction":
-                    dir = EdgeDirection.valueOf(reader.nextString().toUpperCase());
+                    dir = EdgeDirection.fromAbbreviation(reader.nextString());
                     break;
                 default:
                     throw new ModelException("Unrecognized token \"" + name + "\" in edge location.");
@@ -583,7 +643,7 @@ public class ModelSerializer implements IModelSerializer {
             throw new ModelException("Failed reading road.");
         }
 
-        if (type == "city") {
+        if (type.equals("city")) {
             return new City(owner, vertex);
         }
         else {
@@ -636,5 +696,30 @@ public class ModelSerializer implements IModelSerializer {
         }
 
         return false;
+    }
+
+    public static void main(String[] args) {
+        String path = "D:\\Users\\Wyatt\\Desktop\\School\\Fall 2014\\CS340\\game_info_example.json";
+        //;String path = args[0];
+
+        System.out.printf("Parsing %s...\n", path);
+        try {
+            String json = new String(
+                java.nio.file.Files.readAllBytes(
+                    java.nio.file.Paths.get(path)
+                )
+            );
+
+            ModelSerializer s = new ModelSerializer();
+
+            s.convertJSONtoModel(json);
+
+        } catch (IOException | ModelException e) {
+            System.out.println("There was problem!");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("Parsing completed (successfully?)");
     }
 }

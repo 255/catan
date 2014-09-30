@@ -1,5 +1,6 @@
 package shared.model;
 
+import javax.imageio.event.IIOReadProgressListener;
 import java.util.List;
 
 /**
@@ -11,6 +12,10 @@ import java.util.List;
  * @author Wyatt
  */
 public interface IGame {
+    IDevCardHand getDevCards();
+
+    void setDevCards(IDevCardHand m_devCards);
+
     /**
      * Return the current game state of an ongoing game.
      * @return the current game state
@@ -83,15 +88,15 @@ public interface IGame {
      */
     public void setMap(ICatanMap map);
 
-    IPlayer getLongestRoad();
+    public IPlayer getLongestRoad();
 
     public void setLongestRoad(IPlayer longestRoad);
 
-    IPlayer getLargestArmy(IPlayer largestArmy);
+    public IPlayer getLargestArmy();
 
     public void setLargestArmy(IPlayer largestArmy);
 
-    ITradeOffer getTradeOffer();
+    public ITradeOffer getTradeOffer();
 
     public void setTradeOffer(ITradeOffer tradeOffer);
 
@@ -110,4 +115,12 @@ public interface IGame {
     public ILog getChatHistory();
 
     public void setChatHistory(ILog chatHistory);
+
+    public void setVersion(int version);
+
+    public int getVersion(int version);
+
+    public void setWinner(IPlayer winner);
+
+    public IPlayer getWinner();
 }

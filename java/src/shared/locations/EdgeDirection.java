@@ -62,5 +62,17 @@ public enum EdgeDirection {
                 return null;
         }
     }
+
+    public static EdgeDirection fromAbbreviation(String abbr) {
+        switch (abbr.toUpperCase()) {
+            case "NE": return NorthEast;
+            case "SE": return SouthEast;
+            case "S" : return South;
+            case "SW": return SouthWest;
+            case "NW": return NorthWest;
+            case "N" : return North;
+            default:   throw new IllegalArgumentException("Illegal EdgeDirection abbreviation \"" + abbr + "\"");
+        }
+    }
 }
 

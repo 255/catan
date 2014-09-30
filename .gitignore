@@ -7,10 +7,10 @@
 .idea/workspace.xml
 .idea/uiDesigner.xml
 
-# Java docs
+# Java project files
 docs/java
-
 java/dist
+out/
 
 ############################
 # Generic .gitignore items #

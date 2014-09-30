@@ -18,6 +18,8 @@ public class Game implements IGame {
     private ITradeOffer m_tradeOffer;
     private ILog m_gameplayLog;
     private ILog m_chatHistory;
+    private int m_version;
+    private IPlayer m_winner;
 
     public Game(GameState state, IPlayer currentPlayer, IPlayer localPlayer, List<IPlayer> players, IResourceBank resourceBank,
                 ICatanMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer, ILog gameplayLog, ILog chatHistory) {
@@ -47,6 +49,18 @@ public class Game implements IGame {
         m_tradeOffer = null;
         m_gameplayLog = null;
         m_chatHistory = null;
+        m_version = -1;
+        m_winner = null;
+    }
+
+    @Override
+    public IDevCardHand getDevCards() {
+        return m_devCards;
+    }
+
+    @Override
+    public void setDevCards(IDevCardHand m_devCards) {
+        this.m_devCards = m_devCards;
     }
 
     @Override
@@ -120,7 +134,7 @@ public class Game implements IGame {
     }
 
     @Override
-    public IPlayer getLargestArmy(IPlayer largestArmy) {
+    public IPlayer getLargestArmy() {
         return m_largestArmy;
     }
 
@@ -157,5 +171,25 @@ public class Game implements IGame {
     @Override
     public void setChatHistory(ILog chatHistory) {
         m_chatHistory = chatHistory;
+    }
+
+    @Override
+    public void setVersion(int version) {
+        m_version = version;
+    }
+
+    @Override
+    public int getVersion(int version) {
+        return m_version;
+    }
+
+    @Override
+    public void setWinner(IPlayer winner) {
+        m_winner = winner;
+    }
+
+    @Override
+    public IPlayer getWinner() {
+        return m_winner;
     }
 }
