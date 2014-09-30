@@ -10,6 +10,8 @@
 # Java docs
 docs/java
 
+java/dist
+
 ############################
 # Generic .gitignore items #
 ############################

@@ -5,7 +5,9 @@ import shared.definitions.ResourceType;
 /**
  * Created by jeffreybacon on 9/25/14.
  */
-public class ResourceBank implements IResourceBank{
+public class ResourceBank implements IResourceBank {
+    public static final int NUM_RESOURCES = 5;
+
     private int m_wood;
     private int m_brick;
     private int m_sheep;

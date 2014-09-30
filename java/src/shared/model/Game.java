@@ -10,7 +10,8 @@ public class Game implements IGame {
     private IPlayer m_currentPlayer;
     private IPlayer m_localPlayer;
     private List<IPlayer> m_players;
-    private IBank m_bank;
+    private IResourceBank m_resourceBank;
+    private IDevCardHand m_devCards;
     private ICatanMap m_map;
     private IPlayer m_longestRoad;
     private IPlayer m_largestArmy;
@@ -18,13 +19,13 @@ public class Game implements IGame {
     private ILog m_gameplayLog;
     private ILog m_chatHistory;
 
-    public Game(GameState state, IPlayer currentPlayer, IPlayer localPlayer, List<IPlayer> players, IBank bank,
+    public Game(GameState state, IPlayer currentPlayer, IPlayer localPlayer, List<IPlayer> players, IResourceBank resourceBank,
                 ICatanMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer, ILog gameplayLog, ILog chatHistory) {
         setGameState(state);
         setCurrentPlayer(currentPlayer);
         setLocalPlayer(localPlayer);
         setPlayers(players);
-        setBank(bank);
+        setResourceBank(resourceBank);
         setMap(map);
         setLongestRoad(longestRoad);
         setLargestArmy(largestArmy);
@@ -33,12 +34,28 @@ public class Game implements IGame {
         setChatHistory(chatHistory);
     }
 
+    public Game() {
+        m_state = null;
+        m_currentPlayer = null;
+        m_localPlayer = null;
+        m_players = null;
+        m_resourceBank = null;
+        m_devCards = null;
+        m_map = null;
+        m_longestRoad = null;
+        m_largestArmy = null;
+        m_tradeOffer = null;
+        m_gameplayLog = null;
+        m_chatHistory = null;
+    }
+
     @Override
     public GameState getGameState() {
         return m_state;
     }
 
-    private void setGameState(GameState state) {
+    @Override
+    public void setGameState(GameState state) {
         m_state = state;
     }
 
@@ -47,7 +64,8 @@ public class Game implements IGame {
         return m_currentPlayer;
     }
 
-    private void setCurrentPlayer(IPlayer currentPlayer) {
+    @Override
+    public void setCurrentPlayer(IPlayer currentPlayer) {
         m_currentPlayer = currentPlayer;
     }
 
@@ -56,7 +74,8 @@ public class Game implements IGame {
         return m_localPlayer;
     }
 
-    private void setLocalPlayer(IPlayer localPlayer) {
+    @Override
+    public void setLocalPlayer(IPlayer localPlayer) {
         m_localPlayer = localPlayer;
     }
 
@@ -65,17 +84,19 @@ public class Game implements IGame {
         return m_players;
     }
 
-    private void setPlayers(List<IPlayer> players) {
+    @Override
+    public void setPlayers(List<IPlayer> players) {
         m_players = players;
     }
 
     @Override
     public IResourceBundle getResourceBank() {
-        return m_bank.getResources();
+        return m_resourceBank.getResources();
     }
 
-    private void setBank(IBank bank) {
-        m_bank = bank;
+    @Override
+    public void setResourceBank(IResourceBank bank) {
+        m_resourceBank = bank;
     }
 
     @Override
@@ -83,31 +104,38 @@ public class Game implements IGame {
         return m_map;
     }
 
-    private void setMap(ICatanMap map) {
+    @Override
+    public void setMap(ICatanMap map) {
         m_map = map;
     }
 
+    @Override
     public IPlayer getLongestRoad() {
         return m_longestRoad;
     }
 
-    private void setLongestRoad(IPlayer longestRoad) {
+    @Override
+    public void setLongestRoad(IPlayer longestRoad) {
         m_longestRoad = longestRoad;
     }
 
+    @Override
     public IPlayer getLargestArmy(IPlayer largestArmy) {
         return m_largestArmy;
     }
 
-    private void setLargestArmy(IPlayer largestArmy) {
+    @Override
+    public void setLargestArmy(IPlayer largestArmy) {
         m_largestArmy = largestArmy;
     }
 
+    @Override
     public ITradeOffer getTradeOffer() {
         return m_tradeOffer;
     }
 
-    private void setTradeOffer(ITradeOffer tradeOffer) {
+    @Override
+    public void setTradeOffer(ITradeOffer tradeOffer) {
         m_tradeOffer = tradeOffer;
     }
 
@@ -116,7 +144,8 @@ public class Game implements IGame {
         return m_gameplayLog;
     }
 
-    private void setGameplayLog(ILog gameplayLog) {
+    @Override
+    public void setGameplayLog(ILog gameplayLog) {
         m_gameplayLog = gameplayLog;
     }
 
@@ -125,7 +154,8 @@ public class Game implements IGame {
         return m_chatHistory;
     }
 
-    private void setChatHistory(ILog chatHistory) {
+    @Override
+    public void setChatHistory(ILog chatHistory) {
         m_chatHistory = chatHistory;
     }
 }

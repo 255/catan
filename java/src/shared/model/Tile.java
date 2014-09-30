@@ -21,7 +21,7 @@ public class Tile implements ITile {
     private boolean m_robber = false;
 
     /** The number of the desert hex (there is none -- it is 0) */
-    public final int DESERT_NUMBER = 0;
+    public static final int DESERT_NUMBER = 0;
 
     public Tile(HexType type, HexLocation location, int number) {
       assert type != null;
@@ -32,21 +32,6 @@ public class Tile implements ITile {
       m_type = type;
       m_location = location;
       m_number = number;
-    }
-
-    public Tile(HexType type, HexLocation location) {
-      assert type != null;
-      assert location != null;
-
-      m_type = type;
-      m_location = location;
-
-      if (type == HexType.DESERT) {
-        m_number = DESERT_NUMBER;
-      }
-      else {
-        m_number = -1;
-      }
     }
 
     /**

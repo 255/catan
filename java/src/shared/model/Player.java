@@ -1,5 +1,6 @@
 package shared.model;
 
+import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 
 import java.util.Collection;
@@ -18,14 +19,34 @@ public class Player implements IPlayer {
     private boolean m_discarded;
     private boolean m_playedDevCard;
     private String m_name;
-    private String m_color;
+    private CatanColor m_color;
     private IPieceBank m_pieceBank;
     private IResourceBank m_resources;
     private IDevCardHand m_newDevCards;
     private IDevCardHand m_playableDevCards;
-    private Collection<Road> m_roads;
-    private Collection<Settlement> m_settlements;
-    private Collection<City> m_cities;
+    private Collection<IRoad> m_roads;
+    private Collection<ITown> m_towns;
+
+    public Player(int id, int index, int victoryPoints, int monuments, int soldiers, boolean discarded,
+                  boolean playedDevCard, String name, CatanColor color, IPieceBank pieceBank, IResourceBank resources,
+                  IDevCardHand newDevCards, IDevCardHand playableDevCards) {
+        this.m_id = id;
+        this.m_index = index;
+        this.m_victoryPoints = victoryPoints;
+        this.m_monuments = monuments;
+        this.m_soldiers = soldiers;
+        this.m_discarded = discarded;
+        this.m_playedDevCard = playedDevCard;
+        this.m_name = name;
+        this.m_color = color;
+        this.m_pieceBank = pieceBank;
+        this.m_resources = resources;
+        this.m_newDevCards = newDevCards;
+        this.m_playableDevCards = playableDevCards;
+
+        this.m_roads = new ArrayList<>();
+        this.m_towns = new ArrayList<>();
+    }
 
     /**
      * Creates a player from a string name, integer id, string color, and integer index
@@ -35,7 +56,7 @@ public class Player implements IPlayer {
      * @param color the color of the player's pieces
      * @param index the position in the list of players in a game
      */
-    Player(String name, int id, String color, int index) {
+    public Player(String name, int id, CatanColor color, int index) {
         m_id = id;
         m_index = index;
         m_color = color;
@@ -48,11 +69,10 @@ public class Player implements IPlayer {
         m_playedDevCard = false;
         m_pieceBank = new PieceBank();
         m_resources = new ResourceBank();
-        m_newDevCards = new DevCardHand(new ArrayList<DevCardType>());
-        m_playableDevCards = new DevCardHand(new ArrayList<DevCardType>());
-        m_roads = new ArrayList<Road>();
-        m_settlements = new ArrayList<Settlement>();
-        m_cities = new ArrayList<City>();
+        m_newDevCards = new DevCardHand();
+        m_playableDevCards = new DevCardHand();
+        m_roads = new ArrayList<IRoad>();
+        m_towns = new ArrayList<ITown>();
     }
 
 
@@ -62,24 +82,8 @@ public class Player implements IPlayer {
      * @return number of victory points
      */
     @Override
-    public int victoryPoints() {
+    public int getVictoryPoints() {
         return m_victoryPoints;
-    }
-
-    /**
-     * Get the resources the player has.
-     *
-     * @return the resources currently held by the player.
-     */
-    @Override
-    public IResourceBundle resources() {
-        return new ResourceBundle(
-                m_resources.getWood(),
-                m_resources.getBrick(),
-                m_resources.getSheep(),
-                m_resources.getWheat(),
-                m_resources.getOre()
-        );
     }
 
     /**
@@ -88,7 +92,7 @@ public class Player implements IPlayer {
      * @return the piece bank with the counts of the player's pieces
      */
     @Override
-    public IPieceBank pieceBank() {
+    public IPieceBank getPieceBank() {
         return m_pieceBank;
     }
 
@@ -100,7 +104,7 @@ public class Player implements IPlayer {
      */
     @Override
     public void addRoad(IRoad road) {
-        m_roads.add((Road)road);
+        m_roads.add(road);
     }
 
     /**
@@ -111,15 +115,7 @@ public class Player implements IPlayer {
      */
     @Override
     public void addTown(ITown town) {
-        if(town instanceof Settlement) {
-            m_settlements.add((Settlement) town);
-        }
-        else if (town instanceof  City) {
-            m_cities.add((City) town);
-        }
-        else {
-            //TODO not sure how we handle errors yet
-        }
+        m_towns.add(town);
     }
 
     //*********//
@@ -127,29 +123,76 @@ public class Player implements IPlayer {
     //*********//
 
     // integers
-    public void setId(int num) { m_id = num; }
-    public void setIndex(int num) { m_index = num; }
+    @Override
     public void setMonuments(int num) { m_monuments = num; }
+    @Override
     public void setSoldiers(int num) { m_soldiers = num;}
+    @Override
     public void setVictoryPoints(int num) { m_victoryPoints = num;}
 
     // booleans
+    @Override
     public void setDiscarded(boolean actionCompleted) { m_discarded = actionCompleted; }
+    @Override
     public void setPlayedDevCard(boolean actionCompleted) { m_playedDevCard = actionCompleted; }
 
-    // Strings
-    public void setName(String name) { m_name = name; }
-    public void setColor(String color) { m_color = color; }
-
-    // Lists
-    public void setRoads(Road r) { m_roads.add(r); }
-    public void setSettlements(Settlement s) { m_settlements.add(s); }
-    public void setCities(City c) { m_cities.add(c); }
-
     // other
+    @Override
     public void setPieceBank(IPieceBank pb) { m_pieceBank = pb; }
+    @Override
     public void setResources(IResourceBank rb) { m_resources = rb; }
+    @Override
     public void setNewDevCards(IDevCardHand newDevCards) { m_newDevCards = newDevCards; }
+    @Override
     public void setPlayableDevCards(IDevCardHand playableCards) { m_playableDevCards = playableCards; }
 
+    @Override
+    public int getIndex() {
+        return m_index;
+    }
+
+    @Override
+    public int getMonuments() {
+        return m_monuments;
+    }
+
+    @Override
+    public int getSoldiers() {
+        return m_soldiers;
+    }
+
+    @Override
+    public boolean hasDiscarded() {
+        return m_discarded;
+    }
+
+    @Override
+    public boolean hasPlayedDevCard() {
+        return m_playedDevCard;
+    }
+
+    @Override
+    public String getName() {
+        return m_name;
+    }
+
+    @Override
+    public CatanColor getColor() {
+        return m_color;
+    }
+
+    @Override
+    public IResourceBank getResources() {
+        return m_resources;
+    }
+
+    @Override
+    public IDevCardHand getNewDevCards() {
+        return m_newDevCards;
+    }
+
+    @Override
+    public IDevCardHand getPlayableDevCards() {
+        return m_playableDevCards;
+    }
 }

@@ -13,7 +13,7 @@ public interface IModelSerializer {
      *
      * @return the Game object that has all the JSON values parsed and stored in it
      */
-    public IGame convertJSONtoModel(String json);
+    public IGame convertJSONtoModel(String json) throws ModelException;
 
     /**
      * Takes in a Game object and formats it as JSON.

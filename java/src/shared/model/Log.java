@@ -25,6 +25,7 @@ public class Log implements ILog {
      */
     @Override
     public void addMessage(IPlayer player, String message) {
+        assert player != null && message != null;
         m_log.add(new LogMessage(player, message));
     }
 

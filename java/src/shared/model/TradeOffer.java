@@ -5,33 +5,33 @@ package shared.model;
  */
 public class TradeOffer implements ITradeOffer{
 
-    private int m_sender;
-    private int m_receiver;
+    private IPlayer m_sender;
+    private IPlayer m_receiver;
     private IResourceBundle m_offer;
 
-    public TradeOffer(int sender, int receiver, IResourceBundle offer) {
+    public TradeOffer(IPlayer sender, IPlayer receiver, IResourceBundle offer) {
         setSender(sender);
         setReceiver(receiver);
         setOffer(offer);
     }
 
     @Override
-    public int getSender() {
+    public IPlayer getSender() {
         return m_sender;
     }
 
     @Override
-    public void setSender(int sender) {
+    public void setSender(IPlayer sender) {
         m_sender = sender;
     }
 
     @Override
-    public int getReceiver() {
+    public IPlayer getReceiver() {
         return m_receiver;
     }
 
     @Override
-    public void setReceiver(int receiver) {
+    public void setReceiver(IPlayer receiver) {
         m_receiver = receiver;
     }
 

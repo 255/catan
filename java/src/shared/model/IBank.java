@@ -3,10 +3,14 @@ package shared.model;
 import shared.definitions.DevCardType;
 
 /**
+ * Dev cards are NOT recorded in the client model!!! The server does not say what cards it has.
+ * Use the game state's IResourceBank
+ *
  *  This represents the cards held by the game that are common to all players,
  *  i.e., resources and development cards.
  * @author Wyatt
  */
+@Deprecated
 public interface IBank {
     /**
      * Set the dev cards in the bank.

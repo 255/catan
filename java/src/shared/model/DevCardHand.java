@@ -8,16 +8,26 @@ import java.util.Collection;
  * Represents the cards in a players hand
  */
 public class DevCardHand implements IDevCardHand {
+    private int m_monopoly;
+    private int m_monument;
+    private int m_roadBuilding;
+    private int m_soldier;
+    private int m_yearOfPlenty;
 
-    private Collection<DevCardType> m_cardStack;
+    public DevCardHand() {
+        m_monopoly = 0;
+        m_monument = 0;
+        m_roadBuilding = 0;
+        m_soldier = 0;
+        m_yearOfPlenty = 0;
+    }
 
-    /**
-     * Creates a DevCard hand with the specified collection of cards
-     *
-     * @param cardStack a Collection of cardTypes
-     */
-    DevCardHand(Collection<DevCardType> cardStack) {
-        setCardStack(cardStack);
+    public DevCardHand(int monopoly, int monument, int roadBuilding, int soldier, int yearOfPlenty) {
+        m_monopoly = monopoly;
+        m_monument = monument;
+        m_roadBuilding = roadBuilding;
+        m_soldier = soldier;
+        m_yearOfPlenty = yearOfPlenty;
     }
 
     /**
@@ -28,7 +38,16 @@ public class DevCardHand implements IDevCardHand {
      */
     @Override
     public int getCount(DevCardType devCardType) {
-        return m_cardStack.size();
+        switch (devCardType) {
+            case MONOPOLY: return m_monopoly;
+            case MONUMENT: return m_monument;
+            case ROAD_BUILD: return m_roadBuilding;
+            case SOLDIER: return m_soldier;
+            case YEAR_OF_PLENTY: return m_yearOfPlenty;
+            default:
+                assert false;
+                return -1;
+        }
     }
 
     /**
@@ -38,7 +57,15 @@ public class DevCardHand implements IDevCardHand {
      */
     @Override
     public void add(DevCardType devCardType) {
-        m_cardStack.add(devCardType);
+        switch (devCardType) {
+            case MONOPOLY: m_monopoly++; break;
+            case MONUMENT: m_monument++; break;
+            case ROAD_BUILD: m_roadBuilding++; break;
+            case SOLDIER: m_soldier++; break;
+            case YEAR_OF_PLENTY: m_yearOfPlenty++; break;
+            default:
+                assert false;
+        }
     }
 
     /**
@@ -48,7 +75,15 @@ public class DevCardHand implements IDevCardHand {
      */
     @Override
     public void remove(DevCardType devCardType) {
-        m_cardStack.remove(devCardType);
+        switch (devCardType) {
+            case MONOPOLY: m_monopoly--; break;
+            case MONUMENT: m_monument--; break;
+            case ROAD_BUILD: m_roadBuilding--; break;
+            case SOLDIER: m_soldier--; break;
+            case YEAR_OF_PLENTY: m_yearOfPlenty--; break;
+            default:
+                assert false;
+        }
     }
 
     /**
@@ -60,21 +95,6 @@ public class DevCardHand implements IDevCardHand {
      */
     @Override
     public void transferAllCardsToHand(IDevCardHand devCardHand) {
-        for(DevCardType type : m_cardStack) {
-            devCardHand.add(type);
-        }
-    }
-
-    //*********//
-    // Setters //
-    //*********//
-
-    /**
-     * Sets the cards in the player's hand
-     *
-     * @param cardStack the cards in the player's hand
-     */
-    private void setCardStack(Collection<DevCardType> cardStack) {
-        m_cardStack = cardStack;
+        // TODO: not needed for client
     }
 }

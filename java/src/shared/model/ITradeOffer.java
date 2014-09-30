@@ -8,25 +8,25 @@ public interface ITradeOffer {
      * Get the sender of the trade offer
      * @return the index of the sender
      */
-    public int getSender();
+    public IPlayer getSender();
 
     /**
      * Set the sender of the trade offer
      * @param sender
      */
-    public void setSender(int sender);
+    public void setSender(IPlayer sender);
 
     /**
      * Get the receiver of the trade offer
      * @return the index of the receiver
      */
-    public int getReceiver();
+    public IPlayer getReceiver();
 
     /**
      * Set the receiver of the trade offer
      * @param receiver
      */
-    public void setReceiver(int receiver);
+    public void setReceiver(IPlayer receiver);
 
     /**
      * Get the resources of the trade offer
