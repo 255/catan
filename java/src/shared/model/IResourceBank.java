@@ -25,4 +25,11 @@ public interface IResourceBank extends IResourceCollection {
      * @return the resources in the resource bank
      */
     public IResourceBundle getResources();
+
+    /**
+     * Checks if the resource bank has enough resources for the purchase
+     * @param purchase
+     * @return whether the resource bank has enough resources for the purchase
+     */
+    public boolean canAfford(IResourceBundle purchase);
 }

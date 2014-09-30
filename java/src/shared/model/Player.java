@@ -195,4 +195,9 @@ public class Player implements IPlayer {
     public IDevCardHand getPlayableDevCards() {
         return m_playableDevCards;
     }
+
+    @Override
+    public boolean canAfford(IResourceBundle purchase) {
+        return m_resources.canAfford(purchase);
+    }
 }

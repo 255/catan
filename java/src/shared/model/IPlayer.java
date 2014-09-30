@@ -75,4 +75,11 @@ public interface IPlayer {
     public IDevCardHand getNewDevCards();
 
     public IDevCardHand getPlayableDevCards();
+
+    /**
+     * Checks to see if player can afford a specific purchase
+     * @param purchase
+     * @return whether the player can afford the purchase
+     */
+    public boolean canAfford(IResourceBundle purchase);
 }

@@ -142,4 +142,14 @@ public class ResourceBank implements IResourceBank {
     public IResourceBundle getResources() {
         return new ResourceBundle(m_wood, m_brick, m_sheep, m_wheat, m_ore);
     }
+
+    @Override
+    public boolean canAfford(IResourceBundle purchase) {
+        if (m_wood >= purchase.getWood() && m_brick >= purchase.getBrick() && m_sheep >= purchase.getSheep()
+                && m_wheat >= purchase.getWheat() && m_ore >= purchase.getOre()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
