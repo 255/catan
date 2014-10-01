@@ -13,13 +13,14 @@ import java.util.List;
  */
 public class ServerFacade implements IServerFacade {
     private IServerProxy m_theProxy;
+    private IGame m_theGame;
     private static ServerFacade m_theFacade = null;
 
     /**
      * This is a private constructor that is called only when the ServerFacade has not been initialized yet
      */
-    private ServerFacade(IServerProxy theProxy) {
-        setServerProxy(theProxy);
+    private ServerFacade(IServerProxy theProxy, IGame theGame) {
+        setProxyAndGame(theProxy, theGame);
     }
 
     /**
@@ -29,7 +30,7 @@ public class ServerFacade implements IServerFacade {
      */
     public static ServerFacade getFacadeInstance() {
         if(m_theFacade == null)
-            m_theFacade = new ServerFacade(new ServerProxy(new HttpCommunicator()));
+            m_theFacade = new ServerFacade(new ServerProxy(new HttpCommunicator()), new Game());
         return m_theFacade;
     }
 
@@ -38,11 +39,12 @@ public class ServerFacade implements IServerFacade {
      *
      * @param theProxy is the proxy object to point the ServerFacade at
      */
-    public void setServerProxy(IServerProxy theProxy) {
+    public void setProxyAndGame(IServerProxy theProxy, IGame theGame) {
         assert theProxy != null;
-        assert theProxy instanceof ServerProxy;
+        assert theGame != null;
 
         m_theProxy = theProxy;
+        m_theGame = theGame;
     }
 
     /**
@@ -52,10 +54,10 @@ public class ServerFacade implements IServerFacade {
      */
     @Override
     public void sendChat(String message) {
-        // TODO should there even be a serverFacade
-        // TODO change the player index that the chat message is sent to
+        assert message != null;
+
         try {
-            m_theProxy.sendChat(0, message);
+            m_theProxy.sendChat(m_theGame.getLocalPlayer().getIndex(), message);
         } catch (NetworkException e) {
             e.printStackTrace(); //TODO error handling
         }

@@ -1,6 +1,9 @@
 package shared.model;
 
 import client.data.PlayerInfo;
+import client.network.HttpCommunicator;
+import client.network.IServerProxy;
+import client.network.ServerProxy;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
@@ -15,13 +18,14 @@ import java.util.Collection;
 public class GameFacade implements IGameFacade {
 
     private IGame m_theGame;
+    private IServerProxy m_theProxy;
     private static GameFacade m_theFacade = null;
 
     /**
      * This is a private constructor that is called only when the GameFacade has not been initialized yet
      */
-    private GameFacade(IGame theGame) {
-        setGameObject(theGame);
+    private GameFacade(IGame theGame, IServerProxy theProxy) {
+        setGameAndProxy(theGame, theProxy);
     }
 
     /**
@@ -31,7 +35,7 @@ public class GameFacade implements IGameFacade {
      */
     public static GameFacade getFacadeInstance() {
         if(m_theFacade == null)
-            m_theFacade = new GameFacade(new Game());
+            m_theFacade = new GameFacade(new Game(), new ServerProxy(new HttpCommunicator()));
         return m_theFacade;
     }
 
@@ -40,11 +44,11 @@ public class GameFacade implements IGameFacade {
      *
      * @param theGame the Game object to point the GameFacade at
      */
-    public void setGameObject(IGame theGame) {
+    public void setGameAndProxy(IGame theGame, IServerProxy theProxy) {
         assert theGame != null;
-        assert theGame instanceof Game;
 
         m_theGame = theGame;
+        m_theProxy = theProxy;
     }
 
     /**
