@@ -15,7 +15,7 @@ public interface IServerPoller {
      * Update the game state with the latest from the server.
      * This calls /game/model and then has the model serializer initialize the model.
      */
-    public void updateGame() throws ModelException, NetworkException;
+    public void updateGame();
 
     /**
      * Set which server proxy the poller talks to.
