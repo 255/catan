@@ -1,5 +1,6 @@
 package shared.model;
 
+import client.communication.LogEntry;
 import client.data.PlayerInfo;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
@@ -8,6 +9,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This is the interface for the GameFacade which handles all the manipulations of the game object
@@ -147,4 +149,18 @@ public interface IGameFacade {
      * @return the ports that the current player has
      */
     public Collection<PortType> getPlayerPorts();
+
+    /**
+     * Returns the chat history of the game
+     *
+     * @return the log initialized with all the chat messages
+     */
+    public List<LogEntry> getChatHistory();
+
+    /**
+     * Returns the move/action history of the game
+     *
+     * @return the log initialized with all the move/action messages
+     */
+    public List<LogEntry> getMoveHistory();
 }
