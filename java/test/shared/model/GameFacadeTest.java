@@ -1,105 +1,146 @@
 package shared.model;
 
-import static org.junit.Assert.*;
+import shared.locations.*;
+import shared.model.GameFacade;
+import client.network.IServerProxy;
+import client.network.TestServerProxy;
+
+import java.lang.Exception;
+
+import org.junit.*;
 
 public class GameFacadeTest {
 
-    @org.junit.Before
-    public void setUp() throws Exception {
+    @AfterClass
+    public static void setUpBeforeClass() throws Exception {
 
     }
 
-    @org.junit.After
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+
+    }
+
+    private IGameFacade facade;
+    private IServerProxy proxy;
+    private IModelSerializer serializer;
+    private IGame game;
+
+    @Before
+    public void setUp() throws Exception {
+        facade = new GameFacade();
+        proxy = new TestServerProxy();
+        serializer = new ModelSerializer();
+        game = serializer.convertJSONtoModel(proxy.getGameState());
+    }
+
+    @After
     public void tearDown() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testCanPlaceRoad() throws Exception {
-
+        HexLocation hex1 = new HexLocation(0, 0);
+        HexLocation hex2 = new HexLocation(1, 1);
+        EdgeLocation goodEdge = new EdgeLocation(hex1, EdgeDirection.North);
+        EdgeLocation badEdge = new EdgeLocation(hex2, EdgeDirection.South);
+        assert(facade.canPlaceRoad(goodEdge) == true);
+        assert(facade.canPlaceRoad(badEdge) == false);
     }
 
-    @org.junit.Test
+    @Test
     public void testCanPlaceSettlement() throws Exception {
-
+        HexLocation hex1 = new HexLocation(0, 0);
+        HexLocation hex2 = new HexLocation(1, 1);
+        VertexLocation goodVer = new VertexLocation(hex1, VertexDirection.West);
+        VertexLocation badVer = new VertexLocation(hex2, VertexDirection.East);
+        assert(facade.canPlaceSettlement(goodVer) == true);
+        assert(facade.canPlaceSettlement(badVer) == false);
     }
 
-    @org.junit.Test
+    @Test
     public void testCanPlaceCity() throws Exception {
-
+        HexLocation hex1 = new HexLocation(0, 0);
+        HexLocation hex2 = new HexLocation(1, 1);
+        VertexLocation goodVer = new VertexLocation(hex1, VertexDirection.West);
+        VertexLocation badVer = new VertexLocation(hex2, VertexDirection.East);
+        assert(facade.canPlaceCity(goodVer) == true);
+        assert(facade.canPlaceCity(badVer) == false);
     }
 
-    @org.junit.Test
+    @Test
     public void testPlaceRoad() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testPlaceSettlement() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testPlaceCity() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testPlaceRobber() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testTakeCardFromPlayer() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGiveCardToPlayer() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetCurPlayerInfo() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetRoads() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetSettlements() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetCities() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetNumberPieces() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetHexes() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetRobber() throws Exception {
-
+        HexLocation hex = new HexLocation(0, 0);
+        assert(facade.getRobber() == hex);
     }
 
-    @org.junit.Test
+    @Test
     public void testGetPlayerResources() throws Exception {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testGetPlayerPorts() throws Exception {
 
     }
