@@ -12,5 +12,5 @@ public interface IModelInitializer {
      * @param clientModelJson a the client model as JSON-formatted text
      * @return a reference to the newly intiialized Game object
      */
-    public IGame initializeClientModel(String clientModelJson) throws ModelException;
+    public void initializeClientModel(String clientModelJson) throws ModelException;
 }

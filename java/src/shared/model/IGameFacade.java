@@ -155,12 +155,12 @@ public interface IGameFacade {
      *
      * @return the log initialized with all the chat messages
      */
-    public List<LogEntry> getChatHistory();
+    public ILog getChatHistory();
 
     /**
      * Returns the move/action history of the game
      *
      * @return the log initialized with all the move/action messages
      */
-    public List<LogEntry> getMoveHistory();
+    public ILog getMoveHistory();
 }

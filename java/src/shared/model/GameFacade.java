@@ -1,6 +1,5 @@
 package shared.model;
 
-import client.communication.LogEntry;
 import client.data.PlayerInfo;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
@@ -9,7 +8,6 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * handles all the manipulations of the game object
@@ -356,10 +354,8 @@ public class GameFacade implements IGameFacade {
      * @return the log initialized with all the chat messages
      */
     @Override
-    public List<LogEntry> getChatHistory() {
-        // TODO should the facade be updated to get chat history in ILog format
-        //return m_theGame.getChatHistory();
-        return null;
+    public ILog getChatHistory() {
+        return m_theGame.getChatHistory();
     }
 
     /**
@@ -368,9 +364,7 @@ public class GameFacade implements IGameFacade {
      * @return the log initialized with all the move/action messages
      */
     @Override
-    public List<LogEntry> getMoveHistory() {
-        //TODO is there supposed to be a getMoveHistory() on the Game object
-        //return m_theGame.getMoveHistory();
-        return null;
+    public ILog getMoveHistory() {
+        return m_theGame.getGameplayLog();
     }
 }

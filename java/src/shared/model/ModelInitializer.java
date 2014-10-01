@@ -26,7 +26,7 @@ public class ModelInitializer implements IModelInitializer {
      * @param json a string of text that is formatted as JSON
      */
     @Override
-    public IGame initializeClientModel(String json) throws ModelException {
+    public void initializeClientModel(String json) throws ModelException {
         assert json != null;
         // read the players first since some objects refer to players by name
         //     and others refer to players by id
@@ -44,7 +44,6 @@ public class ModelInitializer implements IModelInitializer {
         try (JsonReader reader = new JsonReader(new StringReader(json))) {
             IGame newGame = readClientModel(reader);
             GameFacade.getFacadeInstance().setGameObject(newGame);
-            return newGame; // should this be returned?
             // TODO: set other Game object pointers (e.g. Game and Map pointers in GUI)
         }
         catch (IOException | IllegalStateException e) {

@@ -13,7 +13,7 @@ public class Road implements IRoad {
     /**
      * Creates a road that has no owner and no location
      */
-    Road() {
+    public Road() {
         setOwner(null);
         setLocation(null);
     }
@@ -24,9 +24,11 @@ public class Road implements IRoad {
      * @param owner the IPlayer that owns the road
      * @param location the EdgeLocation of where the road is placed on the map
      */
-    Road(IPlayer owner, EdgeLocation location) {
+    public Road(IPlayer owner, EdgeLocation location) {
+        assert owner != null && location != null;
+
         setOwner(owner);
-        setLocation(location);
+        setLocation(location.getNormalizedLocation());
     }
 
     /**

@@ -6,11 +6,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ModelSerializerTest {
+public class ModelInitializerTest {
+    private IGame game;
 
     @Before
     public void setUp() throws Exception {
-
+        // call
+        game = GameFacade.getFacadeInstance().getGame();
     }
 
     @After
@@ -20,11 +22,6 @@ public class ModelSerializerTest {
 
     @Test
     public void testConvertJSONtoModel() throws Exception {
-
-    }
-
-    @Test
-    public void testConvertModelToJSON() throws Exception {
 
     }
 }
