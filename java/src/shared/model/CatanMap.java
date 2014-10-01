@@ -21,12 +21,13 @@ public class CatanMap implements ICatanMap {
     private Map<EdgeLocation, PortType> m_ports;
     private HexLocation m_robber;
 
-    /** Construct a new, empty Catan Map */
-    public CatanMap() {
-        m_tiles = new HashMap<>();
+    /** Construct a new, blank Catan Map */ // perhaps this will initialize itself according to game rules in server
+    public CatanMap(Map<HexLocation, ITile> tiles, Map<EdgeLocation, PortType> ports) {
+        m_tiles = tiles;
+        m_ports = ports;
         m_towns = new HashMap<>();
         m_roads = new HashMap<>();
-        m_ports = new HashMap<>();
+        m_robber = null;
     }
 
     /** Construct a map with the specified objects and tiles */
@@ -148,7 +149,6 @@ public class CatanMap implements ICatanMap {
             }
         }
 
-        // TODO: Verify rules w/ regard to roads broken by opponent's settlement
         // check if there is a connecting road
         for (IRoad neighborRoad : getAdjacentRoads(edge)) {
             if (player.equals(neighborRoad.getOwner())

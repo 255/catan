@@ -33,7 +33,7 @@ public class Settlement extends Town {
     }
 
     @Override
-    public IResourceBundle getResources() {
+    public IResourceBank getResources() {
         return null;
     }
 

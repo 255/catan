@@ -52,7 +52,7 @@ public interface ITown {
      *
      * @return bundle of resources
      */
-    public IResourceBundle getResources();
+    public IResourceBank getResources();
 
     /**
      * Returns what type of piece this town is.

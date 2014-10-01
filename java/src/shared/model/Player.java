@@ -186,7 +186,7 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public boolean canAfford(IResourceBundle purchase) {
+    public boolean canAfford(IResourceBank purchase) {
         return m_resources.canAfford(purchase);
     }
 

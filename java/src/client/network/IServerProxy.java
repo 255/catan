@@ -70,7 +70,7 @@ public interface IServerProxy {
      *
      * @throws NetworkException indicates that an error occurred while attempting to communicate with the server
      */
-    public String discardCards(int playerIndex, IResourceBundle discardedCards) throws NetworkException;
+    public String discardCards(int playerIndex, IResourceBank discardedCards) throws NetworkException;
 
     /**
      * Takes care of all the processes that need to occur after the dice is
@@ -135,7 +135,7 @@ public interface IServerProxy {
      *
      * @throws NetworkException indicates that an error occurred while attempting to communicate with the server
      */
-    public String offerTrade(int playerIndex, IResourceBundle offer, int receiver) throws NetworkException;
+    public String offerTrade(int playerIndex, IResourceBank offer, int receiver) throws NetworkException;
 
     /**
      * A player makes trades resource cards in their hand for resource cards

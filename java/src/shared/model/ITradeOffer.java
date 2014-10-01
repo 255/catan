@@ -32,11 +32,11 @@ public interface ITradeOffer {
      * Get the resources of the trade offer
      * @return the resource bundle representing the trade
      */
-    public IResourceBundle getOffer();
+    public IResourceBank getOffer();
 
     /**
      * Set the resources of the trade offer
      * @param offer
      */
-    public void setOffer(IResourceBundle offer);
+    public void setOffer(IResourceBank offer);
 }

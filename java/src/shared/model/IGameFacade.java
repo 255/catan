@@ -139,7 +139,7 @@ public interface IGameFacade {
      *
      * @return the ResourceBundle object containing the counts for the current player
      */
-    public IResourceBundle getPlayerResources();
+    public IResourceBank getPlayerResources();
 
     /**
      * Returns the ports the current player has

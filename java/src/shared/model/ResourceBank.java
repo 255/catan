@@ -88,7 +88,7 @@ public class ResourceBank implements IResourceBank {
     }
 
     @Override
-    public void add(IResourceBundle resources) {
+    public void add(IResourceBank resources) {
         setWood(m_wood + resources.getWood());
         setBrick(m_brick + resources.getBrick());
         setSheep(m_sheep + resources.getSheep());
@@ -97,8 +97,8 @@ public class ResourceBank implements IResourceBank {
     }
 
     @Override
-    public IResourceBundle subtract(IResourceBundle resources) {
-        IResourceBundle bundle = new ResourceBundle(resources.getWood(), resources.getBrick(), resources.getSheep(),
+    public IResourceBank subtract(IResourceBank resources) {
+        IResourceBank bundle = new ResourceBank(resources.getWood(), resources.getBrick(), resources.getSheep(),
                 resources.getWheat(), resources.getOre());
 
         if (m_wood >= resources.getWood()) {
@@ -139,12 +139,7 @@ public class ResourceBank implements IResourceBank {
     }
 
     @Override
-    public IResourceBundle getResources() {
-        return new ResourceBundle(m_wood, m_brick, m_sheep, m_wheat, m_ore);
-    }
-
-    @Override
-    public boolean canAfford(IResourceBundle purchase) {
+    public boolean canAfford(IResourceBank purchase) {
         if (m_wood >= purchase.getWood() && m_brick >= purchase.getBrick() && m_sheep >= purchase.getSheep()
                 && m_wheat >= purchase.getWheat() && m_ore >= purchase.getOre()) {
             return true;

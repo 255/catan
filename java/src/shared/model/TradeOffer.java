@@ -7,9 +7,9 @@ public class TradeOffer implements ITradeOffer{
 
     private IPlayer m_sender;
     private IPlayer m_receiver;
-    private IResourceBundle m_offer;
+    private IResourceBank m_offer;
 
-    public TradeOffer(IPlayer sender, IPlayer receiver, IResourceBundle offer) {
+    public TradeOffer(IPlayer sender, IPlayer receiver, IResourceBank offer) {
         setSender(sender);
         setReceiver(receiver);
         setOffer(offer);
@@ -36,12 +36,12 @@ public class TradeOffer implements ITradeOffer{
     }
 
     @Override
-    public IResourceBundle getOffer() {
+    public IResourceBank getOffer() {
         return m_offer;
     }
 
     @Override
-    public void setOffer(IResourceBundle offer) {
+    public void setOffer(IResourceBank offer) {
         m_offer = offer;
     }
 }

@@ -1,11 +1,6 @@
 package shared.model;
 
 import org.junit.*;
-import org.junit.Assert.*;
-import shared.model.IGame;
-import shared.model.IModelSerializer;
-import shared.model.ModelSerializer;
-import shared.model.ServerFacade;
 import client.network.IServerProxy;
 import client.network.TestServerProxy;
 
@@ -26,15 +21,15 @@ public class ServerFacadeTest {
 
     private IServerFacade facade;
     private IServerProxy proxy;
-    private IModelSerializer serializer;
+    private IModelInitializer serializer;
     private IGame game;
 
     @Before
     public void setUp() throws Exception {
         facade = new ServerFacade();
         proxy = new TestServerProxy();
-        serializer = new ModelSerializer();
-        game = serializer.convertJSONtoModel(proxy.getGameState());
+        serializer = new ModelInitializer();
+        game = serializer.initializeClientModel(proxy.getGameState());
     }
 
     @After

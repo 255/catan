@@ -103,9 +103,14 @@ public class Game implements IGame {
         m_players = players;
     }
 
+    /**
+     * Get the available resources.
+     *
+     * @return the available resources
+     */
     @Override
-    public IResourceBundle getResourceBank() {
-        return m_resourceBank.getResources();
+    public IResourceBank getResourceBank() {
+        return m_resourceBank;
     }
 
     @Override

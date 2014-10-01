@@ -1,7 +1,6 @@
 package shared.model;
 
 import shared.locations.*;
-import shared.model.GameFacade;
 import client.network.IServerProxy;
 import client.network.TestServerProxy;
 
@@ -23,15 +22,15 @@ public class GameFacadeTest {
 
     private IGameFacade facade;
     private IServerProxy proxy;
-    private IModelSerializer serializer;
+    private IModelInitializer serializer;
     private IGame game;
 
     @Before
     public void setUp() throws Exception {
-        facade = new GameFacade();
+        facade = GameFacade.getFacadeInstance();
         proxy = new TestServerProxy();
-        serializer = new ModelSerializer();
-        game = serializer.convertJSONtoModel(proxy.getGameState());
+        serializer = new ModelInitializer();
+        game = serializer.initializeClientModel(proxy.getGameState());
     }
 
     @After

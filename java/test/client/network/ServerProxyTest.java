@@ -12,7 +12,7 @@ import shared.locations.EdgeDirection;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
-import shared.model.ResourceBundle;
+import shared.model.ResourceBank;
 
 import static org.junit.Assert.*;
 
@@ -49,7 +49,7 @@ public class ServerProxyTest {
 
     @Test
     public void testDiscardCards() throws Exception {
-        String response = m_serverProxy.discardCards(1, new ResourceBundle(1, 2, 3, 4, 5));
+        String response = m_serverProxy.discardCards(1, new ResourceBank(1, 2, 3, 4, 5));
         assert (response != null);
     }
 
@@ -79,7 +79,7 @@ public class ServerProxyTest {
 
     @Test
     public void testOfferTrade() throws Exception {
-        String response = m_serverProxy.offerTrade(0, new ResourceBundle(5, 4, 3, 2, 1), 1);
+        String response = m_serverProxy.offerTrade(0, new ResourceBank(5, 4, 3, 2, 1), 1);
         assert (response != null);
     }
 

@@ -198,7 +198,7 @@ public class GameFacade implements IGameFacade {
         assert cardType != null;
 
         // bundle the resource
-        IResourceBundle rb = IResourceBundle.resourceToBundle(cardType);
+        IResourceBank rb = IResourceBank.resourceToBank(cardType);
         // remove the specified resource from the provided player object
         player.getResources().subtract(rb);
         // add the resource to the resources of this player
@@ -216,8 +216,10 @@ public class GameFacade implements IGameFacade {
         assert player != null;
         assert cardType != null;
 
+        // TODO: this needs to go to the server!
+
         // bundle the resource
-        IResourceBundle rb = IResourceBundle.resourceToBundle(cardType);
+        IResourceBank rb = IResourceBank.resourceToBank(cardType);
         // take the resource from the bank of this player
         m_theGame.getLocalPlayer().getResources().subtract(rb);
         // add the resource to the provided player object
@@ -329,11 +331,11 @@ public class GameFacade implements IGameFacade {
     /**
      * Returns the info for the current player's resource counts
      *
-     * @return the ResourceBundle object containing the counts for the current player
+     * @return the ResourceBank object containing the counts for the current player
      */
     @Override
-    public IResourceBundle getPlayerResources() {
-        return m_theGame.getLocalPlayer().getResources().getResources();
+    public IResourceBank getPlayerResources() {
+        return m_theGame.getLocalPlayer().getResources();
     }
 
     /**

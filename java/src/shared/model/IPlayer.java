@@ -90,5 +90,5 @@ public interface IPlayer {
      * @param purchase
      * @return whether the player can afford the purchase
      */
-    public boolean canAfford(IResourceBundle purchase);
+    public boolean canAfford(IResourceBank purchase);
 }

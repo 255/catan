@@ -68,7 +68,7 @@ public interface IGame {
      * Get the available resources.
      * @return the available resources
      */
-    public IResourceBundle getResourceBank();
+    public IResourceBank getResourceBank();
 
     /**
      * Set the bank object for the game

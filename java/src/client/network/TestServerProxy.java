@@ -4,9 +4,7 @@ import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
-import shared.model.IResourceBundle;
-
-import java.util.List;
+import shared.model.IResourceBank;
 
 /**
  * Implementation of IServerProxy interface used for testing.
@@ -499,7 +497,7 @@ public class TestServerProxy implements IServerProxy {
      * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
      */
     @Override
-    public String discardCards(int playerIndex, IResourceBundle discardedCards) throws NetworkException {
+    public String discardCards(int playerIndex, IResourceBank discardedCards) throws NetworkException {
         return null;
     }
 
@@ -574,7 +572,7 @@ public class TestServerProxy implements IServerProxy {
      * @throws client.network.NetworkException indicates that an error occurred while attempting to communicate with the server
      */
     @Override
-    public String offerTrade(int playerIndex, IResourceBundle offer, int receiver) throws NetworkException {
+    public String offerTrade(int playerIndex, IResourceBank offer, int receiver) throws NetworkException {
         return null;
     }
 
