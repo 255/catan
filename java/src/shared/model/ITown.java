@@ -20,6 +20,13 @@ public interface ITown {
     public IPlayer getOwner();
 
     /**
+     * Sets the owner of this town.
+     *
+     * @param owner the player object who owns the town
+     */
+    public void setOwner(IPlayer owner);
+
+    /**
      * Returns the location of this town.
      *
      * @return VertexLocation the location of the town

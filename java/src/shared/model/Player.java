@@ -1,8 +1,6 @@
 package shared.model;
 
 import shared.definitions.CatanColor;
-import shared.definitions.DevCardType;
-
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -119,32 +117,13 @@ public class Player implements IPlayer {
     }
 
     //*********//
-    // Setters //
+    // Getters //
     //*********//
 
-    // integers
     @Override
-    public void setMonuments(int num) { m_monuments = num; }
-    @Override
-    public void setSoldiers(int num) { m_soldiers = num;}
-    @Override
-    public void setVictoryPoints(int num) { m_victoryPoints = num;}
-
-    // booleans
-    @Override
-    public void setDiscarded(boolean actionCompleted) { m_discarded = actionCompleted; }
-    @Override
-    public void setPlayedDevCard(boolean actionCompleted) { m_playedDevCard = actionCompleted; }
-
-    // other
-    @Override
-    public void setPieceBank(IPieceBank pb) { m_pieceBank = pb; }
-    @Override
-    public void setResources(IResourceBank rb) { m_resources = rb; }
-    @Override
-    public void setNewDevCards(IDevCardHand newDevCards) { m_newDevCards = newDevCards; }
-    @Override
-    public void setPlayableDevCards(IDevCardHand playableCards) { m_playableDevCards = playableCards; }
+    public int getId() {
+        return m_id;
+    }
 
     @Override
     public int getIndex() {
@@ -159,6 +138,16 @@ public class Player implements IPlayer {
     @Override
     public int getSoldiers() {
         return m_soldiers;
+    }
+
+    @Override
+    public Collection<IRoad> getRoads() {
+        return m_roads;
+    }
+
+    @Override
+    public Collection<ITown> getTowns() {
+        return m_towns;
     }
 
     @Override
@@ -200,4 +189,32 @@ public class Player implements IPlayer {
     public boolean canAfford(IResourceBundle purchase) {
         return m_resources.canAfford(purchase);
     }
+
+    //*********//
+    // Setters //
+    //*********//
+
+    // integers
+    @Override
+    public void setMonuments(int num) { m_monuments = num; }
+    @Override
+    public void setSoldiers(int num) { m_soldiers = num;}
+    @Override
+    public void setVictoryPoints(int num) { m_victoryPoints = num;}
+
+    // booleans
+    @Override
+    public void setDiscarded(boolean actionCompleted) { m_discarded = actionCompleted; }
+    @Override
+    public void setPlayedDevCard(boolean actionCompleted) { m_playedDevCard = actionCompleted; }
+
+    // other
+    @Override
+    public void setPieceBank(IPieceBank pb) { m_pieceBank = pb; }
+    @Override
+    public void setResources(IResourceBank rb) { m_resources = rb; }
+    @Override
+    public void setNewDevCards(IDevCardHand newDevCards) { m_newDevCards = newDevCards; }
+    @Override
+    public void setPlayableDevCards(IDevCardHand playableCards) { m_playableDevCards = playableCards; }
 }

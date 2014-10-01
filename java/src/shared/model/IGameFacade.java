@@ -2,6 +2,7 @@ package shared.model;
 
 import client.data.PlayerInfo;
 import shared.definitions.PortType;
+import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
@@ -74,7 +75,7 @@ public interface IGameFacade {
      * @param player the player to take cards from
      * @param cardType the Card object type to decrement from the player hand
      */
-    public void takeCardFromPlayer(IPlayer player, Object cardType);
+    public void takeCardFromPlayer(IPlayer player, ResourceType cardType);
 
     /**
      * Takes an IPlayer object and gives the given card object to the player
@@ -82,7 +83,7 @@ public interface IGameFacade {
      * @param player the player to take cards from
      * @param cardType the Card object type to decrement from the player hand
      */
-    public void giveCardToPlayer(IPlayer player, Object cardType);
+    public void giveCardToPlayer(IPlayer player, ResourceType cardType);
 
     /**
      * Returns the info for the current player
@@ -113,11 +114,11 @@ public interface IGameFacade {
     public Collection<ITown> getCities();
 
     /**
-     * Returns the info for the number pieces
+     * Returns the info for the current player's placed settlements and cities
      *
-     * @return the Collection of ITile terrain hex objects initialized with all the locations of the number pieces
+     * @return the Collection of ITown objects initialized with all the locations of the placed settlements and cities
      */
-    public Collection<ITile> getNumberPieces();
+    public Collection<ITown> getTowns();
 
     /**
      * Returns the info for the terrain hexes

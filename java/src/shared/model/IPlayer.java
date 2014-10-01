@@ -2,6 +2,8 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 
+import java.util.Collection;
+
 /**
  * Interface representing one of the four players in an ongoing game
  *
@@ -36,19 +38,26 @@ public interface IPlayer {
 
     public void setPlayableDevCards(IDevCardHand playableCards);
 
+    // getters
+    public int getId();
+
     public int getIndex();
+
+    public String getName();
+
+    public CatanColor getColor();
 
     public int getMonuments();
 
     public int getSoldiers();
 
+    public Collection<IRoad> getRoads();
+
+    public Collection<ITown> getTowns();
+
     public boolean hasDiscarded();
 
     public boolean hasPlayedDevCard();
-
-    public String getName();
-
-    public CatanColor getColor();
 
     /**
      * Get the pieces (roads, settlements, cities) that the player has remaining in their "bank".
@@ -70,7 +79,7 @@ public interface IPlayer {
      */
     public void addTown(ITown town);
 
-    IResourceBank getResources();
+    public IResourceBank getResources();
 
     public IDevCardHand getNewDevCards();
 

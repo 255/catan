@@ -17,7 +17,7 @@ public abstract class Town implements ITown {
     protected Town(IPlayer owner, VertexLocation location) {
         assert owner != null && location != null;
 
-        m_owner = owner;
+        setOwner(owner);
         setLocation(location);
     }
 
@@ -29,6 +29,15 @@ public abstract class Town implements ITown {
     @Override
     public IPlayer getOwner() {
         return m_owner;
+    }
+
+    /**
+     * Sets the owner of this town.
+     *
+     * @param owner the player object who owns the town
+     */
+    public void setOwner(IPlayer owner) {
+        m_owner = owner;
     }
 
     /**
