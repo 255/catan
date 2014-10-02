@@ -10,6 +10,7 @@ import shared.locations.VertexLocation;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * This is the interface for the GameFacade which handles all the manipulations of the game object
@@ -48,51 +49,67 @@ public interface IGameFacade {
      *
      * @param edge the location of the side of a terrain hex
      */
-    public void placeRoad(EdgeLocation edge);
+    public void placeRoad(EdgeLocation edge) throws ModelException;
 
     /**
      * Takes a vertex location and places a settlement on it
      *
      * @param vertex the location of an intersection of terrain hexes
      */
-    public void placeSettlement(VertexLocation vertex);
+    public void placeSettlement(VertexLocation vertex) throws ModelException;
 
     /**
      * Takes a vertex location and places a city on it
      *
      * @param vertex the location of an intersection of terrain hexes
      */
-    public void placeCity(VertexLocation vertex);
+    public void placeCity(VertexLocation vertex) throws ModelException;
 
     /**
-     * Takes a hex location and places the robber on it
-     *
-     * @param hex the location of a terrain hex
+     * Current player buys a DevCard
      */
-    public void placeRobber(HexLocation hex);
+    public void buyDevCard() throws ModelException;
 
     /**
-     * Takes an IPlayer object and removes the given card object from the player
-     *
-     * @param player the player to take cards from
-     * @param cardType the Card object type to decrement from the player hand
+     * Tells the server to play a soldier card
+     * @param hex is the location to put the robber
+     * @param victim is the player who is robbed
      */
-    public void takeCardFromPlayer(IPlayer player, ResourceType cardType);
+    public void playSoldier(HexLocation hex, int victim) throws ModelException;
 
     /**
-     * Takes an IPlayer object and gives the given card object to the player
-     *
-     * @param player the player to take cards from
-     * @param cardType the Card object type to decrement from the player hand
+     * Play the Year of Plenty card
      */
-    public void giveCardToPlayer(IPlayer player, ResourceType cardType);
+    public void playYearOfPlenty();
+
+    /**
+     * Play the Road Building card
+     */
+    public void playRoadBuilding();
+
+    /**
+     * Play the Monopoly card
+     */
+    public void playMonopoly();
+
+    /**
+     * Play the Monument card
+     */
+    public void playMonument();
+
+    /**
+     * Tells the server to rob a player
+     * @param hex the hex to place the robber on
+     * @param victim the player index of the player being robbed
+     */
+    public void robPlayer(HexLocation hex, int victim) throws ModelException;
 
     /**
      * Returns the info for the current player
      *
      * @return the PlayerInfo object initialized with all the player card/piece counts
      */
-    public PlayerInfo getCurPlayerInfo();
+    public IPlayer getCurPlayerInfo();
 
     /**
      * Returns the info for the current player's placed roads
@@ -163,4 +180,44 @@ public interface IGameFacade {
      * @return the log initialized with all the move/action messages
      */
     public ILog getMoveHistory();
+
+    // trading
+
+    /**
+     * accept an incoming trade
+     * @param willAccept is true if the the trade is accepted, false otherwise
+     */
+    public void acceptTrade(boolean willAccept);
+
+    /**
+     * offer a trade to another player
+     * @param offer the bundle of resources you are offering
+     * @param recipientPlayerIndex the index of the player receiving the trade offer
+     */
+    public void offerTrade(ResourceBundle offer, int recipientPlayerIndex);
+
+    /**
+     * Trade with a port
+     * @param ratio the ratio of trade. 2, 3, or 4 resources for one of any kind
+     * @param giving the bundle of resources that are being given up
+     * @param getting the bundle of resources that are being received
+     */
+    public void maritimeTrade(int ratio, ResourceBundle giving, ResourceBundle getting);
+
+    /**
+     * The current player will discard some cards
+     * @param discardedCards the bundle of resource cards to discard
+     */
+    public void discardCards(ResourceBundle discardedCards);
+
+    /**
+     * The current player has rolled a number
+     * @param rolledNumber the number that was rolled
+     */
+    public void rollNumber(int rolledNumber);
+
+    /**
+     * Finish up the current player's turn
+     */
+    public void finishTurn();
 }

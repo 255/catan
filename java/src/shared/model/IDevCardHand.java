@@ -10,6 +10,12 @@ import shared.definitions.DevCardType;
 public interface IDevCardHand {
     /**
      * Get the count of how many development cards are in the hand.
+     * @return the number of development cards in the hand
+     */
+    public int getCount();
+
+    /**
+     * Get the count of how many development cards are in the hand.
      * @param devCardType the type of development card to get the count of
      * @return the number of development cards of devCardType in the hand
      */

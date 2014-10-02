@@ -3,6 +3,7 @@ package shared.model;
 import client.data.PlayerInfo;
 import client.network.HttpCommunicator;
 import client.network.IServerProxy;
+import client.network.NetworkException;
 import client.network.ServerProxy;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
@@ -11,6 +12,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.ResourceBundle;
 
 /**
  * handles all the manipulations of the game object
@@ -25,7 +27,6 @@ public class GameFacade implements IGameFacade {
      * This is a private constructor that is called only when the GameFacade has not been initialized yet
      */
     private GameFacade(IGame theGame, IServerProxy theProxy) {
-
         setGame(theGame);
         setProxy(theProxy);
     }
@@ -83,11 +84,11 @@ public class GameFacade implements IGameFacade {
             return false;
 
         // is the spot open on the map?
-        boolean mapOpen = m_theGame.getMap().canPlaceRoad(m_theGame.getLocalPlayer(),edge);
+        boolean mapOpen = m_theGame.getMap().canPlaceRoad(m_theGame.getCurrentPlayer(),edge);
         // does the player have enough resources to build the road?
-        boolean haveResources = m_theGame.getLocalPlayer().canAfford(Prices.ROAD);
+        boolean haveResources = m_theGame.getCurrentPlayer().canAfford(Prices.ROAD);
 
-        return mapOpen && haveResources;
+        return mapOpen && (isFreeRound() || haveResources);
     }
 
     /**
@@ -102,11 +103,11 @@ public class GameFacade implements IGameFacade {
             return false;
 
         // is the map open in at the vertex?
-        boolean mapOpen = m_theGame.getMap().canPlaceSettlement(m_theGame.getLocalPlayer(), vertex);
+        boolean mapOpen = m_theGame.getMap().canPlaceSettlement(m_theGame.getCurrentPlayer(), vertex);
         // does the player have enough resources?
-        boolean haveResources = m_theGame.getLocalPlayer().canAfford(Prices.SETTLEMENT);
+        boolean haveResources = m_theGame.getCurrentPlayer().canAfford(Prices.SETTLEMENT);
 
-        return mapOpen && haveResources;
+        return mapOpen && (isFreeRound() || haveResources);
     }
 
     /**
@@ -121,11 +122,11 @@ public class GameFacade implements IGameFacade {
             return false;
 
         // is there a settlement at the vertex?
-        boolean mapOpen = m_theGame.getMap().canPlaceCity(m_theGame.getLocalPlayer(), vertex);
+        boolean mapOpen = m_theGame.getMap().canPlaceCity(m_theGame.getCurrentPlayer(), vertex);
         // does the player have enough resources?
-        boolean haveResources = m_theGame.getLocalPlayer().canAfford(Prices.CITY);
+        boolean haveResources = m_theGame.getCurrentPlayer().canAfford(Prices.CITY);
 
-        return mapOpen && haveResources;
+        return mapOpen && (isFreeRound() || haveResources);
     }
 
     /**
@@ -134,11 +135,16 @@ public class GameFacade implements IGameFacade {
      * @param edge the location of the side of a terrain hex
      */
     @Override
-    public void placeRoad(EdgeLocation edge) {
+    public void placeRoad(EdgeLocation edge) throws ModelException{
         assert edge != null;
-
-        // check that the player can place the road // TODO error handling
+        // check that the player can place the road
         assert canPlaceRoad(edge);
+
+        try {
+            m_theProxy.buildRoad(m_theGame.getCurrentPlayer().getIndex(), edge, isFreeRound());
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -147,11 +153,16 @@ public class GameFacade implements IGameFacade {
      * @param vertex the location of an intersection of terrain hexes
      */
     @Override
-    public void placeSettlement(VertexLocation vertex) {
+    public void placeSettlement(VertexLocation vertex) throws ModelException {
         assert vertex != null;
-
-        // check that the settlement can be placed //TODO error handling
+        // check that the settlement can be placed
         assert canPlaceSettlement(vertex);
+
+        try {
+            m_theProxy.buildSettlement(m_theGame.getCurrentPlayer().getIndex(), vertex, isFreeRound());
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -160,65 +171,98 @@ public class GameFacade implements IGameFacade {
      * @param vertex the location of an intersection of terrain hexes
      */
     @Override
-    public void placeCity(VertexLocation vertex) {
+    public void placeCity(VertexLocation vertex) throws ModelException {
         assert vertex != null;
-
-        // check that the city can be placed // TODO error handling
+        // check that the city can be placed
         assert canPlaceCity(vertex);
+
+        try {
+            m_theProxy.buildCity(m_theGame.getCurrentPlayer().getIndex(), vertex);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
-     * Takes a hex location and places the robber on it
-     *
-     * @param hex the location of a terrain hex
+     * Current player buys a DevCard
      */
     @Override
-    public void placeRobber(HexLocation hex) {
+    public void buyDevCard() throws ModelException {
+        IPlayer curPlayer = m_theGame.getCurrentPlayer();
+        assert curPlayer.canAfford(Prices.DEV_CARD);
+        assert m_theGame.getDevCards().getCount() > 0;
+
+        try {
+            m_theProxy.buyDevCard(curPlayer.getIndex());
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
+    }
+
+    /**
+     * Tells the server to play a soldier card
+     * @param hex is the location to put the robber
+     * @param victim is the player who is robbed
+     */
+    @Override
+    public void playSoldier(HexLocation hex, int victim) throws ModelException {
         assert hex != null;
+        assert (victim >= 0 && victim <= 3);
 
-        // move robber to the given hex
-        m_theGame.getMap().moveRobber(hex);
+        try {
+            m_theProxy.playSoldier(m_theGame.getCurrentPlayer().getIndex(), hex, victim);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
-     * Takes an IPlayer object and removes the given resource card from the player
-     *
-     * @param player   the player to take cards from
-     * @param cardType the resource card type to decrement from the player hand
+     * Play the Year of Plenty card
      */
     @Override
-    public void takeCardFromPlayer(IPlayer player, ResourceType cardType) {
-        assert player != null;
-        assert cardType != null;
+    public void playYearOfPlenty() {
 
-        // bundle the resource
-        IResourceBank rb = IResourceBank.resourceToBank(cardType);
-        // remove the specified resource from the provided player object
-        player.getResources().subtract(rb);
-        // add the resource to the resources of this player
-        m_theGame.getLocalPlayer().getResources().add(rb);
     }
 
     /**
-     * Takes an IPlayer object and gives the given card object to the player
-     *
-     * @param player   the player to take cards from
-     * @param cardType the Card object type to decrement from the player hand
+     * Play the Road Building card
      */
     @Override
-    public void giveCardToPlayer(IPlayer player, ResourceType cardType) {
-        assert player != null;
-        assert cardType != null;
+    public void playRoadBuilding() {
 
-        // TODO: this needs to go to the server!
+    }
 
-        // bundle the resource
-        IResourceBank rb = IResourceBank.resourceToBank(cardType);
-        // take the resource from the bank of this player
-        m_theGame.getLocalPlayer().getResources().subtract(rb);
-        // add the resource to the provided player object
-        player.getResources().add(rb);
+    /**
+     * Play the Monopoly card
+     */
+    @Override
+    public void playMonopoly() {
 
+    }
+
+    /**
+     * Play the Monument card
+     */
+    @Override
+    public void playMonument() {
+
+    }
+
+    /**
+     * Tells the server to rob a player
+     * @param hex the hex to place the robber on
+     * @param victim the player index of the player being robbed
+     */
+    @Override
+    public void robPlayer(HexLocation hex, int victim) throws ModelException {
+        assert hex != null;
+        assert (victim >= 0 && victim <= 3);
+
+        try {
+            m_theProxy.robPlayer(m_theGame.getCurrentPlayer().getIndex(), victim, hex);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -227,21 +271,10 @@ public class GameFacade implements IGameFacade {
      * @return the PlayerInfo object initialized with all the player card/piece counts
      */
     @Override
-    public PlayerInfo getCurPlayerInfo() {
-        // make a new PlayerInfo
-        PlayerInfo pInfo = new PlayerInfo();
+    public IPlayer getCurPlayerInfo() {
+        assert m_theGame.getCurrentPlayer() != null;
 
-        // get the player
-        IPlayer p = m_theGame.getLocalPlayer();
-
-        // initialize player info
-        pInfo.setId(p.getId());
-        pInfo.setPlayerIndex(p.getIndex());
-        pInfo.setName(p.getName());
-        pInfo.setColor(p.getColor());
-
-        // return the player info
-        return pInfo;
+        return m_theGame.getCurrentPlayer();
     }
 
     /**
@@ -251,7 +284,9 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<IRoad> getRoads() {
-        return m_theGame.getLocalPlayer().getRoads();
+        assert m_theGame.getCurrentPlayer().getRoads() != null;
+
+        return m_theGame.getCurrentPlayer().getRoads();
     }
 
     /**
@@ -261,7 +296,10 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<ITown> getSettlements() {
-        Collection<ITown> towns = m_theGame.getLocalPlayer().getTowns();
+        Collection<ITown> towns = m_theGame.getCurrentPlayer().getTowns();
+
+        assert towns != null;
+
         Collection<ITown> settlements = new ArrayList<ITown>();
 
         for(ITown s : towns) {
@@ -280,7 +318,10 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<ITown> getCities() {
-        Collection<ITown> towns = m_theGame.getLocalPlayer().getTowns();
+        Collection<ITown> towns = m_theGame.getCurrentPlayer().getTowns();
+
+        assert towns != null;
+
         Collection<ITown> cities = new ArrayList<ITown>();
 
         for(ITown city : towns) {
@@ -299,7 +340,9 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<ITown> getTowns() {
-        return m_theGame.getLocalPlayer().getTowns();
+        assert m_theGame.getCurrentPlayer().getTowns() != null;
+
+        return m_theGame.getCurrentPlayer().getTowns();
     }
 
     /**
@@ -309,6 +352,8 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<ITile> getHexes() {
+        assert m_theGame.getMap().getTiles() != null;
+
         return m_theGame.getMap().getTiles();
     }
 
@@ -319,6 +364,8 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public HexLocation getRobber() {
+        assert m_theGame.getMap().getRobber() != null;
+
         return m_theGame.getMap().getRobber();
     }
 
@@ -329,7 +376,9 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public IResourceBank getPlayerResources() {
-        return m_theGame.getLocalPlayer().getResources();
+        assert m_theGame.getCurrentPlayer().getResources() != null;
+
+        return m_theGame.getCurrentPlayer().getResources();
     }
 
     /**
@@ -339,7 +388,11 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<PortType> getPlayerPorts() {
-        return m_theGame.getMap().getPlayersPorts(m_theGame.getLocalPlayer());
+        Collection<PortType> ports = m_theGame.getMap().getPlayersPorts(m_theGame.getCurrentPlayer());
+
+        assert ports != null;
+
+        return ports;
     }
 
     /**
@@ -349,7 +402,11 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public ILog getChatHistory() {
-        return m_theGame.getChatHistory();
+        ILog chat = m_theGame.getChatHistory();
+
+        assert chat != null;
+
+        return chat;
     }
 
     /**
@@ -359,6 +416,77 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public ILog getMoveHistory() {
-        return m_theGame.getGameplayLog();
+        ILog gameplay = m_theGame.getGameplayLog();
+
+        assert gameplay != null;
+
+        return gameplay;
+    }
+
+    /**
+     * accept an incoming trade
+     *
+     * @param willAccept is true if the the trade is accepted, false otherwise
+     */
+    @Override
+    public void acceptTrade(boolean willAccept) {
+
+    }
+
+    /**
+     * offer a trade to another player
+     *
+     * @param offer                the bundle of resources you are offering
+     * @param recipientPlayerIndex the index of the player receiving the trade offer
+     */
+    @Override
+    public void offerTrade(ResourceBundle offer, int recipientPlayerIndex) {
+
+    }
+
+    /**
+     * Trade with a port
+     *
+     * @param ratio   the ratio of trade. 2, 3, or 4 resources for one of any kind
+     * @param giving  the bundle of resources that are being given up
+     * @param getting the bundle of resources that are being received
+     */
+    @Override
+    public void maritimeTrade(int ratio, ResourceBundle giving, ResourceBundle getting) {
+
+    }
+
+    /**
+     * The current player will discard some cards
+     *
+     * @param discardedCards the bundle of resource cards to discard
+     */
+    @Override
+    public void discardCards(ResourceBundle discardedCards) {
+
+    }
+
+    /**
+     * The current player has rolled a number
+     *
+     * @param rolledNumber the number that was rolled
+     */
+    @Override
+    public void rollNumber(int rolledNumber) {
+
+    }
+
+    /**
+     * Finish up the current player's turn
+     */
+    @Override
+    public void finishTurn() {
+
+    }
+
+    // this method is just for determining from the GameState if it is a free round
+    private boolean isFreeRound() {
+        GameState gs = m_theGame.getGameState();
+        return (gs == GameState.FIRST_ROUND || gs == GameState.SECOND_ROUND);
     }
 }

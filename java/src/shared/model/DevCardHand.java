@@ -33,6 +33,16 @@ public class DevCardHand implements IDevCardHand {
     /**
      * Get the count of how many development cards are in the hand.
      *
+     * @return the number of development cards in the hand
+     */
+    @Override
+    public int getCount() {
+        return m_monopoly + m_monument + m_roadBuilding + m_soldier + m_yearOfPlenty;
+    }
+
+    /**
+     * Get the count of how many development cards are in the hand.
+     *
      * @param devCardType the type of development card to get the count of
      * @return the number of development cards of devCardType in the hand
      */

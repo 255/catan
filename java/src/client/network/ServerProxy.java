@@ -484,4 +484,22 @@ public class ServerProxy implements IServerProxy {
 
         return response;
     }
+
+    @Override
+    public String robPlayer(int robbingPlayerIndex, int victimIndex, HexLocation hex) throws NetworkException {
+        String request =
+                "{" +
+                    "\"type\": \"robPlayer\"," +
+                    "\"playerIndex\": \"" + robbingPlayerIndex + "\"," +
+                    "\"victimIndex\": \"" + victimIndex + "\"," +
+                    "\"location\": {" +
+                        "\"x\": \"" + hex.getX() + "\"," +
+                        "\"y\": \"" + hex.getY() + "\"" +
+                    "}" +
+                "}";
+
+        String response = m_httpCommunicator.post("/moves/robPlayer", request);
+
+        return response;
+    }
 }

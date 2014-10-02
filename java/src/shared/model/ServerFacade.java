@@ -17,7 +17,8 @@ public class ServerFacade implements IServerFacade {
      * This is a private constructor that is called only when the ServerFacade has not been initialized yet
      */
     private ServerFacade(IServerProxy theProxy, IGame theGame) {
-        setProxyAndGame(theProxy, theGame);
+        setProxy(theProxy);
+        setGame(theGame);
     }
 
     /**
@@ -36,11 +37,18 @@ public class ServerFacade implements IServerFacade {
      *
      * @param theProxy is the proxy object to point the ServerFacade at
      */
-    public void setProxyAndGame(IServerProxy theProxy, IGame theGame) {
+    public void setProxy(IServerProxy theProxy) {
         assert theProxy != null;
-        assert theGame != null;
-
         m_theProxy = theProxy;
+    }
+
+    /**
+     * This function sets the Game object that the GameFacade will point at
+     *
+     * @param theGame is the game object to point the ServerFacade at
+     */
+    public void setGame(IGame theGame) {
+        assert theGame != null;
         m_theGame = theGame;
     }
 
@@ -50,13 +58,13 @@ public class ServerFacade implements IServerFacade {
      * @param message the string of text to add to the chat log
      */
     @Override
-    public void sendChat(String message) {
+    public void sendChat(String message) throws ModelException {
         assert message != null;
 
         try {
             m_theProxy.sendChat(m_theGame.getLocalPlayer().getIndex(), message);
         } catch (NetworkException e) {
-            e.printStackTrace(); //TODO error handling
+            throw new ModelException(e);
         }
     }
 }

@@ -13,5 +13,5 @@ public interface IServerFacade {
      *
      * @param message the string of text to add to the chat log
      */
-    public void sendChat(String message);
+    public void sendChat(String message) throws ModelException;
 }
