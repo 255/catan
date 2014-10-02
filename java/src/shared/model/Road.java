@@ -54,7 +54,7 @@ public class Road implements IRoad {
      * @param edge the edge where the road is placed
      */
     public void setLocation(EdgeLocation edge) {
-
+        m_location = edge;
     }
 
     //*********//

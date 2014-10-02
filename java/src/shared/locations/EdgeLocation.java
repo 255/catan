@@ -174,6 +174,8 @@ public class EdgeLocation
      * @return the vertex between the edges or null if there is none
      */
     public static VertexLocation getVertexBetweenEdges(EdgeLocation edge1, EdgeLocation edge2) {
+        assert edge1 != null && edge2 != null : "Called with null edge.";
+
         // check if the two edges share a vertex
         for (VertexLocation vertex1 : edge1.getAdjacentVertices()) {
             for (VertexLocation vertex2 : edge2.getAdjacentVertices()) {

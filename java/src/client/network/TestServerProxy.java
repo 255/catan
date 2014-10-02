@@ -693,4 +693,17 @@ public class TestServerProxy implements IServerProxy {
     public String playMonument(int playerIndex) throws NetworkException {
         return null;
     }
+
+    /**
+     * A player rolls a 7 and moves the robber to a hex location, and stesls from players with towns on that hex
+     *
+     * @param robbingPlayerIndex index of player who rolled the 7
+     * @param victimIndex index of player getting a card taken from them
+     * @param hex location of hex to move the robber to
+     * @return a JSON object representing the current Catan Model after this method has been called
+     *
+     * @throws NetworkException indicates that an error occurred while attempting to communicate with the server
+     */
+    @Override
+    public String robPlayer(int robbingPlayerIndex, int victimIndex, HexLocation hex) throws NetworkException { return null; }
 }

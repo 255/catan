@@ -115,7 +115,7 @@ public class CatanMap implements ICatanMap {
             }
         }
 
-        return ports;
+        return Collections.unmodifiableSet(ports);
     }
 
     /**
@@ -133,11 +133,13 @@ public class CatanMap implements ICatanMap {
     @Override
     public boolean canPlaceRoad(IPlayer player, EdgeLocation edge) {
         assert player != null && edge != null;
-        assert m_tiles.containsKey(edge.getHexLoc())
-                || m_tiles.containsKey(edge.getNormalizedLocation().getHexLoc())
-                : "Invalid edge object.";
 
         edge = edge.getNormalizedLocation();
+
+        // check is the edge is on land (not water)
+        if (!isOnMap(edge)) {
+            return false;
+        }
 
         // check if a road is already placed
         if (m_roads.containsKey(edge)) {
@@ -254,6 +256,7 @@ public class CatanMap implements ICatanMap {
     @Override
     public void placeRoad(IRoad road, EdgeLocation edge) {
         assert road != null && edge != null;
+        assert isOnMap(edge) : "Edge not on map.";
 
         edge = edge.getNormalizedLocation();
 
@@ -428,5 +431,15 @@ public class CatanMap implements ICatanMap {
      */
     private ITown getTownBetweenEdges(EdgeLocation edge1, EdgeLocation edge2) {
         return m_towns.get(EdgeLocation.getVertexBetweenEdges(edge1, edge2));
+    }
+
+    /**
+     * Determine whether the specified edge borders a valid tile on the Catan map.
+     * @param edge the edge to test
+     * @return whether the edge is on the map
+     */
+    private boolean isOnMap(EdgeLocation edge) {
+        return m_tiles.containsKey(edge.getHexLoc())
+                || m_tiles.containsKey(edge.getEquivalentEdge().getHexLoc());
     }
 }

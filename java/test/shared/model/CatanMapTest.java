@@ -1,5 +1,6 @@
 package shared.model;
 
+import com.sun.javafx.geom.Edge;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,10 +9,7 @@ import shared.definitions.HexType;
 import shared.definitions.PortType;
 import shared.locations.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -47,6 +45,7 @@ public class CatanMapTest {
 
     @Before
     public void setUp() throws Exception {
+        // set up the tiles
         Collection<HexLocation> hexes = new ArrayList<>();
 
         for (int y =  0; y <= 2; ++y) hexes.add(new HexLocation(-2, y));
@@ -60,16 +59,17 @@ public class CatanMapTest {
              tiles.put(hex, generateTile(hex));
         }
 
+        // place ports
         Map<EdgeLocation, PortType> ports = new HashMap<>();
         ports.put(new EdgeLocation(-2, 0, EdgeDirection.NorthWest), PortType.BRICK);
         ports.put(new EdgeLocation(1, -2, EdgeDirection.North), PortType.THREE);
         ports.put(new EdgeLocation(2, -1, EdgeDirection.SouthEast), PortType.WOOD);
         ports.put(new EdgeLocation(0, 2, EdgeDirection.South), PortType.SHEEP);
         ports.put(new EdgeLocation(-1, 2, EdgeDirection.SouthWest), PortType.ORE);
-        // ports ?
 
         map = new CatanMap(tiles, ports);
 
+        // two people to play the game
         player1 = new Player("Dave", 1337, CatanColor.BLUE, 0);
         player2 = new Player("Hal", 1010, CatanColor.RED, 0);
     }
@@ -115,12 +115,135 @@ public class CatanMapTest {
 
     @Test
     public void testGetPlayersPorts() throws Exception {
+        // no ports yet
+        assertEquals(0, map.getPlayersPorts(player1).size());
+
+        // nearby settlement, but not on port
+        map.placeSettlement(new Settlement(player1), new VertexLocation(-2, 0, VertexDirection.East));
+
+        assertEquals(0, map.getPlayersPorts(player1).size());
+        assertEquals(0, map.getPlayersPorts(player2).size());
+
+        // place settlement by one port
+        map.placeSettlement(new Settlement(player1), new VertexLocation(-2, 0, VertexDirection.NorthWest)); //BRICK
+
+        assertEquals(1, map.getPlayersPorts(player1).size());
+        assertTrue(map.getPlayersPorts(player1).contains(PortType.BRICK));
+        assertEquals(0, map.getPlayersPorts(player2).size());
+
+        // get a few ports for one player, none for other
+        map.placeSettlement(new Settlement(player1), new VertexLocation(1, -2, VertexDirection.NorthEast)); //THREE
+        map.placeSettlement(new Settlement(player1), new VertexLocation(-1, 2, VertexDirection.SouthWest)); //ORE
+        map.placeCity(new City(player1), new VertexLocation(-1, 2, VertexDirection.SouthWest)); //replace w/ city
+
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0, 2, VertexDirection.West)); //no port
+        map.placeCity(new City(player1), new VertexLocation(0, 2, VertexDirection.West)); //make city
+        map.placeSettlement(new Settlement(player2), new VertexLocation(0, 0, VertexDirection.NorthEast)); //no port
+
+        assertEquals(3, map.getPlayersPorts(player1).size());
+        assertTrue(map.getPlayersPorts(player1).contains(PortType.BRICK));
+        assertTrue(map.getPlayersPorts(player1).contains(PortType.THREE));
+        assertTrue(map.getPlayersPorts(player1).contains(PortType.ORE));
+
+        assertEquals(0, map.getPlayersPorts(player2).size());
 
     }
 
     @Test
-    public void testCanPlaceRoad() throws Exception {
+    public void testCanPlaceInitialRoad() throws Exception {
+        // can place a floating, lonely road
+        EdgeLocation edge = new EdgeLocation(0, 0, EdgeDirection.North);
+        assertTrue(map.canPlaceInitialRoad(player1, edge));
+        assertTrue(map.canPlaceInitialRoad(player1, edge.getEquivalentEdge()));
+        assertTrue(map.canPlaceInitialRoad(player2, edge));
+        assertTrue(map.canPlaceInitialRoad(player2, edge.getEquivalentEdge()));
 
+        // cannot place a road next to any town (towns are placed second)
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0, 0, VertexDirection.NorthWest));
+        assertFalse(map.canPlaceInitialRoad(player1, edge));
+        assertFalse(map.canPlaceInitialRoad(player1, edge.getEquivalentEdge()));
+        assertFalse(map.canPlaceInitialRoad(player2, edge));
+        assertFalse(map.canPlaceInitialRoad(player2, edge.getEquivalentEdge()));
+        assertFalse(map.canPlaceInitialRoad(player1, new EdgeLocation(0, -1, EdgeDirection.SouthWest)));
+        assertFalse(map.canPlaceInitialRoad(player1, new EdgeLocation(-1, 0, EdgeDirection.NorthEast)));
+
+        // a nearby but ok place to put a road
+        assertTrue(map.canPlaceInitialRoad(player1, new EdgeLocation(-1, 0, EdgeDirection.South)));
+        assertTrue(map.canPlaceInitialRoad(player2, new EdgeLocation(-1, 0, EdgeDirection.South)));
+    }
+
+    @Test
+    public void testCanPlaceRoad() throws Exception {
+        // cannot place "floating roads" (except for first round)
+        EdgeLocation edge = new EdgeLocation(0, 0, EdgeDirection.North);
+        assertFalse(map.canPlaceRoad(player1, edge));
+        assertFalse(map.canPlaceRoad(player1, edge.getEquivalentEdge()));
+
+        // test normal placing
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0, -2, VertexDirection.NorthEast));
+        EdgeLocation edgeN = new EdgeLocation(0, -2, EdgeDirection.North);
+        assertTrue(map.canPlaceRoad(player1, edgeN));
+        assertTrue(map.canPlaceRoad(player1, edgeN.getEquivalentEdge()));
+
+        EdgeLocation edgeNE = new EdgeLocation(0, -2, EdgeDirection.NorthEast);
+        assertTrue(map.canPlaceRoad(player1, edgeNE));
+        assertTrue(map.canPlaceRoad(player1, edgeNE.getEquivalentEdge()));
+
+        // cannot place on water (even if connected to settlement)
+        EdgeLocation edgeWater = new EdgeLocation(0, -3, EdgeDirection.SouthEast);
+        assertFalse(map.canPlaceRoad(player1, edgeWater));
+        assertFalse(map.canPlaceRoad(player1, edgeWater.getEquivalentEdge()));
+        assertFalse(map.canPlaceRoad(player2, edgeWater));
+        assertFalse(map.canPlaceRoad(player2, edgeWater.getEquivalentEdge()));
+
+        // can't use opponents cities
+        assertFalse(map.canPlaceRoad(player2, edgeN));
+        assertFalse(map.canPlaceRoad(player2, edgeN.getEquivalentEdge()));
+        assertFalse(map.canPlaceRoad(player2, edgeNE));
+        assertFalse(map.canPlaceRoad(player2, edgeNE.getEquivalentEdge()));
+        assertFalse(map.canPlaceRoad(player2, edgeWater));
+        assertFalse(map.canPlaceRoad(player2, edgeWater.getEquivalentEdge()));
+
+        // a road to build off of
+        map.placeRoad(new Road(player1), edgeN);
+
+        // cannot place roads on other roads
+        assertFalse(map.canPlaceRoad(player1, edgeN));
+        assertFalse(map.canPlaceRoad(player2, edgeN));
+
+        // test connecting to a road
+        EdgeLocation edgeNW = new EdgeLocation(0, -2, EdgeDirection.NorthWest);
+        assertTrue(map.canPlaceRoad(player1, edgeNW));
+        assertTrue(map.canPlaceRoad(player1, edgeNW.getEquivalentEdge()));
+
+        // near but not touching
+        EdgeLocation edgeSW = new EdgeLocation(0, -2, EdgeDirection.SouthWest);
+        assertFalse(map.canPlaceRoad(player1, edgeSW));
+        assertFalse(map.canPlaceRoad(player1, edgeSW.getEquivalentEdge()));
+
+        // no water road connections
+        EdgeLocation edgeWater2 = new EdgeLocation(0, -3, EdgeDirection.SouthWest);
+        assertFalse(map.canPlaceRoad(player1, edgeWater2));
+        assertFalse(map.canPlaceRoad(player1, edgeWater2.getEquivalentEdge()));
+
+        // other player cannot connect to the road
+        assertFalse(map.canPlaceRoad(player2, edgeNW));
+        assertFalse(map.canPlaceRoad(player2, edgeNW.getEquivalentEdge()));
+
+        // okay to connect to opponent road if also connected to own road/settlement
+        map.placeSettlement(new Settlement(player2), new VertexLocation(0, -2, VertexDirection.West));
+        assertTrue(map.canPlaceRoad(player2, edgeNW));
+        assertTrue(map.canPlaceRoad(player2, edgeNW.getEquivalentEdge()));
+
+        // player can connect to opponent's city if has own road
+        assertTrue(map.canPlaceRoad(player1, edgeNW));
+        assertTrue(map.canPlaceRoad(player1, edgeNW.getEquivalentEdge()));
+
+        // player cannot build a road through an opponent's town
+        map.placeRoad(new Road(player1), edgeNW);
+        assertFalse(map.canPlaceRoad(player1, edgeSW));
+        assertFalse(map.canPlaceRoad(player1, edgeSW.getEquivalentEdge()));
+        assertFalse(map.canPlaceRoad(player1, new EdgeLocation(-1, -1, EdgeDirection.North)));
     }
 
     /* Test canPlaceRoad and canPlaceInitialRoad methods */
@@ -241,11 +364,6 @@ public class CatanMapTest {
 
     @Test
     public void testPlaceCity() throws Exception {
-
-    }
-
-    @Test
-    public void testGetRobber() throws Exception {
 
     }
 
