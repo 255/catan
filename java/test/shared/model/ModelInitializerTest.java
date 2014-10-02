@@ -72,7 +72,7 @@ public class ModelInitializerTest {
         assertEquals("Incorrect number of Monument cards in player hand", 0, testPlayerNewDevCardHand.getCount(DevCardType.MONUMENT));
 
         IPieceBank playerPieceBank = testPlayer.getPieceBank();
-        assertEquals("Incorrect number of roads in player's bank", 13, playerPieceBank.availableRoads());
+        assertEquals("Incorrect number of roads in player's bank", 0, playerPieceBank.availableRoads());
         assertEquals("Incorrect number of cities in player's bank", 4, playerPieceBank.availableCities());
         assertEquals("Incorrect number of settlements in player's bank", 3, playerPieceBank.availableSettlements());
 
@@ -98,8 +98,8 @@ public class ModelInitializerTest {
         assertEquals("Incorrect player color", CatanColor.RED, testPlayer.getColor());
 
         testPlayer = playerList.get(3);
-        assertEquals("Incorrect player id", 3, testPlayer.getId());
-        assertEquals("Incorrect player index", 11, testPlayer.getIndex());
+        assertEquals("Incorrect player id", 11, testPlayer.getId());
+        assertEquals("Incorrect player index", 3, testPlayer.getIndex());
         assertEquals("Incorrect player name", "Mark", testPlayer.getName());
         assertEquals("Incorrect player color", CatanColor.GREEN, testPlayer.getColor());
 
@@ -140,7 +140,7 @@ public class ModelInitializerTest {
         // Tests that the game state has been correctly deserialized.
         assertEquals("Game state was Rolling", GameState.ROLLING, m_game.getGameState());
         assertEquals("Index of current player is 0", 0, m_game.getCurrentPlayer().getIndex());
-        assertEquals("No winnner. Should return -1", -1, m_game.getWinner());
+        assertEquals("No winnner. Should return null", null, m_game.getWinner());
 
     }
 }
