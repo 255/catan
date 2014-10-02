@@ -28,6 +28,8 @@ public class Tile implements ITile {
       assert location != null;
       assert !(type == HexType.DESERT && number != DESERT_NUMBER)
           : "Cannot create Desert hex with a number other than DESERT_NUMBER";
+      assert (2 <= number && number <= 12 && number != 7)
+              || (number == DESERT_NUMBER && type == HexType.DESERT) : "Invalid number: " + number;
 
       m_type = type;
       m_location = location;

@@ -148,23 +148,29 @@ public class VertexLocation
     }
 
     /**
-     * Get the two edges that connect to this vertex.
+     * Get the three edges that connect to this vertex.
      * @return the edges that connect to this vertex as an array
      */
     public EdgeLocation[] getAdjacentEdges() {
         switch (getDir()) {
             case NorthWest:
-                return createEdgeLocations(hexLoc, EdgeDirection.NorthWest, EdgeDirection.North);
+                return createEdgeLocations(hexLoc, EdgeDirection.NorthWest, EdgeDirection.North,
+                        hexLoc.getNeighborLoc(EdgeDirection.NorthWest), EdgeDirection.NorthEast);
             case NorthEast:
-                return createEdgeLocations(hexLoc, EdgeDirection.North, EdgeDirection.NorthEast);
+                return createEdgeLocations(hexLoc, EdgeDirection.North, EdgeDirection.NorthEast,
+                        hexLoc.getNeighborLoc(EdgeDirection.North), EdgeDirection.SouthEast);
             case East:
-                return createEdgeLocations(hexLoc, EdgeDirection.NorthEast, EdgeDirection.SouthEast);
+                return createEdgeLocations(hexLoc, EdgeDirection.NorthEast, EdgeDirection.SouthEast,
+                        hexLoc.getNeighborLoc(EdgeDirection.NorthEast), EdgeDirection.South);
             case SouthEast:
-                return createEdgeLocations(hexLoc, EdgeDirection.SouthEast, EdgeDirection.South);
+                return createEdgeLocations(hexLoc, EdgeDirection.SouthEast, EdgeDirection.South,
+                        hexLoc.getNeighborLoc(EdgeDirection.SouthEast), EdgeDirection.SouthWest);
             case SouthWest:
-                return createEdgeLocations(hexLoc, EdgeDirection.South, EdgeDirection.SouthWest);
+                return createEdgeLocations(hexLoc, EdgeDirection.South, EdgeDirection.SouthWest,
+                        hexLoc.getNeighborLoc(EdgeDirection.South), EdgeDirection.NorthWest);
             case West:
-                return createEdgeLocations(hexLoc, EdgeDirection.SouthWest, EdgeDirection.NorthWest);
+                return createEdgeLocations(hexLoc, EdgeDirection.SouthWest, EdgeDirection.NorthWest,
+                        hexLoc.getNeighborLoc(EdgeDirection.SouthWest), EdgeDirection.North);
             default:
                 assert false;
                 return null;
@@ -172,10 +178,12 @@ public class VertexLocation
     }
 
     /** A helper function for creating an array of two edges */
-    private static EdgeLocation[] createEdgeLocations(HexLocation hexLoc, EdgeDirection dir1, EdgeDirection dir2) {
-        return new EdgeLocation[] {
-               new EdgeLocation(hexLoc, dir1).getNormalizedLocation(),
-               new EdgeLocation(hexLoc, dir2).getNormalizedLocation(),
+    private static EdgeLocation[] createEdgeLocations(HexLocation hexLoc, EdgeDirection dir1, EdgeDirection dir2,
+                                                      HexLocation otherLoc, EdgeDirection otherDir) {
+        return new EdgeLocation[]{
+                   new EdgeLocation(hexLoc, dir1).getNormalizedLocation(),
+                   new EdgeLocation(hexLoc, dir2).getNormalizedLocation(),
+                   new EdgeLocation(otherLoc, otherDir).getNormalizedLocation(),
         };
     }
 }

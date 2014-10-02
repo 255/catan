@@ -240,11 +240,9 @@ public class CatanMap implements ICatanMap {
     public boolean canPlaceCity(IPlayer player, VertexLocation vertex) {
         assert player != null && vertex != null;
 
-        vertex = vertex.getNormalizedLocation();
+        ITown town = m_towns.get(vertex.getNormalizedLocation());
 
-        ITown town = m_towns.get(vertex);
-
-        return town != null && town instanceof Settlement && town.equals(town.getOwner());
+        return town != null && town instanceof Settlement && player.equals(town.getOwner());
     }
 
     /**
@@ -297,7 +295,8 @@ public class CatanMap implements ICatanMap {
     public void placeCity(City city, VertexLocation vertex) {
         vertex = vertex.getNormalizedLocation();
 
-        assert !m_towns.containsKey(vertex) : "There is already a city placed at " + vertex.toString();
+        assert m_towns.containsKey(vertex): "There not already a settlement placed at " + vertex.toString();
+        assert m_towns.get(vertex) instanceof Settlement : "A city must be placed on a settlement only!";
         assert city.getLocation() == null : "The city " + city.toString() + " already thinks it's placed!";
 
         m_towns.put(vertex, city);
