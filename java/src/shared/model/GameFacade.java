@@ -25,7 +25,9 @@ public class GameFacade implements IGameFacade {
      * This is a private constructor that is called only when the GameFacade has not been initialized yet
      */
     private GameFacade(IGame theGame, IServerProxy theProxy) {
-        setGameAndProxy(theGame, theProxy);
+
+        setGame(theGame);
+        setProxy(theProxy);
     }
 
     /**
@@ -42,13 +44,31 @@ public class GameFacade implements IGameFacade {
     /**
      * This function sets the Game object that the GameFacade will point at
      *
-     * @param theGame the Game object to point the GameFacade at
+     * @param game the Game object to point the GameFacade at
      */
-    public void setGameAndProxy(IGame theGame, IServerProxy theProxy) {
-        assert theGame != null;
+    public void setGame(IGame game) {
+        assert game != null;
 
-        m_theGame = theGame;
-        m_theProxy = theProxy;
+        m_theGame = game;
+    }
+
+    /**
+     * Returns the game object
+     *
+     * @return the game object
+     */
+    public IGame getGame() {
+        return m_theGame;
+    }
+    /**
+     * Sets the server proxy member
+     *
+     * @param serverProxy the server proxy for the game facade to use
+     */
+    public void setProxy(IServerProxy serverProxy) {
+        assert serverProxy != null;
+
+        m_theProxy = serverProxy;
     }
 
     /**

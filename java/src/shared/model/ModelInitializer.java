@@ -43,7 +43,7 @@ public class ModelInitializer implements IModelInitializer {
         // read the main body of the client JSON model
         try (JsonReader reader = new JsonReader(new StringReader(json))) {
             IGame newGame = readClientModel(reader);
-            GameFacade.getFacadeInstance().setGameObject(newGame);
+            GameFacade.getFacadeInstance().setGame(newGame);
             // TODO: set other Game object pointers (e.g. Game and Map pointers in GUI)
         }
         catch (IOException | IllegalStateException e) {
