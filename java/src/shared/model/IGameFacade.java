@@ -2,6 +2,7 @@ package shared.model;
 
 import client.communication.LogEntry;
 import client.data.PlayerInfo;
+import client.network.NetworkException;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
@@ -79,23 +80,28 @@ public interface IGameFacade {
 
     /**
      * Play the Year of Plenty card
+     * @param r1 the first resource to take from the bank
+     * @param r2 the second resource to take from the bank
      */
-    public void playYearOfPlenty();
+    public void playYearOfPlenty(ResourceType r1, ResourceType r2) throws ModelException;
 
     /**
      * Play the Road Building card
+     * @param e1 location of the first road
+     * @param e2 location of the second road
      */
-    public void playRoadBuilding();
+    public void playRoadBuilding(EdgeLocation e1, EdgeLocation e2) throws ModelException;
 
     /**
      * Play the Monopoly card
+     * @param rType the type of resource to monopolize
      */
-    public void playMonopoly();
+    public void playMonopoly(ResourceType rType) throws ModelException;
 
     /**
      * Play the Monument card
      */
-    public void playMonument();
+    public void playMonument() throws ModelException;
 
     /**
      * Tells the server to rob a player
@@ -182,19 +188,19 @@ public interface IGameFacade {
     public ILog getMoveHistory();
 
     // trading
-
     /**
      * accept an incoming trade
      * @param willAccept is true if the the trade is accepted, false otherwise
+     * @param tradeBundle is the bundle of resources requested
      */
-    public void acceptTrade(boolean willAccept);
+    public void acceptTrade(boolean willAccept, IResourceBank tradeBundle) throws ModelException;
 
     /**
      * offer a trade to another player
      * @param offer the bundle of resources you are offering
      * @param recipientPlayerIndex the index of the player receiving the trade offer
      */
-    public void offerTrade(ResourceBundle offer, int recipientPlayerIndex);
+    public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException;
 
     /**
      * Trade with a port
@@ -202,22 +208,22 @@ public interface IGameFacade {
      * @param giving the bundle of resources that are being given up
      * @param getting the bundle of resources that are being received
      */
-    public void maritimeTrade(int ratio, ResourceBundle giving, ResourceBundle getting);
+    public void maritimeTrade(int ratio, ResourceType giving, ResourceType getting) throws ModelException;
 
     /**
      * The current player will discard some cards
      * @param discardedCards the bundle of resource cards to discard
      */
-    public void discardCards(ResourceBundle discardedCards);
+    public void discardCards(IResourceBank discardedCards) throws ModelException;
 
     /**
      * The current player has rolled a number
      * @param rolledNumber the number that was rolled
      */
-    public void rollNumber(int rolledNumber);
+    public void rollNumber(int rolledNumber) throws ModelException;
 
     /**
      * Finish up the current player's turn
      */
-    public void finishTurn();
+    public void finishTurn() throws ModelException;
 }

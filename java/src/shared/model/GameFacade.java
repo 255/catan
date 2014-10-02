@@ -5,6 +5,7 @@ import client.network.HttpCommunicator;
 import client.network.IServerProxy;
 import client.network.NetworkException;
 import client.network.ServerProxy;
+import shared.definitions.DevCardType;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
@@ -137,6 +138,7 @@ public class GameFacade implements IGameFacade {
     @Override
     public void placeRoad(EdgeLocation edge) throws ModelException{
         assert edge != null;
+        assert playingOnlyPreconditions();
         // check that the player can place the road
         assert canPlaceRoad(edge);
 
@@ -155,6 +157,7 @@ public class GameFacade implements IGameFacade {
     @Override
     public void placeSettlement(VertexLocation vertex) throws ModelException {
         assert vertex != null;
+        assert playingOnlyPreconditions();
         // check that the settlement can be placed
         assert canPlaceSettlement(vertex);
 
@@ -173,6 +176,7 @@ public class GameFacade implements IGameFacade {
     @Override
     public void placeCity(VertexLocation vertex) throws ModelException {
         assert vertex != null;
+        assert playingOnlyPreconditions();
         // check that the city can be placed
         assert canPlaceCity(vertex);
 
@@ -191,6 +195,7 @@ public class GameFacade implements IGameFacade {
         IPlayer curPlayer = m_theGame.getCurrentPlayer();
         assert curPlayer.canAfford(Prices.DEV_CARD);
         assert m_theGame.getDevCards().getCount() > 0;
+        assert playingOnlyPreconditions();
 
         try {
             m_theProxy.buyDevCard(curPlayer.getIndex());
@@ -207,7 +212,10 @@ public class GameFacade implements IGameFacade {
     @Override
     public void playSoldier(HexLocation hex, int victim) throws ModelException {
         assert hex != null;
+        assert !(hex.equals(m_theGame.getMap().getRobber()));
         assert (victim >= 0 && victim <= 3);
+        assert m_theGame.getPlayers().get(victim).getResources().getCount() > 0;
+        assert genDevCardPreConditions(DevCardType.SOLDIER);
 
         try {
             m_theProxy.playSoldier(m_theGame.getCurrentPlayer().getIndex(), hex, victim);
@@ -218,34 +226,74 @@ public class GameFacade implements IGameFacade {
 
     /**
      * Play the Year of Plenty card
+     * @param r1 the first resource to take from the bank
+     * @param r2 the second resource to take from the bank
      */
     @Override
-    public void playYearOfPlenty() {
+    public void playYearOfPlenty(ResourceType r1, ResourceType r2) throws ModelException {
+        IPlayer curPlayer = m_theGame.getCurrentPlayer();
+        IResourceBank rb = m_theGame.getResourceBank();
+        IResourceBank request = new ResourceBank();
+        request.add(IResourceBank.resourceToBank(r1));
+        request.add(IResourceBank.resourceToBank(r2));
+        assert rb.canAfford(request);
+        assert genDevCardPreConditions(DevCardType.YEAR_OF_PLENTY);
 
+        try {
+            m_theProxy.playYearOfPlenty(curPlayer.getIndex(), r1, r2);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
      * Play the Road Building card
+     * @param e1 location of the first road
+     * @param e2 location of the second road
      */
     @Override
-    public void playRoadBuilding() {
+    public void playRoadBuilding(EdgeLocation e1, EdgeLocation e2) throws ModelException {
+        IPlayer curPlayer = m_theGame.getCurrentPlayer();
 
+        // TODO might be a bug where it doesn't detect if the second road can be built on the first road's location
+        assert canPlaceRoad(e1) && canPlaceRoad(e2);
+        assert curPlayer.getPieceBank().availableRoads() >= 2;
+        assert genDevCardPreConditions(DevCardType.ROAD_BUILD);
+
+        try {
+            m_theProxy.playRoadBuilding(curPlayer.getIndex(), e1, e2);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
      * Play the Monopoly card
+     * @param rType the type of resource to monopolize
      */
     @Override
-    public void playMonopoly() {
+    public void playMonopoly(ResourceType rType) throws ModelException {
+        assert genDevCardPreConditions(DevCardType.MONOPOLY);
 
+        try {
+            m_theProxy.playMonopoly(m_theGame.getCurrentPlayer().getIndex(), rType);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
      * Play the Monument card
      */
     @Override
-    public void playMonument() {
+    public void playMonument() throws ModelException {
+        assert genDevCardPreConditions(DevCardType.MONUMENT);
 
+        try {
+            m_theProxy.playMonument(m_theGame.getCurrentPlayer().getIndex());
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -429,8 +477,17 @@ public class GameFacade implements IGameFacade {
      * @param willAccept is true if the the trade is accepted, false otherwise
      */
     @Override
-    public void acceptTrade(boolean willAccept) {
+    public void acceptTrade(boolean willAccept, IResourceBank tradeBundle) throws ModelException {
+        IPlayer p = m_theGame.getCurrentPlayer();
+        assert m_theGame.getTradeOffer().getReceiver().equals(p);
+        if(willAccept)
+            assert p.getResources().canAfford(tradeBundle);
 
+        try {
+            m_theProxy.acceptTrade(p.getIndex(), willAccept);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -440,8 +497,16 @@ public class GameFacade implements IGameFacade {
      * @param recipientPlayerIndex the index of the player receiving the trade offer
      */
     @Override
-    public void offerTrade(ResourceBundle offer, int recipientPlayerIndex) {
+    public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException {
+        IPlayer p = m_theGame.getCurrentPlayer();
+        assert p.canAfford(offer);
+        assert playingOnlyPreconditions();
 
+        try {
+            m_theProxy.offerTrade(p.getIndex(), offer, recipientPlayerIndex);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -452,8 +517,16 @@ public class GameFacade implements IGameFacade {
      * @param getting the bundle of resources that are being received
      */
     @Override
-    public void maritimeTrade(int ratio, ResourceBundle giving, ResourceBundle getting) {
+    public void maritimeTrade(int ratio, ResourceType giving, ResourceType getting) throws ModelException {
+        IPlayer p = m_theGame.getCurrentPlayer();
+        assert p.getResources().getCount(giving) >= ratio;
+        assert playingOnlyPreconditions();
 
+        try {
+            m_theProxy.maritimeTrade(p.getIndex(), ratio, giving, getting);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -462,8 +535,17 @@ public class GameFacade implements IGameFacade {
      * @param discardedCards the bundle of resource cards to discard
      */
     @Override
-    public void discardCards(ResourceBundle discardedCards) {
+    public void discardCards(IResourceBank discardedCards) throws ModelException {
+        IPlayer p = m_theGame.getCurrentPlayer();
+        assert (m_theGame.getGameState() == GameState.DISCARDING);
+        assert p.getResources().getCount() > 7;
+        // TODO not sure how to test if the user has the cards they are choosing to discard
 
+        try {
+            m_theProxy.discardCards(p.getIndex(), discardedCards);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
@@ -472,21 +554,58 @@ public class GameFacade implements IGameFacade {
      * @param rolledNumber the number that was rolled
      */
     @Override
-    public void rollNumber(int rolledNumber) {
+    public void rollNumber(int rolledNumber) throws ModelException {
+        IPlayer p = m_theGame.getCurrentPlayer();
+        assert rolledNumber >= 2 && rolledNumber <= 12;
+        assert m_theGame.getGameState() == GameState.ROLLING;
+        assert p.equals(m_theGame.getLocalPlayer()); // it's the local player's turn
 
+        try {
+            m_theProxy.rollNumber(p.getIndex(), rolledNumber);
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     /**
      * Finish up the current player's turn
      */
     @Override
-    public void finishTurn() {
+    public void finishTurn() throws ModelException {
+        IPlayer p = m_theGame.getCurrentPlayer();
+        assert m_theGame.getGameState() == GameState.PLAYING;
+        assert playingOnlyPreconditions();
 
+        try {
+            m_theProxy.finishTurn(p.getIndex());
+        } catch (NetworkException e) {
+            throw new ModelException(e);
+        }
     }
 
     // this method is just for determining from the GameState if it is a free round
     private boolean isFreeRound() {
         GameState gs = m_theGame.getGameState();
         return (gs == GameState.FIRST_ROUND || gs == GameState.SECOND_ROUND);
+    }
+
+    // this method checks the general preconditions for dev cards outlined in the REST API
+    private boolean genDevCardPreConditions(DevCardType dType) {
+        IPlayer curP = m_theGame.getCurrentPlayer();
+        boolean hasCard = (curP.getPlayableDevCards().getCount(dType) > 0);
+        boolean noCardsPlayed = curP.hasPlayedDevCard();
+        boolean curPlayerTurn = m_theGame.getLocalPlayer().equals(curP);
+        boolean statusIsPlaying = (m_theGame.getGameState() == GameState.PLAYING);
+
+        return  hasCard && noCardsPlayed && curPlayerTurn && statusIsPlaying;
+    }
+
+    // this method checks for the General Preconditions for 'Playing' only moves
+    private boolean playingOnlyPreconditions() {
+        IPlayer p = m_theGame.getCurrentPlayer();
+        boolean localPlayerTurn = p.equals(m_theGame.getLocalPlayer());
+        boolean inPlayingState = m_theGame.getGameState() == GameState.PLAYING;
+
+        return localPlayerTurn && inPlayingState;
     }
 }

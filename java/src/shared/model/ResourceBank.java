@@ -87,6 +87,16 @@ public class ResourceBank implements IResourceBank {
         return 0;
     }
 
+    /**
+     * Get the amount of resources a player has.
+     *
+     * @return the amount of resources
+     */
+    @Override
+    public int getCount() {
+        return m_wood + m_brick + m_sheep + m_wheat + m_ore;
+    }
+
     @Override
     public void add(IResourceBank resources) {
         setWood(m_wood + resources.getWood());

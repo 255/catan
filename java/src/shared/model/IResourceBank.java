@@ -127,4 +127,10 @@ public interface IResourceBank {
      * @return the amount of the specified resource
      */
     int getCount(ResourceType resourceType);
+
+    /**
+     * Get the amount of resources a player has.
+     * @return the amount of resources
+     */
+    int getCount();
 }
