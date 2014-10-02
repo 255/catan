@@ -10,7 +10,13 @@ public class EdgeLocation
 	
 	private HexLocation hexLoc;
 	private EdgeDirection dir;
-	
+
+	public EdgeLocation(int x, int y, EdgeDirection dir)
+	{
+		this.hexLoc = new HexLocation(x, y);
+		this.dir = dir;
+	}
+
 	public EdgeLocation(HexLocation hexLoc, EdgeDirection dir)
 	{
 		setHexLoc(hexLoc);

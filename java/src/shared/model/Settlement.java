@@ -13,8 +13,8 @@ public class Settlement extends Town {
     /**
      * Constructs a new settlement with no owner and no location.
      */
-    public Settlement() {
-        super(null, null);
+    public Settlement(IPlayer owner) {
+        super(owner, null);
     }
 
     /**

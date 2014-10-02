@@ -8,10 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.ResourceType;
-import shared.locations.EdgeDirection;
-import shared.locations.EdgeLocation;
-import shared.locations.HexLocation;
-import shared.locations.VertexLocation;
+import shared.locations.*;
 import shared.model.ResourceBank;
 
 import static org.junit.Assert.*;
@@ -61,19 +58,19 @@ public class ServerProxyTest {
 
     @Test
     public void testBuildRoad() throws Exception {
-        String response = m_serverProxy.buildRoad(2, new EdgeLocation(new HexLocation(3, 4), Northwest));
+        String response = m_serverProxy.buildRoad(2, new EdgeLocation(new HexLocation(0, 1), EdgeDirection.NorthWest), true);
         assert (response != null);
     }
 
     @Test
     public void testBuildSettlement() throws Exception {
-        String response = m_serverProxy.buildSettlement(2, new VertexLocation(new HexLocation(4, 7), SouthEast));
+        String response = m_serverProxy.buildSettlement(2, new VertexLocation(new HexLocation(1, 0), VertexDirection.SouthEast), true);
         assert (response != null);
     }
 
     @Test
     public void testBuildCity() throws Exception {
-        String response = m_serverProxy.buildCity(0, new VertexLocation(new HexLocation(1, 2), NorthEast));
+        String response = m_serverProxy.buildCity(0, new VertexLocation(new HexLocation(1, 2), VertexDirection.NorthEast));
         assert (response != null);
     }
 
@@ -85,7 +82,7 @@ public class ServerProxyTest {
 
     @Test
     public void testMaritimeTrade() throws Exception {
-        String response = m_serverProxy.maritimeTrade(1, 2, Brick, Wool);
+        String response = m_serverProxy.maritimeTrade(1, 2, ResourceType.BRICK, ResourceType.SHEEP);
         assert (response != null);
     }
 
@@ -103,7 +100,7 @@ public class ServerProxyTest {
 
     @Test
     public void testPlayYearOfPlenty() throws Exception {
-        String response = m_serverProxy.playYearOfPlenty(3, Wood, Ore);
+        String response = m_serverProxy.playYearOfPlenty(3, ResourceType.WOOD, ResourceType.ORE);
         assert (response != null);
     }
 

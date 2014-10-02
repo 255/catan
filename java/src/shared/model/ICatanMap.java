@@ -71,6 +71,17 @@ public interface ICatanMap {
     public boolean canPlaceRoad(IPlayer player, EdgeLocation edge);
 
     /**
+     * Determine if a player can place a road during the game initialization rounds.
+     * This function differs from canPlaceRoad in that roads do not have to be connected to anything.
+     * According to the spec, the roads are placed first, so there is no corresponding
+     * "can place initial settlement" function (and place settlement does not enforce rules).
+     * @param player the player to look at
+     * @param edge the location where the player wants to place a road
+     * @return a boolean value that reports if the player can place a road
+     */
+    public boolean canPlaceInitialRoad(IPlayer player, EdgeLocation edge);
+
+    /**
      * Determine if a player can place a road at the specified location.
      * @param player the player to look at
      * @param vertex the location where the player wants to place a settlement

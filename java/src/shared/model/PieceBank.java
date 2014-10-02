@@ -41,9 +41,8 @@ public class PieceBank implements IPieceBank {
      * @return the new road
      */
     @Override
-    public IRoad takeRoad() {
+    public void takeRoad() {
         m_numRoads--;
-        return new Road();
     }
 
     /**
@@ -76,8 +75,8 @@ public class PieceBank implements IPieceBank {
      * @return the new city
      */
     @Override
-    public City takeCity() {
-        return new City();
+    public void takeCity() {
+        m_numCities--;
     }
 
     /**
@@ -109,8 +108,8 @@ public class PieceBank implements IPieceBank {
      * @return the new settlement
      */
     @Override
-    public Settlement takeSettlement() {
-        return new Settlement();
+    public void takeSettlement() {
+        m_numSettlements--;
     }
 
     /**

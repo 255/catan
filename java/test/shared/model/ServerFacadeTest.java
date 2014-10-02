@@ -26,10 +26,11 @@ public class ServerFacadeTest {
 
     @Before
     public void setUp() throws Exception {
-        facade = new ServerFacade();
+        facade = ServerFacade.getFacadeInstance();
         proxy = new TestServerProxy();
         serializer = new ModelInitializer();
-        game = serializer.initializeClientModel(proxy.getGameState());
+        serializer.initializeClientModel(proxy.getGameState());
+        game = GameFacade.getFacadeInstance().getGame();
     }
 
     @After

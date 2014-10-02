@@ -132,9 +132,12 @@ public class CatanMap implements ICatanMap {
      */
     @Override
     public boolean canPlaceRoad(IPlayer player, EdgeLocation edge) {
-        edge = edge.getNormalizedLocation();
+        assert player != null && edge != null;
+        assert m_tiles.containsKey(edge.getHexLoc())
+                || m_tiles.containsKey(edge.getNormalizedLocation().getHexLoc())
+                : "Invalid edge object.";
 
-        assert m_tiles.containsKey(edge.getHexLoc()) : "Invalid edge object.";
+        edge = edge.getNormalizedLocation();
 
         // check if a road is already placed
         if (m_roads.containsKey(edge)) {
@@ -160,6 +163,29 @@ public class CatanMap implements ICatanMap {
         return false;
     }
 
+    /**
+     * Determine if a player can place a road during the game initialization rounds.
+     * This function differs from canPlaceRoad in that roads do not have to be connected to anything.
+     *
+     * During the two initialization rounds, roads cannot be placed next to any settlements,
+     * because the player must place a settlement next to the road.
+     *
+     * According to the spec, the roads are placed first, so there is no corresponding
+     * "can place initial settlement" function (and place settlement does not enforce rules).
+     *
+     * @param player the player to look at
+     * @param edge   the location where the player wants to place a road
+     * @return a boolean value that reports if the player can place a road
+     */
+    @Override
+    public boolean canPlaceInitialRoad(IPlayer player, EdgeLocation edge) {
+        assert edge != null && player != null;
+
+        edge = edge.getNormalizedLocation();
+
+
+        return !m_roads.containsKey(edge) && getAdjacentTowns(edge).isEmpty();
+    }
 
     /**
      * A player cannot build a road off of an opponent's settlement, even if they have a road on the other side.
@@ -218,7 +244,7 @@ public class CatanMap implements ICatanMap {
 
         ITown town = m_towns.get(vertex);
 
-        return town != null && player.equals(town.getOwner());
+        return town != null && town instanceof Settlement && town.equals(town.getOwner());
     }
 
     /**
@@ -243,6 +269,8 @@ public class CatanMap implements ICatanMap {
     /**
      * Place a settlement object at the specified vertex.
      * The settlement is placed in the map's data structure AND the settlement's location is set to edge.
+     *
+     * This does NOT check whether a player has enough resources, etc.
      *
      * @param settlement the settlement that is being placed
      * @param vertex     the vertex on which to place the settlement.
@@ -305,6 +333,7 @@ public class CatanMap implements ICatanMap {
      * @return the tiles around the edge
      */
     private Collection<ITile> getAdjacentTiles(EdgeLocation edge) {
+        assert edge != null;
         edge = edge.getNormalizedLocation();
 
         Collection<ITile> tiles = new ArrayList<>();

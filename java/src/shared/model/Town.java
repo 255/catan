@@ -11,11 +11,11 @@ public abstract class Town implements ITown {
 
     /**
      * Construct a new settlement.
-     * @param owner the player who owns the town
+     * @param owner the player who owns the town (must not be null)
      * @param location the place where the town is located
      */
     protected Town(IPlayer owner, VertexLocation location) {
-        assert owner != null && location != null;
+        assert owner != null;
 
         setOwner(owner);
         setLocation(location);

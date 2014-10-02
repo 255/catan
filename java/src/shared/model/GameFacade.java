@@ -139,16 +139,6 @@ public class GameFacade implements IGameFacade {
 
         // check that the player can place the road // TODO error handling
         assert canPlaceRoad(edge);
-        // get the player
-        IPlayer p = m_theGame.getLocalPlayer();
-        // take a road from the player's PieceBank
-        IRoad r = p.getPieceBank().takeRoad();
-        // set them as the owner
-        r.setOwner(p);
-        // place the road on the map
-        m_theGame.getMap().placeRoad(r, edge);
-        // subtract the resources from the player
-        p.getResources().subtract(Prices.ROAD);
     }
 
     /**
@@ -162,16 +152,6 @@ public class GameFacade implements IGameFacade {
 
         // check that the settlement can be placed //TODO error handling
         assert canPlaceSettlement(vertex);
-        // get the player
-        IPlayer p = m_theGame.getLocalPlayer();
-        // take a settlement from the player's PieceBank
-        Settlement s = p.getPieceBank().takeSettlement();
-        // set them as the owner
-        s.setOwner(p);
-        // place the settlement on the map
-        m_theGame.getMap().placeSettlement(s, vertex);
-        // subtract the resources from the player
-        p.getResources().subtract(Prices.SETTLEMENT);
     }
 
     /**
@@ -185,16 +165,6 @@ public class GameFacade implements IGameFacade {
 
         // check that the city can be placed // TODO error handling
         assert canPlaceCity(vertex);
-        // get the player
-        IPlayer p = m_theGame.getLocalPlayer();
-        // take a city from the player's PieceBank
-        City c = p.getPieceBank().takeCity();
-        // set them as the owner
-        c.setOwner(p);
-        // place the city on the map
-        m_theGame.getMap().placeCity(c, vertex);
-        // subtract the resources from the player
-        p.getResources().subtract(Prices.CITY);
     }
 
     /**

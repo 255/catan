@@ -12,7 +12,7 @@ public interface IPieceBank {
      * This will only be used server-side.
      * @return the new road
      */
-    public IRoad takeRoad();
+    public void takeRoad();
 
     /**
      * Set the number of roads that will be available in the piece bank.
@@ -35,7 +35,7 @@ public interface IPieceBank {
      * This will only be used server-side.
      * @return the new city
      */
-    public City takeCity();
+    public void takeCity();
 
     /**
      * Set the number of cities that will be available in the piece bank.
@@ -57,7 +57,7 @@ public interface IPieceBank {
      * This will only be used server-side.
      * @return the new settlement
      */
-    public Settlement takeSettlement();
+    public void takeSettlement();
 
     /**
      * Set the number of settlements that will be available in the piece bank.

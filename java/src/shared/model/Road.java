@@ -13,8 +13,9 @@ public class Road implements IRoad {
     /**
      * Creates a road that has no owner and no location
      */
-    public Road() {
-        setOwner(null);
+    public Road(IPlayer owner) {
+        assert owner != null;
+        setOwner(owner);
         setLocation(null);
     }
 

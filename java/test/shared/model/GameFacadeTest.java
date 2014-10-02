@@ -30,7 +30,8 @@ public class GameFacadeTest {
         facade = GameFacade.getFacadeInstance();
         proxy = new TestServerProxy();
         serializer = new ModelInitializer();
-        game = serializer.initializeClientModel(proxy.getGameState());
+        serializer.initializeClientModel(proxy.getGameState());
+        game = GameFacade.getFacadeInstance().getGame();
     }
 
     @After

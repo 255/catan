@@ -5,8 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.HexType;
 import shared.definitions.PortType;
-import shared.locations.EdgeLocation;
-import shared.locations.HexLocation;
+import shared.locations.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,6 +62,9 @@ public class CatanMapTest {
 
     @Test
     public void testGetTowns() throws Exception {
+        assertEquals(new HashMap<EdgeLocation, ITown>(), map.getTowns());
+
+
 
     }
 
@@ -101,8 +103,65 @@ public class CatanMapTest {
 
     }
 
+    /* Test canPlaceRoad and canPlaceInitialRoad methods */
     @Test
     public void testCanPlaceSettlement() throws Exception {
+        // cannot place a settlement with no roads
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(0, 0, VertexDirection.NorthEast)));
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(1, -1, VertexDirection.West)));
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(0, -1, VertexDirection.SouthEast)));
+
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(1, 1, VertexDirection.SouthEast)));
+
+        IRoad road = new Road(player1);
+        map.placeRoad(road, new EdgeLocation(0, 0, EdgeDirection.NorthEast));
+
+        // simple placement next to a road
+        assertTrue(map.canPlaceSettlement(player1, new VertexLocation(0, 0, VertexDirection.NorthEast)));
+        assertTrue(map.canPlaceSettlement(player1, new VertexLocation(1, -1, VertexDirection.West)));
+        assertTrue(map.canPlaceSettlement(player1, new VertexLocation(0, -1, VertexDirection.SouthEast)));
+
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0, 0, VertexDirection.NorthEast));
+
+        // test whether a settlement can be placed where there already is a settlement
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(0, 0, VertexDirection.NorthEast)));
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(1, -1, VertexDirection.West)));
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(0, -1, VertexDirection.SouthEast)));
+
+        // test whether settlements can be placed right next to each other
+        assertNotNull(map.getTownAt(new VertexLocation(0, 0, VertexDirection.NorthEast)));
+        assertNull(map.getTownAt(new VertexLocation(0, 0, VertexDirection.East)));
+
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(0, 0, VertexDirection.East)));
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(1, -1, VertexDirection.SouthWest)));
+        assertFalse(map.canPlaceSettlement(player1, new VertexLocation(1, 0, VertexDirection.NorthWest)));
+
+        assertFalse(map.canPlaceSettlement(player2, new VertexLocation(0, 0, VertexDirection.SouthEast)));
+        assertFalse(map.canPlaceSettlement(player2, new VertexLocation(0, 1, VertexDirection.NorthEast)));
+        assertFalse(map.canPlaceSettlement(player2, new VertexLocation(1, 0, VertexDirection.West)));
+
+        // opponent's roads do not count for placement (player1 can place, not player2)
+        map.placeRoad(new Road(player1), new EdgeLocation(0, 0, EdgeDirection.SouthEast));
+        assertTrue(map.canPlaceSettlement(player1, new VertexLocation(0, 0, VertexDirection.SouthEast)));
+        assertTrue(map.canPlaceSettlement(player1, new VertexLocation(0, 1, VertexDirection.NorthEast)));
+        assertTrue(map.canPlaceSettlement(player1, new VertexLocation(1, 0, VertexDirection.West)));
+
+        assertFalse(map.canPlaceSettlement(player2, new VertexLocation(0, 0, VertexDirection.SouthEast)));
+        assertFalse(map.canPlaceSettlement(player2, new VertexLocation(0, 1, VertexDirection.NorthEast)));
+        assertFalse(map.canPlaceSettlement(player2, new VertexLocation(1, 0, VertexDirection.West)));
+
+        // now, give player2 a road, so placement is valid
+        map.placeRoad(new Road(player2), new EdgeLocation(0, 1, EdgeDirection.NorthEast));
+
+        assertTrue(map.canPlaceSettlement(player2, new VertexLocation(0, 0, VertexDirection.SouthEast)));
+        assertTrue(map.canPlaceSettlement(player2, new VertexLocation(0, 1, VertexDirection.NorthEast)));
+        assertTrue(map.canPlaceSettlement(player2, new VertexLocation(1, 0, VertexDirection.West)));
+
+        // test whether a settlement can be placed where there already a city
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0, 0, VertexDirection.NorthEast));
+
+
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0,0, VertexDirection.SouthEast));
 
     }
 
@@ -118,7 +177,6 @@ public class CatanMapTest {
 
     @Test
     public void testPlaceSettlement() throws Exception {
-
     }
 
     @Test
