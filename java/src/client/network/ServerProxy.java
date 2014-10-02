@@ -82,9 +82,9 @@ public class ServerProxy implements IServerProxy {
     public String sendChat(int playerIndex, String message) throws NetworkException {
         String request =
                 "{" +
-                    "\"type\":" + "sendChat" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"content\":" + message + "," +
+                    "\"type\": " + "sendChat" + "," +
+                    "\"playerIndex\": " + playerIndex + "," +
+                    "\"content\": " + message +
                 "}";
 
         String response = m_httpCommunicator.post("/moves/sendChat", request);

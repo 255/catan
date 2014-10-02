@@ -64,19 +64,22 @@ public class HttpCommunicator implements IHttpCommunicator {
         HttpURLConnection connection = null;
 
         try {
-            URL url = new URL(URL_PREFIX + "/" + commandName);
+            URL url = new URL(URL_PREFIX + commandName);
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod((HTTP_POST));
             connection.setDoOutput(true);
             connection.connect();
             connection.getOutputStream().write(postData.getBytes());
+            connection.getOutputStream().close();
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = connection.getInputStream();
                 byte[] buffer = new byte[inputStream.available()];
                 inputStream.read(buffer);
+                connection.getHeaderFields();
                 connection.getInputStream().close();
                 response = new String(buffer);
+
             } else {
                 throw new NetworkException();
             }

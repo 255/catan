@@ -24,7 +24,7 @@ public class ModelInitializerTest {
     @Before
     public void setUp() throws Exception {
         m_modelInitializer = new ModelInitializer();
-        String clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("/Users/sdaltonb/Desktop/University/BYUFall2014/CS340/CatanProject/catan/sample/sample_client_model.json")));
+        String clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("")));
         m_modelInitializer.initializeClientModel(clientModel);
         m_game = GameFacade.getFacadeInstance().getGame();
     }
@@ -105,10 +105,10 @@ public class ModelInitializerTest {
         ICatanMap testCatanMap = m_game.getMap();
         Collection<ITile> testTiles = testCatanMap.getTiles();
 
-
         // Port tests
 
         // Road tests
+        Collection<IRoad> testRoads = testCatanMap.getRoads();
 
         // Settlements tests
 
