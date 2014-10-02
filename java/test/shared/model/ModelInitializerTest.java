@@ -72,7 +72,7 @@ public class ModelInitializerTest {
         assertEquals("Incorrect number of Monument cards in player hand", 0, testPlayerNewDevCardHand.getCount(DevCardType.MONUMENT));
 
         IPieceBank playerPieceBank = testPlayer.getPieceBank();
-        assertEquals("Incorrect number of roads in player's bank", 0, playerPieceBank.availableRoads());
+        assertEquals("Incorrect number of roads in player's bank", 13, playerPieceBank.availableRoads());
         assertEquals("Incorrect number of cities in player's bank", 4, playerPieceBank.availableCities());
         assertEquals("Incorrect number of settlements in player's bank", 3, playerPieceBank.availableSettlements());
 
