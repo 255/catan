@@ -52,7 +52,7 @@ public class PieceBank implements IPieceBank {
      */
     @Override
     public void setAvailableRoads(int availableRoads) {
-        m_numCities = availableRoads;
+        m_numRoads = availableRoads;
     }
 
     /**
