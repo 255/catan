@@ -63,6 +63,11 @@ public enum EdgeDirection {
         }
     }
 
+    /**
+     * Convert a string to an EdgeDirection.
+     * @param abbr the abbreviation of the direction
+     * @return the correct enum
+     */
     public static EdgeDirection fromAbbreviation(String abbr) {
         switch (abbr.toUpperCase()) {
             case "NE": return NorthEast;

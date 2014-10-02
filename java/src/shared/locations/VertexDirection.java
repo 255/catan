@@ -20,5 +20,22 @@ public enum VertexDirection
 	{
 		return opposite;
 	}
+
+    /**
+     * Convert a string to an EdgeDirection.
+     * @param abbr the abbreviation of the direction
+     * @return the correct enum
+     */
+    public static VertexDirection fromAbbreviation(String abbr) {
+        switch (abbr.toUpperCase()) {
+            case "NE": return NorthEast;
+            case "E" : return East;
+            case "SE": return SouthEast;
+            case "SW": return SouthWest;
+            case "W" : return West;
+            case "NW": return NorthWest;
+            default:   throw new IllegalArgumentException("Illegal VertexDirection abbreviation \"" + abbr + "\"");
+        }
+    }
 }
 

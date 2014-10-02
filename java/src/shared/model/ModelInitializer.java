@@ -658,7 +658,7 @@ public class ModelInitializer implements IModelInitializer {
                     y = reader.nextInt();
                     break;
                 case "direction":
-                    dir = VertexDirection.valueOf(reader.nextString().toUpperCase());
+                    dir = VertexDirection.fromAbbreviation(reader.nextString().toUpperCase());
                     break;
                 default:
                     throw new ModelException("Unrecognized token \"" + name + "\" in vertex location.");
