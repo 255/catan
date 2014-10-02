@@ -61,6 +61,11 @@ public class CatanMapTest {
         }
 
         Map<EdgeLocation, PortType> ports = new HashMap<>();
+        ports.put(new EdgeLocation(-2, 0, EdgeDirection.NorthWest), PortType.BRICK);
+        ports.put(new EdgeLocation(1, -2, EdgeDirection.North), PortType.THREE);
+        ports.put(new EdgeLocation(2, -1, EdgeDirection.SouthEast), PortType.WOOD);
+        ports.put(new EdgeLocation(0, 2, EdgeDirection.South), PortType.SHEEP);
+        ports.put(new EdgeLocation(-1, 2, EdgeDirection.SouthWest), PortType.ORE);
         // ports ?
 
         map = new CatanMap(tiles, ports);

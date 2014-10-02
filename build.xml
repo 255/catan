@@ -2,40 +2,45 @@
 
 	<!-- PROPERTIES -->
 	<!-- ********** -->	
-    
+		
 	<!-- Directory paths for the java server, javascript, and dest dir for the student copy -->
-    <property name="port.arg" value="8081"/>
-    <property name="web.arg" value="gameplay"/>
-    <property name="requests.arg" value="ug"/>
-     
-    <!-- Input folders -->
-    <property name="java.dir" value="java"/>
-    <property name="java.src.dir" value="${java.dir}/src"/>
-    <property name="java.lib.dir" value="${java.dir}/lib"/>
-    <!-- JavaScript source folder -->
-    <property name="javascript.dir" value="gameplay/js"/>
-    
-    <!-- Base output folder -->
-    <property name="dest.dir" value="docs"/>
-    <!-- Javadoc output folder -->
-    <property name="javadoc.dir" value="${dest.dir}/java"/>
-    <!-- YUIDoc output folder -->
-    <property name="yuidoc.dir" value="${dest.dir}/javascript"/>
-    <!-- Jar file path/name from here -->
-    <property name="jar.file" value="server.jar"/>
-   
+		<property name="port.arg" value="8081"/>
+		<property name="web.arg" value="gameplay"/>
+		<property name="requests.arg" value="ug"/>
+		 
+		<!-- Input folders -->
+		<property name="java.dir" value="java"/>
+		<property name="java.src.dir" value="${java.dir}/src"/>
+		<property name="java.test.dir" value="${java.dir}/test"/>
+		<property name="java.lib.dir" value="${java.dir}/lib"/>
+		<!-- JavaScript source folder -->
+		<property name="javascript.dir" value="gameplay/js"/>
+		
+		<!-- Base output folder -->
+		<property name="dest.dir" value="docs"/>
+		<!-- Javadoc output folder -->
+		<property name="javadoc.dir" value="${dest.dir}/java"/>
+		<!-- YUIDoc output folder -->
+		<property name="yuidoc.dir" value="${dest.dir}/javascript"/>
+		<!-- Jar file path/name from here -->
+		<property name="jar.file" value="server.jar"/>
+	 
 	<!-- CLASSPATHS -->
 	<!-- ********** -->
-    
+		
 	<path id="java.lib.classpath">
 		<fileset dir="${java.lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
 	</path>
 
+  <path id="java.tests.classpath">
+    <path refid="java.lib.classpath" />
+    <path location="${java.build}" />
+  </path>
 	<!-- TARGETS -->
 	<!-- ******* -->
-     
+		 
 	<target name="server" description="Runs the demo server">
 		<java jar="${jar.file}" fork="true">
 			<arg value="${port.arg}"/>
@@ -46,10 +51,10 @@
 			</assertions>
 		</java>
 	</target>
-    
-    <target name="make-java-doc" description="Generate the Java docs">
-        <echo> Making Java documentation </echo>
-        <delete dir="${javadoc.dir}"/>
+		
+		<target name="make-java-doc" description="Generate the Java docs">
+				<echo> Making Java documentation </echo>
+				<delete dir="${javadoc.dir}"/>
 		<javadoc destdir="${javadoc.dir}" Package="true">
 			<classpath refid="java.lib.classpath" />
 			<packageset dir="${java.src.dir}">
@@ -57,21 +62,22 @@
 				<include name="shared/**"/>
 			</packageset>
 		</javadoc>
-   </target>
-    
-    <!--
-    <target name="make-js-doc" description="Generate the JavaScript docs">
-        <echo> Making JavaScript documentation </echo>
-        <exec executable="yuidoc">
-            <arg value="-o"/>
-            <arg value="${yuidoc.dir}"/>
-            <arg value="${javascript.dir}"/>
-        </exec>
+	 </target>
+		
+		<!--
+		<target name="make-js-doc" description="Generate the JavaScript docs">
+				<echo> Making JavaScript documentation </echo>
+				<exec executable="yuidoc">
+						<arg value="-o"/>
+						<arg value="${yuidoc.dir}"/>
+						<arg value="${javascript.dir}"/>
+				</exec>
 	</target>
-    -->
+		-->
 
-  	<property name="java.dir" location="java"/>
+	<property name="java.dir" location="java"/>
 	<property name="java.src" location="${java.dir}/src"/>
+	<property name="java.test" location="${java.dir}/test/"/>
 	<property name="java.images" location="${java.dir}/images"/>
 	<property name="java.build" location="${java.dir}/build"/>
 	<property name="java.dist" location="${java.dir}/dist"/>
@@ -87,7 +93,7 @@
 		<delete dir="${java.build}"/>
 		<delete dir="${java.dist}"/>
 	</target>
-    
+		
 	<target name="compile" depends="init" description="compile the source " >
 		<javac srcdir="${java.src}" destdir="${java.build}" debug="true" includeantruntime="true">
 			<classpath refid="java.lib.classpath" />
@@ -107,14 +113,14 @@
 				<include name="**"/>
 			</fileset>
 		</copy>
- 		<jar jarfile="${java.dist}/catan-client.jar" basedir="${java.build}">
+		<jar jarfile="${java.dist}/catan-client.jar" basedir="${java.build}">
 			<manifest>
 				<attribute name="Main-Class" value="client.main.Catan"/>
 				<attribute name="Class-Path" 
 					value="lib/gson-2.2.4.jar" />
 			</manifest>
 		</jar>
- 		<jar jarfile="${java.dist}/catan-server.jar" basedir="${java.build}">
+		<jar jarfile="${java.dist}/catan-server.jar" basedir="${java.build}">
 			<manifest>
 				<attribute name="Main-Class" value="PUT THE NAME OF YOUR SERVER'S MAIN CLASS HERE"/>
 				<attribute name="Class-Path" 
@@ -131,7 +137,7 @@
 			</assertions>
 		</java>
 	</target>
- 	
+
 	<target name="our-server" depends="package" description="compiles, packages, and runs the student server">
 		<java jar="${java.dist}/catan-server.jar" dir="${java.dist}" fork="yes">
 			<sysproperty key="com.sun.management.jmxremote" value=""/>
@@ -140,10 +146,43 @@
 			</assertions>
 		</java>
 	</target>
-    
-    <target name="make-tester-zip" depends="package" description="makes a zip file for your testing team">
-        <zip destfile="./tester.zip" basedir="${java.dist}" />
-    </target>
+		
+		<target name="make-tester-zip" depends="package" description="makes a zip file for your testing team">
+				<zip destfile="./tester.zip" basedir="${java.dist}" />
+		</target>
+
+<!-- JUnit 4 Tests -->
+  <target name="compile-tests" depends="compile" description="compiles the JUnit tests">
+    <javac srcdir="${java.test}" destdir="${java.build}" debug="true" includeantruntime="true">
+			<classpath refid="java.lib.classpath" />
+		</javac>
+  </target>
+  
+  <target name="shared-tests" depends="compile-tests" description="runs the tests for the shared packages">
+    <java classname="shared.SharedUnitTests" dir="${java.build}" fork="yes">
+			<classpath>
+        <path refid="java.lib.classpath" />
+        <path location="${java.build}" />
+			</classpath>
+      <assertions>
+				<enable/>
+			</assertions>
+		</java>
+  </target>
+  
+  <target name="client-tests" depends="compile-tests" description="runs the tests for the shared packages">
+    <java classname="client.ClientUnitTests" dir="${java.build}" fork="yes">
+			<classpath>
+        <path refid="java.lib.classpath" />
+        <path location="${java.build}" />
+			</classpath>
+      <assertions>
+				<enable/>
+			</assertions>
+		</java>
+  </target>
+  
+	<target name="test" depends="shared-tests,client-tests" description="run all JUnit tests"/>
   
 </project>
 
