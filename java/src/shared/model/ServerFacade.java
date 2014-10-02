@@ -1,12 +1,9 @@
 package shared.model;
 
-import client.communication.LogEntry;
 import client.network.HttpCommunicator;
 import client.network.IServerProxy;
 import client.network.NetworkException;
 import client.network.ServerProxy;
-
-import java.util.List;
 
 /**
  * Handles all the calls to the ServerProxy
