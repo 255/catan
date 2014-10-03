@@ -22,4 +22,12 @@ public interface IServerPoller {
      * @param serverProxy the server proxy from which the poller gets updates
      */
     public void setProxy(IServerProxy serverProxy);
+
+    /**
+     * Returns how many times the server poller has polled the server
+     *
+     * @return poll count
+     */
+    public int getPollCount();
+
 }

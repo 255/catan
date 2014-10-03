@@ -21,6 +21,7 @@ public class ServerPoller implements IServerPoller {
     private IServerProxy m_serverProxy;
     private IModelInitializer m_modelSerializer;
     private Timer m_timer;
+    private int m_pollCount = 0;
 
     public ServerPoller(IServerProxy serverProxy) {
         m_serverProxy = serverProxy;
@@ -46,8 +47,13 @@ public class ServerPoller implements IServerPoller {
 
     class QueryTask extends TimerTask {
         public void run() {
-            updateGame();
+           updateGame();
+           ++m_pollCount;
         }
+    }
+
+    public int getPollCount() {
+        return m_pollCount;
     }
 
 

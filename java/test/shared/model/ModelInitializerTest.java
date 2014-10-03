@@ -44,7 +44,7 @@ public class ModelInitializerTest {
         assertEquals("Incorrect number of Soldier cards", 14, testDevCardHand.getCount(DevCardType.SOLDIER));
         assertEquals("Incorrect number of Year of Plenty cards", 2, testDevCardHand.getCount(DevCardType.YEAR_OF_PLENTY));
         assertEquals("Incorrect number of Road Building cards", 2, testDevCardHand.getCount(DevCardType.ROAD_BUILD));
-        assertEquals("Incorrect number of Monument cards", 4, testDevCardHand.getCount(DevCardType.MONUMENT));
+        assertEquals("Incorrect number of Monument cards", 5, testDevCardHand.getCount(DevCardType.MONUMENT));
 
         // Tests that the players have been correctly deserialized
         List<IPlayer> playerList = m_game.getPlayers();
@@ -62,7 +62,7 @@ public class ModelInitializerTest {
         assertEquals("Incorrect number of Soldier cards in player hand", 0, testPlayerOldDevCardHand.getCount(DevCardType.SOLDIER));
         assertEquals("Incorrect number of Year of Plenty cards in player hand", 0, testPlayerOldDevCardHand.getCount(DevCardType.YEAR_OF_PLENTY));
         assertEquals("Incorrect number of Road Building cards in player hand", 0, testPlayerOldDevCardHand.getCount(DevCardType.ROAD_BUILD));
-        assertEquals("Incorrect number of Monument cards in player hand", 1, testPlayerOldDevCardHand.getCount(DevCardType.MONUMENT));
+        assertEquals("Incorrect number of Monument cards in player hand", 0, testPlayerOldDevCardHand.getCount(DevCardType.MONUMENT));
 
         IDevCardHand testPlayerNewDevCardHand = testPlayer.getNewDevCards();
         assertEquals("Incorrect number of Monopoly cards in player hand", 0, testPlayerNewDevCardHand.getCount(DevCardType.MONOPOLY));
