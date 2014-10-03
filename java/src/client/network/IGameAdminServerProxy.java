@@ -1,5 +1,7 @@
 package client.network;
 
+import shared.definitions.CatanColor;
+
 import java.util.List;
 
 /**
@@ -57,11 +59,11 @@ public interface IGameAdminServerProxy {
      *
      * @param gameId id of game user is attempting to join
      * @param playerColor color of user attempting to join game
-     * @return a JSON object representing the current Catan Model after this method has been called
+     * @return a flag indicating if joining the game was successful or not
      *
      * @throws NetworkException something went wrong when attempting to communicate with the server
      */
-    public String joinGame(int gameId, String playerColor) throws NetworkException;
+    public boolean joinGame(int gameId, CatanColor playerColor) throws NetworkException;
 
     /**
      *
