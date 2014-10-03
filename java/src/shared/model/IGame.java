@@ -128,5 +128,11 @@ public interface IGame {
      * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
      * @return true / false
      */
-    public boolean localPlayerCanPlay();
+    public boolean localPlayerIsPlaying();
+
+    /**
+     * Return true if it is the local player's turn.
+     * @return true if it is the local player's turn
+     */
+    public boolean isLocalPlayersTurn();
 }

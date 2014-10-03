@@ -246,7 +246,7 @@ public class CatanMapTest {
         assertFalse(map.canPlaceRoad(player1, new EdgeLocation(-1, -1, EdgeDirection.North)));
     }
 
-    /* Test canPlaceRoad and canPlaceInitialRoad methods */
+    /* Test canPlaceSettlement method */
     @Test
     public void testCanPlaceSettlement() throws Exception {
         // cannot place a settlement with no roads

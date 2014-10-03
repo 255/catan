@@ -58,10 +58,6 @@ public class GameModelFacadeTest {
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canPlaceRoad(edge1));
 
-        game.setGameState(GameState.FIRST_ROUND);
-        assertTrue("Place free road", facade.canPlaceRoad(edge1));
-        game.setGameState(GameState.PLAYING);
-
         game.setCurrentPlayer(game.getPlayers().get(1));
         game.setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canPlaceRoad(edge1));

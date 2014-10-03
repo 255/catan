@@ -216,7 +216,17 @@ public class Game implements IGame {
      * @return true / false
      */
     @Override
-    public boolean localPlayerCanPlay() {
+    public boolean localPlayerIsPlaying() {
         return m_localPlayer.equals(m_currentPlayer) && m_state == GameState.PLAYING;
+    }
+
+    /**
+     * Return true if it is the local player's turn.
+     *
+     * @return true if it is the local player's turn
+     */
+    @Override
+    public boolean isLocalPlayersTurn() {
+        return m_currentPlayer.equals(m_localPlayer);
     }
 }

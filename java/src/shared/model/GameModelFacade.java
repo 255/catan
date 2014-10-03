@@ -64,34 +64,21 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceRoad(EdgeLocation edge) {
-        if (!m_theGame.localPlayerCanPlay()) {
+        if (!m_theGame.isLocalPlayersTurn()) {
             return false;
         }
 
-        // is the spot open on the map?
-        boolean mapOpen = m_theGame.getMap().canPlaceRoad(m_theGame.getLocalPlayer(), edge);
-        // does the player have enough resources to build the road?
-        boolean haveResourcesAndPiece = m_theGame.getLocalPlayer().canBuySettlement();
-
-        return mapOpen && haveResourcesAndPiece;
-    }
-
-    /** During first or second rounds, the rules for road placement are different.
-     * This function must used in the first rounds instead of canPlaceRoad
-     * and must not be used anywhere else. (This is verified by assertions.)
-     * @param edge the edge where to place the road
-     * @return true if first or second round and road placement is valid for local player
-     */
-    @Override
-    public boolean canPlaceInitialRoad(EdgeLocation edge) {
-        assert isFreeRound();
-        assert edge != null;
-
-        if (!isFreeRound() || m_theGame.getLocalPlayer().getPieceBank().availableCities() == 0) {
-            return false;
+        // road placement rules are different for initial roads
+        if (isFreeRound()) {
+            return m_theGame.getMap().canPlaceInitialRoad(m_theGame.getLocalPlayer(), edge);
         }
 
-        return m_theGame.getMap().canPlaceInitialRoad(m_theGame.getLocalPlayer(), edge);
+        // if playing, check the map with normal rules
+        if (m_theGame.getGameState() == GameState.PLAYING) {
+            return m_theGame.getMap().canPlaceRoad(m_theGame.getLocalPlayer(), edge);
+        }
+
+        return false;
     }
 
     /**
@@ -104,19 +91,26 @@ public class GameModelFacade implements IGameModelFacade {
     public boolean canPlaceSettlement(VertexLocation vertex) {
         assert vertex != null;
 
-        if (m_theGame.getGameState() != GameState.PLAYING) {
+        // check if it's the player's turn
+        if (!m_theGame.isLocalPlayersTurn()) {
             return false;
         }
 
-        // is the map open in at the vertex?
-        boolean mapOpen = m_theGame.getMap().canPlaceSettlement(m_theGame.getLocalPlayer(), vertex);
-        // does the player have enough resources?
-        boolean haveResources = m_theGame.getLocalPlayer().canAfford(Prices.SETTLEMENT);
-        // does the player have enough pieces
-        boolean hasPiece = m_theGame.getLocalPlayer().getPieceBank().availableSettlements() > 0;
+        // check if map is open (same logic for initial round and normal playing
+        if (!m_theGame.getMap().canPlaceSettlement(m_theGame.getLocalPlayer(), vertex)) {
+            return false;
+        }
 
+        // check if a normal gameplay
+        if (m_theGame.getGameState() == GameState.PLAYING) {
+            return m_theGame.getLocalPlayer().canBuySettlement();
+        }
 
-        return mapOpen && (isFreeRound() || haveResources) && hasPiece;
+        // assert that (if it's a free round) the player has enough pieces
+        assert !isFreeRound() || m_theGame.getLocalPlayer().getPieceBank().availableSettlements() > 0;
+
+        // if it's a free round, they can place
+        return isFreeRound();
     }
 
     /**
@@ -213,7 +207,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyCity() {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canBuyCity();
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canBuyCity();
     }
 
     /**
@@ -223,7 +217,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyRoad() {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canBuyRoad();
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canBuyRoad();
     }
 
     /**
@@ -233,7 +227,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuySettlement() {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canBuySettlement();
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canBuySettlement();
     }
 
     /**
@@ -243,7 +237,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyDevCard() {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canAfford(Prices.DEV_CARD)
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canAfford(Prices.DEV_CARD)
                 && m_theGame.getDevCards().getCount() > 0;
     }
 
@@ -265,7 +259,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayDevCard() {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canPlayDevCard();
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard();
     }
 
     /**
@@ -275,7 +269,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonopoly(ResourceType resource) {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONOPOLY);
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONOPOLY);
     }
 
     /**
@@ -285,7 +279,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaySoldier(HexLocation robberDestination) {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER) // has and can play card
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER) // has and can play card
                 && !robberDestination.equals(m_theGame.getMap().getRobber()); // moved robber
     }
 
@@ -300,7 +294,7 @@ public class GameModelFacade implements IGameModelFacade {
     @Override
     public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
         IResourceBank bank = m_theGame.getResourceBank();
-        return m_theGame.localPlayerCanPlay() && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
+        return m_theGame.localPlayerIsPlaying() && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
     }
 
     /**
@@ -310,7 +304,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonument() {
-        return m_theGame.localPlayerCanPlay() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONUMENT);
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONUMENT);
     }
 
     /**
@@ -327,7 +321,7 @@ public class GameModelFacade implements IGameModelFacade {
         ICatanMap map = m_theGame.getMap();
         IPlayer player = m_theGame.getLocalPlayer();
 
-        return m_theGame.localPlayerCanPlay() && map.canPlaceTwoRoads(player, edge1, edge2);
+        return m_theGame.localPlayerIsPlaying() && map.canPlaceTwoRoads(player, edge1, edge2);
     }
 
     /**
