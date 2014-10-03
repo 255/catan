@@ -87,9 +87,9 @@ public class GameFacade implements IGameFacade {
             return false;
 
         // is the spot open on the map?
-        boolean mapOpen = m_theGame.getMap().canPlaceRoad(m_theGame.getCurrentPlayer(),edge);
+        boolean mapOpen = m_theGame.getMap().canPlaceRoad(m_theGame.getLocalPlayer(),edge);
         // does the player have enough resources to build the road?
-        boolean haveResources = m_theGame.getCurrentPlayer().canAfford(Prices.ROAD);
+        boolean haveResources = m_theGame.getLocalPlayer().canAfford(Prices.ROAD);
 
         return mapOpen && (isFreeRound() || haveResources);
     }
@@ -106,9 +106,9 @@ public class GameFacade implements IGameFacade {
             return false;
 
         // is the map open in at the vertex?
-        boolean mapOpen = m_theGame.getMap().canPlaceSettlement(m_theGame.getCurrentPlayer(), vertex);
+        boolean mapOpen = m_theGame.getMap().canPlaceSettlement(m_theGame.getLocalPlayer(), vertex);
         // does the player have enough resources?
-        boolean haveResources = m_theGame.getCurrentPlayer().canAfford(Prices.SETTLEMENT);
+        boolean haveResources = m_theGame.getLocalPlayer().canAfford(Prices.SETTLEMENT);
 
         return mapOpen && (isFreeRound() || haveResources);
     }
@@ -125,9 +125,9 @@ public class GameFacade implements IGameFacade {
             return false;
 
         // is there a settlement at the vertex?
-        boolean mapOpen = m_theGame.getMap().canPlaceCity(m_theGame.getCurrentPlayer(), vertex);
+        boolean mapOpen = m_theGame.getMap().canPlaceCity(m_theGame.getLocalPlayer(), vertex);
         // does the player have enough resources?
-        boolean haveResources = m_theGame.getCurrentPlayer().canAfford(Prices.CITY);
+        boolean haveResources = m_theGame.getLocalPlayer().canAfford(Prices.CITY);
 
         return mapOpen && (isFreeRound() || haveResources);
     }
@@ -145,7 +145,7 @@ public class GameFacade implements IGameFacade {
         assert canPlaceRoad(edge);
 
         try {
-            m_theProxy.buildRoad(m_theGame.getCurrentPlayer().getIndex(), edge, isFreeRound());
+            m_theProxy.buildRoad(m_theGame.getLocalPlayer().getIndex(), edge, isFreeRound());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -164,7 +164,7 @@ public class GameFacade implements IGameFacade {
         assert canPlaceSettlement(vertex);
 
         try {
-            m_theProxy.buildSettlement(m_theGame.getCurrentPlayer().getIndex(), vertex, isFreeRound());
+            m_theProxy.buildSettlement(m_theGame.getLocalPlayer().getIndex(), vertex, isFreeRound());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -183,7 +183,7 @@ public class GameFacade implements IGameFacade {
         assert canPlaceCity(vertex);
 
         try {
-            m_theProxy.buildCity(m_theGame.getCurrentPlayer().getIndex(), vertex);
+            m_theProxy.buildCity(m_theGame.getLocalPlayer().getIndex(), vertex);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -194,7 +194,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void buyDevCard() throws ModelException {
-        IPlayer curPlayer = m_theGame.getCurrentPlayer();
+        IPlayer curPlayer = m_theGame.getLocalPlayer();
         assert curPlayer.canAfford(Prices.DEV_CARD);
         assert m_theGame.getDevCards().getCount() > 0;
         assert playingOnlyPreconditions();
@@ -220,7 +220,7 @@ public class GameFacade implements IGameFacade {
         assert genDevCardPreConditions(DevCardType.SOLDIER);
 
         try {
-            m_theProxy.playSoldier(m_theGame.getCurrentPlayer().getIndex(), hex, victim);
+            m_theProxy.playSoldier(m_theGame.getLocalPlayer().getIndex(), hex, victim);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -233,7 +233,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void playYearOfPlenty(ResourceType r1, ResourceType r2) throws ModelException {
-        IPlayer curPlayer = m_theGame.getCurrentPlayer();
+        IPlayer curPlayer = m_theGame.getLocalPlayer();
         IResourceBank rb = m_theGame.getResourceBank();
         IResourceBank request = new ResourceBank();
         request.add(IResourceBank.resourceToBank(r1));
@@ -255,7 +255,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void playRoadBuilding(EdgeLocation e1, EdgeLocation e2) throws ModelException {
-        IPlayer curPlayer = m_theGame.getCurrentPlayer();
+        IPlayer curPlayer = m_theGame.getLocalPlayer();
 
         // TODO might be a bug where it doesn't detect if the second road can be built on the first road's location
         assert canPlaceRoad(e1) && canPlaceRoad(e2);
@@ -278,7 +278,7 @@ public class GameFacade implements IGameFacade {
         assert genDevCardPreConditions(DevCardType.MONOPOLY);
 
         try {
-            m_theProxy.playMonopoly(m_theGame.getCurrentPlayer().getIndex(), rType);
+            m_theProxy.playMonopoly(m_theGame.getLocalPlayer().getIndex(), rType);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -292,7 +292,7 @@ public class GameFacade implements IGameFacade {
         assert genDevCardPreConditions(DevCardType.MONUMENT);
 
         try {
-            m_theProxy.playMonument(m_theGame.getCurrentPlayer().getIndex());
+            m_theProxy.playMonument(m_theGame.getLocalPlayer().getIndex());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -309,7 +309,7 @@ public class GameFacade implements IGameFacade {
         assert (victim >= 0 && victim <= 3);
 
         try {
-            m_theProxy.robPlayer(m_theGame.getCurrentPlayer().getIndex(), victim, hex);
+            m_theProxy.robPlayer(m_theGame.getLocalPlayer().getIndex(), victim, hex);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -334,8 +334,6 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<IRoad> getRoads() {
-        assert m_theGame.getCurrentPlayer().getRoads() != null;
-
         return m_theGame.getCurrentPlayer().getRoads();
     }
 
@@ -426,9 +424,9 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public IResourceBank getPlayerResources() {
-        assert m_theGame.getCurrentPlayer().getResources() != null;
+        assert m_theGame.getLocalPlayer().getResources() != null;
 
-        return m_theGame.getCurrentPlayer().getResources();
+        return m_theGame.getLocalPlayer().getResources();
     }
 
     /**
@@ -438,7 +436,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public Collection<PortType> getPlayerPorts() {
-        Collection<PortType> ports = m_theGame.getMap().getPlayersPorts(m_theGame.getCurrentPlayer());
+        Collection<PortType> ports = m_theGame.getMap().getPlayersPorts(m_theGame.getLocalPlayer());
 
         assert ports != null;
 
@@ -480,7 +478,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void acceptTrade(boolean willAccept, IResourceBank tradeBundle) throws ModelException {
-        IPlayer p = m_theGame.getCurrentPlayer();
+        IPlayer p = m_theGame.getLocalPlayer();
         assert m_theGame.getTradeOffer().getReceiver().equals(p);
         if(willAccept)
             assert p.getResources().canAfford(tradeBundle);
@@ -500,7 +498,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException {
-        IPlayer p = m_theGame.getCurrentPlayer();
+        IPlayer p = m_theGame.getLocalPlayer();
         assert p.canAfford(offer);
         assert playingOnlyPreconditions();
 
@@ -520,7 +518,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void maritimeTrade(int ratio, ResourceType giving, ResourceType getting) throws ModelException {
-        IPlayer p = m_theGame.getCurrentPlayer();
+        IPlayer p = m_theGame.getLocalPlayer();
         assert p.getResources().getCount(giving) >= ratio;
         assert playingOnlyPreconditions();
 
@@ -538,7 +536,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void discardCards(IResourceBank discardedCards) throws ModelException {
-        IPlayer p = m_theGame.getCurrentPlayer();
+        IPlayer p = m_theGame.getLocalPlayer();
         assert (m_theGame.getGameState() == GameState.DISCARDING);
         assert p.getResources().getCount() > 7;
         // TODO not sure how to test if the user has the cards they are choosing to discard
@@ -557,7 +555,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void rollNumber(int rolledNumber) throws ModelException {
-        IPlayer p = m_theGame.getCurrentPlayer();
+        IPlayer p = m_theGame.getLocalPlayer();
         assert rolledNumber >= 2 && rolledNumber <= 12;
         assert m_theGame.getGameState() == GameState.ROLLING;
         assert p.equals(m_theGame.getLocalPlayer()); // it's the local player's turn
@@ -574,7 +572,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public void finishTurn() throws ModelException {
-        IPlayer p = m_theGame.getCurrentPlayer();
+        IPlayer p = m_theGame.getLocalPlayer();
         assert m_theGame.getGameState() == GameState.PLAYING;
         assert playingOnlyPreconditions();
 
@@ -593,7 +591,7 @@ public class GameFacade implements IGameFacade {
 
     // this method checks the general preconditions for dev cards outlined in the REST API
     private boolean genDevCardPreConditions(DevCardType dType) {
-        IPlayer curP = m_theGame.getCurrentPlayer();
+        IPlayer curP = m_theGame.getLocalPlayer();
         boolean hasCard = (curP.getPlayableDevCards().getCount(dType) > 0);
         boolean noCardsPlayed = curP.hasPlayedDevCard();
         boolean curPlayerTurn = m_theGame.getLocalPlayer().equals(curP);
@@ -604,7 +602,7 @@ public class GameFacade implements IGameFacade {
 
     // this method checks for the General Preconditions for 'Playing' only moves
     private boolean playingOnlyPreconditions() {
-        IPlayer p = m_theGame.getCurrentPlayer();
+        IPlayer p = m_theGame.getLocalPlayer();
         boolean localPlayerTurn = p.equals(m_theGame.getLocalPlayer());
         boolean inPlayingState = m_theGame.getGameState() == GameState.PLAYING;
 
