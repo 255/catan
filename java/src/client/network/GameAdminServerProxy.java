@@ -1,6 +1,7 @@
 package client.network;
 
 import com.google.gson.JsonObject;
+import shared.definitions.CatanColor;
 
 import java.util.List;
 
@@ -27,61 +28,52 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
 
     @Override
     public boolean register(String username, String password) throws NetworkException {
-        String request =
-                "{" +
-                        "\"username\":" + username + "," +
-                        "\"password\":" + password + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("username", username);
+        json.addProperty("password", password);
 
-        String response = m_httpCommunicator.post("/user/register", "");
+        String response = m_httpCommunicator.post("/user/register", json.toString());
 
         return (response != null ? true : false);
     }
 
     @Override
     public String listGames() throws NetworkException {
-        String response = m_httpCommunicator.get("/games/list");
-        return response;
+        return m_httpCommunicator.get("/games/list");
     }
 
     @Override
     public String createGame(boolean randTiles, boolean randNum, boolean randPorts, String name) throws NetworkException {
-        String request =
-                "{" +
-                        "\"randomTiles\":" + randTiles + "," +
-                        "\"randomNumbers\":" + randNum + "," +
-                        "\"randomPorts\":" + randPorts + "," +
-                        "\"name\":" + name +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("randomTiles", randTiles);
+        json.addProperty("randomNumbers", randNum);
+        json.addProperty("randomPorts", randPorts);
+        json.addProperty("name", name);
 
-        String response = m_httpCommunicator.post("/games/create", request);
-        return response;
+        return m_httpCommunicator.post("/games/create", json.toString());
     }
 
     @Override
-    public String joinGame(int gameId, String playerColor) throws NetworkException {
+    public boolean joinGame(int gameId, CatanColor playerColor) throws NetworkException {
         JsonObject json = new JsonObject();
         json.addProperty("id", gameId);
-        json.addProperty("color", "orange");
+        json.addProperty("color", playerColor.name());
         String response = m_httpCommunicator.post("/games/join", json.toString());
 
-        return response;
+        return response != null;
     }
 
     @Override
     public String listAI() throws NetworkException {
-        String response = m_httpCommunicator.post("/games/listAI", "");
-        return response;
+        return m_httpCommunicator.get("/games/listAI");
     }
 
     @Override
     public String addAI(String name) throws NetworkException {
-        String request =
-                "{" +
-                        "\"AIType\":" + name +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("AIType", name);
 
-        String response = m_httpCommunicator.post("/games/addAI", "");
+        String response = m_httpCommunicator.post("/games/addAI", json.toString());
 
         return response;
     }
