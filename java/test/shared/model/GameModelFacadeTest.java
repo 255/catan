@@ -21,8 +21,6 @@ public class GameModelFacadeTest {
         String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
         serializer.initializeClientModel(testJSON, 0);
         game = GameModelFacade.getInstance().getGame();
-        IPlayer player = game.getLocalPlayer();
-        game.setLocalPlayer(player);
     }
 
     @After
@@ -156,7 +154,7 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlaceInitialRoad() throws Exception {
-
+        IGame initGame = initAGame("sample/empty_board.json");
     }
 
     @Test
@@ -247,5 +245,16 @@ public class GameModelFacadeTest {
     @Test
     public void testIsFreeRound() throws Exception {
 
+    }
+
+    //************************//
+    // private helper methods //
+    //************************//
+
+    private IGame initAGame(String jsonTestFile) throws Exception {
+        String emptyBoardJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(jsonTestFile)));
+        ModelInitializer initModel = new ModelInitializer();
+        initModel.initializeClientModel(emptyBoardJSON, 0);
+        return GameModelFacade.getInstance().getGame();
     }
 }
