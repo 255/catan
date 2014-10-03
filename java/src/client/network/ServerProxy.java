@@ -1,5 +1,6 @@
 package client.network;
 
+import com.google.gson.JsonObject;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -80,14 +81,14 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String sendChat(int playerIndex, String message) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\": " + "sendChat" + "," +
-                    "\"playerIndex\": " + playerIndex + "," +
-                    "\"content\": " + message +
-                "}";
 
-        String response = m_httpCommunicator.post("/moves/sendChat", request);
+        String[] request = new String[] {"sendChat", Integer.toString(playerIndex), message };
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "sendChat");
+        json.addProperty("playerIndex", playerIndex);
+        json.addProperty("content", message);
+
+        String response = m_httpCommunicator.post("/moves/sendChat", json.toString());
 
         return response;
     }
@@ -501,5 +502,11 @@ public class ServerProxy implements IServerProxy {
         String response = m_httpCommunicator.post("/moves/robPlayer", request);
 
         return response;
+
+    }
+
+    @Override
+    public int getPlayerId() {
+        return m_httpCommunicator.getPlayerId();
     }
 }

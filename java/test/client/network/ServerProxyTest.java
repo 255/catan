@@ -17,11 +17,15 @@ public class ServerProxyTest {
 
     private IHttpCommunicator m_httpCommunicator;
     private IServerProxy m_serverProxy;
+    private IGameAdminServerProxy m_gameAdminProxy;
 
     @Before
     public void setUp() throws Exception {
         m_httpCommunicator = new HttpCommunicator();
         m_serverProxy = new ServerProxy(m_httpCommunicator);
+        m_gameAdminProxy = new GameAdminServerProxy((m_httpCommunicator));
+        m_gameAdminProxy.login("Sam", "sam");
+        m_gameAdminProxy.joinGame(0, "orange");
     }
 
     @After

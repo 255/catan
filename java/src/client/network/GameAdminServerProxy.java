@@ -1,5 +1,7 @@
 package client.network;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 /**
@@ -15,15 +17,12 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
 
     @Override
     public boolean login(String username, String password) throws NetworkException {
-        String request =
-                "{" +
-                        "\"username\":" + username + "," +
-                        "\"password\":" + password + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("username", username);
+        json.addProperty("password", password);
+        String response = m_httpCommunicator.post("/user/login", json.toString());
 
-        String response = m_httpCommunicator.post("/user/login", request);
-
-        return (response != null ? true : false);
+        return response != null;
     }
 
     @Override
@@ -61,12 +60,10 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
 
     @Override
     public String joinGame(int gameId, String playerColor) throws NetworkException {
-        String request =
-                "{" +
-                        "\"id\":" + gameId + "," +
-                        "\"color\":" + playerColor + "," +
-                "}";
-        String response = m_httpCommunicator.post("/games/join", request);
+        JsonObject json = new JsonObject();
+        json.addProperty("id", gameId);
+        json.addProperty("color", "orange");
+        String response = m_httpCommunicator.post("/games/join", json.toString());
 
         return response;
     }

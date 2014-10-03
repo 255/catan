@@ -250,4 +250,11 @@ public interface IServerProxy {
      * @throws NetworkException indicates that an error occurred while attempting to communicate with the server
      */
     public String robPlayer(int robbingPlayerIndex, int victimIndex, HexLocation hex) throws NetworkException;
+
+    /**
+     * Returns the id of the current player
+     *
+     * @return id of current player
+     */
+    public int getPlayerId();
 }

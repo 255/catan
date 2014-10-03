@@ -14,7 +14,7 @@ public interface IHttpCommunicator {
      *
      * @throws NetworkException indicates that an error occurred while connecting to the server
      */
-    String get(String url) throws NetworkException;
+    public String get(String url) throws NetworkException;
 
     /**
      * The Http Post Methods. It sends data to a server and performs
@@ -26,5 +26,19 @@ public interface IHttpCommunicator {
      *
      * @throws NetworkException indicates that an error occurred while connecting to the server
      */
-    String post(String url, String data) throws NetworkException;
+    public String post(String url, String data) throws NetworkException;
+
+    /**
+     * Returns the id of the player
+     *
+     * @return id of player
+     */
+    public int getPlayerId();
+
+    /**
+     * Returns the id of the current game the player is a part of
+     *
+     * @return current game id
+     */
+    public int getGameIdCookie();
 }

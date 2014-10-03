@@ -1,14 +1,23 @@
 package client.network;
 
+import com.google.gson.JsonObject;
+import client.network.NetworkException;
+
 import java.util.List;
 
 /**
  * @author StevenBarnett
  */
 public class GameAdministrator implements IGameAdministrator {
+
+    private IHttpCommunicator m_httpCommunicator;
+
+    public GameAdministrator(IHttpCommunicator httpCommunicator) {
+        m_httpCommunicator = httpCommunicator;
+    }
+
     @Override
     public boolean login(String username, String password) {
-
         return false;
     }
 
