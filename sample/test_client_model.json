@@ -161,47 +161,39 @@
     ],
     "roads": [
       {
-        "owner": 1,
+        "owner": 0,
         "location": {
-          "direction": "S",
-          "x": -1,
-          "y": -1
-        }
-      },
-      {
-        "owner": 3,
-        "location": {
-          "direction": "SW",
-          "x": -1,
-          "y": 1
-        }
-      },
-      {
-        "owner": 3,
-        "location": {
-          "direction": "SW",
-          "x": 2,
-          "y": -2
-        }
-      },
-      {
-        "owner": 2,
-        "location": {
-          "direction": "S",
-          "x": 1,
-          "y": -1
+          "direction": "N",
+          "x": 0,
+          "y": 0
         }
       },
       {
         "owner": 0,
         "location": {
-          "direction": "S",
+          "direction": "NW",
           "x": 0,
-          "y": 1
+          "y": 0
         }
       },
       {
-        "owner": 2,
+        "owner": 0,
+        "location": {
+          "direction": "NE",
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "owner": 0,
+        "location": {
+          "direction": "SE",
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "owner": 1,
         "location": {
           "direction": "S",
           "x": 0,
@@ -212,83 +204,51 @@
         "owner": 1,
         "location": {
           "direction": "SW",
-          "x": -2,
-          "y": 1
+          "x": 0,
+          "y": 0
         }
       },
       {
-        "owner": 0,
+        "owner": 1,
         "location": {
-          "direction": "SW",
-          "x": 2,
-          "y": 0
+          "direction": "NW",
+          "x": 0,
+          "y": 2
+        }
+      },
+      {
+        "owner": 1,
+        "location": {
+          "direction": "N",
+          "x": 0,
+          "y": 2
         }
       }
     ],
     "cities": [],
     "settlements": [
       {
-        "owner": 3,
+        "owner": 0,
         "location": {
-          "direction": "SW",
-          "x": -1,
-          "y": 1
-        }
-      },
-      {
-        "owner": 3,
-        "location": {
-          "direction": "SE",
-          "x": 1,
-          "y": -2
-        }
-      },
-      {
-        "owner": 2,
-        "location": {
-          "direction": "SW",
+          "direction": "NE",
           "x": 0,
           "y": 0
         }
       },
       {
-        "owner": 2,
-        "location": {
-          "direction": "SW",
-          "x": 1,
-          "y": -1
-        }
-      },
-      {
         "owner": 1,
-        "location": {
-          "direction": "SW",
-          "x": -2,
-          "y": 1
-        }
-      },
-      {
-        "owner": 0,
         "location": {
           "direction": "SE",
           "x": 0,
-          "y": 1
+          "y": 0
         }
       },
       {
         "owner": 1,
         "location": {
-          "direction": "SW",
-          "x": -1,
-          "y": -1
-        }
-      },
-      {
-        "owner": 0,
-        "location": {
-          "direction": "SW",
-          "x": 2,
-          "y": 0
+          "direction": "W",
+          "x": 0,
+          "y": 2
         }
       }
     ],
@@ -380,11 +340,11 @@
   "players": [
     {
       "resources": {
-        "brick": 0,
-        "wood": 1,
-        "sheep": 1,
-        "wheat": 1,
-        "ore": 0
+        "brick": 100,
+        "wood": 100,
+        "sheep": 100,
+        "wheat": 100,
+        "ore": 100
       },
       "oldDevCards": {
         "yearOfPlenty": 0,
@@ -415,11 +375,11 @@
     },
     {
       "resources": {
-        "brick": 1,
+        "brick": 0,
         "wood": 0,
-        "sheep": 1,
+        "sheep": 0,
         "wheat": 0,
-        "ore": 1
+        "ore": 0
       },
       "oldDevCards": {
         "yearOfPlenty": 0,
@@ -450,11 +410,11 @@
     },
     {
       "resources": {
-        "brick": 0,
-        "wood": 1,
-        "sheep": 1,
-        "wheat": 1,
-        "ore": 0
+        "brick": 100,
+        "wood": 100,
+        "sheep": 100,
+        "wheat": 100,
+        "ore": 100
       },
       "oldDevCards": {
         "yearOfPlenty": 0,
@@ -470,9 +430,9 @@
         "roadBuilding": 0,
         "monument": 0
       },
-      "roads": 13,
-      "cities": 4,
-      "settlements": 3,
+      "roads": 0,
+      "cities": 0,
+      "settlements": 0,
       "soldiers": 0,
       "victoryPoints": 2,
       "monuments": 0,
@@ -630,7 +590,7 @@
     "ore": 22
   },
   "turnTracker": {
-    "status": "Rolling",
+    "status": "Playing",
     "currentTurn": 0,
     "longestRoad": -1,
     "largestArmy": -1

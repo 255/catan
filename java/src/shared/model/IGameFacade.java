@@ -2,6 +2,7 @@ package shared.model;
 
 import client.communication.LogEntry;
 import client.data.PlayerInfo;
+import client.network.IServerProxy;
 import client.network.NetworkException;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
@@ -18,6 +19,9 @@ import java.util.ResourceBundle;
  */
 public interface IGameFacade {
 
+    public void setProxy(IServerProxy serverProxy);
+
+    public void setGame(IGame game);
     /**
      * Takes an edge location and determines if a road can be placed on it
      *

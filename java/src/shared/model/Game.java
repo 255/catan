@@ -23,6 +23,8 @@ public class Game implements IGame {
 
     public Game(GameState state, IPlayer currentPlayer, IPlayer localPlayer, List<IPlayer> players, IResourceBank resourceBank,
                 ICatanMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer, ILog gameplayLog, ILog chatHistory) {
+        assert state != null && currentPlayer != null && localPlayer != null && players != null && resourceBank != null
+                && map != null && longestRoad != null && largestArmy != null && tradeOffer != null && gameplayLog != null && chatHistory != null;
         setGameState(state);
         setCurrentPlayer(currentPlayer);
         setLocalPlayer(localPlayer);
@@ -59,8 +61,9 @@ public class Game implements IGame {
     }
 
     @Override
-    public void setDevCards(IDevCardHand m_devCards) {
-        this.m_devCards = m_devCards;
+    public void setDevCards(IDevCardHand devCards) {
+        assert devCards != null;
+        this.m_devCards = devCards;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class Game implements IGame {
 
     @Override
     public void setGameState(GameState state) {
+        assert state != null;
         m_state = state;
     }
 
@@ -80,6 +84,7 @@ public class Game implements IGame {
 
     @Override
     public void setCurrentPlayer(IPlayer currentPlayer) {
+        assert currentPlayer != null;
         m_currentPlayer = currentPlayer;
     }
 
@@ -90,6 +95,7 @@ public class Game implements IGame {
 
     @Override
     public void setLocalPlayer(IPlayer localPlayer) {
+        assert localPlayer != null;
         m_localPlayer = localPlayer;
     }
 
@@ -100,6 +106,7 @@ public class Game implements IGame {
 
     @Override
     public void setPlayers(List<IPlayer> players) {
+        assert players != null;
         m_players = players;
     }
 
@@ -115,6 +122,7 @@ public class Game implements IGame {
 
     @Override
     public void setResourceBank(IResourceBank bank) {
+        assert bank != null;
         m_resourceBank = bank;
     }
 
@@ -125,6 +133,7 @@ public class Game implements IGame {
 
     @Override
     public void setMap(ICatanMap map) {
+        assert map != null;
         m_map = map;
     }
 
@@ -155,6 +164,7 @@ public class Game implements IGame {
 
     @Override
     public void setTradeOffer(ITradeOffer tradeOffer) {
+        assert tradeOffer != null;
         m_tradeOffer = tradeOffer;
     }
 
@@ -165,6 +175,7 @@ public class Game implements IGame {
 
     @Override
     public void setGameplayLog(ILog gameplayLog) {
+        assert gameplayLog != null;
         m_gameplayLog = gameplayLog;
     }
 
@@ -175,12 +186,8 @@ public class Game implements IGame {
 
     @Override
     public void setChatHistory(ILog chatHistory) {
+        assert chatHistory != null;
         m_chatHistory = chatHistory;
-    }
-
-    @Override
-    public void setVersion(int version) {
-        m_version = version;
     }
 
     @Override
@@ -189,12 +196,18 @@ public class Game implements IGame {
     }
 
     @Override
-    public void setWinner(IPlayer winner) {
-        m_winner = winner;
+    public void setVersion(int version) {
+        m_version = version;
     }
 
     @Override
     public IPlayer getWinner() {
         return m_winner;
+    }
+
+    @Override
+    public void setWinner(IPlayer winner) {
+        assert winner != null;
+        m_winner = winner;
     }
 }

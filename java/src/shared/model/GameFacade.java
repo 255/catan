@@ -48,6 +48,7 @@ public class GameFacade implements IGameFacade {
      *
      * @param game the Game object to point the GameFacade at
      */
+    @Override
     public void setGame(IGame game) {
         assert game != null;
 
@@ -67,6 +68,7 @@ public class GameFacade implements IGameFacade {
      *
      * @param serverProxy the server proxy for the game facade to use
      */
+    @Override
     public void setProxy(IServerProxy serverProxy) {
         assert serverProxy != null;
 
@@ -81,7 +83,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public boolean canPlaceRoad(EdgeLocation edge) {
-        if(edge == null)
+        if(edge == null || (m_theGame.getGameState() != GameState.PLAYING && !isFreeRound()))
             return false;
 
         // is the spot open on the map?
@@ -100,7 +102,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public boolean canPlaceSettlement(VertexLocation vertex) {
-        if(vertex == null)
+        if(vertex == null || (m_theGame.getGameState() != GameState.PLAYING && !isFreeRound()))
             return false;
 
         // is the map open in at the vertex?
@@ -119,7 +121,7 @@ public class GameFacade implements IGameFacade {
      */
     @Override
     public boolean canPlaceCity(VertexLocation vertex) {
-        if(vertex == null)
+        if(vertex == null || (m_theGame.getGameState() != GameState.PLAYING && !isFreeRound()))
             return false;
 
         // is there a settlement at the vertex?

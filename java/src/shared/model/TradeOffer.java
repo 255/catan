@@ -10,6 +10,7 @@ public class TradeOffer implements ITradeOffer{
     private IResourceBank m_offer;
 
     public TradeOffer(IPlayer sender, IPlayer receiver, IResourceBank offer) {
+        assert sender != null && receiver != null && offer != null;
         setSender(sender);
         setReceiver(receiver);
         setOffer(offer);
@@ -22,6 +23,7 @@ public class TradeOffer implements ITradeOffer{
 
     @Override
     public void setSender(IPlayer sender) {
+        assert sender != null;
         m_sender = sender;
     }
 
@@ -32,6 +34,7 @@ public class TradeOffer implements ITradeOffer{
 
     @Override
     public void setReceiver(IPlayer receiver) {
+        assert receiver != null;
         m_receiver = receiver;
     }
 
@@ -42,6 +45,7 @@ public class TradeOffer implements ITradeOffer{
 
     @Override
     public void setOffer(IResourceBank offer) {
+        assert offer != null;
         m_offer = offer;
     }
 }
