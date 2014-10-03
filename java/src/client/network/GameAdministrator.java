@@ -18,6 +18,7 @@ public class GameAdministrator implements IGameAdministrator {
 
     @Override
     public boolean login(String username, String password) {
+
         return false;
     }
 
