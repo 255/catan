@@ -1,6 +1,8 @@
 package shared.model;
 
 import shared.definitions.CatanColor;
+import shared.definitions.DevCardType;
+
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -188,6 +190,68 @@ public class Player implements IPlayer {
     @Override
     public boolean canAfford(IResourceBank purchase) {
         return m_resources.canAfford(purchase);
+    }
+
+    /**
+     * Have enough money to buy a city and have place to put it and a piece to use.
+     *
+     * @return true if can buy city, false if not
+     */
+    @Override
+    public boolean canBuyCity() {
+        return m_pieceBank.availableCities() > 0 && m_resources.canAfford(Prices.CITY);
+    }
+
+    /**
+     * Have enough money to buy a road and a piece to use.
+     *
+     * @return true if can buy road, false if not
+     */
+    @Override
+    public boolean canBuyRoad() {
+        return m_pieceBank.availableRoads() > 0 && m_resources.canAfford(Prices.ROAD);
+    }
+
+    /**
+     * Have enough money to buy a settlement and a piece to use.
+     *
+     * @return true if can buy a settlement, false if not
+     */
+    @Override
+    public boolean canBuySettlement() {
+        return m_pieceBank.availableSettlements() > 0 && m_resources.canAfford(Prices.SETTLEMENT);
+    }
+
+    /**
+     * Return true if the player has enough resources for a trade currently being offered to them.
+     *
+     * @return true if can accept trade, false if not enough resources (or no trade is offered currently)
+     */
+    @Override
+    public boolean canAcceptTrade(IResourceBank asking) {
+        return m_resources.canAfford(asking);
+    }
+
+    /**
+     * Whether the user has dev cards to play in their new hand and has not played yet.
+     *
+     * @return true if user can play a card
+     */
+    @Override
+    public boolean canPlayDevCard() {
+        return m_playableDevCards.getCount() > 0 && !m_playedDevCard;
+    }
+
+    /**
+     * Get whether the player has at least one of the specified type of dev card
+     * and they have not played a card this round.
+     *
+     * @param card the type
+     * @return true if has one or more of card
+     */
+    @Override
+    public boolean canPlayDevCard(DevCardType card) {
+        return !m_playedDevCard && (m_playableDevCards.getCount(card) > 0);
     }
 
     //*********//

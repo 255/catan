@@ -7,6 +7,7 @@ import client.network.ServerProxy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import shared.definitions.CatanColor;
 import shared.definitions.ResourceType;
 import shared.locations.*;
 import shared.model.ResourceBank;
@@ -25,7 +26,7 @@ public class ServerProxyTest {
         m_serverProxy = new ServerProxy(m_httpCommunicator);
         m_gameAdminProxy = new GameAdminServerProxy((m_httpCommunicator));
         m_gameAdminProxy.login("Sam", "sam");
-        m_gameAdminProxy.joinGame(0, "orange");
+        m_gameAdminProxy.joinGame(0, CatanColor.ORANGE);
     }
 
     @After

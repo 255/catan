@@ -6,35 +6,30 @@ import client.network.IServerProxy;
 import client.network.TestServerProxy;
 
 import java.lang.Exception;
-import java.util.ArrayList;
 
 import org.junit.*;
 
 import static org.junit.Assert.*;
 
 public class GameFacadeTest {
-    private IGameFacade facade;
-    private IServerProxy proxy;
+    private IGameModelFacade facade;
     private IModelInitializer serializer;
     private IGame game;
 
     @Before
     public void setUp() throws Exception {
-        facade = GameFacade.getFacadeInstance();
-        proxy = new TestServerProxy();
+        facade = GameModelFacade.getInstance();
         serializer = new ModelInitializer();
         //initializes the model with test data from JSON file
         String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
         serializer.initializeClientModel(testJSON, 0);
-        facade.setProxy(proxy);
-        game = GameFacade.getFacadeInstance().getGame();
+        game = GameModelFacade.getInstance().getGame();
         IPlayer player = new Player("Sam", 0, CatanColor.ORANGE, 0);
         game.setLocalPlayer(player);
     }
 
     @After
     public void tearDown() throws Exception {
-        proxy = null;
         serializer = null;
         game = null;
     }
@@ -194,12 +189,12 @@ public class GameFacadeTest {
 
     @Test
     public void testGetCurPlayerInfo() throws Exception {
-        assertEquals("Get current player", facade.getCurPlayerInfo(), game.getCurrentPlayer());
+        assertEquals("Get current player", facade.getCurrentPlayer(), game.getCurrentPlayer());
     }
 
     @Test
     public void testGetNumberPieces() throws Exception {
-        assertEquals("Get Pieces", facade.getCurPlayerInfo().getPieceBank(), game.getCurrentPlayer().getPieceBank());
+        assertEquals("Get Pieces", facade.getCurrentPlayer().getPieceBank(), game.getCurrentPlayer().getPieceBank());
     }
 
     @Test

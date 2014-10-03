@@ -210,4 +210,13 @@ public class Game implements IGame {
         assert winner != null;
         m_winner = winner;
     }
+
+    /**
+     * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
+     * @return true / false
+     */
+    @Override
+    public boolean localPlayerCanPlay() {
+        return m_localPlayer.equals(m_currentPlayer) && m_state == GameState.PLAYING;
+    }
 }

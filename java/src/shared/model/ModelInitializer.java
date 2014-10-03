@@ -56,7 +56,7 @@ public class ModelInitializer implements IModelInitializer {
 
             newGame.setLocalPlayer(localPlayer);
 
-            GameFacade.getFacadeInstance().setGame(newGame);
+            GameModelFacade.getInstance().setGame(newGame);
             // TODO: set other Game object pointers (e.g. Game and Map pointers in GUI)
         }
         catch (IOException | IllegalStateException e) {

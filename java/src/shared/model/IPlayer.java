@@ -1,6 +1,7 @@
 package shared.model;
 
 import shared.definitions.CatanColor;
+import shared.definitions.DevCardType;
 
 import java.util.Collection;
 
@@ -84,7 +85,43 @@ public interface IPlayer {
     public IDevCardHand getNewDevCards();
 
     public IDevCardHand getPlayableDevCards();
+        /**
+     * Have enough money to buy a city and have place to put it and a piece to use.
+     * @return true if can buy city, false if not
+     */
+    public boolean canBuyCity();
 
+    /**
+     * Have enough money to buy a road and a piece to use.
+     * @return true if can buy road, false if not
+     */
+    public boolean canBuyRoad();
+
+    /**
+     * Have enough money to buy a settlement and a piece to use.
+     * @return true if can buy a settlement, false if not
+     */
+    public boolean canBuySettlement();
+
+    /**
+     * Return true if the player has enough resources for a trade currently being offered to them.
+     * @return true if can accept trade, false if not enough resources (or no trade is offered currently)
+     */
+    boolean canAcceptTrade(IResourceBank asking);
+
+    /**
+     * Whether the user has dev cards to play in their new hand and has not played yet.
+     * @return true if user can play a card
+     */
+    boolean canPlayDevCard();
+
+    /**
+     * Get whether the player has at least one of the specified type of dev card
+     * and they have not played a card this round.
+     * @param card the type
+     * @return true if has one or more of card
+     */
+    boolean canPlayDevCard(DevCardType card);
     /**
      * Checks to see if player can afford a specific purchase
      * @param purchase

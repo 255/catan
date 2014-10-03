@@ -123,4 +123,10 @@ public interface IGame {
     public void setWinner(IPlayer winner);
 
     public IPlayer getWinner();
+
+    /**
+     * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
+     * @return true / false
+     */
+    public boolean localPlayerCanPlay();
 }

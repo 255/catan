@@ -1,53 +1,31 @@
 package shared.model;
 
-import client.communication.LogEntry;
-import client.data.PlayerInfo;
 import client.network.IServerProxy;
-import client.network.NetworkException;
-import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
-
 /**
- * This is the interface for the GameFacade which handles all the manipulations of the game object
+ * Facade for methods that need to access both the model and the server.
  */
-public interface IGameFacade {
-
-    public void setProxy(IServerProxy serverProxy);
-
+public interface IServerModelFacade {
+    /**
+     * Set the game object the Facade uses
+     */
     public void setGame(IGame game);
-    /**
-     * Takes an edge location and determines if a road can be placed on it
-     *
-     * @param edge the location of the side of a terrain hex
-     *
-     * @return a boolean value that reports if the user can place a road
-     */
-    public boolean canPlaceRoad(EdgeLocation edge);
 
     /**
-     * Takes a vertex location and determines if a settlement can be placed on it
-     *
-     * @param vertex the location of a corner/intersection of terrain hexes
-     *
-     * @return a boolean value that reports if the user can place a settlement
+     * Set the game object the Facade uses
      */
-    public boolean canPlaceSettlement(VertexLocation vertex);
+    public void setServerProxy(IServerProxy game);
 
     /**
-     * Takes a vertex location and determines if a city can be placed on it
+     * Takes in a chat message to be added to the chat log
      *
-     * @param vertex the location of a corner/intersection of terrain hexes
-     *
-     * @return a boolean value that reports if the user can place a city
+     * @param message the string of text to add to the chat log
      */
-    public boolean canPlaceCity(VertexLocation vertex);
+    public void sendChat(String message) throws ModelException;
 
     /**
      * Takes an edge location and places a road on it
@@ -78,9 +56,9 @@ public interface IGameFacade {
     /**
      * Tells the server to play a soldier card
      * @param hex is the location to put the robber
-     * @param victim is the player who is robbed
+     * @param victim is the player who is robbed, or null if no one is being robbed
      */
-    public void playSoldier(HexLocation hex, int victim) throws ModelException;
+    public void playSoldier(HexLocation hex, IPlayer victim) throws ModelException;
 
     /**
      * Play the Year of Plenty card
@@ -110,59 +88,25 @@ public interface IGameFacade {
     /**
      * Tells the server to rob a player
      * @param hex the hex to place the robber on
-     * @param victim the player index of the player being robbed
+     * @param victim is the player who is robbed, or null if no one is being robbed
      */
-    public void robPlayer(HexLocation hex, int victim) throws ModelException;
+    public void robPlayer(HexLocation hex, IPlayer victim) throws ModelException;
 
-    /**
-     * Returns the info for the current player
-     *
-     * @return the PlayerInfo object initialized with all the player card/piece counts
-     */
-    public IPlayer getCurPlayerInfo();
-
-    /**
-     * Returns the info for the local player's resource counts
-     *
-     * @return the ResourceBundle object containing the counts for the current player
-     */
-    public IResourceBank getPlayerResources();
-
-    /**
-     * Returns the ports the current player has
-     *
-     * @return the ports that the local player has
-     */
-    public Collection<PortType> getPlayerPorts();
-
-    /**
-     * Returns the chat history of the game
-     *
-     * @return the log initialized with all the chat messages
-     */
-    public ILog getChatHistory();
-
-    /**
-     * Returns the move/action history of the game
-     *
-     * @return the log initialized with all the move/action messages
-     */
-    public ILog getMoveHistory();
 
     // trading
     /**
      * accept an incoming trade
      * @param willAccept is true if the the trade is accepted, false otherwise
-     * @param tradeBundle is the bundle of resources requested
+     *
      */
-    public void acceptTrade(boolean willAccept, IResourceBank tradeBundle) throws ModelException;
+    public void acceptTrade(boolean willAccept) throws ModelException;
 
     /**
      * offer a trade to another player
      * @param offer the bundle of resources you are offering
-     * @param recipientPlayerIndex the index of the player receiving the trade offer
+     * @param recipientPlayer the index of the player receiving the trade offer
      */
-    public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException;
+    public void offerTrade(IResourceBank offer, IPlayer recipientPlayer) throws ModelException;
 
     /**
      * Trade with a port

@@ -2,24 +2,22 @@ package shared.model;
 
 import org.junit.*;
 import client.network.IServerProxy;
-import client.network.TestServerProxy;
 
 import java.lang.Exception;
-import java.lang.System;
 
 public class ServerFacadeTest {
-    private IServerFacade facade;
+    private IServerModelFacade facade;
     private IServerProxy proxy;
     private IModelInitializer serializer;
     private IGame game;
 
     @Before
     public void setUp() throws Exception {
-        facade = ServerFacade.getFacadeInstance();
+        facade = ServerModelFacade.getInstance();
 //        proxy = new TestServerProxy();
 //        serializer = new ModelInitializer();
 //        serializer.initializeClientModel(proxy.getGameState());
-//        game = GameFacade.getFacadeInstance().getGame();
+//        game = GameModelFacade.getInstance().getGame();
     }
 
     @After

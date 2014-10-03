@@ -1,6 +1,5 @@
 package shared.model;
 
-import client.network.NetworkException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class ModelInitializerTest {
         m_modelInitializer = new ModelInitializer();
         m_clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
         m_modelInitializer.initializeClientModel(m_clientModel, 0);
-        m_game = GameFacade.getFacadeInstance().getGame();
+        m_game = GameModelFacade.getInstance().getGame();
     }
 
     @After
