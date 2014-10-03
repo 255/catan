@@ -448,7 +448,7 @@ public class GameFacade implements IGameFacade {
         IPlayer p = m_theGame.getLocalPlayer();
         assert (m_theGame.getGameState() == GameState.DISCARDING);
         assert p.getResources().getCount() > 7;
-        // TODO not sure how to test if the user has the cards they are choosing to discard
+        assert p.canAfford(discardedCards);
 
         try {
             m_theProxy.discardCards(p.getIndex(), discardedCards);

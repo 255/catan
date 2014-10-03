@@ -158,31 +158,38 @@
 		</javac>
   </target>
   
-  <target name="shared-tests" depends="compile-tests" description="runs the tests for the shared packages">
-    <java classname="shared.SharedUnitTests" dir="${java.build}" fork="yes">
+  <target name="client-tests" depends="compile-tests" description="runs the client tests">
+    <junit dir="./" fork="yes">
 			<classpath>
         <path refid="java.lib.classpath" />
         <path location="${java.build}" />
 			</classpath>
+      <formatter type="plain" usefile="false" />
+      <test name = "client.network.ServerProxyTest" />
+      <test name = "client.poller.ServerPollerTest" />
       <assertions>
 				<enable/>
 			</assertions>
-		</java>
+		</junit>
   </target>
   
-  <target name="client-tests" depends="compile-tests" description="runs the tests for the shared packages">
-    <java classname="client.ClientUnitTests" dir="${java.build}" fork="yes">
+  <target name="shared-tests" depends="compile-tests" description="runs the client tests">
+    <junit dir="./" fork="yes">
 			<classpath>
         <path refid="java.lib.classpath" />
         <path location="${java.build}" />
 			</classpath>
+      <formatter type="plain" usefile="false" />
+      <test name = "shared.model.CatanMapTest" />
+      <test name = "shared.model.GameFacadeTest" />
+      <test name = "shared.model.ModelInitializerTest" />
+      <test name = "shared.model.ServerFacadeTest" />
       <assertions>
 				<enable/>
 			</assertions>
-		</java>
+		</junit>
   </target>
   
-	<target name="test" depends="shared-tests,client-tests" description="run all JUnit tests"/>
-  
+  <target name="test" depends="shared-tests,client-tests" description="runs the tests"/>
 </project>
 

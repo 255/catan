@@ -198,43 +198,18 @@ public class GameFacadeTest {
     }
 
     @Test
-    public void testGetRoads() throws Exception {
-        assertEquals("Get roads", facade.getRoads(), game.getCurrentPlayer().getRoads());
-    }
-
-    @Test
-    public void testGetSettlements() throws Exception {
-        assertEquals("Get settlements", facade.getSettlements(), game.getCurrentPlayer().getTowns());
-    }
-
-    @Test
-    public void testGetCities() throws Exception {
-        assertEquals("Get cities", facade.getCities(), new ArrayList<ITown>());
-    }
-
-    @Test
     public void testGetNumberPieces() throws Exception {
         assertEquals("Get Pieces", facade.getCurPlayerInfo().getPieceBank(), game.getCurrentPlayer().getPieceBank());
     }
 
     @Test
-    public void testGetHexes() throws Exception {
-        assertEquals("Get hexes", facade.getHexes(), game.getMap().getTiles());
-    }
-
-    @Test
-    public void testGetRobber() throws Exception {
-        assertEquals("Get robber", facade.getRobber(), game.getMap().getRobber());
-    }
-
-    @Test
     public void testGetPlayerResources() throws Exception {
-        assertEquals("Get resources", facade.getPlayerResources(), game.getCurrentPlayer().getResources());
+        assertEquals("Get resources", facade.getPlayerResources(), game.getLocalPlayer().getResources());
     }
 
     @Test
     public void testGetPlayerPorts() throws Exception {
-        assertEquals("Get ports", facade.getPlayerPorts(), game.getMap().getPlayersPorts(game.getCurrentPlayer()));
+        assertEquals("Get ports", facade.getPlayerPorts(), game.getMap().getPlayersPorts(game.getLocalPlayer()));
     }
 
     @Test

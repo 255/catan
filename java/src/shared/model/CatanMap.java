@@ -206,8 +206,39 @@ public class CatanMap implements ICatanMap {
 
         edge = edge.getNormalizedLocation();
 
-
         return !m_roads.containsKey(edge) && getAdjacentTowns(edge).isEmpty();
+    }
+
+    /**
+     * Check if a player can legally place two roads.
+     * The validity of the second placement factors in the first placement.
+     * This only checks physical placement, not the ability of the player to buy a road.
+     * @param player the player who wants to place roads
+     * @param firstEdge the location of the first road the player will place
+     * @param secondEdge the second road location to place
+     * @return true if the roads work, false if not
+     */
+    @Override
+    public boolean canPlaceTwoRoads(IPlayer player, EdgeLocation firstEdge, EdgeLocation secondEdge) {
+        assert player != null && firstEdge != null && secondEdge != null;
+
+        firstEdge = firstEdge.getNormalizedLocation();
+        secondEdge = secondEdge.getNormalizedLocation();
+
+        boolean canPlaceBoth = false;
+
+        if (canPlaceRoad(player, firstEdge)) {
+            assert !m_roads.containsKey(firstEdge);
+
+            // temporarily place the first road
+            m_roads.put(firstEdge, new Road(player, firstEdge));
+
+            canPlaceBoth = canPlaceRoad(player, secondEdge);
+
+            m_roads.remove(firstEdge);
+        }
+
+        return canPlaceBoth;
     }
 
     /**

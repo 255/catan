@@ -2,8 +2,6 @@ package client.poller;
 
 import client.network.IServerProxy;
 import client.network.TestServerProxy;
-import client.poller.ServerPoller;
-import org.junit.Assert.*;
 
 import static org.junit.Assert.*;
 
@@ -16,8 +14,8 @@ public class ServerPollerTest {
     public void testUpdateGame() throws Exception {
         m_mockServerProxy = new TestServerProxy();
         m_serverPoller = new ServerPoller(m_mockServerProxy);
-        Thread.sleep(31000);
+        Thread.sleep(10000);
 
-        assertEquals("Poller should have polled 10 times in 30 seconds", 10, m_serverPoller.getPollCount());
+        assertEquals("Poller should have polled 3 times in 10 seconds", 3, m_serverPoller.getPollCount());
     }
 }

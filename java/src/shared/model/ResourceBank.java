@@ -88,7 +88,7 @@ public class ResourceBank implements IResourceBank {
     }
 
     /**
-     * Get the amount of resources a player has.
+     * Get the total amount of resources a player has.
      *
      * @return the amount of resources
      */

@@ -94,6 +94,17 @@ public interface ICatanMap {
     public boolean canPlaceInitialRoad(IPlayer player, EdgeLocation edge);
 
     /**
+     * Check if a player can legally place two roads.
+     * The validity of the second placement factors in the first placement.
+     * This only checks physical placement, not the ability of the player to buy a road.
+     * @param player the player who wants to place roads
+     * @param firstEdge the location of the first road the player will place
+     * @param secondEdge the second road location to place
+     * @return true if the roads work, false if not
+     */
+    boolean canPlaceTwoRoads(IPlayer player, EdgeLocation firstEdge, EdgeLocation secondEdge);
+
+    /**
      * Determine if a player can place a road at the specified location.
      * @param player the player to look at
      * @param vertex the location where the player wants to place a settlement
