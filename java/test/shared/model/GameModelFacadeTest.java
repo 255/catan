@@ -21,7 +21,7 @@ public class GameModelFacadeTest {
         String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
         serializer.initializeClientModel(testJSON, 0);
         game = GameModelFacade.getInstance().getGame();
-        IPlayer player = new Player("Sam", 0, CatanColor.ORANGE, 0);
+        IPlayer player = game.getLocalPlayer();
         game.setLocalPlayer(player);
     }
 

@@ -20,27 +20,10 @@ public interface IRoad {
      */
     public EdgeLocation getLocation();
 
-
     /**
      * Set where the road is placed.
      * This function should only ever be called once. (Roads cannot be moved.)
      * @param edge the edge where the road is placed
      */
     public void setLocation(EdgeLocation edge);
-
-    //*********//
-    // Setters //
-    //*********//
-
-    /**
-     * Set the owner of the road to the value of an IPlayer object
-     * @param owner the owner of the road
-     */
-    public void setOwner(IPlayer owner);
-
-    /**
-     * Set the hex EdgeLocation to the value of an EdgeLocation
-     * @param location the location of the road on the map
-     */
-    public void setlocation(EdgeLocation location);
 }
