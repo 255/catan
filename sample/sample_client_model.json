@@ -1,10 +1,10 @@
 {
   "deck": {
     "yearOfPlenty": 2,
-    "monopoly": 2,
+    "monopoly": 1,
     "soldier": 14,
     "roadBuilding": 2,
-    "monument": 5
+    "monument": 4
   },
   "map": {
     "hexes": [
@@ -388,10 +388,10 @@
       },
       "oldDevCards": {
         "yearOfPlenty": 0,
-        "monopoly": 0,
+        "monopoly": 1,
         "soldier": 0,
         "roadBuilding": 0,
-        "monument": 0
+        "monument": 1
       },
       "newDevCards": {
         "yearOfPlenty": 0,

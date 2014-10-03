@@ -82,7 +82,6 @@ public class ServerProxy implements IServerProxy {
     @Override
     public String sendChat(int playerIndex, String message) throws NetworkException {
 
-        String[] request = new String[] {"sendChat", Integer.toString(playerIndex), message };
         JsonObject json = new JsonObject();
         json.addProperty("type", "sendChat");
         json.addProperty("playerIndex", playerIndex);
@@ -104,14 +103,12 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String acceptTrade(int playerIndex, boolean willAccept) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "willAccept" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"willAccept\":" + willAccept + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "willAccept");
+        json.addProperty("playerIndex", playerIndex);
+        json.addProperty("willAccept", willAccept);
 
-        String response = m_httpCommunicator.post("/moves/acceptTrade", request);
+        String response = m_httpCommunicator.post("/moves/acceptTrade", json.toString());
 
         return response;
     }
@@ -126,20 +123,18 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String discardCards(int playerIndex, IResourceBank discardedCards) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "deiscardCards" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"discardedCards\": " + "{" +
-                        "\"brick\":" + discardedCards.getBrick() + "," +
-                        "\"ore\":" + discardedCards.getOre() + "," +
-                        "\"sheep\":" + discardedCards.getSheep() +
-                        "\"wheat\":" + discardedCards.getWheat() +
-                        "\"wood\":" + discardedCards.getWood() +
-                    "}" +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "discardCards");
+        json.addProperty("playerIndex", playerIndex);
+        JsonObject innerObject = new JsonObject();
+        innerObject.addProperty("brick", discardedCards.getBrick());
+        innerObject.addProperty("ore", discardedCards.getOre());
+        innerObject.addProperty("sheep", discardedCards.getSheep());
+        innerObject.addProperty("wheat", discardedCards.getWheat());
+        innerObject.addProperty("wood", discardedCards.getWood());
+        json.add("discardedCards", innerObject);
 
-        String response = m_httpCommunicator.post("/moves/discardCards", request);
+        String response = m_httpCommunicator.post("/moves/discardCards", json.toString());
 
         return response;
     }
@@ -155,14 +150,12 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String rollNumber(int playerIndex, int number) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "rollNumber" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"number\":" + number +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "rollNumber");
+        json.addProperty("playerIndex", playerIndex);
+        json.addProperty("number", number);
 
-        String response = m_httpCommunicator.post("/moves/rollNumber", request);
+        String response = m_httpCommunicator.post("/moves/rollNumber", json.toString());
 
         return response;
     }
@@ -179,19 +172,17 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buildRoad(int playerIndex, EdgeLocation edgeLoc, boolean free) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "buildRoad" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"vertexLocation\":" + "{" +
-                        "\"x\":" + edgeLoc.getHexLoc().getX() +
-                        "\"y\":" + edgeLoc.getHexLoc().getY() +
-                        "\"direction\":" + edgeLoc.getDir().name() +
-                    "}," +
-                    "\"free\":" + free +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "buildRoad");
+        json.addProperty("playerIndex", playerIndex);
+        JsonObject roadLocObject = new JsonObject();
+        roadLocObject.addProperty("x", edgeLoc.getHexLoc().getX());
+        roadLocObject.addProperty("y", edgeLoc.getHexLoc().getY());
+        roadLocObject.addProperty("direction", edgeLoc.getDir().name());
+        json.add("roadLocation", roadLocObject);
+        json.addProperty("free", free);
 
-        String response = m_httpCommunicator.post("/moves/buildRoad", request);
+        String response = m_httpCommunicator.post("/moves/buildRoad", json.toString());
 
         return response;
     }
@@ -209,19 +200,17 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buildSettlement(int playerIndex, VertexLocation location, boolean free) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "buildSettlement" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"vertexLocation\":" + "{" +
-                        "\"x\":" + location.getHexLoc().getX() +
-                        "\"y\":" + location.getHexLoc().getY() +
-                        "\"direction\":" + location.getDir().name() +
-                    "}," +
-                    "\"free\":" + free +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "buildSettlement");
+        json.addProperty("playerIndex", playerIndex);
+        JsonObject vertexLocObject = new JsonObject();
+        vertexLocObject.addProperty("x", location.getHexLoc().getX());
+        vertexLocObject.addProperty("y", location.getHexLoc().getY());
+        vertexLocObject.addProperty("direction", location.getDir().name());
+        json.add("vertexLocation", vertexLocObject);
+        json.addProperty("free", free);
 
-        String response = m_httpCommunicator.post("/moves/buildSettlement", request);
+        String response = m_httpCommunicator.post("/moves/buildSettlement", vertexLocObject.toString());
 
         return response;
     }
@@ -237,18 +226,16 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buildCity(int playerIndex, VertexLocation location) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "buildCity" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"vertexLocation\":" + "{" +
-                        "\"x\":" + location.getHexLoc().getX() +
-                        "\"y\":" + location.getHexLoc().getY() +
-                        "\"direction\":" + location.getDir().name() +
-                    "}" +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "buildCity");
+        json.addProperty("playerIndex", playerIndex);
+        JsonObject vertexLocObject = new JsonObject();
+        vertexLocObject.addProperty("x", location.getHexLoc().getX());
+        vertexLocObject.addProperty("y", location.getHexLoc().getY());
+        vertexLocObject.addProperty("direction", location.getDir().name());
+        json.add("vertexLocation", vertexLocObject);
 
-        String response = m_httpCommunicator.post("/moves/buildCity", request);
+        String response = m_httpCommunicator.post("/moves/buildCity", vertexLocObject.toString());
 
         return response;
     }
@@ -266,21 +253,19 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String offerTrade(int playerIndex, IResourceBank offer, int receiver) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "offerTrade" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"spot1\": " + "{" +
-                        "\"brick\":" + offer.getBrick() + "," +
-                        "\"ore\":" + offer.getOre() + "," +
-                        "\"sheep\":" + offer.getSheep() +
-                        "\"wheat\":" + offer.getWheat() +
-                        "\"wood\":" + offer.getWood() +
-                    "}" +
-                    "\"receiver\":" + receiver + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "offerTrade");
+        json.addProperty("playerIndex", playerIndex);
+        JsonObject tradeObject = new JsonObject();
+        tradeObject.addProperty("brick", offer.getBrick());
+        tradeObject.addProperty("ore", offer.getOre());
+        tradeObject.addProperty("sheep", offer.getSheep());
+        tradeObject.addProperty("wheat", offer.getWheat());
+        tradeObject.addProperty("wood", offer.getWood());
+        json.add("offer", tradeObject);
+        json.addProperty("receiver", receiver);
 
-        String response = m_httpCommunicator.post("/moves/offerTrade", request);
+        String response = m_httpCommunicator.post("/moves/offerTrade", json.toString());
 
         return response;
     }
@@ -299,16 +284,14 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String maritimeTrade(int playerIndex, int ratio, ResourceType input, ResourceType output) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "maritimeTrade" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"ratio\":" + ratio + "," +
-                    "\"inputResource\":" + input.name() + "," +
-                    "\"outputResource\":" + output.name() + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "maritimeTrade");
+        json.addProperty("playerIndex", playerIndex);
+        json.addProperty("ratio", ratio);
+        json.addProperty("inputResource", input.name());
+        json.addProperty("outputResource", output.name());
 
-        String response = m_httpCommunicator.post("/moves/maritimeTrade", request);
+        String response = m_httpCommunicator.post("/moves/maritimeTrade", json.toString());
 
         return response;
     }
@@ -322,13 +305,11 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String finishTurn(int playerIndex) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "finishTurn" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "finishTurn");
+        json.addProperty("playerIndex", 0);
 
-        String response = m_httpCommunicator.post("/moves/finishTurn", request);
+        String response = m_httpCommunicator.post("/moves/finishTurn", json.toString());
 
         return response;
     }
@@ -344,13 +325,11 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String buyDevCard(int playerIndex) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "buyDevCard" + "," +
-                    "\"playerIndex\":" + playerIndex +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "buyDevCard");
+        json.addProperty("playerIndex", playerIndex);
 
-        String response = m_httpCommunicator.post("/moves/buyDevCard", request);
+        String response = m_httpCommunicator.post("/moves/buyDevCard", json.toString());
 
         return response;
     }
@@ -368,15 +347,13 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playYearOfPlenty(int playerIndex, ResourceType resource1, ResourceType resource2) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "Year_of_Plenty" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"resource1\":" + resource1.name() + "," +
-                    "\"resource2\":" + resource2.name() +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "Year_of_Plenty");
+        json.addProperty("playerIndex", playerIndex);
+        json.addProperty("resource1", resource1.name());
+        json.addProperty("resource2", resource2.name());
 
-        String response = m_httpCommunicator.post("/moves/Year_of_Plenty", request);
+        String response = m_httpCommunicator.post("/moves/Year_of_Plenty", json.toString());
 
         return response;
     }
@@ -393,21 +370,19 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playRoadBuilding(int playerIndex, EdgeLocation location1, EdgeLocation location2) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "Road_Building" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"spot1\": " + "{" +
-                        "\"x\":" + location1.getHexLoc().getX() + "," +
-                        "\"y\":" + location1.getHexLoc().getY() +
-                    "}" +
-                    "\"spot2\": " + "{" +
-                        "\"x\":" + location2.getHexLoc().getX() + "," +
-                        "\"y\":" + location2.getHexLoc().getY() +
-                    "}" +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "Road_Building");
+        json.addProperty("playerIndex", playerIndex);
+        JsonObject spot1 = new JsonObject();
+        spot1.addProperty("x", location1.getHexLoc().getX());
+        spot1.addProperty("y", location1.getHexLoc().getY());
+        JsonObject spot2 = new JsonObject();
+        spot2.addProperty("x", location2.getHexLoc().getX());
+        spot2.addProperty("y", location2.getHexLoc().getY());
+        json.add("spot1", spot1);
+        json.add("spot2", spot2);
 
-        String response = m_httpCommunicator.post("/moves/Road_Building", request);
+        String response = m_httpCommunicator.post("/moves/Road_Building", json.toString());
 
         return response;
     }
@@ -425,18 +400,16 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playSoldier(int playerIndex, HexLocation location, int victim) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "Soldier" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                    "\"victimIndex\":" + victim + "," +
-                    "\"location\": " + "{" +
-                        "\"x\":" + location.getX() + "," +
-                        "\"y\":" + location.getY() +
-                    "}" +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "Soldier");
+        json.addProperty("playerIndex", playerIndex);
+        json.addProperty("victimIndex", victim);
+        JsonObject locObject = new JsonObject();
+        locObject.addProperty("x", location.getX());
+        locObject.addProperty("y", location.getY());
+        json.add("location", locObject);
 
-        String response = m_httpCommunicator.post("/moves/Soldier", request);
+        String response = m_httpCommunicator.post("/moves/Soldier", json.toString());
 
         return response;
     }
@@ -453,14 +426,12 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playMonopoly(int playerIndex, ResourceType resource) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "Monopoly" + "," +
-                    "\"resource\":" + resource.name() + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "Monopoly");
+        json.addProperty("resource", resource.name());
+        json.addProperty("playerIndex", playerIndex);
 
-        String response = m_httpCommunicator.post("/moves/Monopoly", request);
+        String response = m_httpCommunicator.post("/moves/Monopoly", json.toString());
 
         return response;
     }
@@ -475,31 +446,27 @@ public class ServerProxy implements IServerProxy {
      */
     @Override
     public String playMonument(int playerIndex) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\":" + "Monument" + "," +
-                    "\"playerIndex\":" + playerIndex + "," +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "Monument");
+        json.addProperty("playerIndex", playerIndex);
 
-        String response = m_httpCommunicator.post("/moves/Monument", request);
+        String response = m_httpCommunicator.post("/moves/Monument", json.toString());
 
         return response;
     }
 
     @Override
     public String robPlayer(int robbingPlayerIndex, int victimIndex, HexLocation hex) throws NetworkException {
-        String request =
-                "{" +
-                    "\"type\": \"robPlayer\"," +
-                    "\"playerIndex\": \"" + robbingPlayerIndex + "\"," +
-                    "\"victimIndex\": \"" + victimIndex + "\"," +
-                    "\"location\": {" +
-                        "\"x\": \"" + hex.getX() + "\"," +
-                        "\"y\": \"" + hex.getY() + "\"" +
-                    "}" +
-                "}";
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "robPlayer");
+        json.addProperty("playerIndex", robbingPlayerIndex);
+        json.addProperty("victimIndex", victimIndex);
+        JsonObject locObject = new JsonObject();
+        locObject.addProperty("x", hex.getX());
+        locObject.addProperty("y", hex.getY());
+        json.add("location", locObject);
 
-        String response = m_httpCommunicator.post("/moves/robPlayer", request);
+        String response = m_httpCommunicator.post("/moves/robPlayer", json.toString());
 
         return response;
 

@@ -302,4 +302,9 @@ public class TestServerProxy implements IServerProxy {
      */
     @Override
     public String robPlayer(int robbingPlayerIndex, int victimIndex, HexLocation hex) throws NetworkException { return null; }
+
+    @Override
+    public int getPlayerId() {
+        return 0;
+    }
 }
