@@ -26,7 +26,7 @@ public class ModelInitializerTest {
         m_modelInitializer = new ModelInitializer();
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
-        String clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/sample_client_model.json")));
+        String clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
         m_modelInitializer.initializeClientModel(clientModel);
         m_game = GameFacade.getFacadeInstance().getGame();
     }

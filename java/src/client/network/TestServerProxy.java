@@ -26,7 +26,7 @@ public class TestServerProxy implements IServerProxy {
     public String getGameState() throws NetworkException {
         String clientModel = null;
         try {
-            clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/sample_client_model.json")));
+            clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
         } catch (IOException ex1) {
 
         }

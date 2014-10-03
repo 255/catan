@@ -24,7 +24,7 @@ public class GameFacadeTest {
         proxy = new TestServerProxy();
         serializer = new ModelInitializer();
         //initializes the model with test data from JSON file
-        String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_client_model.json")));
+        String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
         serializer.initializeClientModel(testJSON);
         facade.setProxy(proxy);
         game = GameFacade.getFacadeInstance().getGame();
