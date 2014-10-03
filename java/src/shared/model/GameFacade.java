@@ -1,6 +1,5 @@
 package shared.model;
 
-import client.data.PlayerInfo;
 import client.network.HttpCommunicator;
 import client.network.IServerProxy;
 import client.network.NetworkException;
@@ -11,9 +10,8 @@ import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
-import java.util.ArrayList;
+
 import java.util.Collection;
-import java.util.ResourceBundle;
 
 /**
  * handles all the manipulations of the game object
@@ -63,6 +61,7 @@ public class GameFacade implements IGameFacade {
     public IGame getGame() {
         return m_theGame;
     }
+
     /**
      * Sets the server proxy member
      *
@@ -325,96 +324,6 @@ public class GameFacade implements IGameFacade {
         assert m_theGame.getCurrentPlayer() != null;
 
         return m_theGame.getCurrentPlayer();
-    }
-
-    /**
-     * Returns the info for the current player's placed roads
-     *
-     * @return the Collection of IRoad objects initialized with all the locations of the current player's roads
-     */
-    @Override
-    public Collection<IRoad> getRoads() {
-        return m_theGame.getCurrentPlayer().getRoads();
-    }
-
-    /**
-     * Returns the info for the current player's placed settlements
-     *
-     * @return the Collection of ITown objects initialized with all the locations of the placed settlements
-     */
-    @Override
-    public Collection<ITown> getSettlements() {
-        Collection<ITown> towns = m_theGame.getCurrentPlayer().getTowns();
-
-        assert towns != null;
-
-        Collection<ITown> settlements = new ArrayList<ITown>();
-
-        for(ITown s : towns) {
-            if(s instanceof Settlement) {
-                settlements.add(s);
-            }
-        }
-
-        return settlements;
-    }
-
-    /**
-     * Returns the info for the current player's placed cities
-     *
-     * @return the Collection of ITown objects initialized with all the locations of the placed cities
-     */
-    @Override
-    public Collection<ITown> getCities() {
-        Collection<ITown> towns = m_theGame.getCurrentPlayer().getTowns();
-
-        assert towns != null;
-
-        Collection<ITown> cities = new ArrayList<ITown>();
-
-        for(ITown city : towns) {
-            if(city instanceof City) {
-                cities.add(city);
-            }
-        }
-
-        return cities;
-    }
-
-    /**
-     * Returns the info for the current player's placed settlements and cities
-     *
-     * @return the Collection of ITown objects initialized with all the locations of the placed settlements and cities
-     */
-    @Override
-    public Collection<ITown> getTowns() {
-        assert m_theGame.getCurrentPlayer().getTowns() != null;
-
-        return m_theGame.getCurrentPlayer().getTowns();
-    }
-
-    /**
-     * Returns the info for the terrain hexes
-     *
-     * @return the Collection of ITile objects initialized with all the locations and types of terrain hexes
-     */
-    @Override
-    public Collection<ITile> getHexes() {
-        assert m_theGame.getMap().getTiles() != null;
-
-        return m_theGame.getMap().getTiles();
-    }
-
-    /**
-     * Returns the terrain hex location for the current location of the robber
-     *
-     * @return the hex location of where the robber is currently placed
-     */
-    @Override
-    public HexLocation getRobber() {
-        assert m_theGame.getMap().getRobber() != null;
-
-        return m_theGame.getMap().getRobber();
     }
 
     /**

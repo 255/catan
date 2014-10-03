@@ -122,49 +122,7 @@ public interface IGameFacade {
     public IPlayer getCurPlayerInfo();
 
     /**
-     * Returns the info for the current player's placed roads
-     *
-     * @return the Collection of IRoad objects initialized with all the locations of the current player's roads
-     */
-    public Collection<IRoad> getRoads();
-
-    /**
-     * Returns the info for the current player's placed settlements
-     *
-     * @return the Collection of ITown objects initialized with all the locations of the placed settlements
-     */
-    public Collection<ITown> getSettlements();
-
-    /**
-     * Returns the info for the current player's placed cities
-     *
-     * @return the Collection of ITown objects initialized with all the locations of the placed cities
-     */
-    public Collection<ITown> getCities();
-
-    /**
-     * Returns the info for the current player's placed settlements and cities
-     *
-     * @return the Collection of ITown objects initialized with all the locations of the placed settlements and cities
-     */
-    public Collection<ITown> getTowns();
-
-    /**
-     * Returns the info for the terrain hexes
-     *
-     * @return the Collection of ITile objects initialized with all the locations and types of terrain hexes
-     */
-    public Collection<ITile> getHexes();
-
-    /**
-     * Returns the terrain hex location for the current location of the robber
-     *
-     * @return the hex location of where the robber is currently placed
-     */
-    public HexLocation getRobber();
-
-    /**
-     * Returns the info for the current player's resource counts
+     * Returns the info for the local player's resource counts
      *
      * @return the ResourceBundle object containing the counts for the current player
      */
@@ -173,7 +131,7 @@ public interface IGameFacade {
     /**
      * Returns the ports the current player has
      *
-     * @return the ports that the current player has
+     * @return the ports that the local player has
      */
     public Collection<PortType> getPlayerPorts();
 

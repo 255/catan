@@ -6,6 +6,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The Catan map.
@@ -47,6 +48,26 @@ public class CatanMap implements ICatanMap {
     @Override
     public Collection<ITown> getTowns() {
         return m_towns.values();
+    }
+
+    /**
+     * Get all of the cities on the map.
+     *
+     * @return a collection of cities (no settlements)
+     */
+    @Override
+    public Collection<ITown> getCities() {
+        return m_towns.values().stream().filter((ITown town) -> town.getClass().equals(City.class)).collect(Collectors.toList());
+    }
+
+    /**
+     * Get all of the settlements on the map.
+     *
+     * @return a collection of cities (no settlements)
+     */
+    @Override
+    public Collection<ITown> getSettlements() {
+        return m_towns.values().stream().filter((ITown town) -> town.getClass().equals(Settlement.class)).collect(Collectors.toList());
     }
 
     /**

@@ -23,6 +23,18 @@ public interface ICatanMap {
     public Collection<ITown> getTowns();
 
     /**
+     * Get all of the cities on the map.
+     * @return a collection of cities (no settlements)
+     */
+    public Collection<ITown> getCities();
+
+    /**
+     * Get all of the settlements on the map.
+     * @return a collection of cities (no settlements)
+     */
+    public Collection<ITown> getSettlements();
+
+    /**
      * Get all of the roads placed on the map.
      * @return the roads placed on the map
      */

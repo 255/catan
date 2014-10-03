@@ -1,5 +1,6 @@
 package shared.model;
 
+import client.network.NetworkException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,17 +18,24 @@ public class ModelInitializerTest {
 
     private IGame m_game;
     private IModelInitializer m_modelInitializer;
+    private String m_clientModel;
+
     @Before
     public void setUp() throws Exception {
         m_modelInitializer = new ModelInitializer();
-        String clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
-        m_modelInitializer.initializeClientModel(clientModel, 0);
+        m_clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
+        m_modelInitializer.initializeClientModel(m_clientModel, 0);
         m_game = GameFacade.getFacadeInstance().getGame();
     }
 
     @After
     public void tearDown() throws Exception {
 
+    }
+
+    @Test(expected=ModelException.class)
+    public void testBadPlayerIndex() throws Exception {
+        m_modelInitializer.initializeClientModel(m_clientModel, -93827);
     }
 
     @Test

@@ -30,9 +30,6 @@ public class ModelInitializer implements IModelInitializer {
     @Override
     public void initializeClientModel(String json, int localPlayerID) throws ModelException {
         assert json != null;
-        // read the players first since some objects refer to players by name
-        //     and others refer to players by id
-
 
         // read in the players first since they are referenced by other elements in JSON
         try (JsonReader playerReader = new JsonReader(new StringReader(json))) {
@@ -689,7 +686,7 @@ public class ModelInitializer implements IModelInitializer {
         return new VertexLocation(new HexLocation(x, y), dir);
     }
 
-    /** Check if any of the arguments are null (same as x == null || y == nuly || ...) */
+    /** Check if any of the arguments are null (same as x == null || y == null || ...) */
     private static boolean anyIsNull(Object ... objects) {
         for (Object obj : objects) {
             if (obj == null) return true;
