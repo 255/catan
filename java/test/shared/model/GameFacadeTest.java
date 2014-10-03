@@ -25,7 +25,7 @@ public class GameFacadeTest {
         serializer = new ModelInitializer();
         //initializes the model with test data from JSON file
         String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
-        serializer.initializeClientModel(testJSON);
+        serializer.initializeClientModel(testJSON, 0);
         facade.setProxy(proxy);
         game = GameFacade.getFacadeInstance().getGame();
         IPlayer player = new Player("Sam", 0, CatanColor.ORANGE, 0);

@@ -16,6 +16,7 @@ import java.util.*;
 public class ModelInitializer implements IModelInitializer {
     /*
      * Initialize players first since they are referenced several times.
+     * Sorted by index (not ID).
      */
     private SortedMap<Integer, IPlayer> m_players = null;
 
@@ -24,9 +25,10 @@ public class ModelInitializer implements IModelInitializer {
      * the game object which keeps track of the status of the game pieces
      *
      * @param json a string of text that is formatted as JSON
+     * @param localPlayerID
      */
     @Override
-    public void initializeClientModel(String json) throws ModelException {
+    public void initializeClientModel(String json, int localPlayerID) throws ModelException {
         assert json != null;
         // read the players first since some objects refer to players by name
         //     and others refer to players by id
@@ -43,6 +45,20 @@ public class ModelInitializer implements IModelInitializer {
         // read the main body of the client JSON model
         try (JsonReader reader = new JsonReader(new StringReader(json))) {
             IGame newGame = readClientModel(reader);
+
+            IPlayer localPlayer = null;
+            // find out which player is the local player
+            for (IPlayer player : m_players.values()) {
+                if (player.getId() == localPlayerID) {
+                    localPlayer = player;
+                    break;
+                }
+            }
+
+            if (localPlayer == null) throw new ModelException("Invalid ID for local player.");
+
+            newGame.setLocalPlayer(localPlayer);
+
             GameFacade.getFacadeInstance().setGame(newGame);
             // TODO: set other Game object pointers (e.g. Game and Map pointers in GUI)
         }
@@ -684,7 +700,11 @@ public class ModelInitializer implements IModelInitializer {
 
     // A simple test function that reads in the specified JSON file
     public static void main(String[] args) {
+        if (args.length != 2) {
+            System.out.println("provide path and player ID of local player");
+        }
         String path = args[0];
+        int playerID = Integer.getInteger(args[1]);
 
         System.out.printf("Parsing %s...\n", path);
         try {
@@ -696,7 +716,7 @@ public class ModelInitializer implements IModelInitializer {
 
             ModelInitializer s = new ModelInitializer();
 
-            s.initializeClientModel(json);
+            s.initializeClientModel(json, playerID);
 
         } catch (IOException | ModelException e) {
             System.out.println("There was problem!");

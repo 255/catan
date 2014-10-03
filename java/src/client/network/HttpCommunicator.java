@@ -134,7 +134,7 @@ public class HttpCommunicator implements IHttpCommunicator {
         return Integer.parseInt(m_gameIdCookie);
     }
 
-    private int readPlayerId(JsonReader reader) throws IOException {
+    private int readPlayerId(JsonReader reader) throws IOException, NetworkException {
         reader.beginObject();
 
         while (reader.hasNext()) {
@@ -147,6 +147,6 @@ public class HttpCommunicator implements IHttpCommunicator {
             }
         }
 
-        return -1;
+        throw new NetworkException("Player ID not found in cookie.");
     }
 }

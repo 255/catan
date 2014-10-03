@@ -32,7 +32,7 @@ public class ServerPoller implements IServerPoller {
     @Override
     public void updateGame() {
         try {
-            m_modelSerializer.initializeClientModel(m_serverProxy.getGameState());
+            m_modelSerializer.initializeClientModel(m_serverProxy.getGameState(), m_serverProxy.getPlayerId());
         } catch (ModelException ex1) {
 
         } catch (NetworkException ex2) {

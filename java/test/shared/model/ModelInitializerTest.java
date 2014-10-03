@@ -6,14 +6,10 @@ import org.junit.Test;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
-import shared.locations.HexLocation;
-import shared.model.ILog;
 import shared.model.ILog.ILogMessage;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -24,10 +20,8 @@ public class ModelInitializerTest {
     @Before
     public void setUp() throws Exception {
         m_modelInitializer = new ModelInitializer();
-        System.out.println("Working Directory = " +
-                System.getProperty("user.dir"));
         String clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
-        m_modelInitializer.initializeClientModel(clientModel);
+        m_modelInitializer.initializeClientModel(clientModel, 0);
         m_game = GameFacade.getFacadeInstance().getGame();
     }
 

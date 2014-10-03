@@ -10,7 +10,8 @@ public interface IModelInitializer {
      * the game object which keeps track of the status of the game pieces
      *
      * @param clientModelJson a the client model as JSON-formatted text
+     * @param localPlayerID
      * @return a reference to the newly intiialized Game object
      */
-    public void initializeClientModel(String clientModelJson) throws ModelException;
+    public void initializeClientModel(String clientModelJson, int localPlayerID) throws ModelException;
 }
