@@ -96,6 +96,12 @@ public interface IGameModelFacade {
     /**
      * Get whether the local player can play this specific dev card.
      * @return true if the user can play this card
+     */
+    public boolean canRobPlayer(HexLocation destination);
+
+    /**
+     * Get whether the local player can play this specific dev card.
+     * @return true if the user can play this card
      * @param r1
      * @param r2
      */

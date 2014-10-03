@@ -1,9 +1,7 @@
 package shared.model;
 
 import shared.definitions.PortType;
-import shared.locations.EdgeLocation;
-import shared.locations.HexLocation;
-import shared.locations.VertexLocation;
+import shared.locations.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,12 +31,18 @@ public class CatanMap implements ICatanMap {
 
     /** Construct a map with the specified objects and tiles */
     public CatanMap(Map<HexLocation, ITile> tiles, Map<VertexLocation, ITown> towns, Map<EdgeLocation, IRoad> roads,
-                    Map<EdgeLocation, PortType> ports, HexLocation robber) {
+                    Map<EdgeLocation, PortType> ports, HexLocation robber) throws ModelException {
         this.m_tiles = tiles;
         this.m_towns = towns;
         this.m_roads = roads;
         this.m_ports = ports;
         this.m_robber = robber;
+
+        if (ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
+                || roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
+                || towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))) {
+            throw new ModelException("Some pieces are off the map!");
+        }
     }
 
     /**
@@ -493,5 +497,29 @@ public class CatanMap implements ICatanMap {
     private boolean isOnMap(EdgeLocation edge) {
         return m_tiles.containsKey(edge.getHexLoc())
                 || m_tiles.containsKey(edge.getEquivalentEdge().getHexLoc());
+    }
+
+    /**
+     * Determine whether the specified vertex is on a valid (non-water) tile on the Catan map.
+     * @param vertex the edge to test
+     * @return whether the edge is on the map
+     */
+    private boolean isOnMap(VertexLocation vertex) {
+        HexLocation hexLoc =  vertex.getHexLoc();
+        // test the vertex's hex loc
+        if (m_tiles.containsKey(hexLoc)) {
+            return true;
+        }
+
+        // check the other hex locs this is adjacent to
+        for (EdgeDirection dir : vertex.getDir().getNeighboringEdgeDirections()) {
+            if (m_tiles.containsKey(hexLoc.getNeighborLoc(dir))) {
+                return true;
+            }
+        }
+
+        // didn't find any of the locs...
+        return false;
+
     }
 }

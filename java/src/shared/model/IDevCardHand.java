@@ -31,7 +31,7 @@ public interface IDevCardHand {
      * Remove one of the specified type of card from the development card hand.
      * @param devCardType the type of development card to remove (play) from the hand
      */
-    public void remove(DevCardType devCardType);
+    public void remove(DevCardType devCardType) throws ModelException;
 
     /**
      * Move all of the cards in this dev card hand to another dev card.

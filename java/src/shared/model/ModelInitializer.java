@@ -11,6 +11,7 @@ import java.io.StringReader;
 import java.util.*;
 
 /**
+ * Build a brand new collection of model classes in memory.
  * @author Wyatt
  */
 public class ModelInitializer implements IModelInitializer {
@@ -25,7 +26,7 @@ public class ModelInitializer implements IModelInitializer {
      * the game object which keeps track of the status of the game pieces
      *
      * @param json a string of text that is formatted as JSON
-     * @param localPlayerID
+     * @param localPlayerID the id of the local player from the cookie
      */
     @Override
     public void initializeClientModel(String json, int localPlayerID) throws ModelException {
@@ -57,7 +58,8 @@ public class ModelInitializer implements IModelInitializer {
             newGame.setLocalPlayer(localPlayer);
 
             GameModelFacade.getInstance().setGame(newGame);
-            // TODO: set other Game object pointers (e.g. Game and Map pointers in GUI)
+            ServerModelFacade.getInstance().setGame(newGame);
+            // TODO: set other Game object pointers (e.g. Game pointers in GUI)
         }
         catch (IOException | IllegalStateException e) {
             throw new ModelException("Error deserializing JSON.", e);
@@ -98,6 +100,7 @@ public class ModelInitializer implements IModelInitializer {
     private IPlayer readPlayer(JsonReader reader) throws IOException, ModelException {
         reader.beginObject();
 
+        // everything that a player has
         CatanColor color = null;
         Boolean discarded = null;
         Integer monuments = null;
@@ -534,7 +537,7 @@ public class ModelInitializer implements IModelInitializer {
             String name = reader.nextName();
             switch (name) {
                 case "resource":
-                    portType = PortType.valueOf(reader.nextString().toUpperCase()); // TODO: check that these work 0.o
+                    portType = PortType.valueOf(reader.nextString().toUpperCase());
                     break;
                 case "ratio":
                     int ratio = reader.nextInt();

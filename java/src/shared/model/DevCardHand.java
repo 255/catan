@@ -2,8 +2,6 @@ package shared.model;
 
 import shared.definitions.DevCardType;
 
-import java.util.Collection;
-
 /**
  * Represents the cards in a players hand
  */
@@ -22,7 +20,11 @@ public class DevCardHand implements IDevCardHand {
         m_yearOfPlenty = 0;
     }
 
-    public DevCardHand(int monopoly, int monument, int roadBuilding, int soldier, int yearOfPlenty) {
+    public DevCardHand(int monopoly, int monument, int roadBuilding, int soldier, int yearOfPlenty) throws ModelException {
+        if (monopoly < 0 || monument < 0 || roadBuilding < 0 || soldier < 0 || yearOfPlenty < 0) {
+            throw new ModelException("Cannot have a negative number of development cards.");
+        }
+
         m_monopoly = monopoly;
         m_monument = monument;
         m_roadBuilding = roadBuilding;
@@ -84,7 +86,11 @@ public class DevCardHand implements IDevCardHand {
      * @param devCardType the type of development card to remove (play) from the hand
      */
     @Override
-    public void remove(DevCardType devCardType) {
+    public void remove(DevCardType devCardType) throws ModelException {
+        if (getCount(devCardType) <= 0) {
+            throw new ModelException("Attempted to remove card type with a count of 0.");
+        }
+
         switch (devCardType) {
             case MONOPOLY: m_monopoly--; break;
             case MONUMENT: m_monument--; break;

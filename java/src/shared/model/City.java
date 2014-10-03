@@ -38,7 +38,7 @@ public class City extends Town {
     }
 
     @Override
-    public PieceType pieceType() {
+    public PieceType getPieceType() {
         return PieceType.CITY;
     }
 }

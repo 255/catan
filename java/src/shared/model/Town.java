@@ -3,7 +3,7 @@ package shared.model;
 import shared.locations.VertexLocation;
 
 /**
- *
+ * A settlement or city.
  */
 public abstract class Town implements ITown {
     private IPlayer m_owner;
@@ -17,7 +17,7 @@ public abstract class Town implements ITown {
     protected Town(IPlayer owner, VertexLocation location) {
         assert owner != null;
 
-        setOwner(owner);
+        m_owner = owner;
         setLocation(location);
     }
 
@@ -29,15 +29,6 @@ public abstract class Town implements ITown {
     @Override
     public IPlayer getOwner() {
         return m_owner;
-    }
-
-    /**
-     * Sets the owner of this town.
-     *
-     * @param owner the player object who owns the town
-     */
-    public void setOwner(IPlayer owner) {
-        m_owner = owner;
     }
 
     /**

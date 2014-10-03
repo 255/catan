@@ -17,7 +17,7 @@ public class SharedUnitTests {
         System.out.println("Running shared unit tests.");
         Result result = JUnitCore.runClasses(
                 shared.model.CatanMapTest.class,
-                shared.model.GameFacadeTest.class,
+                shared.model.GameModelFacadeTest.class,
                 shared.model.ModelInitializer.class,
                 shared.model.ServerFacadeTest.class
         );

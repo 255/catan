@@ -1,6 +1,7 @@
 package shared.model;
 
 /**
+ * Build a brand new collection of model classes in memory.
  * This is the interface for the Serializer which is in charge of converting a
  * JSON string into a Game object and a Game object into a JSON string
  */
@@ -10,7 +11,7 @@ public interface IModelInitializer {
      * the game object which keeps track of the status of the game pieces
      *
      * @param clientModelJson a the client model as JSON-formatted text
-     * @param localPlayerID
+     * @param localPlayerID the player ID for the person sitting in front of the screen
      * @return a reference to the newly intiialized Game object
      */
     public void initializeClientModel(String clientModelJson, int localPlayerID) throws ModelException;

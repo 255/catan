@@ -34,7 +34,28 @@ public enum VertexDirection
             case "SW": return SouthWest;
             case "W" : return West;
             case "NW": return NorthWest;
-            default:   throw new IllegalArgumentException("Illegal VertexDirection abbreviation \"" + abbr + "\"");
+            default:
+                throw new IllegalArgumentException("Illegal VertexDirection abbreviation \"" + abbr + "\"");
+        }
+    }
+
+    public EdgeDirection[] getNeighboringEdgeDirections() {
+        switch (this) {
+            case NorthEast:
+                return new EdgeDirection[]{EdgeDirection.North, EdgeDirection.NorthEast};
+            case East:
+                return new EdgeDirection[]{EdgeDirection.NorthEast, EdgeDirection.SouthEast};
+            case SouthEast:
+                return new EdgeDirection[]{EdgeDirection.SouthEast, EdgeDirection.South};
+            case SouthWest:
+                return new EdgeDirection[]{EdgeDirection.South, EdgeDirection.SouthWest};
+            case West:
+                return new EdgeDirection[]{EdgeDirection.SouthWest, EdgeDirection.NorthWest};
+            case NorthWest:
+                return new EdgeDirection[]{EdgeDirection.NorthWest, EdgeDirection.North};
+            default:
+                assert false;
+                return null;
         }
     }
 }

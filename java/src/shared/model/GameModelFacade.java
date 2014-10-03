@@ -23,7 +23,7 @@ public class GameModelFacade implements IGameModelFacade {
         setGame(theGame);
     }
 
-    /**
+    /**C:\Program Files\Java\jdk1.8.0_20
      * This static function is called to get the current instance of the GameModelFacade
      *
      * @return the current instance of the GameModelFacade
@@ -328,6 +328,17 @@ public class GameModelFacade implements IGameModelFacade {
         IPlayer player = m_theGame.getLocalPlayer();
 
         return m_theGame.localPlayerCanPlay() && map.canPlaceTwoRoads(player, edge1, edge2);
+    }
+
+    /**
+     * Get whether the local player can play this specific dev card.
+     *
+     * @param destination
+     * @return true if the user can play this card
+     */
+    @Override
+    public boolean canRobPlayer(HexLocation destination) {
+        return false;
     }
 
     // this method is just for determining from the GameState if it is a free round

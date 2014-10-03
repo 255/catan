@@ -38,7 +38,7 @@ public class Settlement extends Town {
     }
 
     @Override
-    public PieceType pieceType() {
+    public PieceType getPieceType() {
         return PieceType.SETTLEMENT;
     }
 }

@@ -1,17 +1,14 @@
 package shared.model;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import shared.definitions.CatanColor;
 import shared.locations.*;
-import client.network.IServerProxy;
-import client.network.TestServerProxy;
-
-import java.lang.Exception;
-
-import org.junit.*;
 
 import static org.junit.Assert.*;
 
-public class GameFacadeTest {
+public class GameModelFacadeTest {
     private IGameModelFacade facade;
     private IModelInitializer serializer;
     private IGame game;
@@ -158,62 +155,97 @@ public class GameFacadeTest {
     }
 
     @Test
-    public void testPlaceRoad() throws Exception {
+    public void testCanPlaceInitialRoad() throws Exception {
 
     }
 
     @Test
-    public void testPlaceSettlement() throws Exception {
+    public void testGetCurrentPlayer() throws Exception {
 
-    }
-
-    @Test
-    public void testPlaceCity() throws Exception {
-
-    }
-
-    @Test
-    public void testPlaceRobber() throws Exception {
-
-    }
-
-    @Test
-    public void testTakeCardFromPlayer() throws Exception {
-
-    }
-
-    @Test
-    public void testGiveCardToPlayer() throws Exception {
-
-    }
-
-    @Test
-    public void testGetCurPlayerInfo() throws Exception {
-        assertEquals("Get current player", facade.getCurrentPlayer(), game.getCurrentPlayer());
-    }
-
-    @Test
-    public void testGetNumberPieces() throws Exception {
-        assertEquals("Get Pieces", facade.getCurrentPlayer().getPieceBank(), game.getCurrentPlayer().getPieceBank());
     }
 
     @Test
     public void testGetPlayerResources() throws Exception {
-        assertEquals("Get resources", facade.getPlayerResources(), game.getLocalPlayer().getResources());
+
     }
 
     @Test
     public void testGetPlayerPorts() throws Exception {
-        assertEquals("Get ports", facade.getPlayerPorts(), game.getMap().getPlayersPorts(game.getLocalPlayer()));
+
     }
 
     @Test
     public void testGetChatHistory() throws Exception {
-        assertEquals("Get chat history", facade.getChatHistory(), game.getChatHistory());
+
     }
 
     @Test
     public void testGetMoveHistory() throws Exception {
-        assertEquals("Get move history", facade.getMoveHistory(), game.getGameplayLog());
+
+    }
+
+    @Test
+    public void testCanBuyCity() throws Exception {
+
+    }
+
+    @Test
+    public void testCanBuyRoad() throws Exception {
+
+    }
+
+    @Test
+    public void testCanBuySettlement() throws Exception {
+
+    }
+
+    @Test
+    public void testCanBuyDevCard() throws Exception {
+
+    }
+
+    @Test
+    public void testCanAcceptTrade() throws Exception {
+
+    }
+
+    @Test
+    public void testCanPlayDevCard() throws Exception {
+
+    }
+
+    @Test
+    public void testCanPlayMonopoly() throws Exception {
+
+    }
+
+    @Test
+    public void testCanPlaySoldier() throws Exception {
+
+    }
+
+    @Test
+    public void testCanPlayYearOfPlenty() throws Exception {
+
+    }
+
+    @Test
+    public void testCanPlayMonument() throws Exception {
+
+    }
+
+    @Test
+    public void testCanPlayRoadBuilding() throws Exception {
+
+    }
+
+    @Test
+    public void testCanRobPlayer() throws Exception {
+
+    }
+
+    @Test
+    public void testIsFreeRound() throws Exception {
+
     }
 }
