@@ -81,39 +81,6 @@ public class CatanMapTest {
     }
 
     @Test
-    public void testGetTowns() throws Exception {
-        assertEquals(0, map.getTowns().size());
-
-
-
-    }
-
-    @Test
-    public void testGetRoads() throws Exception {
-
-    }
-
-    @Test
-    public void testGetTiles() throws Exception {
-
-    }
-
-    @Test
-    public void testGetPorts() throws Exception {
-
-    }
-
-    @Test
-    public void testGetTownAt() throws Exception {
-
-    }
-
-    @Test
-    public void testGetRoad() throws Exception {
-
-    }
-
-    @Test
     public void testGetPlayersPorts() throws Exception {
         // no ports yet
         assertEquals(0, map.getPlayersPorts(player1).size());
@@ -140,7 +107,7 @@ public class CatanMapTest {
         map.placeCity(new City(player1), new VertexLocation(0, 2, VertexDirection.West)); //make city
         map.placeSettlement(new Settlement(player2), new VertexLocation(0, 0, VertexDirection.NorthEast)); //no port
 
-        assertEquals("Player has wrong number of poerts.", 3, map.getPlayersPorts(player1).size());
+        assertEquals("Player has wrong number of ports.", 3, map.getPlayersPorts(player1).size());
         assertTrue("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.BRICK));
         assertTrue("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.THREE));
         assertTrue("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.ORE));
@@ -149,7 +116,7 @@ public class CatanMapTest {
         assertFalse("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.WHEAT));
         assertFalse("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.SHEEP));
 
-        assertEquals("Player has wrong number of poerts.", 0, map.getPlayersPorts(player2).size());
+        assertEquals("Player has wrong number of ports.", 0, map.getPlayersPorts(player2).size());
 
     }
 
@@ -164,12 +131,12 @@ public class CatanMapTest {
 
         // cannot place a road next to any town (towns are placed second)
         map.placeSettlement(new Settlement(player1), new VertexLocation(0, 0, VertexDirection.NorthWest));
-        assertFalse(map.canPlaceInitialRoad(player1, edge));
-        assertFalse(map.canPlaceInitialRoad(player1, edge.getEquivalentEdge()));
-        assertFalse(map.canPlaceInitialRoad(player2, edge));
-        assertFalse(map.canPlaceInitialRoad(player2, edge.getEquivalentEdge()));
-        assertFalse(map.canPlaceInitialRoad(player1, new EdgeLocation(0, -1, EdgeDirection.SouthWest)));
-        assertFalse(map.canPlaceInitialRoad(player1, new EdgeLocation(-1, 0, EdgeDirection.NorthEast)));
+        assertFalse("Should not have been able to place road.", map.canPlaceInitialRoad(player1, edge));
+        assertFalse("Should not have been able to place road.", map.canPlaceInitialRoad(player1, edge.getEquivalentEdge()));
+        assertFalse("Should not have been able to place road.", map.canPlaceInitialRoad(player2, edge));
+        assertFalse("Should not have been able to place road.", map.canPlaceInitialRoad(player2, edge.getEquivalentEdge()));
+        assertFalse("Should not have been able to place road.", map.canPlaceInitialRoad(player1, new EdgeLocation(0, -1, EdgeDirection.SouthWest)));
+        assertFalse("Should not have been able to place road.", map.canPlaceInitialRoad(player1, new EdgeLocation(-1, 0, EdgeDirection.NorthEast)));
 
         // a nearby but ok place to put a road
         assertTrue(map.canPlaceInitialRoad(player1, new EdgeLocation(-1, 0, EdgeDirection.South)));
@@ -358,21 +325,30 @@ public class CatanMapTest {
     }
 
     @Test
-    public void testPlaceRoad() throws Exception {
+    public void testGetPlayersOnTile() throws Exception {
+        IPlayer player3 = new Player("John", 123, CatanColor.BLUE, 3);
 
-    }
+        assertEquals("Players returned from empty map/tile.", 0, map.getPlayersOnTile(new HexLocation(2, -2)).size());
 
-    @Test
-    public void testPlaceSettlement() throws Exception {
-    }
+        map.placeSettlement(new Settlement(player1), new VertexLocation(2, -2, VertexDirection.West));
 
-    @Test
-    public void testPlaceCity() throws Exception {
+        // test having one player on a tile
+        Set<IPlayer> playersOnTile = map.getPlayersOnTile(new HexLocation(2, -2));
 
-    }
+        assertTrue("Failed to find player on tile.", playersOnTile.contains(player1));
+        assertFalse("Found wrong player on tile.", playersOnTile.contains(player2));
+        assertFalse("Found wrong player on tile.", playersOnTile.contains(player3));
 
-    @Test
-    public void testMoveRobber() throws Exception {
+        // test having three different players on a tile
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0, 0, VertexDirection.West));
+        map.placeSettlement(new Settlement(player2), new VertexLocation(0, 0, VertexDirection.NorthEast));
+        map.placeSettlement(new Settlement(player3), new VertexLocation(0, 0, VertexDirection.SouthEast));
 
+        playersOnTile = map.getPlayersOnTile(new HexLocation(0, 0));
+
+        assertEquals("Wrong number of players found.", 3, playersOnTile.size());
+        assertTrue("Failed to find player on tile.", playersOnTile.contains(player1));
+        assertTrue("Failed to find player on tile.", playersOnTile.contains(player2));
+        assertTrue("Failed to find player on tile.", playersOnTile.contains(player3));
     }
 }

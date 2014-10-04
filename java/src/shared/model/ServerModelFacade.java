@@ -304,6 +304,8 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void maritimeTrade(int ratio, ResourceType giving, ResourceType getting) throws ModelException {
+        assert ratio == 2 || ratio == 3 || ratio == 4;
+
         IPlayer p = m_theGame.getLocalPlayer();
 
         if (!m_theGame.localPlayerIsPlaying() || p.getResources().getCount(giving) < ratio) {
@@ -377,5 +379,4 @@ public class ServerModelFacade implements IServerModelFacade {
             throw new ModelException(e);
         }
     }
-
 }

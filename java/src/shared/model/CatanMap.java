@@ -2,6 +2,7 @@ package shared.model;
 
 import shared.definitions.PortType;
 import shared.locations.*;
+import sun.security.provider.certpath.Vertex;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -327,7 +328,7 @@ public class CatanMap implements ICatanMap {
      * Place a settlement object at the specified vertex.
      * The settlement is placed in the map's data structure AND the settlement's location is set to edge.
      *
-     * This does NOT check whether a player has enough resources, etc.
+     * This does NOT check whether a player has enough resources, etc. or enforce any rules.
      *
      * @param settlement the settlement that is being placed
      * @param vertex     the vertex on which to place the settlement.
@@ -346,6 +347,8 @@ public class CatanMap implements ICatanMap {
     /**
      * Place a city object at the specified vertex.
      * The city is placed in the map's data structure AND the city's location is set to edge.
+     *
+     * No error checking is done here.
      *
      * @param city   the city that is being placed
      * @param vertex the vertex on which to place the city.
@@ -383,6 +386,26 @@ public class CatanMap implements ICatanMap {
 
         m_robber = location;
         m_tiles.get(location).placeRobber();
+    }
+
+    /**
+     * Get the players who have towns around this tile.
+     *
+     * @param tile
+     * @return
+     */
+    @Override
+    public Set<IPlayer> getPlayersOnTile(HexLocation tile) {
+        Set<IPlayer> players = new HashSet<>();
+
+        for (VertexDirection dir : VertexDirection.values()) {
+            VertexLocation loc = new VertexLocation(tile, dir).getNormalizedLocation();
+            if (m_towns.containsKey(loc)) {
+                players.add(m_towns.get(loc).getOwner());
+            }
+        }
+
+        return players;
     }
 
     /**
