@@ -5,11 +5,18 @@ import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
+import shared.definitions.PortType;
 import shared.definitions.ResourceType;
+import shared.locations.EdgeDirection;
+import shared.locations.EdgeLocation;
+import shared.locations.HexLocation;
+import shared.locations.VertexDirection;
 import shared.model.ILog.ILogMessage;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -107,15 +114,63 @@ public class ModelInitializerTest {
         // Map test
         ICatanMap testCatanMap = m_game.getMap();
         Collection<ITile> testTiles = testCatanMap.getTiles();
-
-        // Port tests
+//        boolean foundTile = false;
+//        for (ITile tile : testTiles) {
+//            if (tile.hasRobber() && tile.location().getX() == 0 && tile.location().getY() == -2) {
+//                foundTile = true;
+//            }
+//        }
+//        assertTrue(foundTile);
+//
+//        foundTile = false;
+//        for (ITile tile : testTiles) {
+//            if (!tile.hasRobber() && tile.location().getX() == 2 && tile.location().getY() == -2
+//                    && tile.numberToken() == 11 && tile.resource() == ResourceType.WOOD) {
+//                foundTile = true;
+//            }
+//        }
+//        assertTrue(foundTile);
 
         // Road tests
-        Collection<IRoad> testRoads = testCatanMap.getRoads();
+//        Collection<IRoad> testRoads = testCatanMap.getRoads();
+//        boolean foundRoad = false;
+//        for (IRoad road : testRoads) {
+//            if (road.getOwner().getIndex() == 2 && road.getLocation().getHexLoc().getX() == 0
+//                    && road.getLocation().getHexLoc().getY() == 0
+//                    && road.getLocation().getDir().equals(EdgeDirection.South)) {
+//
+//                foundRoad = true;
+//            }
+//        }
+//        assertTrue(foundRoad);
+//
+//        foundRoad = false;
+//        for (IRoad road : testRoads) {
+//            if (road.getOwner().getIndex() == 0 && road.getLocation().getHexLoc().getX() == 2
+//                    && road.getLocation().getHexLoc().getY() == 0
+//                    && road.getLocation().getDir().equals(EdgeDirection.SouthWest)) {
+//
+//                foundRoad = true;
+//            }
+//        }
+//        assertTrue(foundRoad);
 
-        // Settlements tests
+//        // Settlements tests
+//        Collection<ITown> testSettlements = testCatanMap.getSettlements();
+//        boolean foundSettlement = false;
+//        for (ITown settlement : testSettlements) {
+//            if (settlement.getOwner().getIndex() == 2 && settlement.getLocation().getHexLoc().getY() == -1
+//                    && settlement.getLocation().getHexLoc().getX() == 1
+//                    && settlement.getLocation().getDir() == VertexDirection.SouthWest) {
+//
+//                foundSettlement = true;
+//            }
+//        }
+//        assertTrue(foundSettlement);
 
         // Robber tests
+        HexLocation robberLoc = testCatanMap.getRobber();
+        assertTrue("Robber is in the wrong location", 0 == robberLoc.getX() && -2 == robberLoc.getY());
 
         // Tests the GamePlay Log
         ILog testMoveLog = m_game.getGameplayLog();
