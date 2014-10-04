@@ -282,7 +282,8 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonopoly(ResourceType resource) {
-        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONOPOLY);
+        return m_theGame.localPlayerIsPlaying()
+                && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONOPOLY);
     }
 
     /**
@@ -292,7 +293,8 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaySoldier(HexLocation robberDestination) {
-        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER) // has and can play card
+        return m_theGame.localPlayerIsPlaying()
+                && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER) // has and can play card
                 && !robberDestination.equals(m_theGame.getMap().getRobber()); // moved robber
     }
 
@@ -307,7 +309,9 @@ public class GameModelFacade implements IGameModelFacade {
     @Override
     public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
         IResourceBank bank = m_theGame.getResourceBank();
-        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.YEAR_OF_PLENTY) && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
+        return m_theGame.localPlayerIsPlaying()
+                && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.YEAR_OF_PLENTY)
+                && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
     }
 
     /**
@@ -317,7 +321,8 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonument() {
-        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONUMENT);
+        return m_theGame.localPlayerIsPlaying()
+                && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.MONUMENT);
     }
 
     /**
@@ -334,7 +339,9 @@ public class GameModelFacade implements IGameModelFacade {
         ICatanMap map = m_theGame.getMap();
         IPlayer player = m_theGame.getLocalPlayer();
 
-        return m_theGame.localPlayerIsPlaying() && map.canPlaceTwoRoads(player, edge1, edge2);
+        return m_theGame.localPlayerIsPlaying()
+                && player.canPlayDevCard(DevCardType.ROAD_BUILD)
+                && map.canPlaceTwoRoads(player, edge1, edge2);
     }
 
     // this method is just for determining from the GameState if it is a free round
