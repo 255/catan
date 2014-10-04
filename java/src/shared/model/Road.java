@@ -57,6 +57,6 @@ public class Road implements IRoad {
      */
     @Override
     public void setLocation(EdgeLocation edge) {
-        m_location = edge.getNormalizedLocation();
+        m_location = (edge != null ? edge.getNormalizedLocation() : null);
     }
 }
