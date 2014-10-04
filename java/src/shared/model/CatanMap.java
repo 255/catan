@@ -33,12 +33,6 @@ public class CatanMap implements ICatanMap {
     /** Construct a map with the specified objects and tiles */
     public CatanMap(Map<HexLocation, ITile> tiles, Map<VertexLocation, ITown> towns, Map<EdgeLocation, IRoad> roads,
                     Map<EdgeLocation, PortType> ports, HexLocation robber) throws ModelException {
-        if (ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
-                || roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
-                || towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))
-                || tiles.containsKey(robber)) {
-            throw new ModelException("Some pieces are off the map!");
-        }
 
         this.m_tiles = tiles;
         this.m_towns = towns;
@@ -48,6 +42,13 @@ public class CatanMap implements ICatanMap {
 
         // Set robber
         m_tiles.get(robber).placeRobber();
+
+        if (ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
+                || roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
+                || towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))
+                || tiles.containsKey(robber)) {
+            throw new ModelException("Some pieces are off the map!");
+        }
     }
 
     /**
