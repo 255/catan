@@ -58,13 +58,13 @@ public class HttpCommunicator implements IHttpCommunicator {
                     response = new String(buffer);
                 }
             } else {
-                throw new NetworkException();
+                return null;
             }
 
         } catch (MalformedURLException ex1) {
-
+            throw new NetworkException(ex1.getMessage());
         } catch (IOException ex2) {
-
+            throw new NetworkException(ex2.getMessage());
         } finally {
             connection.disconnect();
         }
@@ -117,13 +117,13 @@ public class HttpCommunicator implements IHttpCommunicator {
                 response = new String(buffer);
 
             } else {
-                throw new NetworkException();
+                return null;
             }
 
         } catch (MalformedURLException ex1) {
-
+            throw new NetworkException(ex1.getMessage());
         } catch (IOException ex2) {
-
+            throw new NetworkException(ex2.getMessage());
         } finally {
             connection.disconnect();
         }
