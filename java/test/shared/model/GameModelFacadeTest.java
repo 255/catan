@@ -188,6 +188,11 @@ public class GameModelFacadeTest {
         game.setCurrentPlayer(game.getPlayers().get(2));
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough city pieces", facade.canBuyCity());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canBuyCity());
     }
 
     @Test
@@ -203,6 +208,11 @@ public class GameModelFacadeTest {
         game.setCurrentPlayer(game.getPlayers().get(2));
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough road pieces", facade.canBuyRoad());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canBuyRoad());
     }
 
     @Test
@@ -218,6 +228,11 @@ public class GameModelFacadeTest {
         game.setCurrentPlayer(game.getPlayers().get(2));
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough settlement pieces", facade.canBuySettlement());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canBuySettlement());
     }
 
     @Test
@@ -234,6 +249,11 @@ public class GameModelFacadeTest {
         game.setLocalPlayer(game.getPlayers().get(0));
         game.setDevCards(new DevCardHand());
         assertFalse("No available dev cards", facade.canBuyDevCard());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canBuyDevCard());
     }
 
     @Test
@@ -243,7 +263,18 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlayDevCard() throws Exception {
+        assertTrue("Player can play dev card", facade.canPlayDevCard());
 
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not your turn", facade.canPlayDevCard());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        assertFalse("No dev cards", facade.canPlayDevCard());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canPlayDevCard());
     }
 
     @Test
