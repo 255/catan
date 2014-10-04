@@ -39,6 +39,12 @@ public class CatanMap implements ICatanMap {
         this.m_ports = ports;
         this.m_robber = robber;
 
+        // Set robber
+        for (ITile tile : m_tiles.values()) {
+            if (tile.location().getX() == m_robber.getX() && tile.location().getY() == m_robber.getY()) {
+                tile.placeRobber();
+            }
+        }
         if (ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
                 || roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
                 || towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))) {

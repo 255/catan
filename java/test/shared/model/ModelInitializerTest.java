@@ -114,13 +114,13 @@ public class ModelInitializerTest {
         // Map test
         ICatanMap testCatanMap = m_game.getMap();
         Collection<ITile> testTiles = testCatanMap.getTiles();
-//        boolean foundTile = false;
-//        for (ITile tile : testTiles) {
-//            if (tile.hasRobber() && tile.location().getX() == 0 && tile.location().getY() == -2) {
-//                foundTile = true;
-//            }
-//        }
-//        assertTrue(foundTile);
+        boolean foundTile = false;
+        for (ITile tile : testTiles) {
+            if (tile.hasRobber() && tile.location().getX() == 0 && tile.location().getY() == -2) {
+                foundTile = true;
+            }
+        }
+        assertTrue(foundTile);
 //
 //        foundTile = false;
 //        for (ITile tile : testTiles) {
