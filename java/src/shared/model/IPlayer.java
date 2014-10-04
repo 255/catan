@@ -129,10 +129,18 @@ public interface IPlayer {
      * @return true if has one or more of card
      */
     boolean canPlayDevCard(DevCardType card);
+
     /**
      * Checks to see if player can afford a specific purchase
      * @param purchase
      * @return whether the player can afford the purchase
      */
     public boolean canAfford(IResourceBank purchase);
+
+    /**
+     * Checks to see if the player can accept this trade.
+     * @param trade the amount with negative values indicating what the trade offer is demanding from the player
+     * @return whether the player can afford the offer
+     */
+    public boolean canAffordTrade(IResourceBank trade);
 }

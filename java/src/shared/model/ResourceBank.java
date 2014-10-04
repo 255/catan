@@ -157,4 +157,15 @@ public class ResourceBank implements IResourceBank {
             return false;
         }
     }
+
+    @Override
+    public IResourceBank negate() {
+        return new ResourceBank(
+                -m_wood,
+                -m_brick,
+                -m_sheep,
+                -m_wheat,
+                -m_ore
+        );
+    }
 }
