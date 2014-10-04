@@ -3,12 +3,9 @@ package shared.model;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.locations.*;
-
-import java.util.Collection;
 
 import static org.junit.Assert.*;
 
@@ -299,6 +296,10 @@ public class GameModelFacadeTest {
                 tradeGame.getGameState() == GameState.PLAYING);
         // assert that player 3 can't afford the trade offer
         tradeGame.setLocalPlayer(tradeGame.getPlayers().get(3));
+        assertTrue(tradeGame.getLocalPlayer().getIndex() == 3);
+        assertTrue(tradeGame.getLocalPlayer().getResources().getWood() == 1);
+        assertTrue(tradeGame.getLocalPlayer().getResources().getSheep() == 1);
+        assertTrue(tradeGame.getLocalPlayer().getResources().getOre() == 1);
         assertFalse("Player 0 to player 3 trade should not be affordable by player 3",
                 gf.canAcceptTrade());
         // assert that player 0 can't accept the trade because he is not the receiver
@@ -420,12 +421,47 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlayRoadBuilding() throws Exception {
+        EdgeLocation p1Next1 = new EdgeLocation(-1, 1, EdgeDirection.North);
+        EdgeLocation p1Next2 = new EdgeLocation(-2, 1, EdgeDirection.NorthEast);
 
-    }
+        IPlayer localPlayer = game.getPlayers().get(0);
+        game.setLocalPlayer(localPlayer);
 
-    @Test
-    public void testCanRobPlayer() throws Exception {
+        assertTrue("Player should be able to play road building card", facade.canPlayRoadBuilding(p1Next1, p1Next2));
+        assertFalse("Player should not be able to play road building card with roads in wrong order.",
+                facade.canPlayRoadBuilding(p1Next2, p1Next1));
 
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        assertFalse("Player should not be able to play out of turn", facade.canPlayRoadBuilding(p1Next1, p1Next2));
+
+        game.setCurrentPlayer(localPlayer);
+
+        EdgeLocation p1OtherValid = new EdgeLocation(1, 0, EdgeDirection.North);
+        // place in two valid, but separate, locations
+        assertTrue("Player should be able to play road building card", facade.canPlayRoadBuilding(p1Next1, p1OtherValid));
+        assertTrue("Player should be able to play road building card", facade.canPlayRoadBuilding(p1OtherValid, p1Next1));
+
+        // wrong game state
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Player should be not able to play card in DISCARDING", facade.canPlayRoadBuilding(p1Next1, p1Next2));
+        assertFalse("Player should be not able to play card in DISCARDING", facade.canPlayRoadBuilding(p1OtherValid, p1Next1));
+        game.setGameState(GameState.PLAYING);
+
+        // take away their cards!
+        while (localPlayer.getPlayableDevCards().getCount(DevCardType.ROAD_BUILD) > 0) {
+           localPlayer.getPlayableDevCards().remove(DevCardType.ROAD_BUILD);
+        }
+
+        // no cards, no play
+        assertFalse("Player has no road build cards to play, should not be able to.", facade.canPlayRoadBuilding(p1Next1, p1OtherValid));
+        assertFalse("Player has no road build cards to play, should not be able to.", facade.canPlayRoadBuilding(p1OtherValid, p1Next1));
+
+        // valid roads, but already played card
+        EdgeLocation p2Next1 = new EdgeLocation(1, 1, EdgeDirection.SouthWest);
+        EdgeLocation p2Next2 = new EdgeLocation(1, 1, EdgeDirection.South);
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Already played dev card, should not be able to play.", facade.canPlayRoadBuilding(p2Next1, p2Next2));
     }
 
     @Test

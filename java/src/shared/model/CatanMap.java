@@ -43,7 +43,8 @@ public class CatanMap implements ICatanMap {
         // check that all pieces on tiles
         if (!m_tiles.containsKey(robber)) {
             throw new ModelException("The robber is not on the map!");
-        } else if (m_ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
+        }
+        else if (m_ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
                     || m_roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
                     || m_towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))) {
             throw new ModelException("Some pieces are off the map!");
