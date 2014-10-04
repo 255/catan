@@ -286,7 +286,25 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanAcceptTrade() throws Exception {
+        // player 3 only has 3 resource cards
+        // player 0 has 100 of each resource
+        IGame tradeGame = initAGame("sample/pending_trade.json");
+        IGameModelFacade gf = GameModelFacade.getInstance();
 
+        // assert that there is a pending trade offer
+        assertTrue("There is no pending trade in a game that has a trade offer pending",
+                tradeGame.getTradeOffer() != null);
+        // assert that the game state is set to playing
+        assertTrue("Game state should be set to playing",
+                tradeGame.getGameState() == GameState.PLAYING);
+        // assert that player 3 can't afford the trade offer
+        tradeGame.setLocalPlayer(tradeGame.getPlayers().get(3));
+        assertFalse("Player 0 to player 3 trade should not be affordable by player 3",
+                gf.canAcceptTrade());
+        // assert that player 0 can't accept the trade because he is not the receiver
+        tradeGame.setLocalPlayer(tradeGame.getPlayers().get(0));
+        assertFalse("Player 0 should not be able to accept the trade if he is not the receiver ",
+                gf.canAcceptTrade());
     }
 
     @Test
