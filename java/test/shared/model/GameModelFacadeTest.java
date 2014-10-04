@@ -8,6 +8,8 @@ import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.locations.*;
 
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
 public class GameModelFacadeTest {
@@ -150,6 +152,33 @@ public class GameModelFacadeTest {
     @Test
     public void testCanPlaceInitialRoad() throws Exception {
         IGame initGame = initAGame("sample/empty_board.json");
+        IGameModelFacade gf = GameModelFacade.getInstance();
+
+        // assert that it is the first round
+        assertTrue("Not the First Round",
+                initGame.getGameState() == GameState.FIRST_ROUND);
+        // assert that there are no settlements
+        assertTrue("There should be no settlements on a blank map",
+                initGame.getMap().getSettlements().isEmpty());
+        // assert that there are no roads on the map after game start
+        assertTrue("There should be no roads placed if there are no settlements yet",
+                initGame.getMap().getRoads().isEmpty());
+        // assert that the player cannot place a road yet
+        assertFalse("Cannot place a road without a settlement",
+                gf.canPlaceRoad(new EdgeLocation(0,0, EdgeDirection.SouthWest)));
+        // "place a settlement" for player 0 at EdgeLocation(0,0,SW)
+        initGame = initAGame("sample/one_settlement.json");
+        // assert that there is a settlement on the map
+        Collection<ITown> settlements = initGame.getMap().getSettlements();
+        assertTrue("A settlement is missing",
+                settlements.size() == 1);
+        // assert that road can be placed next to settlement
+        IPlayer p = initGame.getPlayers().get(0);
+        assertTrue("Road must be placed by settlement",
+                initGame.getMap().canPlaceRoad(p, new EdgeLocation(0,0,EdgeDirection.SouthWest)));
+        // assert that road cannot be place elsewhere
+        assertFalse("First road should go by player settlement",
+                initGame.getMap().canPlaceRoad(p, new EdgeLocation(-1,-1,EdgeDirection.SouthWest)));
     }
 
     @Test
