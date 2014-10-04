@@ -294,7 +294,7 @@ public class GameModelFacade implements IGameModelFacade {
     @Override
     public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
         IResourceBank bank = m_theGame.getResourceBank();
-        return m_theGame.localPlayerIsPlaying() && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.YEAR_OF_PLENTY) && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
     }
 
     /**

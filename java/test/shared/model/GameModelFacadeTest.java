@@ -309,7 +309,26 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlayYearOfPlenty() throws Exception {
+        assertTrue("Player can play year of plenty", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
 
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Already played dev card", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not your turn", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        assertFalse("No year of plenty card", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setGameState(GameState.PLAYING);
+        game.setResourceBank(new ResourceBank());
+        assertFalse("Not enough resources in bank", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
     }
 
     @Test
