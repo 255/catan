@@ -351,4 +351,18 @@ public class CatanMapTest {
         assertTrue("Failed to find player on tile.", playersOnTile.contains(player2));
         assertTrue("Failed to find player on tile.", playersOnTile.contains(player3));
     }
+
+    @Test
+    public void testCanPlaceTwoRoads() throws Exception {
+        EdgeLocation start = new EdgeLocation(0, 0, EdgeDirection.South);
+        EdgeLocation next1 = new EdgeLocation(0, 0, EdgeDirection.SouthWest);
+        EdgeLocation next2 = new EdgeLocation(-1, 1, EdgeDirection.North);
+
+        map.placeRoad(new Road(player1), start);
+        assertTrue("Should be able to place two roads starting from existing.", map.canPlaceTwoRoads(player1, next1, next2));
+        assertFalse("Should be not be able to place two roads in wrong order.", map.canPlaceTwoRoads(player1, next2, next1));
+        assertFalse("Should be not be able to place the same two roads.", map.canPlaceTwoRoads(player1, next1, next1));
+
+        assertFalse("Opponent should not be able to connect roads.", map.canPlaceTwoRoads(player2, next1, next2));
+    }
 }
