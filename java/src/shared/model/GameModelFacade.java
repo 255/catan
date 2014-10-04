@@ -249,7 +249,20 @@ public class GameModelFacade implements IGameModelFacade {
     @Override
     public boolean canAcceptTrade() {
         ITradeOffer tradeOffer = m_theGame.getTradeOffer();
-        return tradeOffer != null && m_theGame.getLocalPlayer().equals(tradeOffer.getReceiver());
+
+        // is there a trade offer?
+        if (tradeOffer == null) {
+            return false;
+        }
+
+        // these shouldn't matter, but testing anyway
+        if (m_theGame.getGameState() != GameState.PLAYING || !m_theGame.getCurrentPlayer().equals(tradeOffer.getSender())) {
+            return false;
+        }
+
+        // check that the trade is for the player and that they can afford it
+        return  m_theGame.getLocalPlayer().equals(tradeOffer.getReceiver())
+                && m_theGame.getLocalPlayer().canAffordTrade(tradeOffer.getOffer());
     }
 
     /**

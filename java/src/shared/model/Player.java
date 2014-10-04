@@ -273,6 +273,17 @@ public class Player implements IPlayer {
         return !m_playedDevCard && (m_playableDevCards.getCount(card) > 0);
     }
 
+    /**
+     * Checks to see if the player can accept this trade.
+     *
+     * @param trade the amount with negative values indicating what the trade offer is demanding from the player
+     * @return whether the player can afford the offer
+     */
+    @Override
+    public boolean canAffordTrade(IResourceBank trade) {
+        return m_resources.canAfford(trade.negate());
+    }
+
     //*********//
     // Setters //
     //*********//

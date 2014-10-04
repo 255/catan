@@ -133,4 +133,11 @@ public interface IResourceBank {
      * @return the amount of resources
      */
     int getCount();
+
+    /**
+     * Negate all of the values in the bank.
+     * This turns trade offers into trade requests and requests into offers.
+     * @return a new, negated bank
+     */
+    public IResourceBank negate();
 }
