@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
+import shared.definitions.ResourceType;
 import shared.locations.*;
 
 import static org.junit.Assert.*;
@@ -266,6 +267,10 @@ public class GameModelFacadeTest {
     public void testCanPlayDevCard() throws Exception {
         assertTrue("Player can play dev card", facade.canPlayDevCard());
 
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Already played dev card", facade.canPlayDevCard());
+
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not your turn", facade.canPlayDevCard());
 
@@ -280,7 +285,22 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlayMonopoly() throws Exception {
+        assertTrue("Player can play monopoly", facade.canPlayMonopoly(ResourceType.BRICK));
 
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Already played dev card", facade.canPlayMonopoly(ResourceType.BRICK));
+
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not your turn", facade.canPlayMonopoly(ResourceType.BRICK));
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        assertFalse("No monopoly card", facade.canPlayMonopoly(ResourceType.BRICK));
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canPlayMonopoly(ResourceType.BRICK));
     }
 
     @Test
@@ -317,7 +337,22 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlayMonument() throws Exception {
+        assertTrue("Player can play monument", facade.canPlayMonument());
 
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Already played dev card", facade.canPlayMonument());
+
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not your turn", facade.canPlayMonument());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        assertFalse("No monument card", facade.canPlayMonument());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canPlayMonument());
     }
 
     @Test
