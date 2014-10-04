@@ -66,9 +66,6 @@ public class GameModelFacadeTest {
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("No road pieces", facade.canPlaceRoad(edge1));
 
-
-//        assertTrue("Road building dev card", facade.canPlaceRoad(edge1));
-
         game.setCurrentPlayer(game.getPlayers().get(3));
         assertFalse("Not your turn", facade.canPlaceRoad(edge1));
     }
@@ -195,7 +192,18 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanBuyDevCard() throws Exception {
+        assertTrue("Player can buy dev card", facade.canBuyDevCard());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuyDevCard());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuyDevCard());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setDevCards(new DevCardHand());
+        assertFalse("No available dev cards", facade.canBuyDevCard());
     }
 
     @Test
