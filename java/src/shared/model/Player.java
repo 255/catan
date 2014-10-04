@@ -177,6 +177,17 @@ public class Player implements IPlayer {
         return m_resources;
     }
 
+    /**
+     * Get whether the has any resources. This will be used to test if the player can be robbed from when placing
+     * the robber.
+     *
+     * @return true if the user has resources
+     */
+    @Override
+    public boolean hasResources() {
+        return m_resources.getCount() > 0;
+    }
+
     @Override
     public IDevCardHand getNewDevCards() {
         return m_newDevCards;

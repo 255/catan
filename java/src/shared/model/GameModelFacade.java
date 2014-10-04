@@ -324,17 +324,6 @@ public class GameModelFacade implements IGameModelFacade {
         return m_theGame.localPlayerIsPlaying() && map.canPlaceTwoRoads(player, edge1, edge2);
     }
 
-    /**
-     * Get whether the local player can play this specific dev card.
-     *
-     * @param destination
-     * @return true if the user can play this card
-     */
-    @Override
-    public boolean canRobPlayer(HexLocation destination) {
-        return false;
-    }
-
     // this method is just for determining from the GameState if it is a free round
     @Override
     public boolean isFreeRound() {

@@ -151,6 +151,13 @@ public interface ICatanMap {
     public HexLocation getRobber();
 
     /**
+     * Get the players who have towns around this tile.
+     * @param tile
+     * @return
+     */
+    public Collection<IPlayer> getPlayersOnTile(HexLocation tile);
+
+    /**
      * Change the location of the robber.
      * @param location the new hex location of the robber
      */
