@@ -21,7 +21,7 @@ public class CatanMap implements ICatanMap {
     private Map<EdgeLocation, PortType> m_ports;
     private HexLocation m_robber;
 
-    /** Construct a new, blank Catan Map */ // perhaps this will initialize itself according to game rules in server
+    /** Construct a new, blank Catan Map */
     public CatanMap(Map<HexLocation, ITile> tiles, Map<EdgeLocation, PortType> ports) {
         m_tiles = tiles;
         m_ports = ports;
@@ -33,6 +33,13 @@ public class CatanMap implements ICatanMap {
     /** Construct a map with the specified objects and tiles */
     public CatanMap(Map<HexLocation, ITile> tiles, Map<VertexLocation, ITown> towns, Map<EdgeLocation, IRoad> roads,
                     Map<EdgeLocation, PortType> ports, HexLocation robber) throws ModelException {
+        if (ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
+                || roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
+                || towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))
+                || tiles.containsKey(robber)) {
+            throw new ModelException("Some pieces are off the map!");
+        }
+
         this.m_tiles = tiles;
         this.m_towns = towns;
         this.m_roads = roads;
@@ -40,16 +47,7 @@ public class CatanMap implements ICatanMap {
         this.m_robber = robber;
 
         // Set robber
-        for (ITile tile : m_tiles.values()) {
-            if (tile.location().getX() == m_robber.getX() && tile.location().getY() == m_robber.getY()) {
-                tile.placeRobber();
-            }
-        }
-        if (ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
-                || roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
-                || towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))) {
-            throw new ModelException("Some pieces are off the map!");
-        }
+        m_tiles.get(robber).placeRobber();
     }
 
     /**
