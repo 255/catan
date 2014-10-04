@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.CatanColor;
+import shared.definitions.DevCardType;
 import shared.locations.*;
 
 import static org.junit.Assert.*;
@@ -284,7 +285,29 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlaySoldier() throws Exception {
+        // make sure it fails if the local player is not playing
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("A player tried to play a solider when it was not their turn", facade.canPlaySoldier(new HexLocation(0, 2)));
 
+        // make sure it fails if the player has a soldier card, but it's not playable
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
+        game.getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
+        game.getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
+        assertFalse("A player tried to play a soldier when it was not in their playable hand", facade.canPlaySoldier(new HexLocation(0, 2)));
+
+        // make sure it fails if the player has no soldier card
+        game.getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
+        game.getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
+        game.getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
+        assertFalse("A player tried to play a soldier when they didn't have one", facade.canPlaySoldier(new HexLocation(0, 2)));
+
+        // make sure it fails if the hex location has the robber on it.
+        game.getLocalPlayer().getPlayableDevCards().add(DevCardType.SOLDIER);
+        assertFalse("A player tried to play a soldier on the hex that the robber was already on", facade.canPlaySoldier(new HexLocation(0, -2)));
+
+        game.getLocalPlayer().getPlayableDevCards().add(DevCardType.SOLDIER);
+        assertTrue("A player can play a soldier because they have one in their playable hand, and the hex is valid", facade.canPlaySoldier(new HexLocation(0, 2)));
     }
 
     @Test
