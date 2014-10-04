@@ -40,15 +40,17 @@ public class CatanMap implements ICatanMap {
         this.m_ports = ports;
         this.m_robber = robber;
 
-        // Set robber
-        m_tiles.get(robber).placeRobber();
-
-        if (ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
-                || roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
-                || towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))
-                || tiles.containsKey(robber)) {
+        // check that all pieces on tiles
+        if (!m_tiles.containsKey(robber)) {
+            throw new ModelException("The robber is not on the map!");
+        } else if (m_ports.keySet().stream().anyMatch((EdgeLocation edge) -> !isOnMap(edge))
+                    || m_roads.keySet().stream().anyMatch((EdgeLocation loc) -> !isOnMap(loc))
+                    || m_towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))) {
             throw new ModelException("Some pieces are off the map!");
         }
+
+        // Set robber flag in tile
+        m_tiles.get(robber).placeRobber();
     }
 
     /**
