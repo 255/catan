@@ -170,16 +170,7 @@
       }
     ],
     "cities": [],
-    "settlements": [
-        {
-          "owner": 0,
-          "location": {
-            "direction": "SW",
-            "x": 0,
-            "y": 0
-          }
-        }
-    ],
+    "settlements": [],
     "radius": 3,
     "ports": [],
     "robber": {

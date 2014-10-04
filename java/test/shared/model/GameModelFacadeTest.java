@@ -161,24 +161,15 @@ public class GameModelFacadeTest {
         assertTrue("There should be no settlements on a blank map",
                 initGame.getMap().getSettlements().isEmpty());
         // assert that there are no roads on the map after game start
-        assertTrue("There should be no roads placed if there are no settlements yet",
+        assertTrue("There should be no roads on a blank map",
                 initGame.getMap().getRoads().isEmpty());
-        // assert that the player cannot place a road yet
-        assertFalse("Cannot place a road without a settlement",
-                gf.canPlaceRoad(new EdgeLocation(0,0, EdgeDirection.SouthWest)));
-        // "place a settlement" for player 0 at EdgeLocation(0,0,SW)
-        initGame = initAGame("sample/one_settlement.json");
-        // assert that there is a settlement on the map
-        Collection<ITown> settlements = initGame.getMap().getSettlements();
-        assertTrue("A settlement is missing",
-                settlements.size() == 1);
-        // assert that road can be placed next to settlement
+        // assert that road can be placed on a terrain edge
         IPlayer p = initGame.getPlayers().get(0);
-        assertTrue("Road must be placed by settlement",
+        assertTrue("Somehow 0,0,SW is unacceptable",
                 initGame.getMap().canPlaceRoad(p, new EdgeLocation(0,0,EdgeDirection.SouthWest)));
-        // assert that road cannot be place elsewhere
-        assertFalse("First road should go by player settlement",
-                initGame.getMap().canPlaceRoad(p, new EdgeLocation(-1,-1,EdgeDirection.SouthWest)));
+        // assert that road cannot be placed on a coastline
+        assertFalse("Road should not be able to be placed on a coastline",
+                initGame.getMap().canPlaceRoad(p, new EdgeLocation(-3,3,EdgeDirection.SouthWest)));
     }
 
     @Test
