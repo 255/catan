@@ -25,8 +25,6 @@ public interface IGameModelFacade {
      */
     public boolean canPlaceRoad(EdgeLocation edge);
 
-    boolean canPlaceInitialRoad(EdgeLocation edge);
-
     /**
      * Takes a vertex location and determines if a settlement can be placed on it
      *

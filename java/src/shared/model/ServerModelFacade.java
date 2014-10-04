@@ -284,7 +284,7 @@ public class ServerModelFacade implements IServerModelFacade {
     public void offerTrade(IResourceBank offer, IPlayer recipientPlayer) throws ModelException {
         IPlayer p = m_theGame.getLocalPlayer();
 
-        if (!p.canAfford(offer) || !m_theGame.localPlayerCanPlay()) {
+        if (!p.canAfford(offer) || !m_theGame.localPlayerIsPlaying()) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -306,7 +306,7 @@ public class ServerModelFacade implements IServerModelFacade {
     public void maritimeTrade(int ratio, ResourceType giving, ResourceType getting) throws ModelException {
         IPlayer p = m_theGame.getLocalPlayer();
 
-        if (!m_theGame.localPlayerCanPlay() || p.getResources().getCount(giving) < ratio) {
+        if (!m_theGame.localPlayerIsPlaying() || p.getResources().getCount(giving) < ratio) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -367,7 +367,7 @@ public class ServerModelFacade implements IServerModelFacade {
     public void finishTurn() throws ModelException {
         IPlayer p = m_theGame.getLocalPlayer();
 
-        if (!m_theGame.localPlayerCanPlay()) {
+        if (!m_theGame.localPlayerIsPlaying()) {
             throw new ModelException("Preconditions for action not met.");
         }
 

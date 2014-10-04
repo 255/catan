@@ -15,7 +15,8 @@ public class Road implements IRoad {
      */
     public Road(IPlayer owner) {
         assert owner != null;
-        setOwner(owner);
+
+        m_owner = owner;
         setLocation(null);
     }
 
@@ -28,8 +29,8 @@ public class Road implements IRoad {
     public Road(IPlayer owner, EdgeLocation location) {
         assert owner != null && location != null;
 
-        setOwner(owner);
-        setLocation(location.getNormalizedLocation());
+        m_owner = owner;
+        setLocation(location);
     }
 
     /**
@@ -44,6 +45,7 @@ public class Road implements IRoad {
      * Get the location at which this road is placed.
      * @return the location at which this road is placed
      */
+    @Override
     public EdgeLocation getLocation() {
         return m_location;
     }
@@ -53,29 +55,8 @@ public class Road implements IRoad {
      * This function should only ever be called once. (Roads cannot be moved.)
      * @param edge the edge where the road is placed
      */
+    @Override
     public void setLocation(EdgeLocation edge) {
-        m_location = edge;
-    }
-
-    //*********//
-    // Setters //
-    //*********//
-
-    /**
-     * Set the owner of the road to the value of an IPlayer object
-     *
-     * @param owner the owner of the road
-     */
-    public void setOwner(IPlayer owner) {
-        m_owner = owner;
-    }
-
-    /**
-     * Set the hex EdgeLocation to the value of an EdgeLocation
-     *
-     * @param location the location of the road on the map
-     */
-    public void setlocation(EdgeLocation location) {
-        m_location = location;
+        m_location = (edge != null ? edge.getNormalizedLocation() : null);
     }
 }

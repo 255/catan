@@ -21,8 +21,6 @@ public class GameModelFacadeTest {
         String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
         serializer.initializeClientModel(testJSON, 0);
         game = GameModelFacade.getInstance().getGame();
-        IPlayer player = new Player("Sam", 0, CatanColor.ORANGE, 0);
-        game.setLocalPlayer(player);
     }
 
     @After
@@ -60,10 +58,6 @@ public class GameModelFacadeTest {
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canPlaceRoad(edge1));
 
-        game.setGameState(GameState.FIRST_ROUND);
-        assertTrue("Place free road", facade.canPlaceRoad(edge1));
-        game.setGameState(GameState.PLAYING);
-
         game.setCurrentPlayer(game.getPlayers().get(1));
         game.setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canPlaceRoad(edge1));
@@ -71,9 +65,6 @@ public class GameModelFacadeTest {
         game.setCurrentPlayer(game.getPlayers().get(2));
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("No road pieces", facade.canPlaceRoad(edge1));
-
-
-//        assertTrue("Road building dev card", facade.canPlaceRoad(edge1));
 
         game.setCurrentPlayer(game.getPlayers().get(3));
         assertFalse("Not your turn", facade.canPlaceRoad(edge1));
@@ -156,7 +147,7 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlaceInitialRoad() throws Exception {
-
+        IGame initGame = initAGame("sample/empty_board.json");
     }
 
     @Test
@@ -186,22 +177,63 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanBuyCity() throws Exception {
+        assertTrue("Player can buy city", facade.canBuyCity());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuyCity());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuyCity());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not enough city pieces", facade.canBuyCity());
     }
 
     @Test
     public void testCanBuyRoad() throws Exception {
+        assertTrue("Player can buy road", facade.canBuyRoad());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuyRoad());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuyRoad());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not enough road pieces", facade.canBuyRoad());
     }
 
     @Test
     public void testCanBuySettlement() throws Exception {
+        assertTrue("Player can buy settlement", facade.canBuySettlement());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuySettlement());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuySettlement());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not enough settlement pieces", facade.canBuySettlement());
     }
 
     @Test
     public void testCanBuyDevCard() throws Exception {
+        assertTrue("Player can buy dev card", facade.canBuyDevCard());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuyDevCard());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuyDevCard());
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setDevCards(new DevCardHand());
+        assertFalse("No available dev cards", facade.canBuyDevCard());
     }
 
     @Test
@@ -247,5 +279,16 @@ public class GameModelFacadeTest {
     @Test
     public void testIsFreeRound() throws Exception {
 
+    }
+
+    //************************//
+    // private helper methods //
+    //************************//
+
+    private IGame initAGame(String jsonTestFile) throws Exception {
+        String emptyBoardJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(jsonTestFile)));
+        ModelInitializer initModel = new ModelInitializer();
+        initModel.initializeClientModel(emptyBoardJSON, 0);
+        return GameModelFacade.getInstance().getGame();
     }
 }

@@ -84,7 +84,7 @@ public class EdgeLocation
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Returns a canonical (i.e., unique) value for this edge location. Since
 	 * each edge has two different locations on a map, this method converts a

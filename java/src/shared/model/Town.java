@@ -49,6 +49,6 @@ public abstract class Town implements ITown {
      */
     @Override
     public void setLocation(VertexLocation location) {
-        m_location = location;
+        m_location = (location != null ? location.getNormalizedLocation() : null);
     }
 }

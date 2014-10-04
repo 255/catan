@@ -140,12 +140,16 @@ public class CatanMapTest {
         map.placeCity(new City(player1), new VertexLocation(0, 2, VertexDirection.West)); //make city
         map.placeSettlement(new Settlement(player2), new VertexLocation(0, 0, VertexDirection.NorthEast)); //no port
 
-        assertEquals(3, map.getPlayersPorts(player1).size());
-        assertTrue(map.getPlayersPorts(player1).contains(PortType.BRICK));
-        assertTrue(map.getPlayersPorts(player1).contains(PortType.THREE));
-        assertTrue(map.getPlayersPorts(player1).contains(PortType.ORE));
+        assertEquals("Player has wrong number of poerts.", 3, map.getPlayersPorts(player1).size());
+        assertTrue("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.BRICK));
+        assertTrue("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.THREE));
+        assertTrue("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.ORE));
 
-        assertEquals(0, map.getPlayersPorts(player2).size());
+        assertFalse("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.WOOD));
+        assertFalse("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.WHEAT));
+        assertFalse("Wrong port types returned.", map.getPlayersPorts(player1).contains(PortType.SHEEP));
+
+        assertEquals("Player has wrong number of poerts.", 0, map.getPlayersPorts(player2).size());
 
     }
 
@@ -246,7 +250,7 @@ public class CatanMapTest {
         assertFalse(map.canPlaceRoad(player1, new EdgeLocation(-1, -1, EdgeDirection.North)));
     }
 
-    /* Test canPlaceRoad and canPlaceInitialRoad methods */
+    /* Test canPlaceSettlement method */
     @Test
     public void testCanPlaceSettlement() throws Exception {
         // cannot place a settlement with no roads
