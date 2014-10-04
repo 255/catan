@@ -155,12 +155,14 @@ public class ModelInitializerTest {
         }
         assertTrue(foundRoad);
 
-//        // Port tests
-//        Map<EdgeLocation, PortType> testPorts = testCatanMap.getPorts();
-//        assertTrue(testPorts.get(new EdgeLocation(-2, 3, EdgeDirection.NorthEast)).equals(PortType.BRICK));
+        // Port tests
+        Map<EdgeLocation, PortType> testPorts = testCatanMap.getPorts();
+        assertTrue(testPorts.get(new EdgeLocation(-2, 3, EdgeDirection.NorthEast)).equals(PortType.BRICK));
+
+        assertTrue(testPorts.get(new EdgeLocation(0, 3, EdgeDirection.North)).equals(PortType.THREE));
 
 
-        // Settlements tests
+            // Settlements tests
         Collection<ITown> testSettlements = testCatanMap.getSettlements();
         boolean foundSettlement = false;
         for (ITown settlement : testSettlements) {
