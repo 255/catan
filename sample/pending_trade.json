@@ -592,11 +592,11 @@
   "tradeOffer":{
     "sender": 0,
     "offer": {
-      "brick": 1,
-      "ore": 1,
-      "sheep": 1,
-      "wheat": 1,
-      "wood": 1
+      "brick": -1,
+      "ore": -1,
+      "sheep": -1,
+      "wheat": -1,
+      "wood": -1
     },
     "receiver": 3
   },

@@ -296,6 +296,10 @@ public class GameModelFacadeTest {
                 tradeGame.getGameState() == GameState.PLAYING);
         // assert that player 3 can't afford the trade offer
         tradeGame.setLocalPlayer(tradeGame.getPlayers().get(3));
+        assertTrue(tradeGame.getLocalPlayer().getIndex() == 3);
+        assertTrue(tradeGame.getLocalPlayer().getResources().getWood() == 1);
+        assertTrue(tradeGame.getLocalPlayer().getResources().getSheep() == 1);
+        assertTrue(tradeGame.getLocalPlayer().getResources().getOre() == 1);
         assertFalse("Player 0 to player 3 trade should not be affordable by player 3",
                 gf.canAcceptTrade());
         // assert that player 0 can't accept the trade because he is not the receiver
