@@ -171,7 +171,7 @@ public class GameModelFacadeTest {
         assertFalse("Road should not be able to be placed off the map",
                 gf.canPlaceRoad(new EdgeLocation(-4,4,EdgeDirection.SouthWest)));
         // assert that a road cannot be placed on the coast
-        assertFalse("Road should not be able to be placed on the coast",
+        assertTrue("Road should be able to be placed on the coast",
                 gf.canPlaceRoad(new EdgeLocation(-2,2,EdgeDirection.SouthWest)));
         // assert that a road can be placed ending on the coast
         assertTrue("Road should be able to be placed ending on the coast",
