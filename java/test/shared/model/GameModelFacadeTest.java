@@ -164,12 +164,18 @@ public class GameModelFacadeTest {
         assertTrue("There should be no roads on a blank map",
                 initGame.getMap().getRoads().isEmpty());
         // assert that road can be placed on a terrain edge
-        IPlayer p = initGame.getPlayers().get(0);
+        initGame.setLocalPlayer(initGame.getPlayers().get(0));
         assertTrue("Somehow 0,0,SW is unacceptable",
-                initGame.getMap().canPlaceRoad(p, new EdgeLocation(0,0,EdgeDirection.SouthWest)));
-        // assert that road cannot be placed on a coastline
-        assertFalse("Road should not be able to be placed on a coastline",
-                initGame.getMap().canPlaceRoad(p, new EdgeLocation(-3,3,EdgeDirection.SouthWest)));
+                gf.canPlaceRoad(new EdgeLocation(0,0,EdgeDirection.SouthWest)));
+        // assert that a road cannot be placed off the map
+        assertFalse("Road should not be able to be placed off the map",
+                gf.canPlaceRoad(new EdgeLocation(-4,4,EdgeDirection.SouthWest)));
+        // assert that a road cannot be placed on the coast
+        assertFalse("Road should not be able to be placed on the coast",
+                gf.canPlaceRoad(new EdgeLocation(-2,2,EdgeDirection.SouthWest)));
+        // assert that a road can be placed ending on the coast
+        assertTrue("Road should be able to be placed ending on the coast",
+                gf.canPlaceRoad(new EdgeLocation(-1,2,EdgeDirection.NorthWest)));
     }
 
     @Test
