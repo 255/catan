@@ -31,11 +31,6 @@ public class ServerProxyTest {
         m_gameAdminProxy.joinGame(0, CatanColor.ORANGE);
     }
 
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test
     public void testSendChat() throws Exception {
         IGameAdministrator gameAdmin = new GameAdministrator(m_gameAdminProxy);

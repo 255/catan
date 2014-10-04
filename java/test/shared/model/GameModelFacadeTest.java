@@ -176,31 +176,6 @@ public class GameModelFacadeTest {
     }
 
     @Test
-    public void testGetCurrentPlayer() throws Exception {
-
-    }
-
-    @Test
-    public void testGetPlayerResources() throws Exception {
-
-    }
-
-    @Test
-    public void testGetPlayerPorts() throws Exception {
-
-    }
-
-    @Test
-    public void testGetChatHistory() throws Exception {
-
-    }
-
-    @Test
-    public void testGetMoveHistory() throws Exception {
-
-    }
-
-    @Test
     public void testCanBuyCity() throws Exception {
         assertTrue("Player can buy city", facade.canBuyCity());
 
@@ -466,7 +441,13 @@ public class GameModelFacadeTest {
 
     @Test
     public void testIsFreeRound() throws Exception {
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Should not a free round.", facade.isFreeRound());
 
+        game.setGameState(GameState.FIRST_ROUND);
+        assertTrue("Should be a free round.", facade.isFreeRound());
+        game.setGameState(GameState.SECOND_ROUND);
+        assertTrue("Should be a free round.", facade.isFreeRound());
     }
 
     //************************//

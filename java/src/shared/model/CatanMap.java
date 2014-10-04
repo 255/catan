@@ -2,7 +2,6 @@ package shared.model;
 
 import shared.definitions.PortType;
 import shared.locations.*;
-import sun.security.provider.certpath.Vertex;
 
 import java.util.*;
 import java.util.stream.Collectors;

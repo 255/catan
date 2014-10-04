@@ -34,11 +34,6 @@ public class ModelInitializerTest {
         m_game = GameModelFacade.getInstance().getGame();
     }
 
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
     @Test(expected=ModelException.class)
     public void testBadPlayerIndex() throws Exception {
         m_modelInitializer.initializeClientModel(m_clientModel, -93827);
@@ -204,6 +199,5 @@ public class ModelInitializerTest {
         assertEquals("Game state was Rolling", GameState.ROLLING, m_game.getGameState());
         assertEquals("Index of current player is 0", 0, m_game.getCurrentPlayer().getIndex());
         assertEquals("No winnner. Should return null", null, m_game.getWinner());
-
     }
 }

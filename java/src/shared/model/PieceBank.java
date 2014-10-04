@@ -1,7 +1,5 @@
 package shared.model;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
 /**
  * Represents the pieces that a player has left to place on the map
  */
