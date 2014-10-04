@@ -16,7 +16,7 @@ public class ClientUnitTests {
     public static void main(String[] args) {
         System.out.println("Running client unit tests.");
         Result result = JUnitCore.runClasses(
-                //client.poller.ServerPollerTest.class, //FIXME: this test hangs
+                client.poller.ServerPollerTest.class,
                 client.network.ServerProxyTest.class
         );
         for (Failure failure : result.getFailures()) {

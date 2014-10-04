@@ -12,11 +12,11 @@ public class GameInfo implements IGameInfo {
     private List<String> m_listOfPlayers;
     private boolean m_isFull;
 
-    public GameInfo(int gameIndex, String gameName, List<String> listOfPlayers, boolean isFull) {
+    public GameInfo(int gameIndex, String gameName, List<String> listOfPlayers) {
         m_gameIndex = gameIndex;
         m_gameName = gameName;
         m_listOfPlayers = listOfPlayers;
-        m_isFull = isFull;
+        m_isFull = m_listOfPlayers.size() >= 4;
     }
 
     @Override

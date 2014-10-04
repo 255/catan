@@ -57,7 +57,7 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
     public boolean joinGame(int gameId, CatanColor playerColor) throws NetworkException {
         JsonObject json = new JsonObject();
         json.addProperty("id", gameId);
-        json.addProperty("color", playerColor.name());
+        json.addProperty("color", playerColor.name().toLowerCase());
         String response = m_httpCommunicator.post("/games/join", json.toString());
 
         return response != null;

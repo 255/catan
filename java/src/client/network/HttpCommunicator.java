@@ -38,13 +38,19 @@ public class HttpCommunicator implements IHttpCommunicator {
         HttpURLConnection connection = null;
 
         try {
-            URL url = new URL (URL_PREFIX + "/" + commandName);
+            URL url = new URL (URL_PREFIX + commandName);
             connection = (HttpURLConnection)url.openConnection();
+
+//            if (m_userCookie != null) {
+//                connection.setRequestProperty("Cookie", "catan.user=" + m_userCookie);// + "; " + "catan.game=" + m_gameIdCookie);
+//            }
+
             connection.setRequestMethod((HTTP_GET));
             connection.connect();
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                if (connection.getContentLength() == 0) {
+                System.out.println(connection.getContentLength());
+                if (connection.getContentLength() != 0) {
                     InputStream inputStream = connection.getInputStream();
                     byte[] buffer = new byte[inputStream.available()];
                     inputStream.read(buffer);

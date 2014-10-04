@@ -2,6 +2,7 @@ package client.network;
 
 import shared.definitions.CatanColor;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public interface IGameAdministrator {
      *
      * @return list of objects containing information about individual games
      */
-    public List<IGameInfo> listGames() throws NetworkException;
+    public List<IGameInfo> listGames() throws NetworkException, IOException;
 
     /**
      * Allows a user to join a game
@@ -54,7 +55,7 @@ public interface IGameAdministrator {
      * @param randomNumbers flag indicating if the number tokens should be placed randomly
      * @param randomPorts flag indicating if the ports should be assigned randomly
      * @param gameName name of the new game
-     * @return a JSON string representing the Catan Model for the newly created game
+     * @return an object holding information about the created game
      */
-    public String createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException;
+    public IGameInfo createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException, IOException;
 }

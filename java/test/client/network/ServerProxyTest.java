@@ -12,6 +12,8 @@ import shared.definitions.ResourceType;
 import shared.locations.*;
 import shared.model.ResourceBank;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class ServerProxyTest {
@@ -36,6 +38,7 @@ public class ServerProxyTest {
 
     @Test
     public void testSendChat() throws Exception {
+        IGameAdministrator gameAdmin = new GameAdministrator(m_gameAdminProxy);
         try {
             String response = m_serverProxy.sendChat(0, "Test Message");
         } catch (NetworkException ex) {
@@ -69,7 +72,7 @@ public class ServerProxyTest {
     @Test
     public void testRollNumber() throws Exception {
         try {
-            String response = m_serverProxy.rollNumber(0, 7);
+            String response = m_serverProxy.rollNumber(0, 8);
         } catch (NetworkException ex) {
 
         }
