@@ -18,7 +18,7 @@ public interface IPieceBank {
      * Set the number of roads that will be available in the piece bank.
      * @param availableRoads the number of available roads
      */
-    public void setAvailableRoads(int availableRoads);
+    public void setAvailableRoads(int availableRoads) throws ModelException;
 
     /**
      * Get the number of roads in the bank.
@@ -41,7 +41,7 @@ public interface IPieceBank {
      * Set the number of cities that will be available in the piece bank.
      * @param availableCities the number of available cities
      */
-    public void setAvailableCities(int availableCities);
+    public void setAvailableCities(int availableCities) throws ModelException;
 
     /**
      * Get the number of cities in the piece bank.
@@ -63,7 +63,7 @@ public interface IPieceBank {
      * Set the number of settlements that will be available in the piece bank.
      * @param availableSettlements the number of available settlements
      */
-    public void setAvailableSettlements(int availableSettlements);
+    public void setAvailableSettlements(int availableSettlements) throws ModelException;
 
     /**
      * Get the number of settlements in the piece bank.

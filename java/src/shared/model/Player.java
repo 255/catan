@@ -1,5 +1,6 @@
 package shared.model;
 
+import com.sun.javafx.sg.prism.NGShape;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 
@@ -29,7 +30,14 @@ public class Player implements IPlayer {
 
     public Player(int id, int index, int victoryPoints, int monuments, int soldiers, boolean discarded,
                   boolean playedDevCard, String name, CatanColor color, IPieceBank pieceBank, IResourceBank resources,
-                  IDevCardHand newDevCards, IDevCardHand playableDevCards) {
+                  IDevCardHand newDevCards, IDevCardHand playableDevCards) throws ModelException {
+
+        assert name != null && pieceBank != null && resources != null && newDevCards != null && playableDevCards != null;
+
+        if (victoryPoints < 0 || monuments < 0 || soldiers < 0) {
+            throw new ModelException("Attempted to initialize a player with invalid arguments.");
+        }
+
         this.m_id = id;
         this.m_index = index;
         this.m_victoryPoints = victoryPoints;
@@ -175,6 +183,17 @@ public class Player implements IPlayer {
     @Override
     public IResourceBank getResources() {
         return m_resources;
+    }
+
+    /**
+     * Get whether the has any resources. This will be used to test if the player can be robbed from when placing
+     * the robber.
+     *
+     * @return true if the user has resources
+     */
+    @Override
+    public boolean hasResources() {
+        return m_resources.getCount() > 0;
     }
 
     @Override

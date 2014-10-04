@@ -1,5 +1,7 @@
 package shared.model;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
 /**
  * Represents the pieces that a player has left to place on the map
  */
@@ -12,10 +14,10 @@ public class PieceBank implements IPieceBank {
     /**
      * Constructs an empty PieceBank
      */
-    PieceBank() {
-        setAvailableRoads(0);
-        setAvailableSettlements(0);
-        setAvailableCities(0);
+    public PieceBank() {
+        m_numRoads = 0;
+        m_numSettlements = 0;
+        m_numCities = 0;
     }
 
     /**
@@ -25,7 +27,7 @@ public class PieceBank implements IPieceBank {
      * @param numSettlements is the number to set the available settlements
      * @param numCities is the number to set the available cities
      */
-    PieceBank(int numRoads, int numSettlements, int numCities) {
+    public PieceBank(int numRoads, int numSettlements, int numCities) throws ModelException {
         setAvailableRoads(numRoads);
         setAvailableSettlements(numSettlements);
         setAvailableCities(numCities);
@@ -51,7 +53,10 @@ public class PieceBank implements IPieceBank {
      * @param availableRoads the number of available roads
      */
     @Override
-    public void setAvailableRoads(int availableRoads) {
+    public void setAvailableRoads(int availableRoads) throws ModelException {
+        if (availableRoads < 0) {
+            throw new ModelException("Attempted to set a negative number of roads.");
+        }
         m_numRoads = availableRoads;
     }
 
@@ -85,7 +90,10 @@ public class PieceBank implements IPieceBank {
      * @param availableCities the number of available cities
      */
     @Override
-    public void setAvailableCities(int availableCities) {
+    public void setAvailableCities(int availableCities) throws ModelException {
+        if (availableCities < 0) {
+            throw new ModelException("Attempted to set a negative number of cities.");
+        }
         m_numCities = availableCities;
     }
 
@@ -118,7 +126,10 @@ public class PieceBank implements IPieceBank {
      * @param availableSettlements the number of available settlements
      */
     @Override
-    public void setAvailableSettlements(int availableSettlements) {
+    public void setAvailableSettlements(int availableSettlements) throws ModelException {
+        if (availableSettlements < 0) {
+            throw new ModelException("Attempted to set a negative number of settlements.");
+        }
         m_numSettlements = availableSettlements;
     }
 

@@ -8,6 +8,8 @@ import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.locations.*;
 
+import java.util.Collection;
+
 import static org.junit.Assert.*;
 
 public class GameModelFacadeTest {
@@ -150,6 +152,24 @@ public class GameModelFacadeTest {
     @Test
     public void testCanPlaceInitialRoad() throws Exception {
         IGame initGame = initAGame("sample/empty_board.json");
+        IGameModelFacade gf = GameModelFacade.getInstance();
+
+        // assert that it is the first round
+        assertTrue("Not the First Round",
+                initGame.getGameState() == GameState.FIRST_ROUND);
+        // assert that there are no settlements
+        assertTrue("There should be no settlements on a blank map",
+                initGame.getMap().getSettlements().isEmpty());
+        // assert that there are no roads on the map after game start
+        assertTrue("There should be no roads on a blank map",
+                initGame.getMap().getRoads().isEmpty());
+        // assert that road can be placed on a terrain edge
+        IPlayer p = initGame.getPlayers().get(0);
+        assertTrue("Somehow 0,0,SW is unacceptable",
+                initGame.getMap().canPlaceRoad(p, new EdgeLocation(0,0,EdgeDirection.SouthWest)));
+        // assert that road cannot be placed on a coastline
+        assertFalse("Road should not be able to be placed on a coastline",
+                initGame.getMap().canPlaceRoad(p, new EdgeLocation(-3,3,EdgeDirection.SouthWest)));
     }
 
     @Test
@@ -332,7 +352,26 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlayYearOfPlenty() throws Exception {
+        assertTrue("Player can play year of plenty", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
 
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Already played dev card", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not your turn", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        assertFalse("No year of plenty card", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setCurrentPlayer(game.getPlayers().get(0));
+        game.setLocalPlayer(game.getPlayers().get(0));
+        game.setGameState(GameState.DISCARDING);
+        assertFalse("Not playing phase", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
+
+        game.setGameState(GameState.PLAYING);
+        game.setResourceBank(new ResourceBank());
+        assertFalse("Not enough resources in bank", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
     }
 
     @Test

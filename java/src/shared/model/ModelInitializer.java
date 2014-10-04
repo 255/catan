@@ -170,7 +170,7 @@ public class ModelInitializer implements IModelInitializer {
         }
         reader.endObject();
 
-        // make these checks asserts? (should we assume proper JSON format?)
+        // check that all fields were found
         if (anyIsNull(color, discarded, monuments, playerName, newDevCards, oldDevCards, playerIndex,
                 playedDevCard, playerID, resources, soldiers, victoryPoints)) {
             throw new ModelException("Failed to initialize player.");

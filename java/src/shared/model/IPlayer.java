@@ -82,6 +82,13 @@ public interface IPlayer {
 
     public IResourceBank getResources();
 
+    /**
+     * Get whether the has any resources. This will be used to test if the player can be robbed from when placing
+     * the robber.
+     * @return true if the user has resources
+     */
+    public boolean hasResources();
+
     public IDevCardHand getNewDevCards();
 
     public IDevCardHand getPlayableDevCards();

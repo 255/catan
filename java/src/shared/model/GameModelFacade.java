@@ -294,7 +294,7 @@ public class GameModelFacade implements IGameModelFacade {
     @Override
     public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
         IResourceBank bank = m_theGame.getResourceBank();
-        return m_theGame.localPlayerIsPlaying() && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
+        return m_theGame.localPlayerIsPlaying() && m_theGame.getLocalPlayer().canPlayDevCard(DevCardType.YEAR_OF_PLENTY) && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
     }
 
     /**
@@ -322,17 +322,6 @@ public class GameModelFacade implements IGameModelFacade {
         IPlayer player = m_theGame.getLocalPlayer();
 
         return m_theGame.localPlayerIsPlaying() && map.canPlaceTwoRoads(player, edge1, edge2);
-    }
-
-    /**
-     * Get whether the local player can play this specific dev card.
-     *
-     * @param destination
-     * @return true if the user can play this card
-     */
-    @Override
-    public boolean canRobPlayer(HexLocation destination) {
-        return false;
     }
 
     // this method is just for determining from the GameState if it is a free round
