@@ -177,17 +177,47 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanBuyCity() throws Exception {
+        assertTrue("Player can buy city", facade.canBuyCity());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuyCity());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuyCity());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not enough city pieces", facade.canBuyCity());
     }
 
     @Test
     public void testCanBuyRoad() throws Exception {
+        assertTrue("Player can buy road", facade.canBuyRoad());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuyRoad());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuyRoad());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not enough road pieces", facade.canBuyRoad());
     }
 
     @Test
     public void testCanBuySettlement() throws Exception {
+        assertTrue("Player can buy settlement", facade.canBuySettlement());
 
+        game.setLocalPlayer(game.getPlayers().get(1));
+        assertFalse("Not your turn", facade.canBuySettlement());
+
+        game.setCurrentPlayer(game.getPlayers().get(1));
+        assertFalse("Not enough resources", facade.canBuySettlement());
+
+        game.setCurrentPlayer(game.getPlayers().get(2));
+        game.setLocalPlayer(game.getPlayers().get(2));
+        assertFalse("Not enough settlement pieces", facade.canBuySettlement());
     }
 
     @Test
