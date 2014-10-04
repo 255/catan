@@ -49,7 +49,6 @@ public class HttpCommunicator implements IHttpCommunicator {
             connection.connect();
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                System.out.println(connection.getContentLength());
                 if (connection.getContentLength() != 0) {
                     InputStream inputStream = connection.getInputStream();
                     byte[] buffer = new byte[inputStream.available()];
@@ -94,7 +93,6 @@ public class HttpCommunicator implements IHttpCommunicator {
             connection.connect();
             connection.getOutputStream().write(postData.getBytes());
             connection.getOutputStream().close();
-            System.out.println(connection.getResponseCode());
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = connection.getInputStream();
