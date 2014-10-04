@@ -382,18 +382,18 @@
         "ore": 0
       },
       "oldDevCards": {
-        "yearOfPlenty": 0,
-        "monopoly": 0,
-        "soldier": 0,
-        "roadBuilding": 0,
-        "monument": 0
+        "yearOfPlenty": 1,
+        "monopoly": 2,
+        "soldier": 3,
+        "roadBuilding": 4,
+        "monument": 5
       },
       "newDevCards": {
-        "yearOfPlenty": 0,
-        "monopoly": 0,
-        "soldier": 0,
-        "roadBuilding": 0,
-        "monument": 0
+        "yearOfPlenty": 1,
+        "monopoly": 2,
+        "soldier": 3,
+        "roadBuilding": 4,
+        "monument": 5
       },
       "roads": 13,
       "cities": 4,
@@ -401,7 +401,7 @@
       "soldiers": 0,
       "victoryPoints": 2,
       "monuments": 0,
-      "playedDevCard": false,
+      "playedDevCard": true,
       "discarded": false,
       "playerID": 1,
       "playerIndex": 1,
