@@ -102,7 +102,7 @@ public class CatanMap implements ICatanMap {
     public Collection<ITown> getSettlements() {
         Collection<ITown> settlements = new ArrayList<>();
         for (ITown town : m_towns.values()) {
-            if (town.getClass().equals(Town.class)) {
+            if (town.getClass().equals(Settlement.class)) {
                 settlements.add(town);
             }
         }
