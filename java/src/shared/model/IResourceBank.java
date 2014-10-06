@@ -9,38 +9,6 @@ import shared.definitions.ResourceType;
  */
 public interface IResourceBank {
     /**
-     * Takes in a ResourceType and outputs a bundle of one of that resource
-     * @param rType the type of resource in the bundle
-     * @return the bundle object containing the one resource
-     */
-    public static IResourceBank resourceToBank(ResourceType rType) {
-        return resourceToBank(rType,1);
-    }
-
-    /**
-     * Takes in a ResourceType and outputs a bundle of one of that resource
-     * @param rType the type of resource in the bundle
-     * @param count the number of the resource type to put in the bundle
-     * @return the bundle object containing the one resource
-     */
-    public static IResourceBank resourceToBank(ResourceType rType, int count) {
-        switch (rType) {
-            case WOOD:
-                return new ResourceBank(count,0,0,0,0);
-            case BRICK:
-                return new ResourceBank(0,count,0,0,0);
-            case SHEEP:
-                return new ResourceBank(0,0,count,0,0);
-            case WHEAT:
-                return new ResourceBank(0,0,0,count,0);
-            case ORE:
-                return new ResourceBank(0,0,0,0,count);
-            default:
-                return new ResourceBank(0,0,0,0,0);
-        }
-    }
-
-    /**
      * Add the specified resources to the resource bank.
      * @param resources the bundle of resources to add to the bank
      */

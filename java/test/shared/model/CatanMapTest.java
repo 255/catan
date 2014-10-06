@@ -1,6 +1,5 @@
 package shared.model;
 
-import com.sun.javafx.geom.Edge;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

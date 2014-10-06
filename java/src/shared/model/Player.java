@@ -1,6 +1,5 @@
 package shared.model;
 
-import com.sun.javafx.sg.prism.NGShape;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 

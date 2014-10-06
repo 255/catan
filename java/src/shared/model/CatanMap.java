@@ -4,7 +4,6 @@ import shared.definitions.PortType;
 import shared.locations.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The Catan map.
@@ -40,6 +39,20 @@ public class CatanMap implements ICatanMap {
         this.m_robber = robber;
 
         // check that all pieces on tiles
+        for (EdgeLocation edge : m_ports.keySet()) {
+            if (!isOnMap(edge)) throw new ModelException("Some pieces are off the map!");
+        }
+
+        for (EdgeLocation edge : m_roads.keySet()) {
+            if (!isOnMap(edge)) throw new ModelException("Some pieces are off the map!");
+        }
+
+        for (VertexLocation vertex : m_towns.keySet()) {
+            if (!isOnMap(vertex)) throw new ModelException("Some pieces are off the map!");
+        }
+        
+        // Apparently we can't use Java 8 after all
+/*
         if (!m_tiles.containsKey(robber)) {
             throw new ModelException("The robber is not on the map!");
         }
@@ -48,6 +61,7 @@ public class CatanMap implements ICatanMap {
                     || m_towns.keySet().stream().anyMatch((VertexLocation loc) -> !isOnMap(loc))) {
             throw new ModelException("Some pieces are off the map!");
         }
+*/
 
         // Set robber flag in tile
         m_tiles.get(robber).placeRobber();
@@ -69,7 +83,14 @@ public class CatanMap implements ICatanMap {
      */
     @Override
     public Collection<ITown> getCities() {
-        return m_towns.values().stream().filter((ITown town) -> town.getClass().equals(City.class)).collect(Collectors.toList());
+        Collection<ITown> cities = new ArrayList<>();
+        for (ITown town : m_towns.values()) {
+            if (town.getClass().equals(City.class)) {
+                cities.add(town);
+            }
+        }
+
+        return cities;
     }
 
     /**
@@ -79,7 +100,14 @@ public class CatanMap implements ICatanMap {
      */
     @Override
     public Collection<ITown> getSettlements() {
-        return m_towns.values().stream().filter((ITown town) -> town.getClass().equals(Settlement.class)).collect(Collectors.toList());
+        Collection<ITown> settlements = new ArrayList<>();
+        for (ITown town : m_towns.values()) {
+            if (town.getClass().equals(Town.class)) {
+                settlements.add(town);
+            }
+        }
+
+        return settlements;
     }
 
     /**

@@ -1,7 +1,5 @@
 package shared.locations;
 
-import com.sun.javafx.geom.Edge;
-
 /**
  * Represents the location of an edge on a hex map
  */
