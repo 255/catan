@@ -4,6 +4,8 @@ import shared.definitions.*;
 import client.base.*;
 import client.misc.*;
 
+import java.util.Observable;
+
 
 /**
  * Discard controller implementation
@@ -49,5 +51,9 @@ public class DiscardController extends Controller implements IDiscardController 
 		getDiscardView().closeModal();
 	}
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
 

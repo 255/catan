@@ -89,5 +89,9 @@ public class LoginController extends Controller implements ILoginController {
 		loginAction.execute();
 	}
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
 

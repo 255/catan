@@ -1,11 +1,12 @@
 package shared.model;
 
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by jeffreybacon on 9/25/14.
  */
-public class Game implements IGame {
+public class Game extends Observable implements IGame {
     private GameState m_state;
     private IPlayer m_currentPlayer;
     private IPlayer m_localPlayer;

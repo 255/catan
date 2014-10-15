@@ -43,6 +43,10 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	
 		//</temp>
 	}
-	
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
 

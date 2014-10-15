@@ -3,6 +3,8 @@ package client.devcards;
 import shared.definitions.ResourceType;
 import client.base.*;
 
+import java.util.Observable;
+
 
 /**
  * "Dev card" controller implementation
@@ -96,5 +98,9 @@ public class DevCardController extends Controller implements IDevCardController 
 		
 	}
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
 

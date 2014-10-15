@@ -2,6 +2,8 @@ package client.join;
 
 import client.base.*;
 
+import java.util.Observable;
+
 
 /**
  * Implementation for the player waiting controller
@@ -32,5 +34,9 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 		getView().closeModal();
 	}
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
 

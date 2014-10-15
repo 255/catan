@@ -165,6 +165,10 @@ public class MapController extends Controller implements IMapController {
 	public void robPlayer(RobPlayerInfo victim) {	
 		
 	}
-	
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }
 
