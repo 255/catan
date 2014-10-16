@@ -54,7 +54,11 @@ public class Game extends Observable implements IGame {
         m_winner = null;
     }
 
-    @Override
+    /**
+     * Get whether the game has been initialized yet.
+     * This must be called before initializing from the model.
+     * @return true if the game is ready-to-go, false if not
+     */    @Override
     public boolean isNotInitialized() {
         // only tradeOffer, winner, longestRoad, and largestArmy can be null
         return (

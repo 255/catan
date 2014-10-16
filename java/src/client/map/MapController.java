@@ -1,6 +1,7 @@
 package client.map;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import client.map.state.IMapState;
@@ -93,49 +94,57 @@ public class MapController extends Controller implements IMapController {
 	}
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) {
-		
-		return true;
+		return m_state.canPlaceRoad(edgeLoc);
 	}
 
 	public boolean canPlaceSettlement(VertexLocation vertLoc) {
-		
-		return true;
+		return m_state.canPlaceSettlement(vertLoc);
 	}
 
 	public boolean canPlaceCity(VertexLocation vertLoc) {
-		
-		return true;
+		return m_state.canPlaceCity(vertLoc);
 	}
 
 	public boolean canPlaceRobber(HexLocation hexLoc) {
-		
-		return true;
+		return m_state.canPlaceRobber(hexLoc);
 	}
 
 	public void placeRoad(EdgeLocation edgeLoc) {
-		
-		getView().placeRoad(edgeLoc, CatanColor.ORANGE);
-	}
+        try {
+            m_state.placeRoad(edgeLoc);
+        }
+        catch (ModelException e) {
+            // TODO: should we display a popup to the user?
+            logger.log(Level.WARNING, "Placing road failed.", e);
+        }
+    }
 
 	public void placeSettlement(VertexLocation vertLoc) {
-		
-		getView().placeSettlement(vertLoc, CatanColor.ORANGE);
-	}
+        try {
+            m_state.placeSettlement(vertLoc);
+        }
+        catch (ModelException e) {
+            logger.log(Level.WARNING, "Placing settlement failed.", e);
+        }
+    }
 
 	public void placeCity(VertexLocation vertLoc) {
-		
-		getView().placeCity(vertLoc, CatanColor.ORANGE);
+        try {
+            m_state.placeCity(vertLoc);
+        }
+        catch (ModelException e) {
+            logger.log(Level.WARNING, "Placing settlement failed.", e);
+        }
 	}
 
 	public void placeRobber(HexLocation hexLoc) {
-		
+        // TODO: implement this
 		getView().placeRobber(hexLoc);
-		
+
 		getRobView().showModal();
 	}
 	
 	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) {	
-		
 		getView().startDrop(pieceType, CatanColor.ORANGE, true);
 	}
 	
@@ -144,21 +153,20 @@ public class MapController extends Controller implements IMapController {
 	}
 	
 	public void playSoldierCard() {	
-		
+        m_state.playSoldierCard();
 	}
 	
 	public void playRoadBuildingCard() {	
-		
+		m_state.playRoadBuildingCard();
 	}
 	
 	public void robPlayer(RobPlayerInfo victim) {	
-		
+		m_state.robPlayer(victim);
 	}
 
     @Override
     public void update(Observable o, Object arg) {
         logger.entering("client.map.MapController", "update", o);
-        System.err.println("MAP CONTROLLER NOTIFIED") ; //TODO: remove
         initFromModel();
         logger.exiting("client.map.MapController", "update");
     }
