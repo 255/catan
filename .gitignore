@@ -11,6 +11,8 @@
 docs/java
 java/dist
 out/
+logs/
+*.log
 
 ############################
 # Generic .gitignore items #

@@ -12,25 +12,69 @@ import client.network.ServerProxy;
 import client.network.TestServerProxy;
 import client.poller.ServerPoller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.logging.*;
+
 /**
  * Main entry point for the Catan program
  */
 @SuppressWarnings("serial")
 public class Catan extends JFrame
 {
-	
-	private CatanPanel catanPanel;
-	
-	public Catan()
-	{
-		
-		client.base.OverlayView.setWindow(this);
-		
-		this.setTitle("Settlers of Catan");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		catanPanel = new CatanPanel();
-		this.setContentPane(catanPanel);
+	private static Logger logger;
+
+    static {
+        initializeLog();
+    }
+
+    /**
+     * Initialize the logger for this project. The logging level is hard-coded.
+     */
+    private static void initializeLog() {
+        try {
+            final Level logLevel = Level.FINEST;
+
+            logger = Logger.getLogger("catan");
+            logger.setLevel(logLevel);
+            logger.setUseParentHandlers(false);
+
+            Handler consoleHandler = new ConsoleHandler();
+            consoleHandler.setLevel(logLevel);
+            consoleHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(consoleHandler);
+
+            String startTime = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(Calendar.getInstance().getTime());
+
+            if (!Files.exists(Paths.get("logs"))) {
+                Files.createDirectory(Paths.get("logs"));
+            }
+            FileHandler fileHandler = new FileHandler("logs/log_" + startTime + ".log", false);
+            fileHandler.setLevel(logLevel);
+            fileHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(fileHandler);
+
+            logger.info("Catan Client started at " + startTime + ".");
+        } catch (IOException e) {
+            System.err.println("There was a problem initializing the log: " + e.getMessage());
+        }
+    }
+
+    private CatanPanel catanPanel;
+
+    public Catan()
+    {
+
+        client.base.OverlayView.setWindow(this);
+
+        this.setTitle("Settlers of Catan");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        catanPanel = new CatanPanel();
+        this.setContentPane(catanPanel);
 		
 		display();
 	}

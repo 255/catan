@@ -13,7 +13,7 @@ public interface IServerModelFacade {
     /**
      * Set the game object the Facade uses
      */
-    public void setGame(IGame game);
+    public void setGame(Game game);
 
     /**
      * Set the game object the Facade uses

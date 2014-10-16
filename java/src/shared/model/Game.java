@@ -22,25 +22,18 @@ public class Game extends Observable implements IGame {
     private int m_version;
     private IPlayer m_winner;
 
-    public Game(GameState state, IPlayer currentPlayer, IPlayer localPlayer, List<IPlayer> players, IResourceBank resourceBank,
-                ICatanMap map, IPlayer longestRoad, IPlayer largestArmy, ITradeOffer tradeOffer, ILog gameplayLog, ILog chatHistory) {
-        assert state != null && currentPlayer != null && localPlayer != null && players != null && resourceBank != null
-                && map != null && longestRoad != null && largestArmy != null && tradeOffer != null && gameplayLog != null && chatHistory != null;
-        setGameState(state);
-        setCurrentPlayer(currentPlayer);
-        setLocalPlayer(localPlayer);
-        setPlayers(players);
-        setResourceBank(resourceBank);
-        setMap(map);
-        setLongestRoad(longestRoad);
-        setLargestArmy(largestArmy);
-        setTradeOffer(tradeOffer);
-        setGameplayLog(gameplayLog);
-        setChatHistory(chatHistory);
+    private Game() {
+        reset();
     }
 
-    public Game() {
-        reset();
+    private static Game m_game = null;
+
+    public static Game getInstance() {
+        if (m_game == null) {
+            m_game = new Game();
+        }
+
+        return m_game;
     }
 
     @Override
@@ -63,6 +56,7 @@ public class Game extends Observable implements IGame {
 
     @Override
     public boolean isNotInitialized() {
+        // only tradeOffer, winner, longestRoad, and largestArmy can be null
         return (
                 m_state == null
              || m_currentPlayer == null
@@ -71,13 +65,9 @@ public class Game extends Observable implements IGame {
              || m_resourceBank == null
              || m_devCards == null
              || m_map == null
-             || m_longestRoad == null
-             || m_largestArmy == null
-             || m_tradeOffer == null
              || m_gameplayLog == null
              || m_chatHistory == null
              || m_version == -1
-             || m_winner == null
         );
     }
 
@@ -90,6 +80,7 @@ public class Game extends Observable implements IGame {
     public void setDevCards(IDevCardHand devCards) {
         assert devCards != null;
         this.m_devCards = devCards;
+        setChanged();
     }
 
     @Override
@@ -101,6 +92,7 @@ public class Game extends Observable implements IGame {
     public void setGameState(GameState state) {
         assert state != null;
         m_state = state;
+        setChanged();
     }
 
     @Override
@@ -112,6 +104,7 @@ public class Game extends Observable implements IGame {
     public void setCurrentPlayer(IPlayer currentPlayer) {
         assert currentPlayer != null;
         m_currentPlayer = currentPlayer;
+        setChanged();
     }
 
     @Override
@@ -123,6 +116,7 @@ public class Game extends Observable implements IGame {
     public void setLocalPlayer(IPlayer localPlayer) {
         assert localPlayer != null;
         m_localPlayer = localPlayer;
+        setChanged();
     }
 
     @Override
@@ -134,6 +128,7 @@ public class Game extends Observable implements IGame {
     public void setPlayers(List<IPlayer> players) {
         assert players != null;
         m_players = players;
+        setChanged();
     }
 
     /**
@@ -150,6 +145,7 @@ public class Game extends Observable implements IGame {
     public void setResourceBank(IResourceBank bank) {
         assert bank != null;
         m_resourceBank = bank;
+        setChanged();
     }
 
     @Override
@@ -161,6 +157,7 @@ public class Game extends Observable implements IGame {
     public void setMap(ICatanMap map) {
         assert map != null;
         m_map = map;
+        setChanged();
     }
 
     @Override
@@ -171,6 +168,7 @@ public class Game extends Observable implements IGame {
     @Override
     public void setLongestRoad(IPlayer longestRoad) {
         m_longestRoad = longestRoad;
+        setChanged();
     }
 
     @Override
@@ -181,6 +179,7 @@ public class Game extends Observable implements IGame {
     @Override
     public void setLargestArmy(IPlayer largestArmy) {
         m_largestArmy = largestArmy;
+        setChanged();
     }
 
     @Override
@@ -192,6 +191,7 @@ public class Game extends Observable implements IGame {
     public void setTradeOffer(ITradeOffer tradeOffer) {
         assert tradeOffer != null;
         m_tradeOffer = tradeOffer;
+        setChanged();
     }
 
     @Override
@@ -203,6 +203,7 @@ public class Game extends Observable implements IGame {
     public void setGameplayLog(ILog gameplayLog) {
         assert gameplayLog != null;
         m_gameplayLog = gameplayLog;
+        setChanged();
     }
 
     @Override
@@ -214,6 +215,7 @@ public class Game extends Observable implements IGame {
     public void setChatHistory(ILog chatHistory) {
         assert chatHistory != null;
         m_chatHistory = chatHistory;
+        setChanged();
     }
 
     @Override
@@ -224,6 +226,7 @@ public class Game extends Observable implements IGame {
     @Override
     public void setVersion(int version) {
         m_version = version;
+        setChanged();
     }
 
     @Override
@@ -235,6 +238,7 @@ public class Game extends Observable implements IGame {
     public void setWinner(IPlayer winner) {
         assert winner != null;
         m_winner = winner;
+        setChanged();
     }
 
     /**

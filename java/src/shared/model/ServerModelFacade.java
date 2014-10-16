@@ -14,13 +14,13 @@ import shared.locations.VertexLocation;
  */
 public class ServerModelFacade implements IServerModelFacade {
     private IServerProxy m_theProxy;
-    private IGame m_theGame;
+    private Game m_theGame;
     private static ServerModelFacade m_theFacade = null;
 
     /**
      * This is a private constructor that is called only when the ServerModelFacade has not been initialized yet
      */
-    private ServerModelFacade(IServerProxy theProxy, IGame theGame) {
+    private ServerModelFacade(IServerProxy theProxy, Game theGame) {
         setServerProxy(theProxy);
         setGame(theGame);
     }
@@ -32,7 +32,7 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     public static ServerModelFacade getInstance() {
         if(m_theFacade == null)
-            m_theFacade = new ServerModelFacade(new ServerProxy(new HttpCommunicator()), new Game());
+            m_theFacade = new ServerModelFacade(new ServerProxy(new HttpCommunicator()), Game.getInstance());
         return m_theFacade;
     }
 
@@ -52,7 +52,7 @@ public class ServerModelFacade implements IServerModelFacade {
      *
      * @param theGame is the game object to point the ServerModelFacade at
      */
-    public void setGame(IGame theGame) {
+    public void setGame(Game theGame) {
         assert theGame != null;
         m_theGame = theGame;
     }

@@ -885,7 +885,7 @@ public class MapComponent extends JComponent
 	private void
 			drawImage(Graphics2D g2, BufferedImage image, Point2D location)
 	{
-		
+		assert image != null : "Attempted to draw a null image.";
 		int centerX = image.getWidth() / 2;
 		int centerY = image.getHeight() / 2;
 		
