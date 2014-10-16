@@ -9,12 +9,15 @@ import shared.locations.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Build a brand new collection of model classes in memory.
  * @author Wyatt
  */
 public class ModelInitializer implements IModelInitializer {
+    private static Logger logger = Logger.getLogger("catan");
     /*
      * Initialize players first since they are referenced several times.
      * Sorted by index (not ID).
@@ -30,9 +33,8 @@ public class ModelInitializer implements IModelInitializer {
      */
     @Override
     public void initializeClientModel(String json, int localPlayerID) throws ModelException {
+        logger.entering("shared.model.ModelInitializer", "initializeClientModel", new Object[]{json.length(), localPlayerID});
         assert json != null;
-
-        System.err.println("INITIALIZING from JSON") ; //TODO: remove
 
         // read in the players first since they are referenced by other elements in JSON
         try (JsonReader playerReader = new JsonReader(new StringReader(json))) {
@@ -44,7 +46,7 @@ public class ModelInitializer implements IModelInitializer {
 
         // read the main body of the client JSON model
         try (JsonReader reader = new JsonReader(new StringReader(json))) {
-            IGame newGame = GameModelFacade.getInstance().getGame();
+            Game newGame = GameModelFacade.getInstance().getGame();
             assert newGame != null;
 
             readClientModel(newGame, reader);
@@ -62,18 +64,18 @@ public class ModelInitializer implements IModelInitializer {
 
             newGame.setLocalPlayer(localPlayer);
 
-            GameModelFacade.getInstance().setGame(newGame);
-            ServerModelFacade.getInstance().setGame(newGame);
             // TODO: set other Game object pointers (e.g. Game pointers in GUI)
             ((Game)newGame).notifyObservers(); // TODO: have the game handle this itself
-            // TODO: START USING LOGGING!
-            System.err.println(((Game)newGame).countObservers() + " OBSERVERS NOTIFIED") ; //TODO: remove
+            logger.finest("Notified " + newGame.countObservers() + " about model update.");
         }
         catch (IOException | IllegalStateException e) {
-            throw new ModelException("Error deserializing JSON.", e);
+            final String msg = "Failed to deserialize JSON.";
+            logger.log(Level.WARNING, msg, e);
+            throw new ModelException(msg, e);
         }
         finally {
             m_players = null;
+            logger.exiting("shared.model.ModelInitializer", "initializeClientModel");
         }
     }
 

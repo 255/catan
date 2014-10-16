@@ -8,6 +8,8 @@ import shared.model.ModelInitializer;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Class that implements the IServerPoller interface
@@ -15,6 +17,7 @@ import java.util.TimerTask;
  * @author StevenBarnett
  */
 public class ServerPoller implements IServerPoller {
+    private final static Logger logger = Logger.getLogger("catan");
 
     private final int c_millisecondsPerSecond = 1000;
 
@@ -33,12 +36,8 @@ public class ServerPoller implements IServerPoller {
     public void updateGame() {
         try {
             m_modelSerializer.initializeClientModel(m_serverProxy.getGameState(), m_serverProxy.getPlayerId());
-        } catch (ModelException ex1) {
-            System.err.println("Polling failed with ModelException.");
-            ex1.printStackTrace();
-        } catch (NetworkException ex2) {
-            System.err.println("Polling failed with NetworkException.");
-            ex2.printStackTrace();
+        } catch (ModelException | NetworkException e) {
+            logger.log(Level.WARNING, "Polling failed.", e);
         }
     }
 

@@ -1,8 +1,10 @@
 package client.map;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 import client.map.state.IMapState;
+import client.map.state.NotPlayingState;
 import shared.definitions.*;
 import shared.locations.*;
 import client.base.*;
@@ -14,21 +16,19 @@ import shared.model.*;
  * Implementation for the map controller
  */
 public class MapController extends Controller implements IMapController {
-	
+    private final static Logger logger = Logger.getLogger("catan");
+
 	private IRobView robView;
-    private IMapState state;
+    private IMapState m_state;
 	
 	public MapController(IMapView view, IRobView robView) {
-		
 		super(view);
 		
 		setRobView(robView);
 
-        // TODO: I hate stuff like this... why program to interfaces if you have to
-        // cast them down to the concrete class anyway????
-        // The getGame should return a Game since we can't see the observer methods
-        // on the interface.
-        ((Game)GameModelFacade.getInstance().getGame()).addObserver(this);
+        Game.getInstance().addObserver(this);
+        logger.finest("MapController added self (" + this + ") as observer.");
+        m_state = new NotPlayingState();
 		
 		initFromModel();
 	}
@@ -46,19 +46,26 @@ public class MapController extends Controller implements IMapController {
 	}
 	
 	protected void initFromModel() {
+        logger.entering("client.map.MapController", "initFromModel");
+
         IGame game = GameModelFacade.getInstance().getGame();
+        assert game != null;
         if (game.isNotInitialized()) {
-            System.err.println("GAME NOT INITIALIZED. NOT UPDATING.");
+            logger.fine("Not intializing MapController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
-        System.err.println("GAME IS INITIALIZED!!!!!!!!!!");
+        logger.fine("Initializing MapController.");
 
         ICatanMap map = game.getMap();
 
         // add the tiles
         for (ITile tile : map.getTiles()) {
             getView().addHex(tile.location(), tile.type());
-            getView().addNumber(tile.location(), tile.numberToken());
+
+            int numberToken = tile.numberToken();
+            if (numberToken != Tile.DESERT_NUMBER) {
+                getView().addNumber(tile.location(), numberToken);
+            }
         }
 
         // add the ports
@@ -82,6 +89,7 @@ public class MapController extends Controller implements IMapController {
         }
 
         getView().placeRobber(map.getRobber());
+        logger.exiting("client.map.MapController", "initFromModel");
 	}
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) {
@@ -149,8 +157,10 @@ public class MapController extends Controller implements IMapController {
 
     @Override
     public void update(Observable o, Object arg) {
+        logger.entering("client.map.MapController", "update", o);
         System.err.println("MAP CONTROLLER NOTIFIED") ; //TODO: remove
         initFromModel();
+        logger.exiting("client.map.MapController", "update");
     }
 }
 

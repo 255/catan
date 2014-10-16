@@ -13,13 +13,13 @@ import java.util.Set;
  * handles all the manipulations of the game object
  */
 public class GameModelFacade implements IGameModelFacade {
-    private IGame m_theGame;
+    private Game m_theGame;
     private static GameModelFacade m_theFacade = null;
 
     /**
      * This is a private constructor that is called only when the GameModelFacade has not been initialized yet
      */
-    private GameModelFacade(IGame theGame) {
+    private GameModelFacade(Game theGame) {
         setGame(theGame);
     }
 
@@ -30,7 +30,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     public static GameModelFacade getInstance() {
         if (m_theFacade == null) {
-            m_theFacade = new GameModelFacade(new Game()); // never allow a null game
+            m_theFacade = new GameModelFacade(Game.getInstance()); // never allow a null game
         }
         return m_theFacade;
     }
@@ -41,7 +41,7 @@ public class GameModelFacade implements IGameModelFacade {
      * @param game the Game object to point the GameModelFacade at
      */
     @Override
-    public void setGame(IGame game) {
+    public void setGame(Game game) {
         assert game != null;
 
         m_theGame = game;
@@ -52,7 +52,8 @@ public class GameModelFacade implements IGameModelFacade {
      *
      * @return the game object
      */
-    public IGame getGame() {
+    @Override
+    public Game getGame() {
         return m_theGame;
     }
 

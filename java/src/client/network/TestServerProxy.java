@@ -7,6 +7,10 @@ import shared.locations.VertexLocation;
 import shared.model.IResourceBank;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Implementation of IServerProxy interface used for testing.
@@ -16,6 +20,8 @@ import java.io.IOException;
  * @author StevenBarnett
  */
 public class TestServerProxy implements IServerProxy {
+    private static Logger logger = Logger.getLogger("catan");
+
     /**
      * Returns the current Catan Model in a JSON object
      *
@@ -24,16 +30,27 @@ public class TestServerProxy implements IServerProxy {
      */
     @Override
     public String getGameState() throws NetworkException {
+        logger.entering("client.network.TestServerProxy", "getGameState");
         String clientModel = null;
-        try {
-            clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
-        } catch (IOException ex1) {
-            System.err.println("Failed to read sample JSON file in TestServerProxy.");
-            final String dir = System.getProperty("user.dir");
-            System.err.println("Current directory: " + dir);
-            ex1.printStackTrace();
+
+        // try a few paths...
+        String jsonPath = "sample/test_1.json";
+        if (!Files.exists(Paths.get(jsonPath))) {
+            jsonPath = "../" + jsonPath;
+
+            if (!Files.exists(Paths.get(jsonPath))) {
+                jsonPath = "../" + jsonPath;
+            }
         }
 
+        try {
+            clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(jsonPath)));
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "Failed to read sample JSON file in TestServerProxy.", e);
+            logger.fine("Current directory: " + System.getProperty("user.dir"));
+        }
+
+       logger.exiting("client.network.TestServerProxy", "getGameState");
        return clientModel;
     }
 
