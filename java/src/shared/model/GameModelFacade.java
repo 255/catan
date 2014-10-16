@@ -30,7 +30,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     public static GameModelFacade getInstance() {
         if (m_theFacade == null) {
-            m_theFacade = new GameModelFacade(new Game());
+            m_theFacade = new GameModelFacade(new Game()); // never allow a null game
         }
         return m_theFacade;
     }

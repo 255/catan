@@ -2,10 +2,12 @@ package client.map;
 
 import java.util.*;
 
+import client.map.state.IMapState;
 import shared.definitions.*;
 import shared.locations.*;
 import client.base.*;
 import client.data.*;
+import shared.model.*;
 
 
 /**
@@ -14,12 +16,19 @@ import client.data.*;
 public class MapController extends Controller implements IMapController {
 	
 	private IRobView robView;
+    private IMapState state;
 	
 	public MapController(IMapView view, IRobView robView) {
 		
 		super(view);
 		
 		setRobView(robView);
+
+        // TODO: I hate stuff like this... why program to interfaces if you have to
+        // cast them down to the concrete class anyway????
+        // The getGame should return a Game since we can't see the observer methods
+        // on the interface.
+        ((Game)GameModelFacade.getInstance().getGame()).addObserver(this);
 		
 		initFromModel();
 	}
@@ -37,70 +46,42 @@ public class MapController extends Controller implements IMapController {
 	}
 	
 	protected void initFromModel() {
-		
-		//<temp>
-		
-		Random rand = new Random();
+        IGame game = GameModelFacade.getInstance().getGame();
+        if (game.isNotInitialized()) {
+            System.err.println("GAME NOT INITIALIZED. NOT UPDATING.");
+            return; // do nothing if the game object has not been created yet
+        }
+        System.err.println("GAME IS INITIALIZED!!!!!!!!!!");
 
-		for (int x = 0; x <= 3; ++x) {
-			
-			int maxY = 3 - x;			
-			for (int y = -3; y <= maxY; ++y) {				
-				int r = rand.nextInt(HexType.values().length);
-				HexType hexType = HexType.values()[r];
-				HexLocation hexLoc = new HexLocation(x, y);
-				getView().addHex(hexLoc, hexType);
-				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.NorthWest),
-						CatanColor.RED);
-				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.SouthWest),
-						CatanColor.BLUE);
-				getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.South),
-						CatanColor.ORANGE);
-				getView().placeSettlement(new VertexLocation(hexLoc,  VertexDirection.NorthWest), CatanColor.GREEN);
-				getView().placeCity(new VertexLocation(hexLoc,  VertexDirection.NorthEast), CatanColor.PURPLE);
-			}
-			
-			if (x != 0) {
-				int minY = x - 3;
-				for (int y = minY; y <= 3; ++y) {
-					int r = rand.nextInt(HexType.values().length);
-					HexType hexType = HexType.values()[r];
-					HexLocation hexLoc = new HexLocation(-x, y);
-					getView().addHex(hexLoc, hexType);
-					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.NorthWest),
-							CatanColor.RED);
-					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.SouthWest),
-							CatanColor.BLUE);
-					getView().placeRoad(new EdgeLocation(hexLoc, EdgeDirection.South),
-							CatanColor.ORANGE);
-					getView().placeSettlement(new VertexLocation(hexLoc,  VertexDirection.NorthWest), CatanColor.GREEN);
-					getView().placeCity(new VertexLocation(hexLoc,  VertexDirection.NorthEast), CatanColor.PURPLE);
-				}
-			}
-		}
-		
-		PortType portType = PortType.BRICK;
-		getView().addPort(new EdgeLocation(new HexLocation(0, 3), EdgeDirection.North), portType);
-		getView().addPort(new EdgeLocation(new HexLocation(0, -3), EdgeDirection.South), portType);
-		getView().addPort(new EdgeLocation(new HexLocation(-3, 3), EdgeDirection.NorthEast), portType);
-		getView().addPort(new EdgeLocation(new HexLocation(-3, 0), EdgeDirection.SouthEast), portType);
-		getView().addPort(new EdgeLocation(new HexLocation(3, -3), EdgeDirection.SouthWest), portType);
-		getView().addPort(new EdgeLocation(new HexLocation(3, 0), EdgeDirection.NorthWest), portType);
-		
-		getView().placeRobber(new HexLocation(0, 0));
-		
-		getView().addNumber(new HexLocation(-2, 0), 2);
-		getView().addNumber(new HexLocation(-2, 1), 3);
-		getView().addNumber(new HexLocation(-2, 2), 4);
-		getView().addNumber(new HexLocation(-1, 0), 5);
-		getView().addNumber(new HexLocation(-1, 1), 6);
-		getView().addNumber(new HexLocation(1, -1), 8);
-		getView().addNumber(new HexLocation(1, 0), 9);
-		getView().addNumber(new HexLocation(2, -2), 10);
-		getView().addNumber(new HexLocation(2, -1), 11);
-		getView().addNumber(new HexLocation(2, 0), 12);
-		
-		//</temp>
+        ICatanMap map = game.getMap();
+
+        // add the tiles
+        for (ITile tile : map.getTiles()) {
+            getView().addHex(tile.location(), tile.type());
+            getView().addNumber(tile.location(), tile.numberToken());
+        }
+
+        // add the ports
+        for (Map.Entry<EdgeLocation, PortType> port : map.getPorts().entrySet()) {
+            getView().addPort(port.getKey(), port.getValue());
+        }
+
+        // add the settlements
+        for (ITown settlement : map.getSettlements()) {
+            getView().placeSettlement(settlement.getLocation(), settlement.getOwner().getColor());
+        }
+
+        // add the cities
+        for (ITown city : map.getCities()) {
+            getView().placeCity(city.getLocation(), city.getOwner().getColor());
+        }
+
+        // add the roads
+        for (IRoad road : map.getRoads()) {
+            getView().placeRoad(road.getLocation(), road.getOwner().getColor());
+        }
+
+        getView().placeRobber(map.getRobber());
 	}
 
 	public boolean canPlaceRoad(EdgeLocation edgeLoc) {
@@ -151,7 +132,7 @@ public class MapController extends Controller implements IMapController {
 	}
 	
 	public void cancelMove() {
-		
+
 	}
 	
 	public void playSoldierCard() {	
@@ -168,6 +149,7 @@ public class MapController extends Controller implements IMapController {
 
     @Override
     public void update(Observable o, Object arg) {
+        System.err.println("MAP CONTROLLER NOTIFIED") ; //TODO: remove
         initFromModel();
     }
 }

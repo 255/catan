@@ -12,8 +12,29 @@ import java.util.List;
  * @author Wyatt
  */
 public interface IGame {
+    /**
+     * Reset the game.
+     * Set all of its members to null.
+     * This is used before re-initializing the game.
+     */
+    void reset();
+
+    /**
+     * Get whether the game has been initialized yet.
+     * @return true if the game is ready-to-go, false if not
+     */
+    boolean isNotInitialized();
+
+    /**
+     * Get the dev card hand for the game.
+     * @return
+     */
     IDevCardHand getDevCards();
 
+    /**
+     * Set the dev card bank for the game.
+     * @param m_devCards
+     */
     void setDevCards(IDevCardHand m_devCards);
 
     /**

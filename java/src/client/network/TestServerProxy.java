@@ -28,7 +28,10 @@ public class TestServerProxy implements IServerProxy {
         try {
             clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
         } catch (IOException ex1) {
-
+            System.err.println("Failed to read sample JSON file in TestServerProxy.");
+            final String dir = System.getProperty("user.dir");
+            System.err.println("Current directory: " + dir);
+            ex1.printStackTrace();
         }
 
        return clientModel;

@@ -32,6 +32,8 @@ public class ModelInitializer implements IModelInitializer {
     public void initializeClientModel(String json, int localPlayerID) throws ModelException {
         assert json != null;
 
+        System.err.println("INITIALIZING from JSON") ; //TODO: remove
+
         // read in the players first since they are referenced by other elements in JSON
         try (JsonReader playerReader = new JsonReader(new StringReader(json))) {
             initializePlayers(playerReader);
@@ -42,7 +44,10 @@ public class ModelInitializer implements IModelInitializer {
 
         // read the main body of the client JSON model
         try (JsonReader reader = new JsonReader(new StringReader(json))) {
-            IGame newGame = readClientModel(reader);
+            IGame newGame = GameModelFacade.getInstance().getGame();
+            assert newGame != null;
+
+            readClientModel(newGame, reader);
 
             IPlayer localPlayer = null;
             // find out which player is the local player
@@ -60,6 +65,9 @@ public class ModelInitializer implements IModelInitializer {
             GameModelFacade.getInstance().setGame(newGame);
             ServerModelFacade.getInstance().setGame(newGame);
             // TODO: set other Game object pointers (e.g. Game pointers in GUI)
+            ((Game)newGame).notifyObservers(); // TODO: have the game handle this itself
+            // TODO: START USING LOGGING!
+            System.err.println(((Game)newGame).countObservers() + " OBSERVERS NOTIFIED") ; //TODO: remove
         }
         catch (IOException | IllegalStateException e) {
             throw new ModelException("Error deserializing JSON.", e);
@@ -183,8 +191,8 @@ public class ModelInitializer implements IModelInitializer {
     }
 
     /** Read the entire JSON representation of the client model */
-    private IGame readClientModel(JsonReader reader) throws IOException, ModelException {
-        IGame newGame = new Game();
+    private void readClientModel(IGame newGame, JsonReader reader) throws IOException, ModelException {
+        newGame.reset();
 
         // store the players in a list for the game object
         List<IPlayer> playerList = new ArrayList<>();
@@ -257,8 +265,6 @@ public class ModelInitializer implements IModelInitializer {
             }
         }
         reader.endObject();
-
-        return newGame;
     }
 
     /** Read a resource bank object from JSON */

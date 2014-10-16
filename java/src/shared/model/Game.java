@@ -40,6 +40,11 @@ public class Game extends Observable implements IGame {
     }
 
     public Game() {
+        reset();
+    }
+
+    @Override
+    public void reset() {
         m_state = null;
         m_currentPlayer = null;
         m_localPlayer = null;
@@ -54,6 +59,26 @@ public class Game extends Observable implements IGame {
         m_chatHistory = null;
         m_version = -1;
         m_winner = null;
+    }
+
+    @Override
+    public boolean isNotInitialized() {
+        return (
+                m_state == null
+             || m_currentPlayer == null
+             || m_localPlayer == null
+             || m_players == null
+             || m_resourceBank == null
+             || m_devCards == null
+             || m_map == null
+             || m_longestRoad == null
+             || m_largestArmy == null
+             || m_tradeOffer == null
+             || m_gameplayLog == null
+             || m_chatHistory == null
+             || m_version == -1
+             || m_winner == null
+        );
     }
 
     @Override

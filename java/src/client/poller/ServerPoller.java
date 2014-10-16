@@ -34,9 +34,11 @@ public class ServerPoller implements IServerPoller {
         try {
             m_modelSerializer.initializeClientModel(m_serverProxy.getGameState(), m_serverProxy.getPlayerId());
         } catch (ModelException ex1) {
-
+            System.err.println("Polling failed with ModelException.");
+            ex1.printStackTrace();
         } catch (NetworkException ex2) {
-
+            System.err.println("Polling failed with NetworkException.");
+            ex2.printStackTrace();
         }
     }
 

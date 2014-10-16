@@ -7,6 +7,10 @@ import client.login.*;
 import client.join.*;
 import client.misc.*;
 import client.base.*;
+import client.network.HttpCommunicator;
+import client.network.ServerProxy;
+import client.network.TestServerProxy;
+import client.poller.ServerPoller;
 
 /**
  * Main entry point for the Catan program
@@ -99,6 +103,9 @@ public class Catan extends JFrame
 				loginView.setController(loginController);
 				
 				loginController.start();
+
+                // TODO: This should not be called until we enter a game
+                new ServerPoller(new TestServerProxy());
 			}
 		});
 	}
