@@ -168,7 +168,7 @@ public class MapController extends Controller implements IMapController {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        initFromModel();
     }
 }
 

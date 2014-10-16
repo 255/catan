@@ -5,9 +5,8 @@ import java.util.Observer;
 /**
  * Base class for controllers
  */
-public abstract class Controller implements Observer, IController
+public abstract class Controller implements IController
 {
-	
 	private IView view;
 	
 	protected Controller(IView view)
@@ -25,6 +24,5 @@ public abstract class Controller implements Observer, IController
 	{
 		return this.view;
 	}
-	
 }
 
