@@ -22,7 +22,7 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 		
 		super(view);
 
-        //(GameModelFacade.getInstance().getGame()).addObserver(this);
+        Game.getInstance().addObserver(this);
 
 		initFromModel();
 	}
@@ -33,8 +33,10 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	}
 	
 	private void initFromModel() {
-        if (!GameModelFacade.getInstance().getGame().isNotInitialized()) {
+        if (!Game.getInstance().isNotInitialized()) {
             getView().setEntries(GameModelFacade.getInstance().getMoveHistory().getMessages());
+        } else {
+            logger.fine("Game is not initialize");
         }
 	}
 

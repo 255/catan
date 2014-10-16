@@ -2,11 +2,13 @@ package client.communication;
 
 import client.base.*;
 import com.sun.corba.se.spi.activation.Server;
+import shared.model.Game;
 import shared.model.GameModelFacade;
 import shared.model.ModelException;
 import shared.model.ServerModelFacade;
 
 import java.util.Observable;
+import java.util.logging.Logger;
 
 
 /**
@@ -14,11 +16,17 @@ import java.util.Observable;
  */
 public class ChatController extends Controller implements IChatController {
 
-	public ChatController(IChatView view) {
+    private final static Logger logger = Logger.getLogger("catan");
+
+    public ChatController(IChatView view) {
 		
 		super(view);
 
-        //(Game)(GameModelFacade.getInstance().getGame()).addObserver(this);
+        if (!Game.getInstance().isNotInitialized()) {
+            Game.getInstance().addObserver(this);
+        } else {
+            logger.fine("Game is not initialized yet");
+        }
 	}
 
 	@Override
@@ -31,17 +39,17 @@ public class ChatController extends Controller implements IChatController {
         try {
             ServerModelFacade.getInstance().sendChat(message);
         } catch (ModelException ex) {
-            // TODO: What should we do about this exception?
+            logger.fine("Sending the chat, " + message + ", did not work");
         }
     }
 
     @Override
     public void update(Observable o, Object arg) {
-//        try {
-//            getView().setEntries(GameModelFacade.getInstance().getChatHistory());
-//        } catch (ModelException ex) {
-//            // TODO: What should we do about this exception?
-//        }
+        if (!Game.getInstance().isNotInitialized()) {
+            getView().setEntries(Game.getInstance().getChatHistory().getMessages());
+        } else {
+            logger.fine("Game is not initialized yet");
+        }
     }
 }
 

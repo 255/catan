@@ -1,15 +1,19 @@
 package client.points;
 
 import client.base.*;
+import shared.model.Game;
 import shared.model.GameModelFacade;
 
 import java.util.Observable;
+import java.util.logging.Logger;
 
 
 /**
  * Implementation for the points controller
  */
 public class PointsController extends Controller implements IPointsController {
+
+    private final static Logger logger = Logger.getLogger("catan");
 
 	private IGameFinishedView finishedView;
 	
@@ -25,7 +29,7 @@ public class PointsController extends Controller implements IPointsController {
 		
 		setFinishedView(finishedView);
 
-        //(Game)(GameModelFacade.getInstance().getGame()).addObserver(this);
+        Game.getInstance().addObserver(this);
 
         initFromModel();
 	}
@@ -43,8 +47,10 @@ public class PointsController extends Controller implements IPointsController {
 	}
 
 	private void initFromModel() {
-        if (!GameModelFacade.getInstance().getGame().isNotInitialized()) {
+        if (!Game.getInstance().isNotInitialized()) {
             getPointsView().setPoints(GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints());
+        } else {
+            logger.fine("Game was not initialized");
         }
     }
 
