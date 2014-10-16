@@ -1,6 +1,7 @@
 package client.points;
 
 import client.base.*;
+import shared.model.GameModelFacade;
 
 import java.util.Observable;
 
@@ -40,14 +41,12 @@ public class PointsController extends Controller implements IPointsController {
 	}
 
 	private void initFromModel() {
-		//<temp>		
-		getPointsView().setPoints(5);
-		//</temp>
+        getPointsView().setPoints(GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints());
 	}
 
     @Override
     public void update(Observable o, Object arg) {
-
+        initFromModel();
     }
 }
 
