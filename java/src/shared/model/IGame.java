@@ -21,6 +21,7 @@ public interface IGame {
 
     /**
      * Get whether the game has been initialized yet.
+     * This must be called before initializing from the model.
      * @return true if the game is ready-to-go, false if not
      */
     boolean isNotInitialized();
