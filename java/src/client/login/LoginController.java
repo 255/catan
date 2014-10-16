@@ -7,6 +7,10 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.lang.reflect.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import client.network.*;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
@@ -15,9 +19,11 @@ import com.google.gson.reflect.TypeToken;
  * Implementation for the login controller
  */
 public class LoginController extends Controller implements ILoginController {
+    private final static Logger logger = Logger.getLogger("catan");
 
 	private IMessageView messageView;
 	private IAction loginAction;
+    private IGameAdministrator m_admin;
 	
 	/**
 	 * LoginController constructor
@@ -30,6 +36,8 @@ public class LoginController extends Controller implements ILoginController {
 		super(view);
 		
 		this.messageView = messageView;
+
+        m_admin = new GameAdministrator(new GameAdminServerProxy(new HttpCommunicator()));
 	}
 	
 	public ILoginView getLoginView() {
@@ -70,23 +78,43 @@ public class LoginController extends Controller implements ILoginController {
 
 	@Override
 	public void signIn() {
-		
-		// TODO: log in user
-		
+        String username = getLoginView().getLoginUsername();
+        String password = getLoginView().getLoginPassword();
+
+        boolean success = false;
+        try {
+            success = m_admin.login(username, password);
+        } catch (NetworkException e) {
+            logger.log(Level.WARNING, "Sign in failed.", e);
+        }
 
 		// If log in succeeded
-		getLoginView().closeModal();
-		loginAction.execute();
+        if (success) {
+            getLoginView().closeModal();
+            loginAction.execute();
+        }
 	}
 
 	@Override
 	public void register() {
-		
-		// TODO: register new user (which, if successful, also logs them in)
-		
-		// If register succeeded
-		getLoginView().closeModal();
-		loginAction.execute();
+        String username = getLoginView().getRegisterUsername();
+        String password = getLoginView().getRegisterPassword();
+        String passwordRepeat = getLoginView().getRegisterPasswordRepeat();
+
+        if (password.equals(passwordRepeat)) {
+            boolean success = false;
+            try {
+                success = m_admin.register(username, password);
+            } catch (NetworkException e) {
+                logger.log(Level.WARNING, "Register failed.", e);
+            }
+
+            // If register succeeded
+            if (success) {
+                getLoginView().closeModal();
+                loginAction.execute();
+            }
+        }
 	}
 
     @Override

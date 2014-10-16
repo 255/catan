@@ -1,19 +1,26 @@
 package client.devcards;
 
+import shared.definitions.CatanColor;
+import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import client.base.*;
+import shared.model.*;
 
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
  * "Dev card" controller implementation
  */
 public class DevCardController extends Controller implements IDevCardController {
+    private final static Logger logger = Logger.getLogger("catan");
 
 	private IBuyDevCardView buyCardView;
 	private IAction soldierAction;
 	private IAction roadAction;
+    private IServerModelFacade m_facade;
 	
 	/**
 	 * DevCardController constructor
@@ -31,6 +38,11 @@ public class DevCardController extends Controller implements IDevCardController 
 		this.buyCardView = buyCardView;
 		this.soldierAction = soldierAction;
 		this.roadAction = roadAction;
+
+        ((Game) GameModelFacade.getInstance().getGame()).addObserver(this);
+        m_facade = ServerModelFacade.getInstance();
+
+        //update(); is this needed?
 	}
 
 	public IPlayDevCardView getPlayCardView() {
@@ -55,7 +67,11 @@ public class DevCardController extends Controller implements IDevCardController 
 
 	@Override
 	public void buyCard() {
-		
+        try {
+            m_facade.buyDevCard();
+        } catch (ModelException e) {
+            logger.log(Level.WARNING, "Buy card failed.", e);
+        }
 		getBuyCardView().closeModal();
 	}
 
@@ -73,34 +89,64 @@ public class DevCardController extends Controller implements IDevCardController 
 
 	@Override
 	public void playMonopolyCard(ResourceType resource) {
-		
+        try {
+            m_facade.playMonopoly(resource);
+        } catch (ModelException e) {
+            logger.log(Level.WARNING, "Play monopoly card failed.", e);
+        }
 	}
 
 	@Override
 	public void playMonumentCard() {
-		
+        try {
+            m_facade.playMonument();
+        } catch (ModelException e) {
+            logger.log(Level.WARNING, "Play monument card failed.", e);
+        }
 	}
 
 	@Override
 	public void playRoadBuildCard() {
-		
 		roadAction.execute();
 	}
 
 	@Override
 	public void playSoldierCard() {
-		
 		soldierAction.execute();
 	}
 
 	@Override
 	public void playYearOfPlentyCard(ResourceType resource1, ResourceType resource2) {
-		
+        try {
+            m_facade.playYearOfPlenty(resource1, resource2);
+        } catch (ModelException e) {
+            logger.log(Level.WARNING, "Play year of plenty card failed.", e);
+        }
 	}
 
     @Override
     public void update(Observable o, Object arg) {
+        initFromModel();
+    }
 
+    public void initFromModel() {
+        logger.entering("client.devcards.DevCardController", "initFromModel");
+
+        IGame game = GameModelFacade.getInstance().getGame();
+        assert game != null;
+        if (game.isNotInitialized()) {
+            logger.fine("Not intializing DevCardController: the game object has not been initialized");
+            return; // do nothing if the game object has not been created yet
+        }
+        logger.fine("Initializing DevCardController.");
+
+        IPlayer player = game.getLocalPlayer();
+        IDevCardHand devCards = player.getPlayableDevCards();
+        //for each card type set enabled and amount
+        for (DevCardType type : DevCardType.values()) {
+            getPlayCardView().setCardEnabled(type, player.canPlayDevCard(type));
+            getPlayCardView().setCardAmount(type, devCards.getCount(type));
+        }
     }
 }
 
