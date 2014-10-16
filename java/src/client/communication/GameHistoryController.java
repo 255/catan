@@ -2,11 +2,13 @@ package client.communication;
 
 import java.util.*;
 import java.util.List;
+import java.util.logging.Logger;
 
 import client.base.*;
 import shared.definitions.*;
 import shared.model.Game;
 import shared.model.GameModelFacade;
+import shared.model.ModelException;
 
 
 /**
@@ -14,23 +16,26 @@ import shared.model.GameModelFacade;
  */
 public class GameHistoryController extends Controller implements IGameHistoryController {
 
-	public GameHistoryController(IGameHistoryView view) {
+    private final static Logger logger = Logger.getLogger("catan");
+
+    public GameHistoryController(IGameHistoryView view) {
 		
 		super(view);
 
-        //(Game)(GameModelFacade.getInstance().getGame()).addObserver(this);
+        //(GameModelFacade.getInstance().getGame()).addObserver(this);
 
 		initFromModel();
 	}
 	
 	@Override
 	public IGameHistoryView getView() {
-		
 		return (IGameHistoryView)super.getView();
 	}
 	
 	private void initFromModel() {
-		//getView().setEntries(GameModelFacade.getInstance().getMoveHistory());
+        if (!GameModelFacade.getInstance().getGame().isNotInitialized()) {
+            getView().setEntries(GameModelFacade.getInstance().getMoveHistory().getMessages());
+        }
 	}
 
     @Override

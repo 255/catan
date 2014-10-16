@@ -43,8 +43,10 @@ public class PointsController extends Controller implements IPointsController {
 	}
 
 	private void initFromModel() {
-        getPointsView().setPoints(GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints());
-	}
+        if (!GameModelFacade.getInstance().getGame().isNotInitialized()) {
+            getPointsView().setPoints(GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints());
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {
