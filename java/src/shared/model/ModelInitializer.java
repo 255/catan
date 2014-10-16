@@ -371,7 +371,7 @@ public class ModelInitializer implements IModelInitializer {
             }
             reader.endObject();
 
-            log.addMessage(source, message);
+            log.addMessage(source.getColor(), message);
         }
         reader.endArray();
         reader.endObject();

@@ -1,5 +1,8 @@
 package shared.model;
 
+import client.communication.LogEntry;
+import shared.definitions.CatanColor;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +11,7 @@ import java.util.List;
  * The gameplay log or chat history.
  */
 public class Log implements ILog {
-    private List<ILogMessage> m_log;
+    private List<LogEntry> m_log;
 
     /**
      * Create a new empty log.
@@ -20,13 +23,13 @@ public class Log implements ILog {
     /**
      * Add a message to the log. The message is added as the last entry.
      *
-     * @param player  the player who originated the message
+     * @param playerColor  the color of the player who originated the message
      * @param message the contents of the message
      */
     @Override
-    public void addMessage(IPlayer player, String message) {
-        assert player != null && message != null;
-        m_log.add(new LogMessage(player, message));
+    public void addMessage(CatanColor playerColor, String message) {
+        assert playerColor != null && message != null;
+        m_log.add(new LogEntry(playerColor, message));
     }
 
     /**
@@ -36,7 +39,7 @@ public class Log implements ILog {
      * @return an unmodifiable list of messages
      */
     @Override
-    public List<ILogMessage> getMessages() {
+    public List<LogEntry> getMessages() {
         return Collections.unmodifiableList(m_log);
     }
 

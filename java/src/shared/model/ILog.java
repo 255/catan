@@ -1,5 +1,8 @@
 package shared.model;
 
+import client.communication.LogEntry;
+import shared.definitions.CatanColor;
+
 import java.util.List;
 
 /**
@@ -10,17 +13,17 @@ import java.util.List;
 public interface ILog {
     /**
      * Add a message to the log. The message is added as the last entry.
-     * @param player the player who originated the message
+     * @param playerColor the player who originated the message
      * @param message the contents of the message
      */
-    public void addMessage(IPlayer player, String message);
+    public void addMessage(CatanColor playerColor, String message);
 
     /**
      * Get the list of messages in the log.
      * The messages are ordered oldest to newest.
      * @return an unmodifiable list of messages
      */
-    public List<ILogMessage> getMessages();
+    public List<LogEntry> getMessages();
 
     /**
      * An individual message in a
