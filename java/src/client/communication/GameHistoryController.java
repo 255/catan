@@ -5,6 +5,8 @@ import java.util.List;
 
 import client.base.*;
 import shared.definitions.*;
+import shared.model.Game;
+import shared.model.GameModelFacade;
 
 
 /**
@@ -15,7 +17,9 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	public GameHistoryController(IGameHistoryView view) {
 		
 		super(view);
-		
+
+        //(Game)(GameModelFacade.getInstance().getGame()).addObserver(this);
+
 		initFromModel();
 	}
 	
@@ -26,27 +30,12 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	}
 	
 	private void initFromModel() {
-		
-		//<temp>
-		
-		List<LogEntry> entries = new ArrayList<LogEntry>();
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		entries.add(new LogEntry(CatanColor.BROWN, "This is a brown message"));
-		entries.add(new LogEntry(CatanColor.ORANGE, "This is an orange message ss x y z w.  This is an orange message.  This is an orange message.  This is an orange message."));
-		
-		getView().setEntries(entries);
-	
-		//</temp>
+		//getView().setEntries(GameModelFacade.getInstance().getMoveHistory());
 	}
 
     @Override
     public void update(Observable o, Object arg) {
-
+        initFromModel();
     }
 }
 

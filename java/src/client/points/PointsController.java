@@ -24,8 +24,10 @@ public class PointsController extends Controller implements IPointsController {
 		super(view);
 		
 		setFinishedView(finishedView);
-		
-		initFromModel();
+
+        //(Game)(GameModelFacade.getInstance().getGame()).addObserver(this);
+
+        initFromModel();
 	}
 	
 	public IPointsView getPointsView() {
