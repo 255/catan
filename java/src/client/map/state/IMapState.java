@@ -99,8 +99,9 @@ public interface IMapState {
     /**
      * This method is called when the user plays a "soldier" development card.
      * It should initiate robber placement.
+     * @param controller
      */
-    public void playSoldierCard();
+    public void playSoldierCard(MapController controller);
 
     /**
      * This method is called when the user plays a "road building" progress

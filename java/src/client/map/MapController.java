@@ -153,7 +153,7 @@ public class MapController extends Controller implements IMapController {
 	}
 	
 	public void playSoldierCard() {	
-        m_state.playSoldierCard();
+        m_state.playSoldierCard(this);
 	}
 	
 	public void playRoadBuildingCard() {	
@@ -174,7 +174,7 @@ public class MapController extends Controller implements IMapController {
         logger.entering("client.map.MapController", "update", o);
         initFromModel();
         // TODO: THIS IS TEMP
-        playRoadBuildingCard();
+        playSoldierCard();
         logger.exiting("client.map.MapController", "update");
     }
 }

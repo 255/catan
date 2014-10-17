@@ -142,10 +142,10 @@ public class ServerModelFacade implements IServerModelFacade {
     /**
      * Tells the server to play a soldier card
      * @param hex is the location to put the robber
-     * @param victim is the player who is robbed, or null if no one is being robbed
+     * @param victimIndex is the player who is robbed, or null if no one is being robbed
      */
     @Override
-    public void playSoldier(HexLocation hex, IPlayer victim) throws ModelException {
+    public void playSoldier(HexLocation hex, int victimIndex) throws ModelException {
         assert hex != null;
 
         if (!GameModelFacade.getInstance().canPlaySoldier(hex)) {
@@ -153,7 +153,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playSoldier(Game.getInstance().getLocalPlayer().getIndex(), hex, (victim == null ? -1 : victim.getIndex()));
+            m_theProxy.playSoldier(Game.getInstance().getLocalPlayer().getIndex(), hex, victimIndex);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }

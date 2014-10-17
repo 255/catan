@@ -14,11 +14,13 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * @author StevenBarnett
  */
 public class HttpCommunicator implements IHttpCommunicator {
+    private final static Logger logger = Logger.getLogger("catan");
 
     private static String SERVER_HOST = "localhost";
     private static int SERVER_PORT = 8081;
@@ -32,7 +34,10 @@ public class HttpCommunicator implements IHttpCommunicator {
 
     @Override
     public String get(String commandName) throws NetworkException {
+        logger.entering("client.network.HttpCommunicator", "get");
         assert (commandName != null & commandName.length() > 0);
+
+        logger.finer("HTTP GET: " + commandName);
 
         String response = null;
         HttpURLConnection connection = null;
@@ -60,12 +65,11 @@ public class HttpCommunicator implements IHttpCommunicator {
                 return null;
             }
 
-        } catch (MalformedURLException ex1) {
-            throw new NetworkException(ex1.getMessage());
-        } catch (IOException ex2) {
-            throw new NetworkException(ex2.getMessage());
+        } catch (IOException e) {
+            throw new NetworkException(e);
         } finally {
             connection.disconnect();
+            logger.exiting("client.network.HttpCommunicator", "get");
         }
 
         return response;
@@ -73,7 +77,10 @@ public class HttpCommunicator implements IHttpCommunicator {
 
     @Override
     public String post(String commandName, String postData) throws NetworkException {
+        logger.entering("client.network.HttpCommunicator", "post");
         assert (commandName != null && commandName.length() > 0 && postData != null);
+
+        logger.finer("HTTP POST: " + commandName + postData);
 
         String response = null;
         HttpURLConnection connection = null;
@@ -117,13 +124,11 @@ public class HttpCommunicator implements IHttpCommunicator {
             } else {
                 return null;
             }
-
-        } catch (MalformedURLException ex1) {
-            throw new NetworkException(ex1.getMessage());
-        } catch (IOException ex2) {
-            throw new NetworkException(ex2.getMessage());
+        } catch (IOException e) {
+            throw new NetworkException(e);
         } finally {
             connection.disconnect();
+            logger.exiting("client.network.HttpCommunicator", "post");
         }
         return response;
     }

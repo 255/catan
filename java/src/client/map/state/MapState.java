@@ -117,7 +117,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeRoad(MapController controller, EdgeLocation edgeLoc) throws ModelException {
-
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -128,7 +128,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeSettlement(VertexLocation vertLoc) throws ModelException {
-
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeCity(VertexLocation vertLoc) throws ModelException {
-
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeRobber(MapController controller, HexLocation hexLoc) {
-
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -159,16 +159,17 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void startMove(MapController controller, PieceType pieceType) {
-
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
      * This method is called when the user plays a "soldier" development card.
      * It should initiate robber placement.
+     * @param controller
      */
     @Override
-    public void playSoldierCard() {
-
+    public void playSoldierCard(MapController controller) {
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -179,7 +180,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void playRoadBuildingCard(MapController controller) {
-
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -190,7 +191,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void robPlayer(RobPlayerInfo victim) throws ModelException {
-
+        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
