@@ -69,9 +69,13 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		}
 	}
 
+    public void initFromModel() {
+     //   getView().
+    }
+
     @Override
     public void update(Observable o, Object arg) {
-
+        initFromModel();
     }
 }
 

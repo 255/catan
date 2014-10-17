@@ -30,8 +30,6 @@ public class PointsController extends Controller implements IPointsController {
 		setFinishedView(finishedView);
 
         Game.getInstance().addObserver(this);
-
-        initFromModel();
 	}
 	
 	public IPointsView getPointsView() {
