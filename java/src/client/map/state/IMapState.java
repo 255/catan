@@ -2,6 +2,7 @@ package client.map.state;
 
 import client.data.RobPlayerInfo;
 import client.map.IMapController;
+import client.map.MapController;
 import shared.definitions.PieceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -81,22 +82,18 @@ public interface IMapState {
     /**
      * This method is called when the user clicks the mouse to place the robber.
      *
+     * @param controller
      * @param hexLoc The robber location
      */
-    public void placeRobber(HexLocation hexLoc);
+    public void placeRobber(MapController controller, HexLocation hexLoc);
 
     /**
      * This method is called when the user requests to place a piece on the map
      * (road, city, or settlement)
-     *
-     * @param controller        The controller that should start the move
+     *  @param controller        The controller that should start the move
      * @param pieceType         The type of piece to be placed
-     * @param isFree            true if the piece should not cost the player resources, false
-     *                          otherwise. Set to true during initial setup and when a road
-     *                          building card is played.
-     * @param allowDisconnected true if the piece can be disconnected, false otherwise. Set to
      */
-    public void startMove(IMapController controller, PieceType pieceType, boolean isFree, boolean allowDisconnected);
+    public void startMove(MapController controller, PieceType pieceType);
 
     /**
      * This method is called when the user plays a "soldier" development card.
@@ -117,5 +114,11 @@ public interface IMapState {
      *
      * @param victim The player to be robbed
      */
-    public void robPlayer(RobPlayerInfo victim);
+    public void robPlayer(RobPlayerInfo victim) throws ModelException;
+
+    /**
+     * Set up the state of the robbing dialog, based on game state.
+     * @param controller
+     */
+    public void initializeDialogs(MapController controller);
 }

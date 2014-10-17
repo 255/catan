@@ -7,6 +7,8 @@ import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -135,6 +137,17 @@ public class GameModelFacade implements IGameModelFacade {
     public IPlayer getCurrentPlayer() {
         assert m_theGame.getCurrentPlayer() != null;
         return m_theGame.getCurrentPlayer();
+    }
+
+    /**
+     * Get a list of players around a hex that can be robbed (all with towns except local player)
+     *
+     * @param location the location being robbed
+     * @return a collection of players (may be empty)
+     */
+    @Override
+    public Collection<IPlayer> getRobbablePlayers(HexLocation location) {
+        return m_theGame.getMap().getRobbablePlayersOnTile(location, Game.getInstance().getLocalPlayer());
     }
 
     /**

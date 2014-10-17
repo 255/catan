@@ -1,7 +1,7 @@
 package client.map.state;
 
 import client.data.RobPlayerInfo;
-import client.map.IMapController;
+import client.map.MapController;
 import shared.definitions.PieceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -9,10 +9,13 @@ import shared.locations.VertexLocation;
 import shared.model.IGame;
 import shared.model.ModelException;
 
+import java.util.logging.Logger;
+
 /**
  * The parent MapState class that provides default "false" implementations.
  */
 public abstract class MapState implements IMapState {
+    private final static Logger logger = Logger.getLogger("catan");
     /**
      * Determine the game state based on the provided game object.
      * A null game means that gameplay has not started yet.
@@ -20,23 +23,27 @@ public abstract class MapState implements IMapState {
      * @return the the correct state object
      */
     public static MapState determineState(IGame game) {
-        if (game == null) {
-            return new NotPlayingState();
-        }
-        else if (!game.isLocalPlayersTurn()) {
+        assert game != null : "Game is null! How did that happen?";
+
+        if (game.isNotInitialized() || !game.isLocalPlayersTurn()) {
+            logger.finer("MapState is NotPlaying.");
             return new NotPlayingState();
         }
         else { // isLocalPlayersTurn()
             switch (game.getGameState()) {
                 case PLAYING:
+                    logger.finer("MapState is Playing.");
                     return new PlayingState();
                 case FIRST_ROUND:
                 case SECOND_ROUND:
+                    logger.finer("MapState is Setup.");
                     return new SetupState();
-                case ROLLING:
-                    return new RobbingState();
                 case ROBBING:
+                    logger.finer("MapState is Robbing.");
+                    return new RobbingState();
+                case ROLLING:
                 case DISCARDING:
+                    logger.finer("MapState is NotPlaying.");
                     return new NotPlayingState();
                 default:
                     assert false : "Unknown game state.";
@@ -136,25 +143,21 @@ public abstract class MapState implements IMapState {
     /**
      * This method is called when the user clicks the mouse to place the robber.
      *
+     * @param controller
      * @param hexLoc The robber location
      */
     @Override
-    public void placeRobber(HexLocation hexLoc) {
+    public void placeRobber(MapController controller, HexLocation hexLoc) {
 
     }
 
     /**
      * This method is called when the user requests to place a piece on the map
      * (road, city, or settlement)
-     *
-     * @param pieceType         The type of piece to be placed
-     * @param isFree            true if the piece should not cost the player resources, false
-     *                          otherwise. Set to true during initial setup and when a road
-     *                          building card is played.
-     * @param allowDisconnected true if the piece can be disconnected, false otherwise. Set to
+     *  @param pieceType         The type of piece to be placed
      */
     @Override
-    public void startMove(IMapController controller, PieceType pieceType, boolean isFree, boolean allowDisconnected) {
+    public void startMove(MapController controller, PieceType pieceType) {
 
     }
 
@@ -184,7 +187,16 @@ public abstract class MapState implements IMapState {
      * @param victim The player to be robbed
      */
     @Override
-    public void robPlayer(RobPlayerInfo victim) {
+    public void robPlayer(RobPlayerInfo victim) throws ModelException {
+
+    }
+
+    /**
+     * Set up the state of the robbing dialog, based on game state.
+     * @param controller the controller whose dialogs to initialize
+     */
+    @Override
+    public void initializeDialogs(MapController controller) {
 
     }
 }

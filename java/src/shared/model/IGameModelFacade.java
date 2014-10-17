@@ -6,6 +6,7 @@ import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -114,6 +115,14 @@ public interface IGameModelFacade {
      * @param edge2
      */
     public boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2);
+
+    /**
+     * Get a list of players around a hex that can be robbed (all with towns except local player)
+     * @param location the location being robbed
+     * @return a collection of players (may be empty)
+     */
+    public Collection<IPlayer> getRobbablePlayers(HexLocation location);
+
 
     /**
      * Returns the info for the current player

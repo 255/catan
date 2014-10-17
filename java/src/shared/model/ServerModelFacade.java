@@ -231,14 +231,14 @@ public class ServerModelFacade implements IServerModelFacade {
     /**
      * Tells the server to rob a player
      * @param hex the hex to place the robber on
-     * @param victim is the player who is robbed, or null if no one is being robbed
+     * @param victimIndex is the player who is robbed, or null if no one is being robbed
      */
     @Override
-    public void robPlayer(HexLocation hex, IPlayer victim) throws ModelException {
+    public void robPlayer(HexLocation hex, int victimIndex) throws ModelException {
         assert hex != null;
 // TODO
         try {
-            m_theProxy.robPlayer(Game.getInstance().getLocalPlayer().getIndex(), (victim == null ? -1 : victim.getIndex()), hex);
+            m_theProxy.robPlayer(Game.getInstance().getLocalPlayer().getIndex(), victimIndex, hex);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }

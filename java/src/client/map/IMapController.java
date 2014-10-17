@@ -10,8 +10,7 @@ import shared.locations.*;
  */
 public interface IMapController extends IController
 {
-	
-	/**
+    /**
 	 * This method is called whenever the user is trying to place a road on the
 	 * map. It is called by the view for each "mouse move" event. The returned
 	 * value tells the view whether or not to allow the road to be placed at the
@@ -95,19 +94,11 @@ public interface IMapController extends IController
 	/**
 	 * This method is called when the user requests to place a piece on the map
 	 * (road, city, or settlement)
-	 * 
-	 * @param pieceType
+	 *  @param pieceType
 	 *            The type of piece to be placed
-	 * @param isFree
-	 *            true if the piece should not cost the player resources, false
-	 *            otherwise. Set to true during initial setup and when a road
-	 *            building card is played.
-	 * @param allowDisconnected
-	 *            true if the piece can be disconnected, false otherwise. Set to
-	 *            true only during initial setup.
-	 */
-	void startMove(PieceType pieceType, boolean isFree,
-				   boolean allowDisconnected);
+	 *
+     */
+	void startMove(PieceType pieceType);
 	
 	/**
 	 * This method is called from the modal map overlay when the cancel button

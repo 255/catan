@@ -153,13 +153,22 @@ public interface ICatanMap {
     /**
      * Get the players who have towns around this tile.
      * @param tile
+     * @param exclude
      * @return
      */
-    public Collection<IPlayer> getPlayersOnTile(HexLocation tile);
+    public Collection<IPlayer> getRobbablePlayersOnTile(HexLocation tile, IPlayer exclude);
 
     /**
      * Change the location of the robber.
      * @param location the new hex location of the robber
      */
     public void moveRobber(HexLocation location);
+
+    /**
+     * Determine whether the specified location is a valid place for the robber.
+     * The robber must always move and must stay on the map.
+     * @param location the new location for the robber
+     * @return true if the location is valid
+     */
+    public boolean canPlaceRobber(HexLocation location);
 }

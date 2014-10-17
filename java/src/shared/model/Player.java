@@ -283,6 +283,7 @@ public class Player implements IPlayer {
         return m_resources.canAfford(trade.negate());
     }
 
+
     //*********//
     // Setters //
     //*********//

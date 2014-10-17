@@ -327,12 +327,12 @@ public class CatanMapTest {
     public void testGetPlayersOnTile() throws Exception {
         IPlayer player3 = new Player("John", 123, CatanColor.BLUE, 3);
 
-        assertEquals("Players returned from empty map/tile.", 0, map.getPlayersOnTile(new HexLocation(2, -2)).size());
+        assertEquals("Players returned from empty map/tile.", 0, map.getRobbablePlayersOnTile(new HexLocation(2, -2), null).size());
 
         map.placeSettlement(new Settlement(player1), new VertexLocation(2, -2, VertexDirection.West));
 
         // test having one player on a tile
-        Set<IPlayer> playersOnTile = map.getPlayersOnTile(new HexLocation(2, -2));
+        Set<IPlayer> playersOnTile = map.getRobbablePlayersOnTile(new HexLocation(2, -2), null);
 
         assertTrue("Failed to find player on tile.", playersOnTile.contains(player1));
         assertFalse("Found wrong player on tile.", playersOnTile.contains(player2));
@@ -343,7 +343,7 @@ public class CatanMapTest {
         map.placeSettlement(new Settlement(player2), new VertexLocation(0, 0, VertexDirection.NorthEast));
         map.placeSettlement(new Settlement(player3), new VertexLocation(0, 0, VertexDirection.SouthEast));
 
-        playersOnTile = map.getPlayersOnTile(new HexLocation(0, 0));
+        playersOnTile = map.getRobbablePlayersOnTile(new HexLocation(0, 0), null);
 
         assertEquals("Wrong number of players found.", 3, playersOnTile.size());
         assertTrue("Failed to find player on tile.", playersOnTile.contains(player1));

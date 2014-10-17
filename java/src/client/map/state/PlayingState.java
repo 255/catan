@@ -1,8 +1,10 @@
 package client.map.state;
 
 import client.map.IMapController;
+import client.map.MapController;
 import shared.definitions.PieceType;
 import shared.locations.VertexLocation;
+import shared.model.Game;
 import shared.model.GameModelFacade;
 import shared.model.ModelException;
 import shared.model.ServerModelFacade;
@@ -39,16 +41,13 @@ public class PlayingState extends PlaceSettlementsOrRoadsState {
     /**
      * This method is called when the user requests to place a piece on the map
      * (road, city, or settlement)
+     *  @param pieceType         The type of piece to be placed
      *
-     * @param pieceType         The type of piece to be placed
-     * @param isFree            true if the piece should not cost the player resources, false
-     *                          otherwise. Set to true during initial setup and when a road
-     *                          building card is played.
-     * @param allowDisconnected true if the piece can be disconnected, false otherwise. Set to
      */
     @Override
-    public void startMove(IMapController controller, PieceType pieceType, boolean isFree, boolean allowDisconnected) {
-        controller.startMove(pieceType, isFree, allowDisconnected);
+    public void startMove(MapController controller, PieceType pieceType) {
+        // allowed to cancel
+        controller.getView().startDrop(pieceType, Game.getInstance().getLocalPlayer().getColor(), true);
     }
 
     /**

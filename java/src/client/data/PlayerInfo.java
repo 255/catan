@@ -41,6 +41,10 @@ public class PlayerInfo
 		setName(name);
 		setColor(color);
 	}
+
+    public PlayerInfo(IPlayer player) {
+        this(player.getId(), player.getIndex(), player.getName(), player.getColor());
+    }
 	
 	public int getId()
 	{
@@ -83,19 +87,12 @@ public class PlayerInfo
 	}
 
     /**
-     * Get the PlayerInfo from a Player object.
-     */
-    private static PlayerInfo fromPlayer(IPlayer player) {
-        return new PlayerInfo(player.getId(), player.getIndex(), player.getName(), player.getColor());
-    }
-
-    /**
      * Get an array of PlayerInfos from a collection of Player objects.
      */
     public static PlayerInfo[] fromPlayers(Collection<IPlayer> players) {
         Collection<PlayerInfo> playerInfos = new ArrayList<>(players.size());
         for (IPlayer player : players) {
-            playerInfos.add(fromPlayer(player));
+            playerInfos.add(new PlayerInfo(player));
         }
 
         assert playerInfos.size() == players.size();

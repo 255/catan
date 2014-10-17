@@ -84,9 +84,9 @@ public interface IServerModelFacade {
     /**
      * Tells the server to rob a player
      * @param hex the hex to place the robber on
-     * @param victim is the player who is robbed, or null if no one is being robbed
+     * @param victimIndex is the player who is robbed, or null if no one is being robbed
      */
-    public void robPlayer(HexLocation hex, IPlayer victim) throws ModelException;
+    public void robPlayer(HexLocation hex, int victimIndex) throws ModelException;
 
 
     // trading

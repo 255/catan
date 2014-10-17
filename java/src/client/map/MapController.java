@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import client.map.state.IMapState;
+import client.map.state.MapState;
 import client.map.state.NotPlayingState;
 import shared.definitions.*;
 import shared.locations.*;
@@ -21,7 +22,7 @@ public class MapController extends Controller implements IMapController {
 
 	private IRobView robView;
     private IMapState m_state;
-	
+
 	public MapController(IMapView view, IRobView robView) {
 		super(view);
 		
@@ -36,10 +37,11 @@ public class MapController extends Controller implements IMapController {
 		
 		return (IMapView)super.getView();
 	}
-	
-	private IRobView getRobView() {
+
+	public IRobView getRobView() {
 		return robView;
 	}
+
 	private void setRobView(IRobView robView) {
 		this.robView = robView;
 	}
@@ -88,6 +90,10 @@ public class MapController extends Controller implements IMapController {
         }
 
         getView().placeRobber(map.getRobber());
+
+        // determine the state
+        m_state = MapState.determineState(game);
+        m_state.initializeDialogs(this);
         logger.exiting("client.map.MapController", "initFromModel");
 	}
 
@@ -136,14 +142,12 @@ public class MapController extends Controller implements IMapController {
 	}
 
 	public void placeRobber(HexLocation hexLoc) {
+        m_state.placeRobber(this, hexLoc);
         // TODO: implement this
-		getView().placeRobber(hexLoc);
-
-		getRobView().showModal();
 	}
 	
-	public void startMove(PieceType pieceType, boolean isFree, boolean allowDisconnected) {	
-		getView().startDrop(pieceType, CatanColor.ORANGE, true);
+	public void startMove(PieceType pieceType) {
+        m_state.startMove(this, pieceType);
 	}
 	
 	public void cancelMove() {
@@ -158,9 +162,14 @@ public class MapController extends Controller implements IMapController {
 		m_state.playRoadBuildingCard();
 	}
 	
-	public void robPlayer(RobPlayerInfo victim) {	
-		m_state.robPlayer(victim);
-	}
+	public void robPlayer(RobPlayerInfo victim) {
+        try {
+            m_state.robPlayer(victim);
+        }
+        catch (ModelException e) {
+            logger.log(Level.WARNING, "Robbing player failed.", e);
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {

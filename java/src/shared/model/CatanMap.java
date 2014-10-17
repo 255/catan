@@ -430,19 +430,36 @@ public class CatanMap implements ICatanMap {
     }
 
     /**
-     * Get the players who have towns around this tile.
+     * Determine whether the specified location is a valid place for the robber.
+     * The robber must always move and must stay on the map.
+     *
+     * @param location the new location for the robber
+     * @return true if the location is valid
+     */
+    @Override
+    public boolean canPlaceRobber(HexLocation location) {
+        return !location.equals(m_robber) && isOnMap(location);
+    }
+
+    /**
+     * Get the players who have towns around this tile and have resources to rob.
      *
      * @param tile
+     * @param exclude the player to exclude from the set (the local player)
      * @return
      */
     @Override
-    public Set<IPlayer> getPlayersOnTile(HexLocation tile) {
+    public Set<IPlayer> getRobbablePlayersOnTile(HexLocation tile, IPlayer exclude) {
         Set<IPlayer> players = new HashSet<>();
 
         for (VertexDirection dir : VertexDirection.values()) {
             VertexLocation loc = new VertexLocation(tile, dir).getNormalizedLocation();
             if (m_towns.containsKey(loc)) {
-                players.add(m_towns.get(loc).getOwner());
+                IPlayer player = m_towns.get(loc).getOwner();
+
+                if (!player.equals(exclude) && player.hasResources()) {
+                    players.add(player);
+                }
             }
         }
 
@@ -553,6 +570,10 @@ public class CatanMap implements ICatanMap {
         return m_towns.get(EdgeLocation.getVertexBetweenEdges(edge1, edge2));
     }
 
+    private boolean isOnMap(HexLocation hex) {
+        return m_tiles.containsKey(hex);
+    }
+
     /**
      * Determine whether the specified edge borders a valid tile on the Catan map.
      * @param edge the edge to test
@@ -584,6 +605,5 @@ public class CatanMap implements ICatanMap {
 
         // didn't find any of the locs...
         return false;
-
     }
 }
