@@ -1,5 +1,6 @@
 package shared.model;
 
+import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
@@ -51,6 +52,7 @@ public class GameModelFacade implements IGameModelFacade {
 
     /**
      * Takes an edge location and determines if a road can be placed on it
+     * This does NOT check if the player can afford the road.
      *
      * @param edge the location of the side of a terrain hex
      * @return a boolean value that reports if the user can place a road
@@ -346,6 +348,16 @@ public class GameModelFacade implements IGameModelFacade {
         return m_theGame.localPlayerIsPlaying()
                 && player.canPlayDevCard(DevCardType.ROAD_BUILD)
                 && map.canPlaceTwoRoads(player, edge1, edge2);
+    }
+
+    /**
+     * Get the local player's color.
+     *
+     * @return the local player's color
+     */
+    @Override
+    public CatanColor getLocalColor() {
+        return Game.getInstance().getLocalPlayer().getColor();
     }
 
     // this method is just for determining from the GameState if it is a free round

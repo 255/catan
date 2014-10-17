@@ -269,6 +269,11 @@ public class Player implements IPlayer {
      */
     @Override
     public boolean canPlayDevCard(DevCardType card) {
+        // they must have two available road pieces for the road building card
+        if (card == DevCardType.ROAD_BUILD && m_pieceBank.availableRoads() < 2) {
+            return false;
+        }
+
         return !m_playedDevCard && (m_playableDevCards.getCount(card) > 0);
     }
 

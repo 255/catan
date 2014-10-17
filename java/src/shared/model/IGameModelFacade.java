@@ -1,5 +1,6 @@
 package shared.model;
 
+import shared.definitions.CatanColor;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
@@ -161,4 +162,10 @@ public interface IGameModelFacade {
 
     // this method is just for determining from the GameState if it is a free round
     public boolean isFreeRound();
+
+    /**
+     * Get the local player's color.
+     * @return the local player's color
+     */
+    public CatanColor getLocalColor();
 }

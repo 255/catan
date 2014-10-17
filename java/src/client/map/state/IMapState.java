@@ -60,9 +60,10 @@ public interface IMapState {
     /**
      * This method is called when the user clicks the mouse to place a road.
      *
+     * @param controller
      * @param edgeLoc The road location
      */
-    public void placeRoad(EdgeLocation edgeLoc) throws ModelException;
+    public void placeRoad(MapController controller, EdgeLocation edgeLoc) throws ModelException;
 
     /**
      * This method is called when the user clicks the mouse to place a
@@ -105,8 +106,9 @@ public interface IMapState {
      * This method is called when the user plays a "road building" progress
      * development card. It should initiate the process of allowing the player
      * to place two roads.
+     * @param controller
      */
-    public void playRoadBuildingCard();
+    public void playRoadBuildingCard(MapController controller);
 
     /**
      * This method is called by the Rob View when a player to rob is selected
@@ -121,4 +123,10 @@ public interface IMapState {
      * @param controller
      */
     public void initializeDialogs(MapController controller);
+
+    /**
+     * If a move is ongoing, cancel it.
+     * @param controller
+     */
+    public void cancelMove(MapController controller);
 }

@@ -68,7 +68,12 @@ public class MapView extends PanelView implements IMapView
 	{
 		map.placeRoad(edgeLoc, color);
 	}
-	
+
+    @Override
+    public void removeRoad(EdgeLocation edgeLoc) {
+        map.removeRoad(edgeLoc);
+    }
+
 	@Override
 	public void placeSettlement(VertexLocation vertLoc, CatanColor color)
 	{

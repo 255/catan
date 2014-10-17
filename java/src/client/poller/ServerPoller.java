@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 public class ServerPoller implements IServerPoller {
     private final static Logger logger = Logger.getLogger("catan");
 
-    private final int c_millisecondsPerSecond = 1000;
+    private static final int c_millisecondsPerSecond = 1000;
+    private static final int c_defaultPollingInterval = 3;
 
     private IServerProxy m_serverProxy;
     private IModelInitializer m_modelSerializer;
@@ -27,7 +28,7 @@ public class ServerPoller implements IServerPoller {
     private int m_pollCount = 0;
 
     public ServerPoller(IServerProxy serverProxy) {
-        this(serverProxy, 3);
+        this(serverProxy, c_defaultPollingInterval);
     }
 
     public ServerPoller(IServerProxy serverProxy, int secondsBetweenPolls) {

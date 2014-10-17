@@ -112,10 +112,11 @@ public abstract class MapState implements IMapState {
     /**
      * This method is called when the user clicks the mouse to place a road.
      *
+     * @param controller
      * @param edgeLoc The road location
      */
     @Override
-    public void placeRoad(EdgeLocation edgeLoc) throws ModelException {
+    public void placeRoad(MapController controller, EdgeLocation edgeLoc) throws ModelException {
 
     }
 
@@ -174,9 +175,10 @@ public abstract class MapState implements IMapState {
      * This method is called when the user plays a "road building" progress
      * development card. It should initiate the process of allowing the player
      * to place two roads.
+     * @param controller
      */
     @Override
-    public void playRoadBuildingCard() {
+    public void playRoadBuildingCard(MapController controller) {
 
     }
 
@@ -197,6 +199,15 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void initializeDialogs(MapController controller) {
+
+    }
+
+    /**
+     * If a move is ongoing, cancel it.
+     * @param controller
+     */
+    @Override
+    public void cancelMove(MapController controller) {
 
     }
 }

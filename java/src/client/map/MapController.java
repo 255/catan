@@ -29,7 +29,6 @@ public class MapController extends Controller implements IMapController {
 		setRobView(robView);
 
         Game.getInstance().addObserver(this);
-        logger.finest("MapController added self (" + this + ") as observer.");
         m_state = new NotPlayingState();
 	}
 	
@@ -115,7 +114,7 @@ public class MapController extends Controller implements IMapController {
 
 	public void placeRoad(EdgeLocation edgeLoc) {
         try {
-            m_state.placeRoad(edgeLoc);
+            m_state.placeRoad(this, edgeLoc);
         }
         catch (ModelException e) {
             // TODO: should we display a popup to the user?
@@ -143,7 +142,6 @@ public class MapController extends Controller implements IMapController {
 
 	public void placeRobber(HexLocation hexLoc) {
         m_state.placeRobber(this, hexLoc);
-        // TODO: implement this
 	}
 	
 	public void startMove(PieceType pieceType) {
@@ -151,7 +149,7 @@ public class MapController extends Controller implements IMapController {
 	}
 	
 	public void cancelMove() {
-
+        m_state.cancelMove(this);
 	}
 	
 	public void playSoldierCard() {	
@@ -159,7 +157,7 @@ public class MapController extends Controller implements IMapController {
 	}
 	
 	public void playRoadBuildingCard() {	
-		m_state.playRoadBuildingCard();
+		m_state.playRoadBuildingCard(this);
 	}
 	
 	public void robPlayer(RobPlayerInfo victim) {
@@ -175,6 +173,8 @@ public class MapController extends Controller implements IMapController {
     public void update(Observable o, Object arg) {
         logger.entering("client.map.MapController", "update", o);
         initFromModel();
+        // TODO: THIS IS TEMP
+        playRoadBuildingCard();
         logger.exiting("client.map.MapController", "update");
     }
 }
