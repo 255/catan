@@ -27,10 +27,14 @@ public class ServerPoller implements IServerPoller {
     private int m_pollCount = 0;
 
     public ServerPoller(IServerProxy serverProxy) {
+        this(serverProxy, 3);
+    }
+
+    public ServerPoller(IServerProxy serverProxy, int secondsBetweenPolls) {
         m_serverProxy = serverProxy;
         m_modelSerializer = new ModelInitializer();
         m_timer = new Timer();
-        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * 3, c_millisecondsPerSecond * 3);
+        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
     }
     @Override
     public void updateGame() {

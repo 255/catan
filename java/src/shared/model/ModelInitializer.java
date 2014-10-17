@@ -33,7 +33,11 @@ public class ModelInitializer implements IModelInitializer {
      */
     @Override
     public void initializeClientModel(String json, int localPlayerID) throws ModelException {
-        logger.entering("shared.model.ModelInitializer", "initializeClientModel", new Object[]{json.length(), localPlayerID});
+        logger.entering("shared.model.ModelInitializer", "initializeClientModel");
+
+        if (json == null) {
+            logger.fine("ModelInitializer was called with null JSON.");
+        }
         assert json != null;
 
         // read in the players first since they are referenced by other elements in JSON
@@ -63,7 +67,7 @@ public class ModelInitializer implements IModelInitializer {
 
             if (localPlayer == null) throw new ModelException("Invalid ID for local player.");
 
-            logger.finer("Local player is " + localPlayer.getName() + " (" + localPlayer.getId() + ")");
+            logger.finer("Local player is " + localPlayer.getName() + " (" + localPlayer.getColor() + ")");
             newGame.setLocalPlayer(localPlayer);
 
             // TODO: set other Game object pointers (e.g. Game pointers in GUI)

@@ -146,13 +146,14 @@ public class Catan extends JFrame
 				});
 				loginView.setController(loginController);
 				loginView.setController(loginController);
-				
+
+                // TODO: enable when ready for testing
 				//loginController.start();
 
-                // TODO: This should not be called until we enter a game
                 TestServerProxy testProxy = new TestServerProxy();
-                new ServerPoller(testProxy);
                 ServerModelFacade.getInstance().setServerProxy(testProxy);
+                ServerPoller poller = new ServerPoller(testProxy, 30);
+                poller.updateGame();
 			}
 		});
 	}

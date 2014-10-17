@@ -6,6 +6,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import shared.model.IResourceBank;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -28,27 +29,38 @@ import java.util.logging.Logger;
 public class TestServerProxy implements IServerProxy {
     private static Logger logger = Logger.getLogger("catan");
 
-    private Collection<Path> paths;
-    private Iterator<Path> nextPath;
+    private Collection<Path> m_paths;
 
     public TestServerProxy() {
-        String dir = "../sample";
-        final String pattern = "state_*.json";
+        final String pattern = "*.json";
+        String dir;
 
-        paths = new ArrayList<>();
+        String cwd = System.getProperty("user.dir");
+
+        // Find the sample directory...
+        if (cwd.endsWith("java")) {
+            dir = "../sample";
+        }
+        else if (cwd.endsWith("dist")) {
+            dir = "../../sample";
+        }
+        else if (Files.isDirectory(Paths.get("sample"))) {
+            dir = "sample";
+        }
+        else {
+            dir = "../../../sample";
+        }
+
+        m_paths = new ArrayList<>();
         try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(Paths.get(dir), pattern)) {
             for (Path path : dirStream) {
-                paths.add(path);
+                m_paths.add(path);
             }
         }
         catch (IOException e) {
             logger.log(Level.WARNING, "Failed finding JSON inputs.", e);
             logger.fine("Current directory: " + System.getProperty("user.dir"));
         }
-
-        assert paths.size() == 6;
-
-        nextPath = paths.iterator();
     }
 
     /**
@@ -62,14 +74,16 @@ public class TestServerProxy implements IServerProxy {
         logger.entering("client.network.TestServerProxy", "getGameState");
         String clientModel = null;
 
-        if (!nextPath.hasNext()) {
-            nextPath = paths.iterator();
-            assert nextPath.hasNext();
-        }
-
         try {
-            Path path = nextPath.next();
-            logger.fine("Using canned json: " + path.toString());
+            Path path = (Path)JOptionPane.showInputDialog(null, "Choose the JSON to give to the GUI.",
+                    "Choose the Right (JSON)", JOptionPane.QUESTION_MESSAGE, null,
+                    m_paths.toArray(), m_paths.iterator().next());
+
+            if (path == null) {
+                logger.fine("Updating client model was canceled.");
+                return null;
+            }
+
             clientModel = new String(java.nio.file.Files.readAllBytes(path));
         } catch (IOException e) {
             logger.log(Level.WARNING, "Failed to read sample JSON file in TestServerProxy.", e);
