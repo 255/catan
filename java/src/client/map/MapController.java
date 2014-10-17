@@ -47,7 +47,7 @@ public class MapController extends Controller implements IMapController {
 	protected void initFromModel() {
         logger.entering("client.map.MapController", "initFromModel");
 
-        IGame game = GameModelFacade.getInstance().getGame();
+        IGame game = Game.getInstance();
         assert game != null;
         if (game.isNotInitialized()) {
             logger.fine("Not intializing MapController: the game object has not been initialized");

@@ -18,8 +18,6 @@ public interface IGameModelFacade {
      */
     public void setGame(Game game);
 
-    IGame getGame();
-
     /**
      * Takes an edge location and determines if a road can be placed on it
      *

@@ -39,7 +39,7 @@ public class DevCardController extends Controller implements IDevCardController 
 		this.soldierAction = soldierAction;
 		this.roadAction = roadAction;
 
-        ((Game) GameModelFacade.getInstance().getGame()).addObserver(this);
+        Game.getInstance().addObserver(this);
         m_facade = ServerModelFacade.getInstance();
 
         //update(); is this needed?
@@ -132,15 +132,13 @@ public class DevCardController extends Controller implements IDevCardController 
     public void initFromModel() {
         logger.entering("client.devcards.DevCardController", "initFromModel");
 
-        IGame game = GameModelFacade.getInstance().getGame();
-        assert game != null;
-        if (game.isNotInitialized()) {
+        if (Game.getInstance().isNotInitialized()) {
             logger.fine("Not intializing DevCardController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
         logger.fine("Initializing DevCardController.");
 
-        IPlayer player = game.getLocalPlayer();
+        IPlayer player = Game.getInstance().getLocalPlayer();
         IDevCardHand devCards = player.getPlayableDevCards();
         //for each card type set enabled and amount
         for (DevCardType type : DevCardType.values()) {

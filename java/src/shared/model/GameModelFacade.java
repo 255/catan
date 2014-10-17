@@ -48,16 +48,6 @@ public class GameModelFacade implements IGameModelFacade {
     }
 
     /**
-     * Returns the game object
-     *
-     * @return the game object
-     */
-    @Override
-    public Game getGame() {
-        return m_theGame;
-    }
-
-    /**
      * Takes an edge location and determines if a road can be placed on it
      *
      * @param edge the location of the side of a terrain hex

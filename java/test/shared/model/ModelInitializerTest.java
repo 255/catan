@@ -1,5 +1,6 @@
 package shared.model;
 
+import client.communication.LogEntry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class ModelInitializerTest {
         m_modelInitializer = new ModelInitializer();
         m_clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
         m_modelInitializer.initializeClientModel(m_clientModel, 0);
-        m_game = GameModelFacade.getInstance().getGame();
+        m_game = Game.getInstance();
     }
 
     @Test(expected=ModelException.class)
@@ -176,16 +177,14 @@ public class ModelInitializerTest {
 
         // Tests the GamePlay Log
         ILog testMoveLog = m_game.getGameplayLog();
-        List<ILogMessage> testLogMessages = testMoveLog.getMessages();
+        List<LogEntry> testLogMessages = testMoveLog.getMessages();
 
-        ILogMessage testMessage = testLogMessages.get(0);
+        LogEntry testMessage = testLogMessages.get(0);
 
         assertEquals("Message is incorrect", "Sam built a road", testMessage.getMessage());
-        assertEquals("Message came from incorrect player", 0, testMessage.getPlayer().getIndex());
 
         testMessage = testLogMessages.get(1);
         assertEquals("Message is incorrect", "Sam built a settlement", testMessage.getMessage());
-        assertEquals("Message came from incorrect player", 0, testMessage.getPlayer().getIndex());
 
         // Test that the Resource Bank is correctly deserialized
         IResourceBank testResourceBank = m_game.getResourceBank();

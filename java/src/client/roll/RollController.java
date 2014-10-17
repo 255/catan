@@ -2,8 +2,12 @@ package client.roll;
 
 import client.base.*;
 import shared.model.Game;
+import shared.model.GameModelFacade;
+import shared.model.ModelException;
+import shared.model.ServerModelFacade;
 
 import java.util.Observable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -43,14 +47,29 @@ public class RollController extends Controller implements IRollController {
 	
 	@Override
 	public void rollDice() {
-		getResultView().showModal();
+        logger.entering("client.roll.RollController", "RollDice");
+        try {
+            int rollValue = ServerModelFacade.getInstance().rollNumber();
+            getResultView().setRollValue(rollValue);
+            getResultView().showModal();
+        }
+        catch (ModelException e) {
+            logger.log(Level.WARNING, "Rolling failed.", e);
+        }
+        logger.exiting("client.roll.RollController", "RollDice");
 	}
 
     @Override
     public void update(Observable o, Object arg) {
         logger.entering("client.roll.RollController", "update", o);
 
-        logger.exiting("client.roll.RollController", "update", o);
+        if (Game.getInstance().localPlayerIsRolling()) {
+            IRollView view = (IRollView)getView();
+            view.setMessage("Roll the dice!");
+            view.showModal();
+        }
+
+        logger.exiting("client.roll.RollController", "update");
     }
 }
 

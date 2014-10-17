@@ -6,9 +6,15 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import shared.model.IResourceBank;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +28,29 @@ import java.util.logging.Logger;
 public class TestServerProxy implements IServerProxy {
     private static Logger logger = Logger.getLogger("catan");
 
+    private Collection<Path> paths;
+    private Iterator<Path> nextPath;
+
+    public TestServerProxy() {
+        String dir = "../sample";
+        final String pattern = "state_*.json";
+
+        paths = new ArrayList<>();
+        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(Paths.get(dir), pattern)) {
+            for (Path path : dirStream) {
+                paths.add(path);
+            }
+        }
+        catch (IOException e) {
+            logger.log(Level.WARNING, "Failed finding JSON inputs.", e);
+            logger.fine("Current directory: " + System.getProperty("user.dir"));
+        }
+
+        assert paths.size() == 6;
+
+        nextPath = paths.iterator();
+    }
+
     /**
      * Returns the current Catan Model in a JSON object
      *
@@ -33,18 +62,15 @@ public class TestServerProxy implements IServerProxy {
         logger.entering("client.network.TestServerProxy", "getGameState");
         String clientModel = null;
 
-        // try a few paths...
-        String jsonPath = "sample/test_1.json";
-        if (!Files.exists(Paths.get(jsonPath))) {
-            jsonPath = "../" + jsonPath;
-
-            if (!Files.exists(Paths.get(jsonPath))) {
-                jsonPath = "../" + jsonPath;
-            }
+        if (!nextPath.hasNext()) {
+            nextPath = paths.iterator();
+            assert nextPath.hasNext();
         }
 
         try {
-            clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(jsonPath)));
+            Path path = nextPath.next();
+            logger.fine("Using canned json: " + path.toString());
+            clientModel = new String(java.nio.file.Files.readAllBytes(path));
         } catch (IOException e) {
             logger.log(Level.WARNING, "Failed to read sample JSON file in TestServerProxy.", e);
             logger.fine("Current directory: " + System.getProperty("user.dir"));

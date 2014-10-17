@@ -10,10 +10,6 @@ import shared.locations.VertexLocation;
  * Facade for methods that need to access both the model and the server.
  */
 public interface IServerModelFacade {
-    /**
-     * Set the game object the Facade uses
-     */
-    public void setGame(Game game);
 
     /**
      * Set the game object the Facade uses
@@ -125,7 +121,7 @@ public interface IServerModelFacade {
     /**
      * The current player has rolled a number
      */
-    public void rollNumber() throws ModelException;
+    public int rollNumber() throws ModelException;
 
     /**
      * Finish up the current player's turn

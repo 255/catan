@@ -11,6 +11,7 @@ import client.network.HttpCommunicator;
 import client.network.ServerProxy;
 import client.network.TestServerProxy;
 import client.poller.ServerPoller;
+import shared.model.ServerModelFacade;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -146,10 +147,12 @@ public class Catan extends JFrame
 				loginView.setController(loginController);
 				loginView.setController(loginController);
 				
-				loginController.start();
+				//loginController.start();
 
                 // TODO: This should not be called until we enter a game
-                new ServerPoller(new TestServerProxy());
+                TestServerProxy testProxy = new TestServerProxy();
+                new ServerPoller(testProxy);
+                ServerModelFacade.getInstance().setServerProxy(testProxy);
 			}
 		});
 	}

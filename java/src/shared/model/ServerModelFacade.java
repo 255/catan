@@ -16,15 +16,13 @@ import java.util.Random;
  */
 public class ServerModelFacade implements IServerModelFacade {
     private IServerProxy m_theProxy;
-    private Game m_theGame;
     private static ServerModelFacade m_theFacade = null;
 
     /**
      * This is a private constructor that is called only when the ServerModelFacade has not been initialized yet
      */
-    private ServerModelFacade(IServerProxy theProxy, Game theGame) {
+    private ServerModelFacade(IServerProxy theProxy) {
         setServerProxy(theProxy);
-        setGame(theGame);
     }
 
     /**
@@ -34,7 +32,7 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     public static ServerModelFacade getInstance() {
         if(m_theFacade == null)
-            m_theFacade = new ServerModelFacade(new ServerProxy(new HttpCommunicator()), Game.getInstance());
+            m_theFacade = new ServerModelFacade(new ServerProxy(new HttpCommunicator()));
         return m_theFacade;
     }
 
@@ -50,16 +48,6 @@ public class ServerModelFacade implements IServerModelFacade {
     }
 
     /**
-     * This function sets the Game object that the GameModelFacade will point at
-     *
-     * @param theGame is the game object to point the ServerModelFacade at
-     */
-    public void setGame(Game theGame) {
-        assert theGame != null;
-        m_theGame = theGame;
-    }
-
-    /**
      * Takes in a chat message to be added to the chat log
      *
      * @param message the string of text to add to the chat log
@@ -69,7 +57,7 @@ public class ServerModelFacade implements IServerModelFacade {
         assert message != null;
 
         try {
-            m_theProxy.sendChat(m_theGame.getLocalPlayer().getIndex(), message);
+            m_theProxy.sendChat(Game.getInstance().getLocalPlayer().getIndex(), message);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -89,7 +77,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.buildRoad(m_theGame.getLocalPlayer().getIndex(), edge, GameModelFacade.getInstance().isFreeRound());
+            m_theProxy.buildRoad(Game.getInstance().getLocalPlayer().getIndex(), edge, GameModelFacade.getInstance().isFreeRound());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -109,7 +97,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.buildSettlement(m_theGame.getLocalPlayer().getIndex(), vertex, GameModelFacade.getInstance().isFreeRound());
+            m_theProxy.buildSettlement(Game.getInstance().getLocalPlayer().getIndex(), vertex, GameModelFacade.getInstance().isFreeRound());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -128,7 +116,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.buildCity(m_theGame.getLocalPlayer().getIndex(), vertex);
+            m_theProxy.buildCity(Game.getInstance().getLocalPlayer().getIndex(), vertex);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -143,7 +131,7 @@ public class ServerModelFacade implements IServerModelFacade {
             throw new ModelException("Preconditions for action not met.");
         }
 
-        IPlayer curPlayer = m_theGame.getLocalPlayer();
+        IPlayer curPlayer = Game.getInstance().getLocalPlayer();
         try {
             m_theProxy.buyDevCard(curPlayer.getIndex());
         } catch (NetworkException e) {
@@ -165,7 +153,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playSoldier(m_theGame.getLocalPlayer().getIndex(), hex, (victim == null ? -1 : victim.getIndex()));
+            m_theProxy.playSoldier(Game.getInstance().getLocalPlayer().getIndex(), hex, (victim == null ? -1 : victim.getIndex()));
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -183,7 +171,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playYearOfPlenty(m_theGame.getLocalPlayer().getIndex(), r1, r2);
+            m_theProxy.playYearOfPlenty(Game.getInstance().getLocalPlayer().getIndex(), r1, r2);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -201,7 +189,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playRoadBuilding(m_theGame.getLocalPlayer().getIndex(), e1, e2);
+            m_theProxy.playRoadBuilding(Game.getInstance().getLocalPlayer().getIndex(), e1, e2);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -218,7 +206,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playMonopoly(m_theGame.getLocalPlayer().getIndex(), rType);
+            m_theProxy.playMonopoly(Game.getInstance().getLocalPlayer().getIndex(), rType);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -234,7 +222,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playMonument(m_theGame.getLocalPlayer().getIndex());
+            m_theProxy.playMonument(Game.getInstance().getLocalPlayer().getIndex());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -250,7 +238,7 @@ public class ServerModelFacade implements IServerModelFacade {
         assert hex != null;
 // TODO
         try {
-            m_theProxy.robPlayer(m_theGame.getLocalPlayer().getIndex(), (victim == null ? -1 : victim.getIndex()), hex);
+            m_theProxy.robPlayer(Game.getInstance().getLocalPlayer().getIndex(), (victim == null ? -1 : victim.getIndex()), hex);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -267,8 +255,8 @@ public class ServerModelFacade implements IServerModelFacade {
             throw new ModelException("Preconditions for action not met.");
         }
 
-        IPlayer p = m_theGame.getLocalPlayer();
-        assert m_theGame.getTradeOffer().getReceiver().equals(p);
+        IPlayer p = Game.getInstance().getLocalPlayer();
+        assert Game.getInstance().getTradeOffer().getReceiver().equals(p);
 
         try {
             m_theProxy.acceptTrade(p.getIndex(), willAccept);
@@ -284,9 +272,9 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void offerTrade(IResourceBank offer, IPlayer recipientPlayer) throws ModelException {
-        IPlayer p = m_theGame.getLocalPlayer();
+        IPlayer p = Game.getInstance().getLocalPlayer();
 
-        if (!p.canAfford(offer) || !m_theGame.localPlayerIsPlaying()) {
+        if (!p.canAfford(offer) || !Game.getInstance().localPlayerIsPlaying()) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -308,9 +296,9 @@ public class ServerModelFacade implements IServerModelFacade {
     public void maritimeTrade(int ratio, ResourceType giving, ResourceType getting) throws ModelException {
         assert ratio == 2 || ratio == 3 || ratio == 4;
 
-        IPlayer p = m_theGame.getLocalPlayer();
+        IPlayer p = Game.getInstance().getLocalPlayer();
 
-        if (!m_theGame.localPlayerIsPlaying() || p.getResources().getCount(giving) < ratio) {
+        if (!Game.getInstance().localPlayerIsPlaying() || p.getResources().getCount(giving) < ratio) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -328,9 +316,9 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void discardCards(IResourceBank discardedCards) throws ModelException {
-        IPlayer p = m_theGame.getLocalPlayer();
+        IPlayer p = Game.getInstance().getLocalPlayer();
 
-        if (m_theGame.getGameState() != GameState.DISCARDING
+        if (Game.getInstance().getGameState() != GameState.DISCARDING
                 || p.getResources().getCount() <= 7
                 || !p.canAfford(discardedCards)) {
             throw new ModelException("Preconditions for action not met.");
@@ -344,11 +332,10 @@ public class ServerModelFacade implements IServerModelFacade {
     }
 
     /**
-     * The current player has rolled a number
-     *
+     * The current player rolls a number
      */
     @Override
-    public void rollNumber() throws ModelException {
+    public int rollNumber() throws ModelException {
         // the range is 10 (2 - 12)
         final int ROLL_NUMBERS_RANGE = 10;
         final int MINIMUM_ROLL       = 2;
@@ -357,8 +344,8 @@ public class ServerModelFacade implements IServerModelFacade {
         int rolledNumber = randomNumberGenerator.nextInt(ROLL_NUMBERS_RANGE) + MINIMUM_ROLL;
         assert rolledNumber >= 2 && rolledNumber <= 12;
 
-        IPlayer p = m_theGame.getLocalPlayer();
-        if (m_theGame.getGameState() != GameState.ROLLING || !p.equals(m_theGame.getCurrentPlayer())) {
+        IPlayer p = Game.getInstance().getLocalPlayer();
+        if (Game.getInstance().getGameState() != GameState.ROLLING || !p.equals(Game.getInstance().getCurrentPlayer())) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -368,6 +355,8 @@ public class ServerModelFacade implements IServerModelFacade {
         catch (NetworkException e) {
             throw new ModelException(e);
         }
+
+        return rolledNumber;
     }
 
     /**
@@ -375,9 +364,9 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void finishTurn() throws ModelException {
-        IPlayer p = m_theGame.getLocalPlayer();
+        IPlayer p = Game.getInstance().getLocalPlayer();
 
-        if (!m_theGame.localPlayerIsPlaying()) {
+        if (!Game.getInstance().localPlayerIsPlaying()) {
             throw new ModelException("Preconditions for action not met.");
         }
 

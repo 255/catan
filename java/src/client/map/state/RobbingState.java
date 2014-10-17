@@ -2,6 +2,7 @@ package client.map.state;
 
 import client.data.RobPlayerInfo;
 import shared.locations.HexLocation;
+import shared.model.Game;
 import shared.model.GameModelFacade;
 import shared.model.ICatanMap;
 
@@ -18,7 +19,7 @@ public class RobbingState extends MapState {
     @Override
     public void robPlayer(RobPlayerInfo victim) {
         // TODO: test / finish implementing
-        ICatanMap map = GameModelFacade.getInstance().getGame().getMap();
+        ICatanMap map = Game.getInstance().getMap();
         // TODO: rob player needs to take a RobPlayerInfo or I need to lookup the player
         //ServerModelFacade.getInstance().robPlayer(map.getRobber(), victim);
         assert false : "NOT IMPLEMENTED";
@@ -31,7 +32,7 @@ public class RobbingState extends MapState {
      */
     @Override
     public void placeRobber(HexLocation hexLoc) {
-        ICatanMap map = GameModelFacade.getInstance().getGame().getMap();
+        ICatanMap map = Game.getInstance().getMap();
         map.moveRobber(hexLoc);
         // TODO: test / finish implementing
         assert false : "NOT IMPLEMENTED";

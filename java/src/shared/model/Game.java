@@ -246,15 +246,6 @@ public class Game extends Observable implements IGame {
     }
 
     /**
-     * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
-     * @return true / false
-     */
-    @Override
-    public boolean localPlayerIsPlaying() {
-        return m_localPlayer.equals(m_currentPlayer) && m_state == GameState.PLAYING;
-    }
-
-    /**
      * Return true if it is the local player's turn.
      *
      * @return true if it is the local player's turn
@@ -262,5 +253,39 @@ public class Game extends Observable implements IGame {
     @Override
     public boolean isLocalPlayersTurn() {
         return m_currentPlayer.equals(m_localPlayer);
+    }
+
+    /**
+     * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
+     * @return true / false
+     */
+    @Override
+    public boolean localPlayerIsPlaying() {
+        return localPlayerAndGameState(GameState.PLAYING);
+    }
+
+    @Override
+    public boolean localPlayerIsDiscarding() {
+        return localPlayerAndGameState(GameState.DISCARDING);
+    }
+
+    @Override
+    public boolean localPlayerIsRolling() {
+        return localPlayerAndGameState(GameState.ROLLING);
+    }
+
+    @Override
+    public boolean localPlayerIsRobbing() {
+        return localPlayerAndGameState(GameState.ROBBING);
+    }
+
+    @Override
+    public boolean localPlayerIsPlacingInitialPieces() {
+        return localPlayerAndGameState(GameState.FIRST_ROUND)
+               || localPlayerAndGameState(GameState.SECOND_ROUND);
+    }
+
+    private boolean localPlayerAndGameState(GameState state) {
+        return m_localPlayer.equals(m_currentPlayer) && m_state == state;
     }
 }

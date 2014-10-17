@@ -46,11 +46,12 @@ public class ModelInitializer implements IModelInitializer {
 
         // read the main body of the client JSON model
         try (JsonReader reader = new JsonReader(new StringReader(json))) {
-            Game newGame = GameModelFacade.getInstance().getGame();
+            Game newGame = Game.getInstance();
             assert newGame != null;
 
             readClientModel(newGame, reader);
 
+            // set the local player
             IPlayer localPlayer = null;
             // find out which player is the local player
             for (IPlayer player : m_players.values()) {
@@ -62,6 +63,7 @@ public class ModelInitializer implements IModelInitializer {
 
             if (localPlayer == null) throw new ModelException("Invalid ID for local player.");
 
+            logger.finer("Local player is " + localPlayer.getName() + " (" + localPlayer.getId() + ")");
             newGame.setLocalPlayer(localPlayer);
 
             // TODO: set other Game object pointers (e.g. Game pointers in GUI)

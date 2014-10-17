@@ -21,7 +21,7 @@ public class GameModelFacadeTest {
         //initializes the model with test data from JSON file
         String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
         serializer.initializeClientModel(testJSON, 0);
-        game = GameModelFacade.getInstance().getGame();
+        game = Game.getInstance();
     }
 
     @After
@@ -458,6 +458,6 @@ public class GameModelFacadeTest {
         String emptyBoardJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(jsonTestFile)));
         ModelInitializer initModel = new ModelInitializer();
         initModel.initializeClientModel(emptyBoardJSON, 0);
-        return GameModelFacade.getInstance().getGame();
+        return Game.getInstance();
     }
 }
