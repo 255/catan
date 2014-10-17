@@ -30,8 +30,6 @@ public class MapController extends Controller implements IMapController {
         Game.getInstance().addObserver(this);
         logger.finest("MapController added self (" + this + ") as observer.");
         m_state = new NotPlayingState();
-		
-		initFromModel();
 	}
 	
 	public IMapView getView() {

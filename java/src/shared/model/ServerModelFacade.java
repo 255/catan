@@ -9,6 +9,8 @@ import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
+import java.util.Random;
+
 /**
  * Handles all the calls to the ServerProxy
  */
@@ -344,10 +346,15 @@ public class ServerModelFacade implements IServerModelFacade {
     /**
      * The current player has rolled a number
      *
-     * @param rolledNumber the number that was rolled
      */
     @Override
-    public void rollNumber(int rolledNumber) throws ModelException {
+    public void rollNumber() throws ModelException {
+        // the range is 10 (2 - 12)
+        final int ROLL_NUMBERS_RANGE = 10;
+        final int MINIMUM_ROLL       = 2;
+        final Random randomNumberGenerator = new Random();
+
+        int rolledNumber = randomNumberGenerator.nextInt(ROLL_NUMBERS_RANGE) + MINIMUM_ROLL;
         assert rolledNumber >= 2 && rolledNumber <= 12;
 
         IPlayer p = m_theGame.getLocalPlayer();
@@ -357,7 +364,8 @@ public class ServerModelFacade implements IServerModelFacade {
 
         try {
             m_theProxy.rollNumber(p.getIndex(), rolledNumber);
-        } catch (NetworkException e) {
+        }
+        catch (NetworkException e) {
             throw new ModelException(e);
         }
     }

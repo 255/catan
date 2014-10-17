@@ -124,9 +124,8 @@ public interface IServerModelFacade {
 
     /**
      * The current player has rolled a number
-     * @param rolledNumber the number that was rolled
      */
-    public void rollNumber(int rolledNumber) throws ModelException;
+    public void rollNumber() throws ModelException;
 
     /**
      * Finish up the current player's turn

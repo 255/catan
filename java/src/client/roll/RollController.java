@@ -1,14 +1,17 @@
 package client.roll;
 
 import client.base.*;
+import shared.model.Game;
 
 import java.util.Observable;
+import java.util.logging.Logger;
 
 
 /**
  * Implementation for the roll controller
  */
 public class RollController extends Controller implements IRollController {
+    private final static Logger logger = Logger.getLogger("catan");
 
 	private IRollResultView resultView;
 
@@ -23,7 +26,9 @@ public class RollController extends Controller implements IRollController {
 		super(view);
 		
 		setResultView(resultView);
-	}
+
+        Game.getInstance().addObserver(this);
+    }
 	
 	public IRollResultView getResultView() {
 		return resultView;
@@ -38,13 +43,14 @@ public class RollController extends Controller implements IRollController {
 	
 	@Override
 	public void rollDice() {
-
 		getResultView().showModal();
 	}
 
     @Override
     public void update(Observable o, Object arg) {
+        logger.entering("client.roll.RollController", "update", o);
 
+        logger.exiting("client.roll.RollController", "update", o);
     }
 }
 
