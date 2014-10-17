@@ -1,7 +1,5 @@
 package client.base;
 
-import java.util.Observer;
-
 /**
  * Base class for controllers
  */

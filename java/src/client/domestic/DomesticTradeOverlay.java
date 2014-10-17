@@ -117,7 +117,6 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				getController().cancelTrade();
-//				reset();// TODO, this may not be needed here
 			}
 		});
 		
@@ -142,7 +141,7 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getController().setPlayerToTradeWith(-1);
+				getController().setPlayerToTradeWith(DomesticTradeController.NO_PLAYER);
 			}
 		});
 		noneToggle.setActionCommand("None");
@@ -165,7 +164,7 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 		}
 		return null;
 	}
-	
+
 	private JPanel setupResourceTile(String imageFilePath, final ResourceType resourceType) {
 		try {
 			BufferedImage image = ImageIO.read(new File(imageFilePath));
@@ -206,7 +205,6 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					upDownPanelByResourceType.get(resourceType).setVisible(false);
-					resourceCounts.get(resourceType).setText("0");
 					getController().unsetResource(resourceType);
 				}
 	        	
@@ -278,10 +276,7 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Integer currentAmount = Integer.parseInt(resourceCounts.get(resourceType).getText());
 					getController().increaseResourceAmount(resourceType);
-					currentAmount++;
-					resourceCounts.get(resourceType).setText("" + currentAmount);
 				}
 			});
 			this.resourceButtonsMap.get(resourceType).add(upButton);
@@ -293,12 +288,7 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					Integer currentAmount = Integer.parseInt(resourceCounts.get(resourceType).getText());
-					if(currentAmount > 0){
-						getController().decreaseResourceAmount(resourceType);
-						currentAmount--;
-						resourceCounts.get(resourceType).setText("" + currentAmount);
-					}
+                    getController().decreaseResourceAmount(resourceType);
 				}
 			});
 			this.resourceButtonsMap.get(resourceType).add(downButton);
@@ -367,7 +357,6 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 
 	@Override
 	public void setPlayers(PlayerInfo[] value) {
-		
 		for (int i = 0; i < value.length; i++) {
 			
 			JToggleButton toggle = new JToggleButton(value[i].getName());
@@ -407,8 +396,8 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 	}
 
 	@Override
-	public void setResourceAmount(ResourceType resource, String amount) {
-		this.resourceCounts.get(resource).setText(amount);
+	public void setResourceAmount(ResourceType resource, int amount) {
+		this.resourceCounts.get(resource).setText(Integer.toString(amount));
 	}
 
 	@Override

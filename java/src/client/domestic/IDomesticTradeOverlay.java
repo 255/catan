@@ -35,14 +35,12 @@ public interface IDomesticTradeOverlay extends IOverlayView
 	
 	/**
 	 * Sets the amount displayed for a resource.
-	 * 
-	 * @param resource
+	 *  @param resource
 	 *            The resource for which the amount is being set
 	 * @param amount
 	 *            The string to be displayed as the resource's amount (can be
-	 *            empty)
-	 */
-	void setResourceAmount(ResourceType resource, String amount);
+     */
+	void setResourceAmount(ResourceType resource, int amount);
 	
 	/**
 	 * Enables or disables the ability to increase and decrease a resource's
@@ -56,8 +54,7 @@ public interface IDomesticTradeOverlay extends IOverlayView
 	 * @param canDecrease
 	 *            Whether or not the resource's amount may be decreased
 	 */
-	void
-			setResourceAmountChangeEnabled(ResourceType resource,
+	void setResourceAmountChangeEnabled(ResourceType resource,
 										   boolean canIncrease,
 										   boolean canDecrease);
 	

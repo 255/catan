@@ -148,6 +148,38 @@ public class ResourceBank implements IResourceBank {
         return bundle;
     }
 
+    /**
+     * Add one of the specified resource to the resource bank.
+     *
+     * @param resource the type of resource to increment
+     */
+    @Override
+    public void increment(ResourceType resource) {
+        switch (resource) {
+            case WOOD:  m_wood++;
+            case BRICK: m_brick++;
+            case SHEEP: m_sheep++;
+            case WHEAT: m_wheat++;
+            case ORE:   m_ore++;
+        }
+    }
+
+    /**
+     * Subtract one of the specified resource from the resource bank.
+     *
+     * @param resource the bundle of resources to remove from the bank
+     */
+    @Override
+    public void decrement(ResourceType resource) {
+        switch (resource) {
+            case WOOD:  m_wood--;
+            case BRICK: m_brick--;
+            case SHEEP: m_sheep--;
+            case WHEAT: m_wheat--;
+            case ORE:   m_ore--;
+        }
+    }
+
     @Override
     public boolean canAfford(IResourceBank purchase) {
         if (m_wood >= purchase.getWood() && m_brick >= purchase.getBrick() && m_sheep >= purchase.getSheep()

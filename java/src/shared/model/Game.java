@@ -1,5 +1,6 @@
 package shared.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -133,6 +134,26 @@ public class Game extends Observable implements IGame {
         assert players != null;
         m_players = players;
         setChanged();
+    }
+
+    /**
+     * Get the list of players in turn order excluding the local player.
+     *
+     * @return the list of non-local players in turn order
+     */
+    @Override
+    public List<IPlayer> getNonLocalPlayers() {
+        List<IPlayer> nonLocalPlayers = new ArrayList<>(m_players.size() - 1);
+
+        for (IPlayer player : m_players) {
+            if (!player.equals(m_localPlayer)) {
+                nonLocalPlayers.add(player);
+            }
+        }
+
+        assert nonLocalPlayers.size() == 3 : "There should be 3 non-local players, but there are not!";
+
+        return nonLocalPlayers;
     }
 
     /**

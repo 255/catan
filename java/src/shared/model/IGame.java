@@ -81,6 +81,11 @@ public interface IGame {
     public List<IPlayer> getPlayers();
 
     /**
+     * Get the list of players in turn order excluding the local player.
+     * @return the list of non-local players in turn order
+     */
+    public List<IPlayer> getNonLocalPlayers();
+    /**
      * Set the list of players for the game
      * @param players the list of players in TURN ORDER
      */

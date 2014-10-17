@@ -23,6 +23,18 @@ public interface IResourceBank {
     public IResourceBank subtract(IResourceBank resources);
 
     /**
+     * Add one of the specified resource to the resource bank.
+     * @param resource the type of resource to increment
+     */
+    public void increment(ResourceType resource);
+
+    /**
+     * Subtract one of the specified resource from the resource bank.
+     * @param resource the bundle of resources to remove from the bank
+     */
+    public void decrement(ResourceType resource);
+
+    /**
      * Checks if the resource bank has enough resources for the purchase
      * @param purchase
      * @return whether the resource bank has enough resources for the purchase

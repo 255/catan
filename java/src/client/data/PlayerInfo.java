@@ -1,6 +1,11 @@
 package client.data;
 
 import shared.definitions.*;
+import shared.model.IPlayer;
+
+import javax.imageio.event.IIOReadProgressListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Used to pass player information into views<br>
@@ -28,6 +33,13 @@ public class PlayerInfo
 		setPlayerIndex(-1);
 		setName("");
 		setColor(CatanColor.WHITE);
+	}
+
+    public PlayerInfo(int id, int index, String name, CatanColor color) {
+		setId(id);
+		setPlayerIndex(index);
+		setName(name);
+		setColor(color);
 	}
 	
 	public int getId()
@@ -69,6 +81,26 @@ public class PlayerInfo
 	{
 		this.color = color;
 	}
+
+    /**
+     * Get the PlayerInfo from a Player object.
+     */
+    private static PlayerInfo fromPlayer(IPlayer player) {
+        return new PlayerInfo(player.getId(), player.getIndex(), player.getName(), player.getColor());
+    }
+
+    /**
+     * Get an array of PlayerInfos from a collection of Player objects.
+     */
+    public static PlayerInfo[] fromPlayers(Collection<IPlayer> players) {
+        Collection<PlayerInfo> playerInfos = new ArrayList<>(players.size());
+        for (IPlayer player : players) {
+            playerInfos.add(fromPlayer(player));
+        }
+
+        assert playerInfos.size() == players.size();
+        return playerInfos.toArray(new PlayerInfo[playerInfos.size()]);
+    }
 
 	@Override
 	public int hashCode()
