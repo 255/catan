@@ -134,7 +134,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeRoad(EdgeLocation edgeLoc)
 		{
-			
 			closeModal();
 			getController().placeRoad(edgeLoc);
 		}
@@ -142,7 +141,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeSettlement(VertexLocation vertLoc)
 		{
-			
 			closeModal();
 			getController().placeSettlement(vertLoc);
 		}
@@ -150,7 +148,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeCity(VertexLocation vertLoc)
 		{
-			
 			closeModal();
 			getController().placeCity(vertLoc);
 		}
@@ -158,7 +155,6 @@ public class MapView extends PanelView implements IMapView
 		@Override
 		public void placeRobber(HexLocation hexLoc)
 		{
-			
 			closeModal();
 			getController().placeRobber(hexLoc);
 		}
