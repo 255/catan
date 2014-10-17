@@ -3,6 +3,10 @@ package client.discard;
 import shared.definitions.*;
 import client.base.*;
 import client.misc.*;
+import shared.model.Game;
+import shared.model.GameModelFacade;
+import shared.model.GameState;
+import shared.model.IResourceBank;
 
 import java.util.Observable;
 
@@ -13,7 +17,12 @@ import java.util.Observable;
 public class DiscardController extends Controller implements IDiscardController {
 
 	private IWaitView waitView;
-	
+    private int woodCount;
+    private int brickCount;
+    private int sheepCount;
+    private int wheatCount;
+    private int oreCount;
+
 	/**
 	 * DiscardController constructor
 	 * 
@@ -21,9 +30,11 @@ public class DiscardController extends Controller implements IDiscardController 
 	 * @param waitView View displayed to notify the user that they are waiting for other players to discard
 	 */
 	public DiscardController(IDiscardView view, IWaitView waitView) {
-		
+
 		super(view);
-		
+
+        Game.getInstance().addObserver(this);
+
 		this.waitView = waitView;
 	}
 
@@ -37,12 +48,16 @@ public class DiscardController extends Controller implements IDiscardController 
 
 	@Override
 	public void increaseAmount(ResourceType resource) {
-		
+		switch(resource) {
+
+        }
 	}
 
 	@Override
 	public void decreaseAmount(ResourceType resource) {
-		
+        switch(resource) {
+
+        }
 	}
 
 	@Override
@@ -51,9 +66,26 @@ public class DiscardController extends Controller implements IDiscardController 
 		getDiscardView().closeModal();
 	}
 
+    private void initFromModel() {
+        // state checked and actions determined
+        if(Game.getInstance().getGameState() != GameState.DISCARDING) {
+            return;
+        }
+
+        getDiscardView().showModal();
+
+        // resource numbers retrieved from game model
+        IResourceBank rb = GameModelFacade.getInstance().getPlayerResources();
+        woodCount = rb.getWood();
+        brickCount = rb.getBrick();
+        sheepCount = rb.getSheep();
+        wheatCount = rb.getWheat();
+        oreCount = rb.getOre();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
-
+        initFromModel();
     }
 }
 
