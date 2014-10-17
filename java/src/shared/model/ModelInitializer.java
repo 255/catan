@@ -37,6 +37,7 @@ public class ModelInitializer implements IModelInitializer {
 
         if (json == null) {
             logger.fine("ModelInitializer was called with null JSON.");
+            return;
         }
         assert json != null;
 

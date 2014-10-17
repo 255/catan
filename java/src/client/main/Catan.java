@@ -152,7 +152,7 @@ public class Catan extends JFrame
 
                 TestServerProxy testProxy = new TestServerProxy();
                 ServerModelFacade.getInstance().setServerProxy(testProxy);
-                ServerPoller poller = new ServerPoller(testProxy, 30);
+                ServerPoller poller = new ServerPoller(testProxy, 15);
                 poller.updateGame();
 			}
 		});
