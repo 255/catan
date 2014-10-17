@@ -3,10 +3,7 @@ package client.discard;
 import shared.definitions.*;
 import client.base.*;
 import client.misc.*;
-import shared.model.Game;
-import shared.model.GameModelFacade;
-import shared.model.GameState;
-import shared.model.IResourceBank;
+import shared.model.*;
 
 import java.util.Observable;
 
@@ -17,11 +14,11 @@ import java.util.Observable;
 public class DiscardController extends Controller implements IDiscardController {
 
 	private IWaitView waitView;
-    private int woodCount;
-    private int brickCount;
-    private int sheepCount;
-    private int wheatCount;
-    private int oreCount;
+    private int woodDiscard;
+    private int brickDiscard;
+    private int sheepDiscard;
+    private int wheatDiscard;
+    private int oreDiscard;
 
 	/**
 	 * DiscardController constructor
@@ -48,22 +45,29 @@ public class DiscardController extends Controller implements IDiscardController 
 
 	@Override
 	public void increaseAmount(ResourceType resource) {
-		switch(resource) {
-
-        }
+        // positive values increase discard numbers
+		updateCount(1, resource);
 	}
 
 	@Override
 	public void decreaseAmount(ResourceType resource) {
-        switch(resource) {
-
-        }
+        // negative values decrease discard numbers
+        updateCount(-1, resource);
 	}
 
 	@Override
 	public void discard() {
-		
-		getDiscardView().closeModal();
+        IResourceBank discardBank =
+                new ResourceBank(
+                    woodDiscard,
+                    brickDiscard,
+                    sheepDiscard,
+                    wheatDiscard,
+                    oreDiscard
+                );
+
+        GameModelFacade.getInstance().getPlayerResources().subtract(discardBank);
+        getDiscardView().closeModal();
 	}
 
     private void initFromModel() {
@@ -72,20 +76,43 @@ public class DiscardController extends Controller implements IDiscardController 
             return;
         }
 
+        // open the discard overlay
         getDiscardView().showModal();
 
-        // resource numbers retrieved from game model
-        IResourceBank rb = GameModelFacade.getInstance().getPlayerResources();
-        woodCount = rb.getWood();
-        brickCount = rb.getBrick();
-        sheepCount = rb.getSheep();
-        wheatCount = rb.getWheat();
-        oreCount = rb.getOre();
+        // start with nothing to discard
+        woodDiscard = 0;
+        brickDiscard = 0;
+        sheepDiscard = 0;
+        wheatDiscard = 0;
+        oreDiscard = 0;
     }
 
     @Override
     public void update(Observable o, Object arg) {
         initFromModel();
+    }
+
+    //************************//
+    // Private Helper Methods //
+    //************************//
+
+    // positive values increase discard amount
+    // negative values decrease discard amount
+    private void updateCount(int incDec, ResourceType r) {
+        switch(r) {
+            case WOOD: woodDiscard += incDec;
+                break;
+            case BRICK: brickDiscard += incDec;
+                break;
+            case SHEEP: sheepDiscard += incDec;
+                break;
+            case WHEAT: wheatDiscard += incDec;
+                break;
+            case ORE: oreDiscard += incDec;
+                break;
+            default:
+                break;
+        }
     }
 }
 
