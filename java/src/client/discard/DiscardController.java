@@ -33,6 +33,8 @@ public class DiscardController extends Controller implements IDiscardController 
         Game.getInstance().addObserver(this);
 
 		this.waitView = waitView;
+
+        initFromModel();
 	}
 
 	public IDiscardView getDiscardView() {
@@ -68,6 +70,10 @@ public class DiscardController extends Controller implements IDiscardController 
 
         GameModelFacade.getInstance().getPlayerResources().subtract(discardBank);
         getDiscardView().closeModal();
+
+        //TODO am I using too much logic? Should I be calling subtract from here?
+        //TODO find out if other players are still discarding
+        //TODO change state?
 	}
 
     private void initFromModel() {
