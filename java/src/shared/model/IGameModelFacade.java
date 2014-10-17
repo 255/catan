@@ -160,6 +160,12 @@ public interface IGameModelFacade {
      */
     public ILog getMoveHistory();
 
+    boolean playerHasLongestRoad(IPlayer player);
+
+    boolean playerHasLargestArmy(IPlayer player);
+
+    boolean isPlayersTurn(IPlayer player);
+
     // this method is just for determining from the GameState if it is a free round
     public boolean isFreeRound();
 

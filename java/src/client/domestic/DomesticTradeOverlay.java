@@ -357,6 +357,8 @@ public class DomesticTradeOverlay extends OverlayView implements IDomesticTradeO
 
 	@Override
 	public void setPlayers(PlayerInfo[] value) {
+        assert value != null : "Called domestic trade overlay with null player list.";
+
 		for (int i = 0; i < value.length; i++) {
 			
 			JToggleButton toggle = new JToggleButton(value[i].getName());

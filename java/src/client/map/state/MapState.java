@@ -52,7 +52,6 @@ public abstract class MapState implements IMapState {
         }
     }
 
-
     /**
      * This method is called whenever the user is trying to place a road on the
      * map. It is called by the view for each "mouse move" event. The returned
@@ -117,7 +116,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeRoad(MapController controller, EdgeLocation edgeLoc) throws ModelException {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController placeRoad from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -128,7 +127,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeSettlement(VertexLocation vertLoc) throws ModelException {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController placeSettlement from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -138,7 +137,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeCity(VertexLocation vertLoc) throws ModelException {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController placeCity from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -149,7 +148,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void placeRobber(MapController controller, HexLocation hexLoc) {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController placeRobber from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -159,7 +158,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void startMove(MapController controller, PieceType pieceType) {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController startMove from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -169,7 +168,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void playSoldierCard(MapController controller) {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController playSoldierCard from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -180,7 +179,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void playRoadBuildingCard(MapController controller) {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController playRoadBuildingCard from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**
@@ -191,7 +190,7 @@ public abstract class MapState implements IMapState {
      */
     @Override
     public void robPlayer(RobPlayerInfo victim) throws ModelException {
-        assert false : "Called MapController function from illegal state: " + this.getClass().getSimpleName();
+        assert false : "Called MapController robPlayer from illegal state: " + this.getClass().getSimpleName();
     }
 
     /**

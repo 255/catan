@@ -173,8 +173,6 @@ public class MapController extends Controller implements IMapController {
     public void update(Observable o, Object arg) {
         logger.entering("client.map.MapController", "update", o);
         initFromModel();
-        // TODO: THIS IS TEMP
-        playSoldierCard();
         logger.exiting("client.map.MapController", "update");
     }
 }
