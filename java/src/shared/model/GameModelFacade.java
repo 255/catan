@@ -360,6 +360,21 @@ public class GameModelFacade implements IGameModelFacade {
         return Game.getInstance().getLocalPlayer().getColor();
     }
 
+    @Override
+    public boolean playerHasLongestRoad(IPlayer player) {
+        return player.equals(Game.getInstance().getLargestArmy());
+    }
+
+    @Override
+    public boolean playerHasLargestArmy(IPlayer player) {
+        return player.equals(Game.getInstance().getLargestArmy());
+    }
+
+    @Override
+    public boolean isPlayersTurn(IPlayer player) {
+        return player.equals(Game.getInstance().getCurrentPlayer());
+    }
+
     // this method is just for determining from the GameState if it is a free round
     @Override
     public boolean isFreeRound() {
