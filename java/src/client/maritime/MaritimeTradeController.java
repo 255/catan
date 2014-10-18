@@ -27,7 +27,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 
 		setTradeOverlay(tradeOverlay);
 
-        initFromModel();
+        Game.getInstance().addObserver(this);
 	}
 	
 	public IMaritimeTradeView getTradeView() {

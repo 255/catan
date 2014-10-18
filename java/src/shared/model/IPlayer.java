@@ -56,7 +56,11 @@ public interface IPlayer {
 
     public Collection<ITown> getTowns();
 
-    public boolean hasDiscarded();
+    /**
+     * Return true if needs to discard (assuming a 7 was rolled)
+     * @return true if needs to discard
+     */
+    public boolean needsToDiscard();
 
     public boolean hasPlayedDevCard();
 

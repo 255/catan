@@ -6,6 +6,8 @@ import client.misc.*;
 import shared.model.*;
 
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -14,6 +16,7 @@ import java.util.Observable;
 public class DiscardController extends Controller implements IDiscardController {
 
 	private IWaitView waitView;
+    private final static Logger logger = Logger.getLogger("catan");
     private int woodDiscard;
     private int brickDiscard;
     private int sheepDiscard;
@@ -33,8 +36,6 @@ public class DiscardController extends Controller implements IDiscardController 
         Game.getInstance().addObserver(this);
 
 		this.waitView = waitView;
-
-        initFromModel();
 	}
 
 	public IDiscardView getDiscardView() {
@@ -68,12 +69,15 @@ public class DiscardController extends Controller implements IDiscardController 
                     oreDiscard
                 );
 
-        GameModelFacade.getInstance().getPlayerResources().subtract(discardBank);
+        try {
+            ServerModelFacade.getInstance().discardCards(discardBank);
+        } catch (ModelException e) {
+            logger.log(Level.WARNING, e.getMessage() + " : DiscardController.discard() had an error", e);
+        }
+
         getDiscardView().closeModal();
 
-        //TODO am I using too much logic? Should I be calling subtract from here?
         //TODO find out if other players are still discarding
-        //TODO change state?
 	}
 
     private void initFromModel() {

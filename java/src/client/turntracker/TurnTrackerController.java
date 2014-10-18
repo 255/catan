@@ -4,6 +4,8 @@ import shared.definitions.CatanColor;
 import client.base.*;
 import shared.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.logging.Logger;
 
@@ -18,6 +20,8 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	public TurnTrackerController(ITurnTrackerView view) {
 		
 		super(view);
+
+        Game.getInstance().addObserver(this);
 	}
 	
 	@Override
@@ -35,21 +39,20 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
     }
 	
 	private void initFromModel() {
-        // get the local player's color
-        CatanColor color = Game.getInstance().getLocalPlayer().getColor();
-        getView().setLocalPlayerColor(color);
+        // get the list of players
+        List<IPlayer> players = Game.getInstance().getPlayers();
 
-        // highlight the local player
-        IPlayer p = Game.getInstance().getLocalPlayer();
-        getView().updatePlayer(
-                        p.getIndex(),
-                        p.getVictoryPoints(),
-                        true,
-                        false,          //TODO how do we check if a player has largestArmy?
-                        false           //TODO how do we check if a player has longestRoad?
-                    );
-
-        // TODO will I need to set the other player colors and info from here?
+        // iterate through them and set up their box on the tracker
+        for(IPlayer pl : players) {
+            getView().initializePlayer(pl.getIndex(), pl.getName(), pl.getColor());
+            getView().updatePlayer(
+                            pl.getIndex(),
+                            pl.getVictoryPoints(),
+                            GameModelFacade.getInstance().isPlayersTurn(pl),
+                            GameModelFacade.getInstance().playerHasLargestArmy(pl),
+                            GameModelFacade.getInstance().playerHasLongestRoad(pl)
+                        );
+        }
 	}
 
     @Override
