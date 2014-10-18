@@ -3,10 +3,7 @@ package client.resources;
 import java.util.*;
 
 import client.base.*;
-import shared.model.CatanConstants;
-import shared.model.Game;
-import shared.model.IPlayer;
-import shared.model.IResourceBank;
+import shared.model.*;
 
 import javax.annotation.Resource;
 
@@ -23,6 +20,8 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		super(view);
 		
 		elementActions = new HashMap<ResourceBarElement, IAction>();
+
+        Game.getInstance().addObserver(this);
 	}
 
 	@Override
@@ -95,8 +94,11 @@ public class ResourceBarController extends Controller implements IResourceBarCon
         getView().setElementEnabled(ResourceBarElement.CITY, localPlayer.canBuyCity());
         getView().setElementAmount(ResourceBarElement.CITY, localPlayer.getPieceBank().availableCities());
 
-        for (ResourceBarElement element : elementActions.keySet()) {
-        }
+        getView().setElementEnabled(ResourceBarElement.BUY_CARD, GameModelFacade.getInstance().canBuyDevCard());
+
+        getView().setElementEnabled(ResourceBarElement.PLAY_CARD, Game.getInstance().isLocalPlayersTurn());
+
+        getView().setElementAmount(ResourceBarElement.SOLDIERS, localPlayer.getSoldiers());
     }
 
     @Override
