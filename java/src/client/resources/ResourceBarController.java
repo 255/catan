@@ -3,6 +3,12 @@ package client.resources;
 import java.util.*;
 
 import client.base.*;
+import shared.model.CatanConstants;
+import shared.model.Game;
+import shared.model.IPlayer;
+import shared.model.IResourceBank;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -70,7 +76,27 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 	}
 
     public void initFromModel() {
-     //   getView().
+
+        IPlayer localPlayer = Game.getInstance().getLocalPlayer();
+
+        IResourceBank resourceCards = localPlayer.getResources();
+        getView().setElementAmount(ResourceBarElement.WOOD, resourceCards.getWood());
+        getView().setElementAmount(ResourceBarElement.BRICK, resourceCards.getBrick());
+        getView().setElementAmount(ResourceBarElement.SHEEP, resourceCards.getSheep());
+        getView().setElementAmount(ResourceBarElement.WHEAT, resourceCards.getWheat());
+        getView().setElementAmount(ResourceBarElement.ORE, resourceCards.getOre());
+
+        getView().setElementEnabled(ResourceBarElement.ROAD, localPlayer.canBuyRoad());
+        getView().setElementAmount(ResourceBarElement.ROAD, CatanConstants.MAX_ROADS - localPlayer.getRoads().size());
+
+        getView().setElementEnabled(ResourceBarElement.SETTLEMENT, localPlayer.canBuySettlement());
+//        getView().setElementAmount(ResourceBarElement.SETTLEMENT, CatanConstants.MAX_SETTLEMENTS - localPlayer.getTowns()getSettlements().size());
+
+        getView().setElementEnabled(ResourceBarElement.ROAD, Game.getInstance().getLocalPlayer().canBuyRoad());
+        getView().setElementAmount(ResourceBarElement.ROAD, CatanConstants.MAX_ROADS - Game.getInstance().getLocalPlayer().getRoads().size());
+
+        for (ResourceBarElement element : elementActions.keySet()) {
+        }
     }
 
     @Override
