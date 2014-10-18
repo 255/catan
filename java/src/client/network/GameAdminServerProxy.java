@@ -34,7 +34,7 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
 
         String response = m_httpCommunicator.post("/user/register", json.toString());
 
-        return (response != null ? true : false);
+        return response != null;
     }
 
     @Override
