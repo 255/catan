@@ -30,6 +30,7 @@ public class HttpCommunicator implements IHttpCommunicator {
 
     private String m_userCookie = null;
     private String m_gameIdCookie = null;
+    private String m_playerName;
     private int m_playerId;
 
     @Override
@@ -111,7 +112,7 @@ public class HttpCommunicator implements IHttpCommunicator {
                     m_userCookie = cookie;
                     String jsonCookie = URLDecoder.decode(cookie, "UTF-8");
                     JsonReader reader = new JsonReader(new StringReader(jsonCookie));
-                    m_playerId = readPlayerId(reader);
+                    readCookie(reader);
                 }
                 if (commandName.equals("/games/join")) {
                     String cookie = connection.getHeaderFields().get("Set-cookie").get(0);
@@ -134,6 +135,11 @@ public class HttpCommunicator implements IHttpCommunicator {
     }
 
     @Override
+    public String getPlayerName() {
+        return m_playerName;
+    }
+
+    @Override
     public int getPlayerId() {
         return m_playerId;
     }
@@ -143,19 +149,24 @@ public class HttpCommunicator implements IHttpCommunicator {
         return Integer.parseInt(m_gameIdCookie);
     }
 
-    private int readPlayerId(JsonReader reader) throws IOException, NetworkException {
+    private void readCookie(JsonReader reader) throws IOException, NetworkException {
         reader.beginObject();
 
         while (reader.hasNext()) {
             String name = reader.nextName();
 
             if (name.equals("playerID")) {
-                return reader.nextInt();
+                m_playerName = reader.nextString();
+            } else if (name.equals("name")) {
+                m_playerId = reader.nextInt();
+                return;
             } else {
                 reader.skipValue();
             }
         }
 
-        throw new NetworkException("Player ID not found in cookie.");
+        throw new NetworkException("Player ID or name not found in cookie.");
     }
+
+
 }

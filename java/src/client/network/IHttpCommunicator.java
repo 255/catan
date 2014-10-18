@@ -29,6 +29,13 @@ public interface IHttpCommunicator {
     public String post(String url, String data) throws NetworkException;
 
     /**
+     * Returns the name of the local player
+     *
+     * @return name of player
+     */
+    public String getPlayerName();
+
+    /**
      * Returns the id of the player
      *
      * @return id of player

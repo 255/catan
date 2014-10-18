@@ -77,4 +77,8 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
 
         return response;
     }
+
+    public int getPlayerId() {
+        return m_httpCommunicator.getPlayerId();
+    }
 }
