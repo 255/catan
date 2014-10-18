@@ -10,11 +10,14 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * Handles all the calls to the ServerProxy
  */
 public class ServerModelFacade implements IServerModelFacade {
+    private final static Logger logger = Logger.getLogger("catan");
+
     private IServerProxy m_theProxy;
     private static ServerModelFacade m_theFacade = null;
 
@@ -267,11 +270,11 @@ public class ServerModelFacade implements IServerModelFacade {
 
     /**
      * offer a trade to another player
-     *  @param offer                the bundle of resources you are offering
-     * @param recipientPlayer the index of the player receiving the trade offer
+     * @param offer                the bundle of resources you are offering
+     * @param recipientPlayerIndex the index of the player receiving the trade offer
      */
     @Override
-    public void offerTrade(IResourceBank offer, IPlayer recipientPlayer) throws ModelException {
+    public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException {
         IPlayer p = Game.getInstance().getLocalPlayer();
 
         if (!p.canAfford(offer) || !Game.getInstance().localPlayerIsPlaying()) {
@@ -279,7 +282,7 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.offerTrade(p.getIndex(), offer, recipientPlayer.getIndex());
+            m_theProxy.offerTrade(p.getIndex(), offer, recipientPlayerIndex);
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -333,6 +336,7 @@ public class ServerModelFacade implements IServerModelFacade {
 
     /**
      * The current player rolls a number
+     * @return the number that was rolled
      */
     @Override
     public int rollNumber() throws ModelException {
@@ -360,13 +364,17 @@ public class ServerModelFacade implements IServerModelFacade {
     }
 
     /**
-     * Finish up the current player's turn
+     * Finish the current player's turn
      */
     @Override
     public void finishTurn() throws ModelException {
-        IPlayer p = Game.getInstance().getLocalPlayer();
+        logger.entering("shared.model.ServerModelFacade", "finishTurn");
 
-        if (!Game.getInstance().localPlayerIsPlaying()) {
+        IPlayer p = Game.getInstance().getLocalPlayer();
+        logger.fine("Player " + p.getName() + " ended turn.");
+
+        if (!Game.getInstance().localPlayerIsPlaying()
+                && !Game.getInstance().localPlayerIsPlacingInitialPieces()) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -375,5 +383,7 @@ public class ServerModelFacade implements IServerModelFacade {
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
+
+        logger.exiting("shared.model.ServerModelFacade", "finishTurn");
     }
 }

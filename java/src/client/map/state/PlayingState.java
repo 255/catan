@@ -15,7 +15,7 @@ import java.util.Collection;
  * The playing state.
  * The game has started, it is the local player's turn, and the state is "playing"
  */
-public class PlayingState extends PlaceSettlementsOrRoadsState {
+public class PlayingState extends MapState {
     boolean m_isPlayingRoadBuildingCard = false;
     EdgeLocation m_road1 = null;
 
@@ -206,5 +206,30 @@ public class PlayingState extends PlaceSettlementsOrRoadsState {
             }
             m_road1 = null;
         }
+    }
+
+    /**
+     * This method is called whenever the user is trying to place a settlement
+     * on the map. It is called by the view for each "mouse move" event. The
+     * returned value tells the view whether or not to allow the settlement to
+     * be placed at the specified location.
+     *
+     * @param vertLoc The proposed settlement location
+     * @return true if the settlement can be placed at vertLoc, false otherwise
+     */
+    @Override
+    public boolean canPlaceSettlement(VertexLocation vertLoc) {
+        return GameModelFacade.getInstance().canPlaceSettlement(vertLoc);
+    }
+
+    /**
+     * This method is called when the user clicks the mouse to place a
+     * settlement.
+     *
+     * @param vertLoc The settlement location
+     */
+    @Override
+    public void placeSettlement(VertexLocation vertLoc) throws ModelException {
+        ServerModelFacade.getInstance().placeSettlement(vertLoc);
     }
 }

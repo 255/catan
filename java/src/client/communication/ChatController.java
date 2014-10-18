@@ -1,9 +1,7 @@
 package client.communication;
 
 import client.base.*;
-import com.sun.corba.se.spi.activation.Server;
 import shared.model.Game;
-import shared.model.GameModelFacade;
 import shared.model.ModelException;
 import shared.model.ServerModelFacade;
 
@@ -22,11 +20,7 @@ public class ChatController extends Controller implements IChatController {
 		
 		super(view);
 
-        if (!Game.getInstance().isNotInitialized()) {
-            Game.getInstance().addObserver(this);
-        } else {
-            logger.fine("Game is not initialized yet");
-        }
+        Game.getInstance().addObserver(this);
 	}
 
 	@Override
@@ -45,11 +39,7 @@ public class ChatController extends Controller implements IChatController {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (!Game.getInstance().isNotInitialized()) {
-            getView().setEntries(Game.getInstance().getChatHistory().getMessages());
-        } else {
-            logger.fine("Game is not initialized yet");
-        }
+        getView().setEntries(Game.getInstance().getChatHistory().getMessages());
     }
 }
 

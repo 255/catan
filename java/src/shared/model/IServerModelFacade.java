@@ -100,9 +100,9 @@ public interface IServerModelFacade {
     /**
      * offer a trade to another player
      * @param offer the bundle of resources you are offering
-     * @param recipientPlayer the index of the player receiving the trade offer
+     * @param recipientPlayerIndex the index of the player receiving the trade offer
      */
-    public void offerTrade(IResourceBank offer, IPlayer recipientPlayer) throws ModelException;
+    public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException;
 
     /**
      * Trade with a port
@@ -120,6 +120,7 @@ public interface IServerModelFacade {
 
     /**
      * The current player has rolled a number
+     * @return the number that was rolled
      */
     public int rollNumber() throws ModelException;
 

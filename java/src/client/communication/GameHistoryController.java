@@ -31,11 +31,7 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	}
 	
 	private void initFromModel() {
-        if (!Game.getInstance().isNotInitialized()) {
-            getView().setEntries(GameModelFacade.getInstance().getMoveHistory().getMessages());
-        } else {
-            logger.fine("Game is not initialized");
-        }
+        getView().setEntries(GameModelFacade.getInstance().getMoveHistory().getMessages());
 	}
 
     @Override

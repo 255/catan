@@ -4,14 +4,15 @@ import client.data.PlayerInfo;
 import shared.definitions.*;
 import client.base.*;
 import client.misc.*;
-import shared.model.Game;
-import shared.model.GameModelFacade;
-import shared.model.IResourceBank;
+import shared.model.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.lang.String.format;
 
 
 /**
@@ -107,10 +108,16 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void sendTradeOffer() {
-        // TODO
         getTradeOverlay().setCancelEnabled(false); //TODO: determine if need this
 		getTradeOverlay().closeModal();
-		getWaitOverlay().showModal();
+
+        try {
+            ServerModelFacade.getInstance().offerTrade(m_tradeOffer.toResourceBank(), m_recipient);
+            getWaitOverlay().showModal();
+        }
+        catch (ModelException e) {
+            logger.log(Level.WARNING, "Sending trade offer failed.", e);
+        }
 	}
 
 	@Override
@@ -148,29 +155,75 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void acceptTrade(boolean willAccept) {
+        getAcceptOverlay().closeModal();
+        getAcceptOverlay().reset();
 
-        // TODO: implement this
-		getAcceptOverlay().closeModal();
-	}
+        try {
+            ServerModelFacade.getInstance().acceptTrade(willAccept);
+        }
+        catch (ModelException e) {
+            logger.log(Level.WARNING, "Failed to %s trade".format(willAccept ? "accept" : "reject"), e);
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {
         logger.entering("client.domestic.DomesticTradeController", "update");
 
+        // initialize players list only once
         if (m_needToInitializePlayersList) {
             getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(Game.getInstance().getNonLocalPlayers()));
             m_needToInitializePlayersList = false;
         }
 
+        // initialize the buttons and dialogs
         if (Game.getInstance().localPlayerIsPlaying()) {
             getTradeView().enableDomesticTrade(true);
+
+            // player sent a trade: keep the dialog open
+            if (Game.getInstance().localPlayerIsOfferingTrade()) {
+                waitOverlay.showModal();
+            }
+            else {
+                waitOverlay.closeModal();
+            }
         }
         else {
             getTradeView().enableDomesticTrade(false);
+
+            if (Game.getInstance().localPlayerIsBeingOfferedTrade()) {
+                // if the accept modal is not showing yet, initialize it and show it
+                initializeAcceptOverlay();
+            }
         }
 
         logger.exiting("client.domestic.DomesticTradeController", "update");
     }
+
+    private void initializeAcceptOverlay() {
+        if (acceptOverlay.isModalShowing()) {
+            return;
+        }
+
+        acceptOverlay.reset();
+        acceptOverlay.setAcceptEnabled(GameModelFacade.getInstance().canAcceptTrade());
+
+        IResourceBank tradeResources = Game.getInstance().getTradeOffer().getOffer();
+
+        for (ResourceType resourceType : ResourceType.values()) {
+            int resourceCount = tradeResources.getCount(resourceType);
+
+            if (resourceCount > 0) {
+                acceptOverlay.addGetResource(resourceType, resourceCount);
+            }
+            else if (resourceCount < 0) {
+                acceptOverlay.addGiveResource(resourceType, -resourceCount);
+            }
+        }
+
+        acceptOverlay.showModal();
+    }
+
     private void updateButtons() {
         updateResourceButtons();
 
@@ -273,6 +326,22 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
             }
 
             return false;
+        }
+
+        // convert the pending offer to a resource bank
+        public ResourceBank toResourceBank() {
+            ResourceBank resources = new ResourceBank();
+
+            for (Entry<ResourceType, PendingResourceOffer> entry : this.entrySet()) {
+                if (entry.getValue().type == OfferType.SEND) {
+                    resources.setCount(entry.getKey(), entry.getValue().amount);
+                } // negative values indicate the use wants to receive that resource
+                else if (entry.getValue().type == OfferType.RECEIVE) {
+                    resources.setCount(entry.getKey(), -entry.getValue().amount);
+                }
+            }
+
+            return resources;
         }
     }
 }

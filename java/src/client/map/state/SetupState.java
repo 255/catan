@@ -3,6 +3,7 @@ package client.map.state;
 import client.map.MapController;
 import shared.definitions.PieceType;
 import shared.locations.EdgeLocation;
+import shared.locations.VertexLocation;
 import shared.model.Game;
 import shared.model.GameModelFacade;
 import shared.model.ModelException;
@@ -12,7 +13,7 @@ import shared.model.ServerModelFacade;
  * The setup state for the first or second round.
  * It is the local player's turn and the game state is first or second round.
  */
-public class SetupState extends PlaceSettlementsOrRoadsState {
+public class SetupState extends MapState {
     /**
      * This method is called when the user requests to place a piece on the map
      * (road, city, or settlement)
@@ -48,5 +49,46 @@ public class SetupState extends PlaceSettlementsOrRoadsState {
     @Override
     public void placeRoad(MapController controller, EdgeLocation edgeLoc) throws ModelException {
         ServerModelFacade.getInstance().placeRoad(edgeLoc);
+
+        // place initial settlement
+        controller.startMove(PieceType.SETTLEMENT);
+    }
+
+    /**
+     * Set up the state of the robbing dialog, based on game state.
+     *
+     * @param controller the controller whose dialogs to initialize
+     */
+    @Override
+    public void initializeDialogs(MapController controller) {
+        // place initial road
+        controller.startMove(PieceType.ROAD);
+    }
+
+    /**
+     * This method is called whenever the user is trying to place a settlement
+     * on the map. It is called by the view for each "mouse move" event. The
+     * returned value tells the view whether or not to allow the settlement to
+     * be placed at the specified location.
+     *
+     * @param vertLoc The proposed settlement location
+     * @return true if the settlement can be placed at vertLoc, false otherwise
+     */
+    @Override
+    public boolean canPlaceSettlement(VertexLocation vertLoc) {
+        return GameModelFacade.getInstance().canPlaceSettlement(vertLoc);
+    }
+
+    /**
+     * This method is called when the user clicks the mouse to place a
+     * settlement.
+     *
+     * @param vertLoc The settlement location
+     */
+    @Override
+    public void placeSettlement(VertexLocation vertLoc) throws ModelException {
+        ServerModelFacade.getInstance().placeSettlement(vertLoc);
+
+        ServerModelFacade.getInstance().finishTurn();
     }
 }

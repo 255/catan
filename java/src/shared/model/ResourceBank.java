@@ -87,6 +87,17 @@ public class ResourceBank implements IResourceBank {
         return 0;
     }
 
+    @Override
+    public void setCount(ResourceType resourceType, int amount) {
+        switch (resourceType) {
+            case WOOD:  m_wood  = amount; break;
+            case BRICK: m_brick = amount; break;
+            case SHEEP: m_sheep = amount; break;
+            case WHEAT: m_wheat = amount; break;
+            case ORE:   m_ore   = amount; break;
+        }
+    }
+
     /**
      * Get the total amount of resources a player has.
      *

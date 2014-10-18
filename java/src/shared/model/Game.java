@@ -276,6 +276,20 @@ public class Game extends Observable implements IGame {
         return m_currentPlayer.equals(m_localPlayer);
     }
 
+    @Override
+    public boolean localPlayerIsOfferingTrade() {
+        ITradeOffer tradeOffer = Game.getInstance().getTradeOffer();
+
+        return tradeOffer != null && m_localPlayer.equals(tradeOffer.getSender());
+    }
+
+    @Override
+    public boolean localPlayerIsBeingOfferedTrade() {
+        ITradeOffer tradeOffer = Game.getInstance().getTradeOffer();
+
+        return tradeOffer != null && m_localPlayer.equals(tradeOffer.getReceiver());
+    }
+
     /**
      * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
      * @return true / false

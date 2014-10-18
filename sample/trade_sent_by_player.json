@@ -1,4 +1,15 @@
 {
+  "tradeOffer":{
+    "sender": 0,
+    "offer": {
+      "brick": 0,
+      "ore": 5,
+      "sheep": 0,
+      "wheat": 0,
+      "wood": -1
+    },
+    "receiver": 3
+  },
   "deck": {
     "yearOfPlenty": 2,
     "monopoly": 2,
@@ -161,39 +172,47 @@
     ],
     "roads": [
       {
-        "owner": 0,
-        "location": {
-          "direction": "N",
-          "x": 0,
-          "y": 0
-        }
-      },
-      {
-        "owner": 0,
-        "location": {
-          "direction": "NW",
-          "x": 0,
-          "y": 0
-        }
-      },
-      {
-        "owner": 0,
-        "location": {
-          "direction": "NE",
-          "x": 0,
-          "y": 0
-        }
-      },
-      {
-        "owner": 0,
-        "location": {
-          "direction": "SE",
-          "x": 0,
-          "y": 0
-        }
-      },
-      {
         "owner": 1,
+        "location": {
+          "direction": "S",
+          "x": -1,
+          "y": -1
+        }
+      },
+      {
+        "owner": 3,
+        "location": {
+          "direction": "SW",
+          "x": -1,
+          "y": 1
+        }
+      },
+      {
+        "owner": 3,
+        "location": {
+          "direction": "SW",
+          "x": 2,
+          "y": -2
+        }
+      },
+      {
+        "owner": 2,
+        "location": {
+          "direction": "S",
+          "x": 1,
+          "y": -1
+        }
+      },
+      {
+        "owner": 0,
+        "location": {
+          "direction": "S",
+          "x": 0,
+          "y": 1
+        }
+      },
+      {
+        "owner": 2,
         "location": {
           "direction": "S",
           "x": 0,
@@ -204,51 +223,83 @@
         "owner": 1,
         "location": {
           "direction": "SW",
-          "x": 0,
+          "x": -2,
+          "y": 1
+        }
+      },
+      {
+        "owner": 0,
+        "location": {
+          "direction": "SW",
+          "x": 2,
           "y": 0
-        }
-      },
-      {
-        "owner": 1,
-        "location": {
-          "direction": "NW",
-          "x": 0,
-          "y": 2
-        }
-      },
-      {
-        "owner": 1,
-        "location": {
-          "direction": "N",
-          "x": 0,
-          "y": 2
         }
       }
     ],
     "cities": [],
     "settlements": [
       {
-        "owner": 0,
+        "owner": 3,
         "location": {
-          "direction": "NE",
+          "direction": "SW",
+          "x": -1,
+          "y": 1
+        }
+      },
+      {
+        "owner": 3,
+        "location": {
+          "direction": "SE",
+          "x": 1,
+          "y": -2
+        }
+      },
+      {
+        "owner": 2,
+        "location": {
+          "direction": "SW",
           "x": 0,
           "y": 0
         }
       },
       {
+        "owner": 2,
+        "location": {
+          "direction": "SW",
+          "x": 1,
+          "y": -1
+        }
+      },
+      {
         "owner": 1,
+        "location": {
+          "direction": "SW",
+          "x": -2,
+          "y": 1
+        }
+      },
+      {
+        "owner": 0,
         "location": {
           "direction": "SE",
           "x": 0,
-          "y": 0
+          "y": 1
         }
       },
       {
         "owner": 1,
         "location": {
-          "direction": "W",
-          "x": 0,
-          "y": 2
+          "direction": "SW",
+          "x": -1,
+          "y": -1
+        }
+      },
+      {
+        "owner": 0,
+        "location": {
+          "direction": "SW",
+          "x": 2,
+          "y": 0
         }
       }
     ],
@@ -340,25 +391,25 @@
   "players": [
     {
       "resources": {
-        "brick": 100,
-        "wood": 100,
-        "sheep": 100,
-        "wheat": 100,
-        "ore": 100
+        "brick": 0,
+        "wood": 1,
+        "sheep": 1,
+        "wheat": 1,
+        "ore": 0
       },
       "oldDevCards": {
-        "yearOfPlenty": 1,
-        "monopoly": 2,
-        "soldier": 3,
-        "roadBuilding": 4,
-        "monument": 5
+        "yearOfPlenty": 0,
+        "monopoly": 0,
+        "soldier": 0,
+        "roadBuilding": 0,
+        "monument": 0
       },
       "newDevCards": {
-        "yearOfPlenty": 1,
-        "monopoly": 2,
-        "soldier": 3,
-        "roadBuilding": 4,
-        "monument": 5
+        "yearOfPlenty": 0,
+        "monopoly": 0,
+        "soldier": 0,
+        "roadBuilding": 0,
+        "monument": 0
       },
       "roads": 13,
       "cities": 4,
@@ -375,25 +426,25 @@
     },
     {
       "resources": {
-        "brick": 0,
+        "brick": 1,
         "wood": 0,
-        "sheep": 0,
+        "sheep": 1,
         "wheat": 0,
-        "ore": 0
+        "ore": 1
       },
       "oldDevCards": {
-        "yearOfPlenty": 1,
-        "monopoly": 2,
-        "soldier": 3,
-        "roadBuilding": 4,
-        "monument": 5
+        "yearOfPlenty": 0,
+        "monopoly": 0,
+        "soldier": 0,
+        "roadBuilding": 0,
+        "monument": 0
       },
       "newDevCards": {
-        "yearOfPlenty": 1,
-        "monopoly": 2,
-        "soldier": 3,
-        "roadBuilding": 4,
-        "monument": 5
+        "yearOfPlenty": 0,
+        "monopoly": 0,
+        "soldier": 0,
+        "roadBuilding": 0,
+        "monument": 0
       },
       "roads": 13,
       "cities": 4,
@@ -401,7 +452,7 @@
       "soldiers": 0,
       "victoryPoints": 2,
       "monuments": 0,
-      "playedDevCard": true,
+      "playedDevCard": false,
       "discarded": false,
       "playerID": 1,
       "playerIndex": 1,
@@ -410,11 +461,11 @@
     },
     {
       "resources": {
-        "brick": 100,
-        "wood": 100,
-        "sheep": 100,
-        "wheat": 100,
-        "ore": 100
+        "brick": 0,
+        "wood": 1,
+        "sheep": 1,
+        "wheat": 1,
+        "ore": 0
       },
       "oldDevCards": {
         "yearOfPlenty": 0,
@@ -430,9 +481,9 @@
         "roadBuilding": 0,
         "monument": 0
       },
-      "roads": 0,
-      "cities": 0,
-      "settlements": 0,
+      "roads": 13,
+      "cities": 4,
+      "settlements": 3,
       "soldiers": 0,
       "victoryPoints": 2,
       "monuments": 0,
@@ -590,7 +641,7 @@
     "ore": 22
   },
   "turnTracker": {
-    "status": "SecondRound",
+    "status": "Playing",
     "currentTurn": 0,
     "longestRoad": -1,
     "largestArmy": -1

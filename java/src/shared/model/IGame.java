@@ -152,6 +152,11 @@ public interface IGame {
     public IPlayer getWinner();
 
     // Game state checking methods
+
+    boolean localPlayerIsOfferingTrade();
+
+    boolean localPlayerIsBeingOfferedTrade();
+
     /**
      * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
      * @return true / false
