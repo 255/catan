@@ -78,7 +78,13 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
         return response;
     }
 
-    public int getPlayerId() {
+    @Override
+    public String getLocalPlayerName() {
+        return m_httpCommunicator.getPlayerName();
+    }
+
+    @Override
+    public int getLocalPlayerId() {
         return m_httpCommunicator.getPlayerId();
     }
 }

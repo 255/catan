@@ -83,4 +83,18 @@ public interface IGameAdminServerProxy {
      * @throws NetworkException indicates that an error occurred while attempting to communicate with the server
      */
     public String addAI(String name) throws NetworkException;
+
+    /**
+     * Gets the name of the local player
+     *
+     * @return name of local player
+     */
+    public String getLocalPlayerName();
+
+    /**
+     * Gets the id of the local player
+     *
+     * @return id of local player
+     */
+    public int getLocalPlayerId();
 }

@@ -48,6 +48,16 @@ public class GameAdministrator implements IGameAdministrator {
         return readGame(reader);
     }
 
+    @Override
+    public String getLocalPlayerName() {
+        return m_gameAdminServerProxy.getLocalPlayerName();
+    }
+
+    @Override
+    public int getLocalPlayerId() {
+        return m_gameAdminServerProxy.getLocalPlayerId();
+    }
+
     private List<IGameInfo> readGameList(JsonReader reader) throws IOException {
         List<IGameInfo> gameInfoList = new ArrayList<IGameInfo>();
 

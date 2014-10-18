@@ -58,4 +58,19 @@ public interface IGameAdministrator {
      * @return an object holding information about the created game
      */
     public IGameInfo createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException, IOException;
+
+    /**
+     * Gets the name of the local player
+     *
+     * @return local player name
+     */
+    public String getLocalPlayerName();
+
+    /**
+     * Gets the local player id
+     *
+     * @return id of local player
+     */
+    public int getLocalPlayerId();
+
 }
