@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import client.network.NetworkException;
 import com.google.gson.stream.JsonReader;
 import shared.definitions.CatanColor;
+import client.data.*;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -32,7 +33,7 @@ public class GameAdministrator implements IGameAdministrator {
     }
 
     @Override
-    public List<IGameInfo> listGames() throws NetworkException, IOException {
+    public List<GameInfo> listGames() throws NetworkException, IOException {
         JsonReader reader = new JsonReader(new StringReader(m_gameAdminServerProxy.listGames()));
         return readGameList(reader);
     }
@@ -43,7 +44,7 @@ public class GameAdministrator implements IGameAdministrator {
     }
 
     @Override
-    public IGameInfo createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException, IOException {
+    public GameInfo createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException, IOException {
         JsonReader reader = new JsonReader(new StringReader(m_gameAdminServerProxy.createGame(randomTiles, randomNumbers, randomPorts, gameName)));
         return readGame(reader);
     }
@@ -58,8 +59,8 @@ public class GameAdministrator implements IGameAdministrator {
         return m_gameAdminServerProxy.getLocalPlayerId();
     }
 
-    private List<IGameInfo> readGameList(JsonReader reader) throws IOException {
-        List<IGameInfo> gameInfoList = new ArrayList<IGameInfo>();
+    private List<GameInfo> readGameList(JsonReader reader) throws IOException {
+        List<GameInfo> gameInfoList = new ArrayList<GameInfo>();
 
         reader.beginArray();
 
@@ -72,63 +73,63 @@ public class GameAdministrator implements IGameAdministrator {
         return gameInfoList;
     }
 
-    private IGameInfo readGame(JsonReader reader) throws IOException {
-        reader.beginObject();
+    private GameInfo readGame(JsonReader reader) throws IOException {
+        GameInfo gameInfo = new GameInfo();
 
-        int gameIndex = 0;
-        String gameName = null;
-        List<String> listOfPlayerNames = null;
+        reader.beginObject();
 
         while (reader.hasNext()) {
             String name = reader.nextName();
 
             if (name.equals("title")) {
-                gameName = reader.nextString();
+                gameInfo.setTitle(reader.nextString());
             } else if (name.equals("id")) {
-                gameIndex = reader.nextInt();
+                gameInfo.setId(reader.nextInt());
             } else if (name.equals("players")) {
-                listOfPlayerNames = readPlayers(reader);
+                readPlayers(reader, gameInfo);
             } else {
                 reader.skipValue();
             }
         }
 
         reader.endObject();
-        return new GameInfo(gameIndex, gameName, listOfPlayerNames);
+
+        return gameInfo;
     }
 
-    private List<String> readPlayers(JsonReader reader) throws IOException {
-        List<String> playerNames = new ArrayList<String>();
+    private void readPlayers(JsonReader reader, GameInfo gameInfo) throws IOException {
 
         reader.beginArray();
 
         while (reader.hasNext()) {
-            String playerName = readPlayerName(reader);
-            if (playerName != null) {
-                playerNames.add(readPlayerName(reader));
+            PlayerInfo playerInfo = readPlayerInfo(reader);
+            if (playerInfo != null) {
+                gameInfo.addPlayer(playerInfo);
             }
         }
         reader.endArray();
-
-        return playerNames;
     }
 
-    private String readPlayerName(JsonReader reader) throws IOException {
+    private PlayerInfo readPlayerInfo(JsonReader reader) throws IOException {
         reader.beginObject();
 
-        String playerName = null;
+        PlayerInfo playerInfo = new PlayerInfo();
 
         while (reader.hasNext()) {
             String name = reader.nextName();
 
-            if (name.equals("name")) {
-                playerName = reader.nextString();
+            if (name.equals("color")) {
+                playerInfo.setColor(CatanColor.valueOf(reader.nextString()));
+            } else if (name.equals("name")) {
+                playerInfo.setName(reader.nextString());
+            } else if (name.equals("id")) {
+                playerInfo.setId(reader.nextInt());
             } else {
                 reader.skipValue();
             }
         }
         reader.endObject();
 
-        return playerName;
+        return playerInfo;
     }
 }

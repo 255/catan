@@ -50,10 +50,14 @@ public class GameInfo
 	{
 		players.add(newPlayer);
 	}
-	
+
 	public List<PlayerInfo> getPlayers()
 	{
 		return Collections.unmodifiableList(players);
 	}
+
+    public boolean isFull() {
+        return players.size() == 4;
+    }
 }
 

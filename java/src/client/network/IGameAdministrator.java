@@ -1,5 +1,6 @@
 package client.network;
 
+import client.data.GameInfo;
 import shared.definitions.CatanColor;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public interface IGameAdministrator {
      *
      * @return list of objects containing information about individual games
      */
-    public List<IGameInfo> listGames() throws NetworkException, IOException;
+    public List<GameInfo> listGames() throws NetworkException, IOException;
 
     /**
      * Allows a user to join a game
@@ -57,7 +58,7 @@ public interface IGameAdministrator {
      * @param gameName name of the new game
      * @return an object holding information about the created game
      */
-    public IGameInfo createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException, IOException;
+    public GameInfo createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException, IOException;
 
     /**
      * Gets the name of the local player
