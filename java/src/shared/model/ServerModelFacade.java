@@ -60,7 +60,8 @@ public class ServerModelFacade implements IServerModelFacade {
         assert message != null;
 
         try {
-            m_theProxy.sendChat(Game.getInstance().getLocalPlayer().getIndex(), message);
+            String clientModel = m_theProxy.sendChat(Game.getInstance().getLocalPlayer().getIndex(), message);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -80,7 +81,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.buildRoad(Game.getInstance().getLocalPlayer().getIndex(), edge, GameModelFacade.getInstance().isFreeRound());
+            String clientModel =  m_theProxy.buildRoad(Game.getInstance().getLocalPlayer().getIndex(), edge, GameModelFacade.getInstance().isFreeRound());
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -100,7 +102,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.buildSettlement(Game.getInstance().getLocalPlayer().getIndex(), vertex, GameModelFacade.getInstance().isFreeRound());
+            String clientModel = m_theProxy.buildSettlement(Game.getInstance().getLocalPlayer().getIndex(), vertex, GameModelFacade.getInstance().isFreeRound());
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -119,7 +122,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.buildCity(Game.getInstance().getLocalPlayer().getIndex(), vertex);
+            String clientModel = m_theProxy.buildCity(Game.getInstance().getLocalPlayer().getIndex(), vertex);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -136,7 +140,8 @@ public class ServerModelFacade implements IServerModelFacade {
 
         IPlayer curPlayer = Game.getInstance().getLocalPlayer();
         try {
-            m_theProxy.buyDevCard(curPlayer.getIndex());
+            String clientModel = m_theProxy.buyDevCard(curPlayer.getIndex());
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -156,7 +161,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playSoldier(Game.getInstance().getLocalPlayer().getIndex(), hex, victimIndex);
+            String clientModel = m_theProxy.playSoldier(Game.getInstance().getLocalPlayer().getIndex(), hex, victimIndex);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -174,7 +180,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playYearOfPlenty(Game.getInstance().getLocalPlayer().getIndex(), r1, r2);
+            String clientModel = m_theProxy.playYearOfPlenty(Game.getInstance().getLocalPlayer().getIndex(), r1, r2);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -192,7 +199,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playRoadBuilding(Game.getInstance().getLocalPlayer().getIndex(), e1, e2);
+            String clientModel = m_theProxy.playRoadBuilding(Game.getInstance().getLocalPlayer().getIndex(), e1, e2);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -209,7 +217,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playMonopoly(Game.getInstance().getLocalPlayer().getIndex(), rType);
+            String clientModel = m_theProxy.playMonopoly(Game.getInstance().getLocalPlayer().getIndex(), rType);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -225,7 +234,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.playMonument(Game.getInstance().getLocalPlayer().getIndex());
+            String clientModel = m_theProxy.playMonument(Game.getInstance().getLocalPlayer().getIndex());
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -241,7 +251,8 @@ public class ServerModelFacade implements IServerModelFacade {
         assert hex != null;
 // TODO
         try {
-            m_theProxy.robPlayer(Game.getInstance().getLocalPlayer().getIndex(), victimIndex, hex);
+            String clientModel = m_theProxy.robPlayer(Game.getInstance().getLocalPlayer().getIndex(), victimIndex, hex);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -262,7 +273,8 @@ public class ServerModelFacade implements IServerModelFacade {
         assert Game.getInstance().getTradeOffer().getReceiver().equals(p);
 
         try {
-            m_theProxy.acceptTrade(p.getIndex(), willAccept);
+            String clientModel = m_theProxy.acceptTrade(p.getIndex(), willAccept);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -282,7 +294,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.offerTrade(p.getIndex(), offer, recipientPlayerIndex);
+            String clientModel = m_theProxy.offerTrade(p.getIndex(), offer, recipientPlayerIndex);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -306,7 +319,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.maritimeTrade(p.getIndex(), ratio, giving, getting);
+            String clientModel = m_theProxy.maritimeTrade(p.getIndex(), ratio, giving, getting);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -328,7 +342,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.discardCards(p.getIndex(), discardedCards);
+            String clientModel = m_theProxy.discardCards(p.getIndex(), discardedCards);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
@@ -354,7 +369,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.rollNumber(p.getIndex(), rolledNumber);
+            String clientModel = m_theProxy.rollNumber(p.getIndex(), rolledNumber);
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         }
         catch (NetworkException e) {
             throw new ModelException(e);
@@ -379,7 +395,8 @@ public class ServerModelFacade implements IServerModelFacade {
         }
 
         try {
-            m_theProxy.finishTurn(p.getIndex());
+            String clientModel = m_theProxy.finishTurn(p.getIndex());
+            new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
         }
