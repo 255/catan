@@ -72,7 +72,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         try {
             ServerModelFacade.getInstance().maritimeTrade(ratio, m_givingResource, m_gettingResource);
         } catch (ModelException e) {
-            logger.finest("ERROR: MaritimeTrade failed in the makeTrade() method");
+            logger.fine("ERROR: MaritimeTrade failed in the makeTrade() method");
         }
 
         unsetGetValue();
@@ -116,6 +116,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
     private void initFromModel() {
         unsetGetValue();
         unsetGiveValue();
+        if(!getTradeOverlay().isModalShowing()) getTradeOverlay().showModal();
     }
 
     //************************//
