@@ -15,10 +15,23 @@ import java.util.List;
  * @author StevenBarnett
  */
 public class GameAdministrator implements IGameAdministrator {
-
+    private static GameAdministrator m_admin = null;
     private IGameAdminServerProxy m_gameAdminServerProxy;
 
-    public GameAdministrator(IGameAdminServerProxy gameAdminServerProxy) {
+    private GameAdministrator(IGameAdminServerProxy gameAdminServerProxy) {
+        setGameAdminServerProxy(gameAdminServerProxy);
+    }
+
+    public static GameAdministrator getInstance() {
+        if (m_admin == null) {
+            m_admin = new GameAdministrator(new GameAdminServerProxy(new HttpCommunicator()));
+        }
+        return m_admin;
+    }
+
+    @Override
+    public void setGameAdminServerProxy(IGameAdminServerProxy gameAdminServerProxy) {
+        assert gameAdminServerProxy != null;
         m_gameAdminServerProxy = gameAdminServerProxy;
     }
 
@@ -119,7 +132,7 @@ public class GameAdministrator implements IGameAdministrator {
             String name = reader.nextName();
 
             if (name.equals("color")) {
-                playerInfo.setColor(CatanColor.valueOf(reader.nextString()));
+                playerInfo.setColor(CatanColor.valueOf(reader.nextString().toUpperCase()));
             } else if (name.equals("name")) {
                 playerInfo.setName(reader.nextString());
             } else if (name.equals("id")) {

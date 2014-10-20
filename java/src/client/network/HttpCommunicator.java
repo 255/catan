@@ -155,9 +155,9 @@ public class HttpCommunicator implements IHttpCommunicator {
         while (reader.hasNext()) {
             String name = reader.nextName();
 
-            if (name.equals("playerID")) {
+            if (name.equals("name")) {
                 m_playerName = reader.nextString();
-            } else if (name.equals("name")) {
+            } else if (name.equals("playerID")) {
                 m_playerId = reader.nextInt();
                 return;
             } else {

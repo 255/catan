@@ -92,7 +92,7 @@ public class DevCardController extends Controller implements IDevCardController 
         try {
             m_facade.playMonopoly(resource);
         } catch (ModelException e) {
-            logger.log(Level.WARNING, "Play monopoly card failed.", e);
+            logger.log(Level.WARNING, "Play monopoly card failed. - Model Exception", e);
         }
 	}
 
@@ -101,7 +101,7 @@ public class DevCardController extends Controller implements IDevCardController 
         try {
             m_facade.playMonument();
         } catch (ModelException e) {
-            logger.log(Level.WARNING, "Play monument card failed.", e);
+            logger.log(Level.WARNING, "Play monument card failed. - Model Exception", e);
         }
 	}
 
@@ -120,7 +120,7 @@ public class DevCardController extends Controller implements IDevCardController 
         try {
             m_facade.playYearOfPlenty(resource1, resource2);
         } catch (ModelException e) {
-            logger.log(Level.WARNING, "Play year of plenty card failed.", e);
+            logger.log(Level.WARNING, "Play year of plenty card failed. - Model Exception", e);
         }
 	}
 

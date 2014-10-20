@@ -37,7 +37,7 @@ public class LoginController extends Controller implements ILoginController {
 		
 		this.messageView = messageView;
 
-        m_admin = new GameAdministrator(new GameAdminServerProxy(new HttpCommunicator()));
+        m_admin = GameAdministrator.getInstance();
 	}
 	
 	public ILoginView getLoginView() {
@@ -92,6 +92,10 @@ public class LoginController extends Controller implements ILoginController {
         if (success) {
             getLoginView().closeModal();
             loginAction.execute();
+        } else {
+            getMessageView().showModal();
+            getMessageView().setTitle("Error!");
+            getMessageView().setMessage("Sign in failed.");
         }
 	}
 
@@ -113,7 +117,15 @@ public class LoginController extends Controller implements ILoginController {
             if (success) {
                 getLoginView().closeModal();
                 loginAction.execute();
+            } else {
+                getMessageView().showModal();
+                getMessageView().setTitle("Error!");
+                getMessageView().setMessage("Register failed.");
             }
+        } else {
+            getMessageView().showModal();
+            getMessageView().setTitle("Warning!");
+            getMessageView().setMessage("Passwords don't match.");
         }
 	}
 

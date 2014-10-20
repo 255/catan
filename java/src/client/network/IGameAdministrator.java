@@ -14,6 +14,8 @@ import java.util.List;
  * @author StevenBarnett
  */
 public interface IGameAdministrator {
+    public void setGameAdminServerProxy(IGameAdminServerProxy gameAdminServerProxy);
+
     /**
      * Logs an existing user into the game server
      *

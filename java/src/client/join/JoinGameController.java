@@ -1,22 +1,32 @@
 package client.join;
 
+import client.data.GameInfo;
+import client.network.*;
 import shared.definitions.CatanColor;
 import client.base.*;
 import client.data.*;
 import client.misc.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.List;
 
 
 /**
  * Implementation for the join game controller
  */
 public class JoinGameController extends Controller implements IJoinGameController {
+    private final static Logger logger = Logger.getLogger("catan");
 
 	private INewGameView newGameView;
 	private ISelectColorView selectColorView;
 	private IMessageView messageView;
 	private IAction joinAction;
+    private IGameAdministrator m_admin;
+    private GameInfo m_joinGame;
 	
 	/**
 	 * JoinGameController constructor
@@ -34,6 +44,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		setNewGameView(newGameView);
 		setSelectColorView(selectColorView);
 		setMessageView(messageView);
+
+        m_admin = GameAdministrator.getInstance();
 	}
 	
 	public IJoinGameView getJoinGameView() {
@@ -91,7 +103,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void start() {
-		
+        getGames();
+
 		getJoinGameView().showModal();
 	}
 
@@ -109,12 +122,36 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void createNewGame() {
-		
+        try {
+            m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getUseRandomPorts(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
+        } catch (NetworkException e) {
+            logger.log(Level.WARNING, "Create game failed. - Network Exception", e);
+            getMessageView().showModal();
+            getMessageView().setTitle("Error!");
+            getMessageView().setMessage("Create game failed.");
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "Create game failed. - I/O Exception", e);
+            getMessageView().showModal();
+            getMessageView().setTitle("Error!");
+            getMessageView().setMessage("Create game failed.");
+        }
 		getNewGameView().closeModal();
+        getGames();
 	}
 
 	@Override
 	public void startJoinGame(GameInfo game) {
+        m_joinGame = game;
+
+        for (CatanColor color : CatanColor.values()) {
+            getSelectColorView().setColorEnabled(color, true);
+        }
+
+        for (PlayerInfo player : game.getPlayers()) {
+            if (player.getId() != m_admin.getLocalPlayerId()) {
+                getSelectColorView().setColorEnabled(player.getColor(), false);
+            }
+        }
 
 		getSelectColorView().showModal();
 	}
@@ -127,16 +164,67 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void joinGame(CatanColor color) {
-		
+        boolean success = false;
+        try {
+            success = m_admin.joinGame(m_joinGame.getId(), color);
+        } catch (NetworkException e) {
+            logger.log(Level.WARNING, "Join game failed. - Network Exception", e);
+        }
 		// If join succeeded
-		getSelectColorView().closeModal();
-		getJoinGameView().closeModal();
-		joinAction.execute();
+        if (success) {
+            getSelectColorView().closeModal();
+            getJoinGameView().closeModal();
+            joinAction.execute();
+        } else {
+            getMessageView().showModal();
+            getMessageView().setTitle("Error!");
+            getMessageView().setMessage("Join game failed.");
+        }
 	}
 
     @Override
     public void update(Observable o, Object arg) {
 
+    }
+
+    private void getGames() {
+        try {
+//            List<GameInfo> gameList = m_admin.listGames();
+//            GameInfo[] games = new GameInfo[gameList.size()];
+//            for (int i = 0; i < gameList.size(); i++) {
+//                games[i] = new GameInfo();
+//                gameList.get(i);
+//            }
+
+
+            List<GameInfo> gameList = m_admin.listGames();
+            GameInfo[] games = new GameInfo[gameList.size()];
+            for (int i = 0; i < games.length; i++) {
+                GameInfo tempGame = new GameInfo();
+                tempGame.setId(gameList.get(i).getId());
+                tempGame.setTitle(gameList.get(i).getTitle());
+                List<PlayerInfo> players = gameList.get(i).getPlayers();
+                for (int j = 0; j < players.size(); j++) {
+                    if (players.get(j).getId() != -1) {
+                        tempGame.addPlayer(new PlayerInfo(players.get(j).getId(), players.get(j).getPlayerIndex(), players.get(j).getName(), players.get(j).getColor()));
+                        System.out.println("Name: " + players.get(j).getName());
+                        System.out.println("Id: " + players.get(j).getId());
+                    }
+                }
+                games[i] = tempGame;
+            }
+
+            PlayerInfo player = new PlayerInfo(m_admin.getLocalPlayerId(), -1, m_admin.getLocalPlayerName(), null);
+
+            System.out.println("Player Name: " + player.getName());
+            System.out.println("Player Id: " + player.getId());
+
+            getJoinGameView().setGames(games, player);
+        } catch (NetworkException e) {
+            logger.log(Level.WARNING, "Update failed. - Network Exception", e);
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "Update failed. - I/O Exception", e);
+        }
     }
 }
 

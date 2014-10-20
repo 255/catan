@@ -7,9 +7,7 @@ import client.login.*;
 import client.join.*;
 import client.misc.*;
 import client.base.*;
-import client.network.HttpCommunicator;
-import client.network.ServerProxy;
-import client.network.TestServerProxy;
+import client.network.*;
 import client.poller.ServerPoller;
 import shared.model.ServerModelFacade;
 
@@ -148,12 +146,17 @@ public class Catan extends JFrame
 				loginView.setController(loginController);
 
                 // TODO: enable when ready for testing
-				//loginController.start();
+				loginController.start();
+
+                IHttpCommunicator communicator = new HttpCommunicator();
+                GameAdminServerProxy gameAdminProxy = new GameAdminServerProxy(communicator);
+                GameAdministrator.getInstance().setGameAdminServerProxy(gameAdminProxy);
 
                 TestServerProxy testProxy = new TestServerProxy();
-                ServerModelFacade.getInstance().setServerProxy(testProxy);
-                ServerPoller poller = new ServerPoller(testProxy, 15);
-                poller.updateGame();
+                ServerProxy proxy = new ServerProxy(communicator);
+                ServerModelFacade.getInstance().setServerProxy(proxy);
+                //ServerPoller poller = new ServerPoller(testProxy, 15);
+                //poller.updateGame();
 			}
 		});
 	}
