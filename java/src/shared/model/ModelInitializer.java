@@ -1,6 +1,7 @@
 package shared.model;
 
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import shared.definitions.CatanColor;
 import shared.definitions.HexType;
 import shared.definitions.PortType;
@@ -97,7 +98,9 @@ public class ModelInitializer implements IModelInitializer {
                 reader.beginArray();
                 while (reader.hasNext()) {
                     IPlayer player = readPlayer(reader);
-                    m_players.put(player.getIndex(), player);
+                    if (player != null) {
+                        m_players.put(player.getIndex(), player);
+                    }
                 }
                 reader.endArray();
 
@@ -115,6 +118,10 @@ public class ModelInitializer implements IModelInitializer {
 
     /** Read single a player from the JSON */
     private IPlayer readPlayer(JsonReader reader) throws IOException, ModelException {
+        if (reader.peek().equals(JsonToken.NULL)) {
+            reader.nextNull();
+            return null;
+        }
         reader.beginObject();
 
         // everything that a player has
