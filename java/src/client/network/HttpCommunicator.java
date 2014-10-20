@@ -106,7 +106,7 @@ public class HttpCommunicator implements IHttpCommunicator {
                 InputStream inputStream = connection.getInputStream();
                 byte[] buffer = new byte[inputStream.available()];
                 inputStream.read(buffer);
-                if (commandName.equals("/user/login")) {
+                if (commandName.equals("/user/login") || commandName.equals("/user/register")) {
                     String cookie = connection.getHeaderFields().get("Set-cookie").get(0);
                     cookie = cookie.substring(11, cookie.length() - 8);
                     m_userCookie = cookie;
