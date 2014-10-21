@@ -48,7 +48,7 @@ public class HttpCommunicator implements IHttpCommunicator {
             connection = (HttpURLConnection)url.openConnection();
 
             if (m_userCookie != null) {
-                connection.setRequestProperty("Cookie", "catan.game=" + m_gameIdCookie);
+                connection.setRequestProperty("Cookie", "catan.user=" + m_gameIdCookie);
             }
 
             connection.setRequestMethod((HTTP_GET));
