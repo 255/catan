@@ -111,8 +111,10 @@ public class Catan extends JFrame
                 TestServerProxy testProxy = new TestServerProxy();
                 ServerProxy proxy = new ServerProxy(communicator);
                 ServerModelFacade.getInstance().setServerProxy(proxy);
-                //ServerPoller poller = new ServerPoller(testProxy, 15);
-                //poller.updateGame();
+                if(args.length == 1 && args[0].equals("--fake-poller")) {
+                    ServerPoller poller = new ServerPoller(testProxy, 15);
+                    poller.updateGame();
+                }
 				
 				PlayerWaitingView playerWaitingView = new PlayerWaitingView();
 				final PlayerWaitingController playerWaitingController = new PlayerWaitingController(
@@ -156,7 +158,10 @@ public class Catan extends JFrame
 				loginView.setController(loginController);
 
                 // TODO: enable when ready for testing
-				loginController.start();
+                if(args.length == 0)
+				    loginController.start();
+                if(args.length <= 1 && !args[0].equals("--fake-poller"))
+				    loginController.start();
 			}
 		});
 	}
