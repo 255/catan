@@ -160,7 +160,7 @@ public class Catan extends JFrame
                 // TODO: enable when ready for testing
                 if(args.length == 0)
 				    loginController.start();
-                if(args.length <= 1 && !args[0].equals("--fake-poller"))
+                else if(args.length == 1 && !args[0].equals("--fake-poller"))
 				    loginController.start();
 			}
 		});
