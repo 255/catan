@@ -590,7 +590,7 @@
     "ore": 22
   },
   "turnTracker": {
-    "status": "SecondRound",
+    "status": "Discarding",
     "currentTurn": 0,
     "longestRoad": -1,
     "largestArmy": -1
