@@ -288,8 +288,8 @@ public class ServerProxy implements IServerProxy {
         json.addProperty("type", "maritimeTrade");
         json.addProperty("playerIndex", playerIndex);
         json.addProperty("ratio", ratio);
-        json.addProperty("inputResource", input.name());
-        json.addProperty("outputResource", output.name());
+        json.addProperty("inputResource", input.name().toLowerCase());
+        json.addProperty("outputResource", output.name().toLowerCase());
 
         String response = m_httpCommunicator.post("/moves/maritimeTrade", json.toString());
 
@@ -350,8 +350,8 @@ public class ServerProxy implements IServerProxy {
         JsonObject json = new JsonObject();
         json.addProperty("type", "Year_of_Plenty");
         json.addProperty("playerIndex", playerIndex);
-        json.addProperty("resource1", resource1.name());
-        json.addProperty("resource2", resource2.name());
+        json.addProperty("resource1", resource1.name().toLowerCase());
+        json.addProperty("resource2", resource2.name().toLowerCase());
 
         String response = m_httpCommunicator.post("/moves/Year_of_Plenty", json.toString());
 
@@ -428,7 +428,7 @@ public class ServerProxy implements IServerProxy {
     public String playMonopoly(int playerIndex, ResourceType resource) throws NetworkException {
         JsonObject json = new JsonObject();
         json.addProperty("type", "Monopoly");
-        json.addProperty("resource", resource.name());
+        json.addProperty("resource", resource.name().toLowerCase());
         json.addProperty("playerIndex", playerIndex);
 
         String response = m_httpCommunicator.post("/moves/Monopoly", json.toString());

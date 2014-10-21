@@ -247,7 +247,18 @@ public class CatanMap implements ICatanMap {
         edge = edge.getNormalizedLocation();
 
         // roads must be placed on the map, not on top of another road, and not next to a town
-        return isOnMap(edge) && !m_roads.containsKey(edge) && getAdjacentTowns(edge).isEmpty();
+        if (!isOnMap(edge) || m_roads.containsKey(edge) || !getAdjacentTowns(edge).isEmpty()) {
+            return false;
+        }
+
+        // make sure that a settlement can be placed next to the road
+        for (VertexLocation vertex : edge.getAdjacentVertices()) {
+            if (canPlaceSettlementWithoutRoad(vertex)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -305,6 +316,24 @@ public class CatanMap implements ICatanMap {
     public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex) {
         vertex = vertex.getNormalizedLocation();
 
+        if (!canPlaceSettlementWithoutRoad(vertex)) {
+            return false;
+        }
+
+        // check that the player has a road connecting to this vertex
+        for (IRoad road : getAdjacentRoads(vertex)) {
+            if (player.equals(road.getOwner())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /* Check if the vertex is a valid location for a settlement, without checking if there is a road to it */
+    private boolean canPlaceSettlementWithoutRoad(VertexLocation vertex) {
+        vertex = vertex.getNormalizedLocation();
+
         // check if the vertex is occupied
         if (m_towns.containsKey(vertex)) {
             return false;
@@ -320,14 +349,7 @@ public class CatanMap implements ICatanMap {
             return false;
         }
 
-        // check that the player has a road connecting to this vertex
-        for (IRoad road : getAdjacentRoads(vertex)) {
-            if (player.equals(road.getOwner())) {
-                return true;
-            }
-        }
-
-        return false;
+        return true;
     }
 
     /**
