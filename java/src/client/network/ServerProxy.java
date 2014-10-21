@@ -178,7 +178,7 @@ public class ServerProxy implements IServerProxy {
         JsonObject roadLocObject = new JsonObject();
         roadLocObject.addProperty("x", edgeLoc.getHexLoc().getX());
         roadLocObject.addProperty("y", edgeLoc.getHexLoc().getY());
-        roadLocObject.addProperty("direction", edgeLoc.getDir().name());
+        roadLocObject.addProperty("direction", edgeLoc.getDir().toAbbreviation());
         json.add("roadLocation", roadLocObject);
         json.addProperty("free", free);
 
@@ -206,7 +206,7 @@ public class ServerProxy implements IServerProxy {
         JsonObject vertexLocObject = new JsonObject();
         vertexLocObject.addProperty("x", location.getHexLoc().getX());
         vertexLocObject.addProperty("y", location.getHexLoc().getY());
-        vertexLocObject.addProperty("direction", location.getDir().name());
+        vertexLocObject.addProperty("direction", location.getDir().toAbbreviation());
         json.add("vertexLocation", vertexLocObject);
         json.addProperty("free", free);
 
@@ -232,7 +232,7 @@ public class ServerProxy implements IServerProxy {
         JsonObject vertexLocObject = new JsonObject();
         vertexLocObject.addProperty("x", location.getHexLoc().getX());
         vertexLocObject.addProperty("y", location.getHexLoc().getY());
-        vertexLocObject.addProperty("direction", location.getDir().name());
+        vertexLocObject.addProperty("direction", location.getDir().toAbbreviation());
         json.add("vertexLocation", vertexLocObject);
 
         String response = m_httpCommunicator.post("/moves/buildCity", vertexLocObject.toString());

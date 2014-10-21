@@ -7,7 +7,8 @@ public enum EdgeDirection {
 	private EdgeDirection opposite;
     private EdgeDirection clockwise;
     private EdgeDirection counterclockwise;
-	
+    private String abbreviation;
+
 	static {
 		NorthWest.opposite = SouthEast;
 		North.opposite = South;
@@ -29,6 +30,13 @@ public enum EdgeDirection {
         SouthEast.counterclockwise = NorthEast;
         South.counterclockwise     = SouthEast;
         SouthWest.counterclockwise = South;
+
+        NorthWest.abbreviation = "NW";
+		North.abbreviation     = "N";
+		NorthEast.abbreviation = "NE";
+		SouthEast.abbreviation = "SE";
+		South.abbreviation     = "S";
+		SouthWest.abbreviation = "SW";
 	}
 	
 	public EdgeDirection getOppositeDirection() {
@@ -78,6 +86,14 @@ public enum EdgeDirection {
             case "N" : return North;
             default:   throw new IllegalArgumentException("Illegal EdgeDirection abbreviation \"" + abbr + "\"");
         }
+    }
+
+    /**
+     * Convert an EdgeDirection to its abbreviated string.
+     * @return the correct enum abbreviation
+     */
+    public String toAbbreviation() {
+        return this.abbreviation;
     }
 }
 

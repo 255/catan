@@ -5,7 +5,8 @@ public enum VertexDirection
 	West, NorthWest, NorthEast, East, SouthEast, SouthWest;
 	
 	private VertexDirection opposite;
-	
+    private String abbreviation;
+
 	static
 	{
 		West.opposite = East;
@@ -14,6 +15,13 @@ public enum VertexDirection
 		East.opposite = West;
 		SouthEast.opposite = NorthWest;
 		SouthWest.opposite = NorthEast;
+
+        West.abbreviation      = "W";
+		NorthWest.abbreviation = "NW";
+		NorthEast.abbreviation = "NE";
+		East.abbreviation      = "E";
+		SouthEast.abbreviation = "SE";
+		SouthWest.abbreviation = "SW";
 	}
 	
 	public VertexDirection getOppositeDirection()
@@ -37,6 +45,14 @@ public enum VertexDirection
             default:
                 throw new IllegalArgumentException("Illegal VertexDirection abbreviation \"" + abbr + "\"");
         }
+    }
+
+    /**
+     * Convert a string to an EdgeDirection.
+     * @return the correct enum
+     */
+    public String toAbbreviation() {
+        return this.abbreviation;
     }
 
     public EdgeDirection[] getNeighboringEdgeDirections() {
