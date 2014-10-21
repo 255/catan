@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import client.base.IAction;
+import shared.definitions.CatanColor;
+import shared.model.Game;
 
 
 @SuppressWarnings("serial")
@@ -25,18 +27,21 @@ public class GameStatePanel extends JPanel
 		Font font = button.getFont();
 		Font newFont = font.deriveFont(font.getStyle(), 20);
 		button.setFont(newFont);
-		
+
 		button.setPreferredSize(new Dimension(400, 50));
-		
+
 		this.add(button);
 		
-		updateGameState("Waiting for other Players", false);
+		updateGameState("Waiting for other Players", false, CatanColor.WHITE);
 	}
 	
-	public void updateGameState(String stateMessage, boolean enable)
+	public void updateGameState(String stateMessage, boolean enable, CatanColor playerColor)
 	{
 		button.setText(stateMessage);
 		button.setEnabled(enable);
+        if (enable) {
+            button.setBackground(playerColor.getJavaColor());
+        }
 	}
 	
 	public void setButtonAction(final IAction action)

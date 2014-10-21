@@ -53,6 +53,10 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
                             GameModelFacade.getInstance().playerHasLongestRoad(pl)
                         );
         }
+
+        String gameState = Game.getInstance().localPlayerIsPlaying() ? "Finish Turn" : "Waiting for Other Players";
+
+        getView().updateGameState(gameState, Game.getInstance().localPlayerIsPlaying());
 	}
 
     @Override
