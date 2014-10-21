@@ -61,7 +61,25 @@ public class DiscardController extends Controller implements IDiscardController 
 
 	@Override
 	public void discard() {
+        // start with nothing to discard
+        woodDiscard = 0;
+        brickDiscard = 0;
+        sheepDiscard = 0;
+        wheatDiscard = 0;
+        oreDiscard = 0;
+
+        // if the local player has mot discarded, open the discard overlay
         boolean localNeedToDiscard = Game.getInstance().getLocalPlayer().needsToDiscard();
+        if(localNeedToDiscard) {
+            getDiscardView().showModal();
+        }
+        // if the local player does not need to discard, open the wait view
+        else {
+            getWaitView().showModal();
+        }
+        // when the poller returns, initFromModel will be run again
+
+        //boolean localNeedToDiscard = Game.getInstance().getLocalPlayer().needsToDiscard();
 
         // if the local player needs to discard and the modal is showing, discard counts and close modal
         if(getDiscardView().isModalShowing() && localNeedToDiscard) {
@@ -97,32 +115,13 @@ public class DiscardController extends Controller implements IDiscardController 
 	}
 
     private void initFromModel() {
-        // check that the state is set to DISCARDING - might not need this
+        // check that the state is set to DISCARDING
         if(Game.getInstance().getGameState() != GameState.DISCARDING) {
             // close all discarding modals
             if(getWaitView().isModalShowing()) getWaitView().closeModal();
             if(getDiscardView().isModalShowing()) getDiscardView().closeModal();
             return;
         }
-
-        // if the local player has mot discarded, open the discard overlay
-        boolean localNeedToDiscard = Game.getInstance().getLocalPlayer().needsToDiscard();
-        if(localNeedToDiscard) {
-            getDiscardView().showModal();
-        }
-        // if the local player does not need to discard, open the wait view
-        else {
-            getWaitView().showModal();
-        }
-        // when the poller returns, initFromModel will be run again
-
-
-        // start with nothing to discard
-        woodDiscard = 0;
-        brickDiscard = 0;
-        sheepDiscard = 0;
-        wheatDiscard = 0;
-        oreDiscard = 0;
     }
 
     @Override
