@@ -120,7 +120,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         getTradeView().enableMaritimeTrade(false);
 
         // if the local player is not playing, return
-        if(!Game.getInstance().isLocalPlayersTurn()) {
+        if(!Game.getInstance().localPlayerIsPlaying()) {
             return;
         }
 
