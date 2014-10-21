@@ -10,7 +10,6 @@ import shared.model.IPlayer;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -26,8 +25,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
     private Game m_game;
 
-    private IGameAdministrator m_admin;
-    private GameInfo m_joinGame;
+    //private GameInfo m_joinGame;
 
 	public PlayerWaitingController(IPlayerWaitingView view) {
 
@@ -35,7 +33,6 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
         m_game = Game.getInstance();
         m_game.addObserver(this);
-//        m_admin = GameAdministrator.getInstance();
 	}
 
 	@Override
@@ -51,7 +48,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 //        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
 
         try {
-            getView().setAIChoices(m_admin.listAI());
+            getView().setAIChoices(GameAdministrator.getInstance().listAI());
         } catch (NetworkException | IOException ex1) {
             logger.finer("When attempting to list AI's, this error was thrown: " + ex1.getMessage());
         }
@@ -64,7 +61,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	@Override
 	public void addAI() {
         try {
-            m_admin.addAI(getView().getSelectedAI());
+            GameAdministrator.getInstance().addAI(getView().getSelectedAI());
         } catch (NetworkException ex) {
             logger.finer("When adding an AI, this error was thrown: " + ex.getMessage());
         }
