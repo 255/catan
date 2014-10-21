@@ -41,6 +41,8 @@ public class GameStatePanel extends JPanel
 		button.setEnabled(enable);
         if (enable) {
             button.setBackground(playerColor.getJavaColor());
+            button.setContentAreaFilled(false);
+            button.setOpaque(true);
         }
 	}
 	
@@ -48,14 +50,17 @@ public class GameStatePanel extends JPanel
 	{
 		ActionListener[] listeners = button.getActionListeners();
 		for(ActionListener listener : listeners) {
-			button.removeActionListener(listener);
+            button.setBackground(Color.white);
 		}
 		
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				action.execute();
+				button.setBackground(Color.white);
+                button.setContentAreaFilled(false);
+                button.setOpaque(true);
+                action.execute();
 			}
 		};
 		button.addActionListener(actionListener);
