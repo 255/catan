@@ -174,5 +174,5 @@ public interface IGame {
      */
     public boolean isLocalPlayersTurn();
 
-    boolean gameHasStarted();
+    public boolean gameHasStarted();
 }

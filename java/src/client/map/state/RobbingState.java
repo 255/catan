@@ -12,7 +12,8 @@ import java.util.Collection;
  * The state for when the player is robbing.
  */
 public class RobbingState extends MapState {
-    HexLocation m_newRobberLocation = null;
+    private HexLocation m_newRobberLocation = null;
+    private boolean m_startedRobbing = true;
 
     /**
      * This method is called by the Rob View when a player to rob is selected
@@ -69,7 +70,10 @@ public class RobbingState extends MapState {
      */
     @Override
     public void initializeDialogs(MapController controller) {
-        controller.startMove(PieceType.ROBBER);
+        if (!m_startedRobbing) {
+            m_startedRobbing = true;
+            controller.startMove(PieceType.ROBBER);
+        }
     }
 
     /**

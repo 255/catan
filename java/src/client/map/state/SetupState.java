@@ -12,8 +12,12 @@ import shared.model.ServerModelFacade;
 /**
  * The setup state for the first or second round.
  * It is the local player's turn and the game state is first or second round.
+ * This class is abstract: the concrete first or second round classes implement it.
+ * This is done so that the classes go through the same sequence.
  */
-public class SetupState extends MapState {
+public abstract class SetupState extends MapState {
+    private boolean m_startedPlaceRoad = false;
+
     /**
      * This method is called when the user requests to place a piece on the map
      * (road, city, or settlement)
@@ -61,8 +65,11 @@ public class SetupState extends MapState {
      */
     @Override
     public void initializeDialogs(MapController controller) {
-        // place initial road
-        controller.startMove(PieceType.ROAD);
+        // place initial road if the dialog is not already showing
+        if (!m_startedPlaceRoad) {
+            m_startedPlaceRoad = true;
+            controller.startMove(PieceType.ROAD);
+        }
     }
 
     /**

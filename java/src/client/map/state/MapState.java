@@ -25,7 +25,7 @@ public abstract class MapState implements IMapState {
     public static MapState determineState(IGame game) {
         assert game != null : "Game is null! How did that happen?";
 
-        if (game.isNotInitialized() || !game.isLocalPlayersTurn()) {
+        if (game.isNotInitialized() || !game.gameHasStarted() || !game.isLocalPlayersTurn()) {
             logger.finer("MapState is NotPlaying.");
             return new NotPlayingState();
         }
@@ -35,9 +35,11 @@ public abstract class MapState implements IMapState {
                     logger.finer("MapState is Playing.");
                     return new PlayingState();
                 case FIRST_ROUND:
+                    logger.finer("MapState is FirstRound");
+                    return new FirstRoundState();
                 case SECOND_ROUND:
-                    logger.finer("MapState is Setup.");
-                    return new SetupState();
+                    logger.finer("MapState is SecondRound");
+                    return new SecondRoundState();
                 case ROBBING:
                     logger.finer("MapState is Robbing.");
                     return new RobbingState();

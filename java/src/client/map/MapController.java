@@ -91,7 +91,10 @@ public class MapController extends Controller implements IMapController {
         getView().placeRobber(map.getRobber());
 
         // determine the state
-        m_state = MapState.determineState(game);
+        IMapState nextState = MapState.determineState(game);
+        if (nextState.getClass() != m_state.getClass()) {
+            m_state = nextState;
+        }
         m_state.initializeDialogs(this);
         logger.exiting("client.map.MapController", "initFromModel");
 	}

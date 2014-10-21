@@ -170,6 +170,12 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
     public void update(Observable o, Object arg) {
         logger.entering("client.domestic.DomesticTradeController", "update");
 
+        if (!Game.getInstance().gameHasStarted()) {
+            logger.finer("Game has not started yet, not initializing.");
+            logger.exiting("client.domestic.DomesticTradeController", "update");
+            return;
+        }
+
         // initialize players list only once
         if (m_needToInitializePlayersList) {
             getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(Game.getInstance().getNonLocalPlayers()));
@@ -184,7 +190,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
             if (Game.getInstance().localPlayerIsOfferingTrade()) {
                 waitOverlay.showModal();
             }
-            else {
+            else if (waitOverlay.isModalShowing()) {
                 waitOverlay.closeModal();
             }
         }

@@ -4,6 +4,7 @@ import client.base.*;
 import client.data.GameInfo;
 import client.data.PlayerInfo;
 import client.network.*;
+import shared.model.CatanConstants;
 import shared.model.Game;
 import shared.model.IPlayer;
 
@@ -51,13 +52,13 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
         try {
             getView().setAIChoices(m_admin.listAI());
-        } catch (NetworkException ex1) {
+        } catch (NetworkException | IOException ex1) {
             logger.finer("When attempting to list AI's, this error was thrown: " + ex1.getMessage());
-        } catch (IOException ex2) {
-            logger.finer("When attempting to list AI's, this error was thrown: " + ex2.getMessage());
         }
 
-        getView().showModal();
+        if (!Game.getInstance().gameHasStarted()) {
+            getView().showModal();
+        }
 	}
 
 	@Override
@@ -77,6 +78,10 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             players[i] = new PlayerInfo(playerList.get(i).getId(), playerList.get(i).getIndex(), playerList.get(i).getName(), playerList.get(i).getColor());
         }
         getView().setPlayers(players);
+
+        if (Game.getInstance().gameHasStarted() && getView().isModalShowing()) {
+            getView().closeModal();
+        }
     }
 
 //    public void updatePlayers() {

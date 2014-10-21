@@ -207,17 +207,12 @@ public class JoinGameController extends Controller implements IJoinGameControlle
                 for (int j = 0; j < players.size(); j++) {
                     if (players.get(j).getId() != -1) {
                         tempGame.addPlayer(new PlayerInfo(players.get(j).getId(), players.get(j).getPlayerIndex(), players.get(j).getName(), players.get(j).getColor()));
-                        System.out.println("Name: " + players.get(j).getName());
-                        System.out.println("Id: " + players.get(j).getId());
                     }
                 }
                 games[i] = tempGame;
             }
 
             PlayerInfo player = new PlayerInfo(m_admin.getLocalPlayerId(), -1, m_admin.getLocalPlayerName(), null);
-
-            System.out.println("Player Name: " + player.getName());
-            System.out.println("Player Id: " + player.getId());
 
             getJoinGameView().setGames(games, player);
         } catch (NetworkException e) {

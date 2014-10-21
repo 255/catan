@@ -210,7 +210,7 @@ public class ServerProxy implements IServerProxy {
         json.add("vertexLocation", vertexLocObject);
         json.addProperty("free", free);
 
-        String response = m_httpCommunicator.post("/moves/buildSettlement", vertexLocObject.toString());
+        String response = m_httpCommunicator.post("/moves/buildSettlement", json.toString());
 
         return response;
     }
