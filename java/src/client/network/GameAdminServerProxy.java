@@ -65,7 +65,7 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
 
     @Override
     public String listAI() throws NetworkException {
-        return m_httpCommunicator.get("/games/listAI");
+        return m_httpCommunicator.get("/game/listAI");
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GameAdminServerProxy implements IGameAdminServerProxy {
         JsonObject json = new JsonObject();
         json.addProperty("AIType", name);
 
-        String response = m_httpCommunicator.post("/games/addAI", json.toString());
+        String response = m_httpCommunicator.post("/game/addAI", json.toString());
 
         return response;
     }

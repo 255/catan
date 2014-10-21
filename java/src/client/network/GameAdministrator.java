@@ -1,7 +1,5 @@
 package client.network;
 
-import com.google.gson.JsonObject;
-import client.network.NetworkException;
 import com.google.gson.stream.JsonReader;
 import shared.definitions.CatanColor;
 import client.data.*;
@@ -69,9 +67,15 @@ public class GameAdministrator implements IGameAdministrator {
     }
 
     @Override
-    public String[] listAI() throws NetworkException, IOException {
+    public String[] listAI() throws NetworkException {
         JsonReader reader = new JsonReader(new StringReader(m_gameAdminServerProxy.listAI()));
-        return readAIPlayers(reader);
+
+        try {
+            return readAIPlayers(reader);
+        }
+        catch (IOException e) {
+            throw new NetworkException(e);
+        }
     }
 
     @Override

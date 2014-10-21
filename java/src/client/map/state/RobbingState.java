@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 public class RobbingState extends MapState {
     private HexLocation m_newRobberLocation = null;
-    private boolean m_startedRobbing = true;
+    private boolean m_startedRobbing = false;
 
     /**
      * This method is called by the Rob View when a player to rob is selected

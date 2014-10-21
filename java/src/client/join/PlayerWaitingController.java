@@ -1,15 +1,13 @@
 package client.join;
 
 import client.base.*;
-import client.data.GameInfo;
 import client.data.PlayerInfo;
 import client.network.*;
-import shared.model.CatanConstants;
 import shared.model.Game;
 import shared.model.IPlayer;
 
-import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -49,8 +47,8 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
         try {
             getView().setAIChoices(GameAdministrator.getInstance().listAI());
-        } catch (NetworkException | IOException ex1) {
-            logger.finer("When attempting to list AI's, this error was thrown: " + ex1.getMessage());
+        } catch (NetworkException e) {
+            logger.log(Level.WARNING, "When attempting to list AI's, this error was thrown: " + e.getMessage(), e);
         }
 
         if (!Game.getInstance().gameHasStarted()) {
@@ -69,15 +67,18 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
     @Override
     public void update(Observable o, Object arg) {
-        List<IPlayer> playerList = m_game.getPlayers();
-        PlayerInfo[] players = new PlayerInfo[playerList.size()];
-        for (int i = 0; i < playerList.size(); i++) {
-            players[i] = new PlayerInfo(playerList.get(i).getId(), playerList.get(i).getIndex(), playerList.get(i).getName(), playerList.get(i).getColor());
+        if (Game.getInstance().gameHasStarted()) {
+            if (getView().isModalShowing()) {
+                getView().closeModal();
+            }
         }
-        getView().setPlayers(players);
-
-        if (Game.getInstance().gameHasStarted() && getView().isModalShowing()) {
-            getView().closeModal();
+        else {
+            List<IPlayer> playerList = m_game.getPlayers();
+            PlayerInfo[] players = new PlayerInfo[playerList.size()];
+            for (int i = 0; i < playerList.size(); i++) {
+                players[i] = new PlayerInfo(playerList.get(i).getId(), playerList.get(i).getIndex(), playerList.get(i).getName(), playerList.get(i).getColor());
+            }
+            getView().setPlayers(players);
         }
     }
 
