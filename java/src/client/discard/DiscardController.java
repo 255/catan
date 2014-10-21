@@ -161,12 +161,10 @@ public class DiscardController extends Controller implements IDiscardController 
         List<IPlayer> players = Game.getInstance().getPlayers();
         int localIndex = Game.getInstance().getLocalPlayer().getIndex();
         for(IPlayer p : players) {
-            // if a player still needs to discard, leave the modal showing
             if(p.needsToDiscard() && p.getIndex() != localIndex) {
                 return false;
             }
         }
-
         return true;
     }
 }
