@@ -48,14 +48,25 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 //        int secondsBetweenPolls = c_defaultPollingInterval;
 //        m_timer = new Timer();
 //        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
-		getView().showModal();
+
+        try {
+            getView().setAIChoices(m_admin.listAI());
+        } catch (NetworkException ex1) {
+            logger.finer("When attempting to list AI's, this error was thrown: " + ex1.getMessage());
+        } catch (IOException ex2) {
+            logger.finer("When attempting to list AI's, this error was thrown: " + ex2.getMessage());
+        }
+
+        getView().showModal();
 	}
 
 	@Override
 	public void addAI() {
-
-		// TEMPORARY
-		getView().closeModal();
+        try {
+            m_admin.addAI(getView().getSelectedAI());
+        } catch (NetworkException ex) {
+            logger.finer("When adding an AI, this error was thrown: " + ex.getMessage());
+        }
 	}
 
     @Override

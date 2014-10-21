@@ -67,7 +67,7 @@ public interface IGameAdministrator {
      *
      * @return list of names of AI players as strings.
      */
-    public List<String> listAI() throws NetworkException, IOException;
+    public String[] listAI() throws NetworkException, IOException;
 
     /**
      * Adds an AI player to the game you are currently in

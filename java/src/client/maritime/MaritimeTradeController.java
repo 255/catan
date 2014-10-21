@@ -1,6 +1,5 @@
 package client.maritime;
 
-import com.sun.xml.internal.ws.wsdl.writer.document.Port;
 import shared.definitions.*;
 import client.base.*;
 import shared.model.*;
