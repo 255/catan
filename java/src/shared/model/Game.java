@@ -316,8 +316,13 @@ public class Game extends Observable implements IGame {
 
     @Override
     public boolean localPlayerIsPlacingInitialPieces() {
-        return localPlayerAndGameState(GameState.FIRST_ROUND)
-               || localPlayerAndGameState(GameState.SECOND_ROUND);
+        return gameHasStarted()
+               && (localPlayerAndGameState(GameState.FIRST_ROUND) || localPlayerAndGameState(GameState.SECOND_ROUND));
+    }
+
+    @Override
+    public boolean gameHasStarted() {
+        return m_players.size() == CatanConstants.NUM_PLAYERS;
     }
 
     private boolean localPlayerAndGameState(GameState state) {

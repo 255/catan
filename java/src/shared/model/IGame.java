@@ -173,4 +173,6 @@ public interface IGame {
      * @return true if it is the local player's turn
      */
     public boolean isLocalPlayersTurn();
+
+    boolean gameHasStarted();
 }
