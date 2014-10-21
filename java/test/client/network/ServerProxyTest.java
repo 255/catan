@@ -33,7 +33,8 @@ public class ServerProxyTest {
 
     @Test
     public void testSendChat() throws Exception {
-        IGameAdministrator gameAdmin = new GameAdministrator(m_gameAdminProxy);
+        IGameAdministrator gameAdmin = GameAdministrator.getInstance();
+        gameAdmin.setGameAdminServerProxy(m_gameAdminProxy);
 
         String response = m_serverProxy.sendChat(0, "Test Message");
         assertNotNull("Should have returned game state.", response);

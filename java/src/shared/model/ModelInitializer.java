@@ -40,6 +40,11 @@ public class ModelInitializer implements IModelInitializer {
             logger.fine("ModelInitializer was called with null JSON.");
             return;
         }
+        else if (json.isEmpty()) {
+            logger.warning("ModelInitializer was called with empty JSON.");
+            return;
+        }
+        logger.finer("ModelInitializer data: " + json);
         assert json != null;
 
         // read in the players first since they are referenced by other elements in JSON
@@ -72,7 +77,6 @@ public class ModelInitializer implements IModelInitializer {
             logger.finer("Local player is " + localPlayer.getName() + " (" + localPlayer.getColor() + ")");
             newGame.setLocalPlayer(localPlayer);
 
-            // TODO: set other Game object pointers (e.g. Game pointers in GUI)
             ((Game)newGame).notifyObservers(); // TODO: have the game handle this itself
             logger.finest("Notified " + newGame.countObservers() + " about model update.");
         }

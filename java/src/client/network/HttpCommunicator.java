@@ -33,6 +33,21 @@ public class HttpCommunicator implements IHttpCommunicator {
     private String m_playerName;
     private int m_playerId;
 
+    /** Read all of the bytes in an input into a string */
+    private String readInputStream(InputStream is) throws IOException {
+        final int BUFFER_SIZE = 2048;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        StringBuilder sb = new StringBuilder();
+
+        // read the stream in BUFFER_SIZE chunks until it is empty
+        int bytesRead;
+        while ((bytesRead = is.read(buffer, 0, buffer.length)) != -1) {
+            sb.append(new String(buffer, 0, bytesRead));
+        }
+
+        return sb.toString();
+    }
+
     @Override
     public String get(String commandName) throws NetworkException {
         logger.entering("client.network.HttpCommunicator", "get");
@@ -48,7 +63,12 @@ public class HttpCommunicator implements IHttpCommunicator {
             connection = (HttpURLConnection)url.openConnection();
 
             if (m_userCookie != null) {
-                connection.setRequestProperty("Cookie", "catan.user=" + m_gameIdCookie);
+                if (m_gameIdCookie != null) {
+                    connection.setRequestProperty("Cookie", "catan.user=" + m_userCookie + "; " + "catan.game=" + m_gameIdCookie);
+                }
+                else {
+                    connection.setRequestProperty("Cookie", "catan.game=" + m_gameIdCookie);
+                }
             }
 
             connection.setRequestMethod((HTTP_GET));
@@ -56,11 +76,8 @@ public class HttpCommunicator implements IHttpCommunicator {
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 if (connection.getContentLength() != 0) {
-                    InputStream inputStream = connection.getInputStream();
-                    byte[] buffer = new byte[inputStream.available()];
-                    inputStream.read(buffer);
+                    response = readInputStream(connection.getInputStream());
                     connection.getInputStream().close();
-                    response = new String(buffer);
                 }
             } else {
                 return null;
@@ -72,6 +89,8 @@ public class HttpCommunicator implements IHttpCommunicator {
             connection.disconnect();
             logger.exiting("client.network.HttpCommunicator", "get");
         }
+
+        logger.finer("Response: " + response);
 
         return response;
     }
@@ -103,9 +122,9 @@ public class HttpCommunicator implements IHttpCommunicator {
             connection.getOutputStream().close();
 
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = connection.getInputStream();
-                byte[] buffer = new byte[inputStream.available()];
-                inputStream.read(buffer);
+                response = readInputStream(connection.getInputStream());
+                connection.getInputStream().close();
+
                 if (commandName.equals("/user/login") || commandName.equals("/user/register")) {
                     String cookie = connection.getHeaderFields().get("Set-cookie").get(0);
                     cookie = cookie.substring(11, cookie.length() - 8);
@@ -119,9 +138,6 @@ public class HttpCommunicator implements IHttpCommunicator {
                     cookie = cookie.substring(11, cookie.length() - 8);
                     m_gameIdCookie = cookie;
                 }
-                connection.getInputStream().close();
-                response = new String(buffer);
-
             } else {
                 return null;
             }

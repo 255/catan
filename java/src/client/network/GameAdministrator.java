@@ -47,7 +47,13 @@ public class GameAdministrator implements IGameAdministrator {
 
     @Override
     public List<GameInfo> listGames() throws NetworkException, IOException {
-        JsonReader reader = new JsonReader(new StringReader(m_gameAdminServerProxy.listGames()));
+        String gamesList = m_gameAdminServerProxy.listGames();
+
+        if (gamesList == null || gamesList.isEmpty()) {
+            throw new NetworkException("Received %s response for list games.".format(gamesList == null ? "null" : "empty"));
+        }
+
+        JsonReader reader = new JsonReader(new StringReader(gamesList));
         return readGameList(reader);
     }
 
