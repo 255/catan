@@ -61,13 +61,6 @@ public class DiscardController extends Controller implements IDiscardController 
 
 	@Override
 	public void discard() {
-        // start with nothing to discard
-        woodDiscard = 0;
-        brickDiscard = 0;
-        sheepDiscard = 0;
-        wheatDiscard = 0;
-        oreDiscard = 0;
-
         // if the local player has mot discarded, open the discard overlay
         boolean localNeedToDiscard = Game.getInstance().getLocalPlayer().needsToDiscard();
         if(localNeedToDiscard) {
@@ -114,6 +107,12 @@ public class DiscardController extends Controller implements IDiscardController 
         getWaitView().closeModal();
 	}
 
+    @Override
+    public void update(Observable o, Object arg) {
+        initFromModel();
+    }
+
+    // run once, do not open modals in this method
     private void initFromModel() {
         // check that the state is set to DISCARDING
         if(Game.getInstance().getGameState() != GameState.DISCARDING) {
@@ -122,12 +121,18 @@ public class DiscardController extends Controller implements IDiscardController 
             if(getDiscardView().isModalShowing()) getDiscardView().closeModal();
             return;
         }
+
+        //TODO fix discard controller
+
+        // start with nothing to discard
+        woodDiscard = 0;
+        brickDiscard = 0;
+        sheepDiscard = 0;
+        wheatDiscard = 0;
+        oreDiscard = 0;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        initFromModel();
-    }
+
 
     //************************//
     // Private Helper Methods //

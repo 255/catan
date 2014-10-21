@@ -1,10 +1,11 @@
 package client.maritime;
 
+import com.sun.xml.internal.ws.wsdl.writer.document.Port;
 import shared.definitions.*;
 import client.base.*;
 import shared.model.*;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
@@ -21,6 +22,9 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	private IMaritimeTradeOverlay tradeOverlay;
     private ResourceType m_gettingResource;
     private ResourceType m_givingResource;
+    private final int TYPE_THRESHOLD = 2;
+    private final int GENERIC_THRESHOLD = 3;
+    private final int STANDARD_THRESHOLD = 4;
 
 	public MaritimeTradeController(IMaritimeTradeView tradeView, IMaritimeTradeOverlay tradeOverlay) {
 		
@@ -46,9 +50,6 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 
 	@Override
 	public void startTrade() {
-        // If this method is run, the player has ports and resources to trade
-        // initFromModel() has set the appropriate buttons
-
 		getTradeOverlay().showModal();
 	}
 
@@ -69,40 +70,45 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         try {
             ServerModelFacade.getInstance().maritimeTrade(ratio, m_givingResource, m_gettingResource);
         } catch (ModelException e) {
-            logger.fine("ERROR: MaritimeTrade failed in the makeTrade() method");
+            logger.fine("ERROR: MaritimeTrade failed in the makeTrade() method.  Server Error?");
         }
 
-        unsetGetValue();
-        unsetGiveValue();
+        initFromModel();
         getTradeOverlay().closeModal();
 	}
 
 	@Override
 	public void cancelTrade() {
-        unsetGetValue();
-        unsetGiveValue();
-
+        initFromModel();
 		getTradeOverlay().closeModal();
 	}
 
 	@Override
 	public void setGetResource(ResourceType resource) {
         m_gettingResource = resource;
+        getTradeOverlay().selectGetOption(resource, 1);
+        getTradeOverlay().setTradeEnabled(true);
 	}
 
 	@Override
 	public void setGiveResource(ResourceType resource) {
         m_givingResource = resource;
+        getTradeOverlay().selectGiveOption(resource, determineAmount(resource));
+        getTradeOverlay().showGetOptions(ResourceType.values());
 	}
 
 	@Override
 	public void unsetGetValue() {
         m_gettingResource = null;
+        getTradeOverlay().showGetOptions(ResourceType.values());
+        getTradeOverlay().setTradeEnabled(false);
 	}
 
 	@Override
 	public void unsetGiveValue() {
         m_givingResource = null;
+        getTradeOverlay().hideGetOptions();
+        getTradeOverlay().showGiveOptions(canGiveOptions());
 	}
 
     @Override
@@ -111,31 +117,65 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
     }
 
     private void initFromModel() {
-        unsetGetValue();
-        unsetGiveValue();
-
-        // button is disabled until Maritime Trade is proven a valid action
+        // buttons and choices are disabled until Maritime Trade is proven a valid action
         getTradeView().enableMaritimeTrade(false);
 
         // if the local player is not playing, return
         if(!Game.getInstance().isLocalPlayersTurn()) {
             return;
         }
-        else {
-            // if the local player doesn't have ports, return
-            Set<PortType> ports = GameModelFacade.getInstance().getPlayerPorts();
-            if(ports.size() > 0) {
-                return;
-            }
-        }
+
+        // set up the modal based on the player's resources and ports
+        resetModal();
+        setUpModal();
 
         // if the if statements above are true, then re-enable the button
         getTradeView().enableMaritimeTrade(true);
     }
 
+
+
     //************************//
     // Private Helper Methods //
     //************************//
+    private void setUpModal() {
+        getTradeOverlay().setTradeEnabled(false);
+        getTradeOverlay().showGiveOptions(canGiveOptions());
+    }
+
+    private ResourceType[] canGiveOptions() {
+        List<ResourceType> rTypes = new ArrayList<>();
+        for(ResourceType r : ResourceType.values()) {
+            if(canGive(r)) {
+                rTypes.add(r);
+            }
+        }
+        return rTypes.toArray(new ResourceType[5]);
+    }
+
+    private boolean canGive(ResourceType r) {
+        IResourceBank rb = GameModelFacade.getInstance().getPlayerResources();
+
+        if(hasPort(convertRTypeToPType(r))) {
+            return (rb.getCount(r) >= TYPE_THRESHOLD);
+        }
+        else if(hasPort(PortType.THREE)) {
+            return (rb.getCount(r) >= GENERIC_THRESHOLD);
+        }
+        else {
+            return (rb.getCount(r) >= STANDARD_THRESHOLD);
+        }
+    }
+
+    private boolean hasPort(PortType p) {
+        Set<PortType> ports = GameModelFacade.getInstance().getPlayerPorts();
+        for(PortType pt : ports) {
+            if(pt == p)
+                return true;
+        }
+        return false;
+    }
+
     private PortType convertRTypeToPType(ResourceType r) {
         switch (r) {
             case WOOD: return PortType.WOOD;
@@ -145,6 +185,25 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
             case ORE: return PortType.ORE;
             default: return null;
         }
+    }
+
+    private int determineAmount(ResourceType r) {
+        if(hasPort(convertRTypeToPType(r))) {
+            return TYPE_THRESHOLD;
+        }
+        else if(hasPort(PortType.THREE)) {
+            return GENERIC_THRESHOLD;
+        }
+        else {
+            return STANDARD_THRESHOLD;
+        }
+    }
+
+    private void resetModal() {
+        unsetGetValue();
+        unsetGiveValue();
+        getTradeOverlay().showGiveOptions(ResourceType.values());
+        getTradeOverlay().hideGetOptions();
     }
 }
 
