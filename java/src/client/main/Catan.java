@@ -103,6 +103,16 @@ public class Catan extends JFrame
 			public void run()
 			{
 				new Catan();
+
+                IHttpCommunicator communicator = new HttpCommunicator();
+                GameAdminServerProxy gameAdminProxy = new GameAdminServerProxy(communicator);
+                GameAdministrator.getInstance().setGameAdminServerProxy(gameAdminProxy);
+
+                TestServerProxy testProxy = new TestServerProxy();
+                ServerProxy proxy = new ServerProxy(communicator);
+                ServerModelFacade.getInstance().setServerProxy(proxy);
+                //ServerPoller poller = new ServerPoller(testProxy, 15);
+                //poller.updateGame();
 				
 				PlayerWaitingView playerWaitingView = new PlayerWaitingView();
 				final PlayerWaitingController playerWaitingController = new PlayerWaitingController(
@@ -122,7 +132,8 @@ public class Catan extends JFrame
 					@Override
 					public void execute()
 					{
-						playerWaitingController.start();
+						new ServerPoller(proxy).updateGame();
+                        playerWaitingController.start();
 					}
 				});
 				joinView.setController(joinController);
@@ -147,16 +158,6 @@ public class Catan extends JFrame
 
                 // TODO: enable when ready for testing
 				loginController.start();
-
-                IHttpCommunicator communicator = new HttpCommunicator();
-                GameAdminServerProxy gameAdminProxy = new GameAdminServerProxy(communicator);
-                GameAdministrator.getInstance().setGameAdminServerProxy(gameAdminProxy);
-
-                TestServerProxy testProxy = new TestServerProxy();
-                ServerProxy proxy = new ServerProxy(communicator);
-                ServerModelFacade.getInstance().setServerProxy(proxy);
-                //ServerPoller poller = new ServerPoller(testProxy, 15);
-                //poller.updateGame();
 			}
 		});
 	}
