@@ -63,6 +63,21 @@ public interface IGameAdministrator {
     public GameInfo createGame(boolean randomTiles, boolean randomNumbers, boolean randomPorts, String gameName) throws NetworkException, IOException;
 
     /**
+     * Returns a list of AI players to choose from
+     *
+     * @return list of names of AI players as strings.
+     */
+    public List<String> listAI() throws NetworkException, IOException;
+
+    /**
+     * Adds an AI player to the game you are currently in
+     *
+     * @param nameOfAI name of AI player to add to the game
+     * @return flag indicating whether adding the AI player was successful
+     */
+    public boolean addAI(String nameOfAI) throws NetworkException;
+
+    /**
      * Gets the name of the local player
      *
      * @return local player name

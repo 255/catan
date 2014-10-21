@@ -69,6 +69,19 @@ public class GameAdministrator implements IGameAdministrator {
     }
 
     @Override
+    public List<String> listAI() throws NetworkException, IOException {
+        JsonReader reader = new JsonReader(new StringReader(m_gameAdminServerProxy.listAI()));
+        return readAIPlayers(reader);
+    }
+
+    @Override
+    public boolean addAI(String nameOfAI) throws NetworkException {
+        String response = m_gameAdminServerProxy.addAI(nameOfAI);
+
+        return response != null;
+    }
+
+    @Override
     public String getLocalPlayerName() {
         return m_gameAdminServerProxy.getLocalPlayerName();
     }
@@ -150,5 +163,17 @@ public class GameAdministrator implements IGameAdministrator {
         reader.endObject();
 
         return playerInfo;
+    }
+
+    private List<String> readAIPlayers(JsonReader reader) throws IOException {
+        reader.beginArray();
+
+        List<String> players = new ArrayList<String>();
+
+        while (reader.hasNext()) {
+            players.add(reader.nextString());
+        }
+
+        return players;
     }
 }
