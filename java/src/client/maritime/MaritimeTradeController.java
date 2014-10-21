@@ -5,6 +5,7 @@ import client.base.*;
 import shared.model.*;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -45,12 +46,8 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 
 	@Override
 	public void startTrade() {
-        // Assuming player has ports and resources to trade
-
-        // quit if it is not the player's turn
-        if(Game.getInstance().getGameState() == GameState.PLAYING) {
-            return;
-        }
+        // If this method is run, the player has ports and resources to trade
+        // initFromModel() has set the appropriate buttons
 
 		getTradeOverlay().showModal();
 	}
@@ -116,7 +113,24 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
     private void initFromModel() {
         unsetGetValue();
         unsetGiveValue();
-        if(!getTradeOverlay().isModalShowing()) getTradeOverlay().showModal();
+
+        // button is disabled until Maritime Trade is proven a valid action
+        getTradeView().enableMaritimeTrade(false);
+
+        // if the local player is not playing, return
+        if(!Game.getInstance().isLocalPlayersTurn()) {
+            return;
+        }
+        else {
+            // if the local player doesn't have ports, return
+            Set<PortType> ports = GameModelFacade.getInstance().getPlayerPorts();
+            if(ports.size() > 0) {
+                return;
+            }
+        }
+
+        // if the if statements above are true, then re-enable the button
+        getTradeView().enableMaritimeTrade(true);
     }
 
     //************************//
