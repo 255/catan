@@ -202,6 +202,17 @@ public class ResourceBank implements IResourceBank {
     }
 
     @Override
+    public boolean containsResources() {
+        for (ResourceType type : ResourceType.values()) {
+            if (getCount(type) > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
     public IResourceBank negate() {
         return new ResourceBank(
                 -m_wood,

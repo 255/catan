@@ -289,7 +289,7 @@ public class ServerModelFacade implements IServerModelFacade {
     public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException {
         IPlayer p = Game.getInstance().getLocalPlayer();
 
-        if (!p.canAfford(offer) || !Game.getInstance().localPlayerIsPlaying()) {
+        if (!p.canAfford(offer) || !Game.getInstance().localPlayerIsPlaying() || !offer.containsResources()) {
             throw new ModelException("Preconditions for action not met.");
         }
 

@@ -362,12 +362,12 @@ public class GameModelFacade implements IGameModelFacade {
 
     @Override
     public boolean playerHasLongestRoad(IPlayer player) {
-        return player.equals(Game.getInstance().getLargestArmy());
+        return player.equals(Game.getInstance().getLongestRoad());
     }
 
     @Override
     public boolean playerHasLargestArmy(IPlayer player) {
-        return player.equals(Game.getInstance().getLongestRoad());
+        return player.equals(Game.getInstance().getLargestArmy());
     }
 
     @Override

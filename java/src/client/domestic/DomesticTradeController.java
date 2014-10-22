@@ -188,7 +188,9 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
             // player sent a trade: keep the dialog open
             if (Game.getInstance().localPlayerIsOfferingTrade()) {
-                waitOverlay.showModal();
+                if (!waitOverlay.isModalShowing()) {
+                    waitOverlay.showModal();
+                }
             }
             else if (waitOverlay.isModalShowing()) {
                 waitOverlay.closeModal();
@@ -246,7 +248,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
                 getTradeOverlay().setStateMessage("select the resources you want to trade");
             }
             else {
-                getTradeOverlay().setStateMessage("choose your trading partner");
+                getTradeOverlay().setStateMessage("choose with whom you want to trade");
             }
         }
     }
@@ -294,6 +296,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         RECEIVE,
     }
 
+    /** A resource and a type (sending / receiving) */
     private static class PendingResourceOffer {
         public int amount;
         public OfferType type;
@@ -304,6 +307,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         }
     }
 
+    /** the current state of the trade offer */
     private static class PendingOffer extends HashMap<ResourceType, PendingResourceOffer> {
         public PendingOffer() {
             for (ResourceType resourceType : ResourceType.values()) {
@@ -325,13 +329,21 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         }
 
         public boolean hasTradeSet() {
+            boolean sending   = false;
+            boolean receiving = false;
+
             for (PendingResourceOffer offer : values()) {
-                if (offer.amount > 0 && offer.type != OfferType.NONE) {
-                    return true;
+                if (offer.amount > 0) {
+                    if (offer.type == OfferType.SEND) {
+                        sending = true;
+                    }
+                    else if (offer.type == OfferType.RECEIVE) {
+                        receiving = true;
+                    }
                 }
             }
 
-            return false;
+            return sending && receiving;
         }
 
         // convert the pending offer to a resource bank
