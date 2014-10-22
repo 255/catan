@@ -62,6 +62,8 @@ public interface IPlayer {
      */
     public boolean needsToDiscard();
 
+    public boolean hasDiscarded();
+
     public boolean hasPlayedDevCard();
 
     /**

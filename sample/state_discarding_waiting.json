@@ -340,11 +340,11 @@
   "players": [
     {
       "resources": {
-        "brick": 5,
-        "wood": 5,
-        "sheep": 5,
-        "wheat": 5,
-        "ore": 5
+        "brick": 1,
+        "wood": 1,
+        "sheep": 1,
+        "wheat": 1,
+        "ore": 1
       },
       "oldDevCards": {
         "yearOfPlenty": 1,
@@ -367,7 +367,7 @@
       "victoryPoints": 2,
       "monuments": 0,
       "playedDevCard": false,
-      "discarded": false,
+      "discarded": true,
       "playerID": 0,
       "playerIndex": 0,
       "name": "Sam",
@@ -472,7 +472,7 @@
       "victoryPoints": 2,
       "monuments": 0,
       "playedDevCard": false,
-      "discarded": false,
+      "discarded": true,
       "playerID": 11,
       "playerIndex": 3,
       "name": "Mark",

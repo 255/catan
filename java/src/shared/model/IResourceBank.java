@@ -30,7 +30,7 @@ public interface IResourceBank {
 
     /**
      * Subtract one of the specified resource from the resource bank.
-     * @param resource the bundle of resources to remove from the bank
+     * @param resource the type of resource to remove from the bank
      */
     public void decrement(ResourceType resource);
 

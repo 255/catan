@@ -165,6 +165,11 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public boolean hasDiscarded() {
+        return m_discarded;
+    }
+
+    @Override
     public boolean hasPlayedDevCard() {
         return m_playedDevCard;
     }

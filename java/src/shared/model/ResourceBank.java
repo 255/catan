@@ -167,11 +167,11 @@ public class ResourceBank implements IResourceBank {
     @Override
     public void increment(ResourceType resource) {
         switch (resource) {
-            case WOOD:  m_wood++;
-            case BRICK: m_brick++;
-            case SHEEP: m_sheep++;
-            case WHEAT: m_wheat++;
-            case ORE:   m_ore++;
+            case WOOD:  m_wood++; break;
+            case BRICK: m_brick++; break;
+            case SHEEP: m_sheep++; break;
+            case WHEAT: m_wheat++; break;
+            case ORE:   m_ore++; break;
         }
     }
 
@@ -183,11 +183,11 @@ public class ResourceBank implements IResourceBank {
     @Override
     public void decrement(ResourceType resource) {
         switch (resource) {
-            case WOOD:  m_wood--;
-            case BRICK: m_brick--;
-            case SHEEP: m_sheep--;
-            case WHEAT: m_wheat--;
-            case ORE:   m_ore--;
+            case WOOD:  m_wood--; break;
+            case BRICK: m_brick--; break;
+            case SHEEP: m_sheep--; break;
+            case WHEAT: m_wheat--; break;
+            case ORE:   m_ore--; break;
         }
     }
 
