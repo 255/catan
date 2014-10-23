@@ -3,6 +3,7 @@ package client.points;
 import client.base.*;
 import shared.model.Game;
 import shared.model.GameModelFacade;
+import shared.model.GameState;
 
 import java.util.Observable;
 import java.util.logging.Logger;
@@ -45,11 +46,11 @@ public class PointsController extends Controller implements IPointsController {
 	}
 
 	private void initFromModel() {
-        if (!Game.getInstance().isNotInitialized()) {
-            getPointsView().setPoints(GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints());
-        } else {
-            logger.fine("Game was not initialized");
+        if (Game.getInstance().getWinner() != null) {
+            getFinishedView().setWinner(Game.getInstance().getWinner().getName(), Game.getInstance().getWinner().equals(Game.getInstance().getLocalPlayer()));
+            getFinishedView().showModal();
         }
+        getPointsView().setPoints(GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints());
     }
 
     @Override
