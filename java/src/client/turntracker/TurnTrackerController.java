@@ -17,12 +17,15 @@ import java.util.logging.Logger;
 public class TurnTrackerController extends Controller implements ITurnTrackerController {
 
     private final static Logger logger = Logger.getLogger("catan");
+    private boolean m_playersInitialized;
 
 	public TurnTrackerController(ITurnTrackerView view) {
 		
 		super(view);
 
         Game.getInstance().addObserver(this);
+
+        m_playersInitialized = false;
 	}
 	
 	@Override
@@ -39,13 +42,21 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
         }
     }
 	
+    @Override
+    public void update(Observable o, Object arg) {
+        initFromModel();
+    }
+
 	private void initFromModel() {
         // get the list of players
         List<IPlayer> players = Game.getInstance().getPlayers();
 
         // iterate through them and set up their box on the tracker
         for(IPlayer pl : players) {
-            getView().initializePlayer(pl.getIndex(), pl.getName(), pl.getColor());
+            // first round initializes the turn tracker
+            if (!m_playersInitialized) {
+                getView().initializePlayer(pl.getIndex(), pl.getName(), pl.getColor());
+            }
             getView().updatePlayer(
                             pl.getIndex(),
                             pl.getVictoryPoints(),
@@ -54,6 +65,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
                             GameModelFacade.getInstance().playerHasLongestRoad(pl)
                         );
         }
+        m_playersInitialized = true;
 
         String gameState;
         if (Game.getInstance().localPlayerIsPlaying()) {
@@ -80,10 +92,5 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 
         getView().updateGameState(gameState, Game.getInstance().localPlayerIsPlaying());
 	}
-
-    @Override
-    public void update(Observable o, Object arg) {
-        initFromModel();
-    }
 }
 

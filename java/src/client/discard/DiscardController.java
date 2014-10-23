@@ -67,6 +67,7 @@ public class DiscardController extends Controller implements IDiscardController 
                     " method. Server Network Error?");
         }
 
+        // when the local player finishes discarding, bring up the appropriate modal
         if(everyoneHasDiscarded()) {
             getDiscardView().closeThisModal();
             getWaitView().closeThisModal();
@@ -138,7 +139,9 @@ public class DiscardController extends Controller implements IDiscardController 
     }
 
     private void enableIncDecButtons(ResourceType r) {
-        if(discardRb.getCount(r) <= 0)
+        if(discardRb.getCount(r) == 0 && playerBank.getCount(r) == 0)
+            getDiscardView().setResourceAmountChangeEnabled(r, false, false);
+        else if(discardRb.getCount(r) <= 0)
             getDiscardView().setResourceAmountChangeEnabled(r, true, false);
         else if (discardRb.getCount(r) >= playerBank.getCount(r))
             getDiscardView().setResourceAmountChangeEnabled(r, false, true);
