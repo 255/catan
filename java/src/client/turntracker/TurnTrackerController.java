@@ -38,7 +38,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
         try {
             ServerModelFacade.getInstance().finishTurn();
         } catch (Exception e) {
-            logger.log(Level.WARNING, "ERROR ending turn! See endTurn() in the TurnTrackerController.", e);
+            logger.log(Level.WARNING, "ERROR: See endTurn() in the TurnTrackerController.", e);
         }
     }
 	
