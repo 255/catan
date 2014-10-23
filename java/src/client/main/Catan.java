@@ -35,7 +35,7 @@ public class Catan extends JFrame
      */
     private static void initializeLog() {
         try {
-            final Level logLevel = Level.FINEST;
+            final Level logLevel = Level.FINE;
 
             logger = Logger.getLogger("catan");
             logger.setLevel(logLevel);

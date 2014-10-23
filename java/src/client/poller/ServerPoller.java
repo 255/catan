@@ -6,8 +6,9 @@ import shared.model.IModelInitializer;
 import shared.model.ModelException;
 import shared.model.ModelInitializer;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,7 +21,7 @@ public class ServerPoller implements IServerPoller {
     private final static Logger logger = Logger.getLogger("catan");
 
     private static final int c_millisecondsPerSecond = 1000;
-    private static final int c_defaultPollingInterval = 3;
+    private static final int c_defaultPollingSeconds = 3;
 
     private IServerProxy m_serverProxy;
     private IModelInitializer m_modelSerializer;
@@ -28,14 +29,20 @@ public class ServerPoller implements IServerPoller {
     private int m_pollCount = 0;
 
     public ServerPoller(IServerProxy serverProxy) {
-        this(serverProxy, c_defaultPollingInterval);
+        this(serverProxy, c_defaultPollingSeconds);
     }
 
     public ServerPoller(IServerProxy serverProxy, int secondsBetweenPolls) {
         m_serverProxy = serverProxy;
         m_modelSerializer = new ModelInitializer();
-        m_timer = new Timer();
-        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
+        m_timer = new Timer(c_defaultPollingSeconds * c_millisecondsPerSecond, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateGame();
+                ++m_pollCount;
+            }
+        });
+        m_timer.start();
     }
     @Override
     public void updateGame() {
@@ -49,13 +56,6 @@ public class ServerPoller implements IServerPoller {
     @Override
     public void setProxy(IServerProxy serverProxy) {
         m_serverProxy = serverProxy;
-    }
-
-    class QueryTask extends TimerTask {
-        public void run() {
-           updateGame();
-           ++m_pollCount;
-        }
     }
 
     public int getPollCount() {

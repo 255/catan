@@ -56,7 +56,7 @@ public class PointsController extends Controller implements IPointsController {
         }
 
         // only set up to 10 points so that the view doesn't get angry at us
-        int points = GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints();
+        int points = Game.getInstance().getLocalPlayer().getVictoryPoints();
         assert points >= 0;
 
         if (points <= CatanConstants.VICTORY_POINTS_TO_WIN) {

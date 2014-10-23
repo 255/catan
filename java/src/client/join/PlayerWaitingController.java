@@ -17,14 +17,15 @@ import java.util.logging.Logger;
 public class PlayerWaitingController extends Controller implements IPlayerWaitingController, Observer {
     private final static Logger logger = Logger.getLogger("catan");
 
-    private Game m_game;
+    PlayerInfo[] m_previousPlayers;
 
 	public PlayerWaitingController(IPlayerWaitingView view) {
 
 		super(view);
 
-        m_game = Game.getInstance();
-        m_game.addObserver(this);
+        m_previousPlayers = null;
+
+        Game.getInstance().addObserver(this);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
         try {
             GameAdministrator.getInstance().addAI(getView().getSelectedAI());
         } catch (NetworkException ex) {
-            logger.finer("When adding an AI, this error was thrown: " + ex.getMessage());
+            logger.log(Level.WARNING, "When adding an AI, this error was thrown: " + ex.getMessage(), ex);
         }
 	}
 
@@ -64,17 +65,16 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
         if (Game.getInstance().gameHasStarted()) {
             if (getView().isModalShowing()) {
                 getView().closeThisModal();
+                m_previousPlayers = null;
             }
         }
         else {
-            List<IPlayer> playerList = m_game.getPlayers();
-            PlayerInfo[] players = new PlayerInfo[playerList.size()];
-            for (int i = 0; i < playerList.size(); i++) {
-                players[i] = new PlayerInfo(playerList.get(i).getId(), playerList.get(i).getIndex(), playerList.get(i).getName(), playerList.get(i).getColor());
-                System.out.println("Player: " + playerList.get(i).getName());
+            List<IPlayer> playerList = Game.getInstance().getPlayers();
+            PlayerInfo[] players = PlayerInfo.fromPlayers(playerList);
+            if (m_previousPlayers == null || !Arrays.equals(m_previousPlayers, players)) {
+                getView().setPlayers(players);
+                m_previousPlayers = players;
             }
-
-            getView().setPlayers(players);
         }
     }
 }
