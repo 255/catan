@@ -44,6 +44,12 @@ public class OverlayView extends PanelView implements IOverlayView
 	 */
 	public void showModal()
 	{
+        assert !isModalShowing() : "You are adding a modal that is already showing! (%s) That causes problems!".format(this.toString());
+        // TODO: assertions don't work when debugging?!
+        if (isModalShowing()) {
+            throw new RuntimeException("You are displaying a modal that is already showing! (%s) That causes problems!".format(this.toString()));
+        }
+
 		// Open the new overlay
 		JPanel overlayPanel = new JPanel();
 		overlayPanel.setLayout(new BorderLayout());
@@ -99,7 +105,6 @@ public class OverlayView extends PanelView implements IOverlayView
 	 */
 	public void closeTopModal()
 	{
-		
 		assert overlayStack.size() > 0;
 		assert window.getGlassPane() == overlayStack.peek().getOverlayPanel();
 		
@@ -129,7 +134,7 @@ public class OverlayView extends PanelView implements IOverlayView
     @Override
 	public void closeThisModal() {
 		assert overlayStack.size() > 0;
-		assert window.getGlassPane() == overlayStack.peek().getOverlayPanel();
+		//assert window.getGlassPane() == overlayStack.peek().getOverlayPanel();
 
 		if (this == overlayStack.peek().getOverlayView()) {
 			overlayStack.pop().getOverlayPanel().setVisible(false);
@@ -143,17 +148,22 @@ public class OverlayView extends PanelView implements IOverlayView
 				window.getGlassPane().setVisible(false);
 			}
 		}
-        else {
+        //else {
             Iterator<OverlayInfo> info = overlayStack.iterator();
-            info.next(); // skipped the first -- already checked it
+            if (info.hasNext()) {
+                info.next(); // skipped the first -- already checked it
 
-            while (info.hasNext()) {
-                if (this == info.next().getOverlayView()) {
-                    info.remove();
-                    // keep checking -- remove duplicate overlays
+                while (info.hasNext()) {
+                    if (this == info.next().getOverlayView()) {
+                        info.remove();
+                        this.setVisible(false);
+                        window.setGlassPane(defaultGlassPane);
+                        // there are others showing -- do make anything else visible
+                        // keep checking -- remove duplicate overlays
+                    }
                 }
             }
-        }
+        //}
 	}
 	
 	/**

@@ -114,7 +114,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
         try {
             ServerModelFacade.getInstance().offerTrade(m_tradeOffer.toResourceBank(), m_recipient);
-            getWaitOverlay().showModal();
+            // waiting modal is opened automatically when the new client model initializes
         }
         catch (ModelException e) {
             logger.log(Level.WARNING, "Sending trade offer failed.", e);
@@ -185,6 +185,12 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
             getTradeOverlay().setCancelEnabled(true); //just to be sure -- this never needs to be disabled
         }
 
+        initializeDialogs();
+
+        logger.exiting("client.domestic.DomesticTradeController", "update");
+    }
+
+    private void initializeDialogs() {
         // initialize the buttons and dialogs
         if (Game.getInstance().localPlayerIsPlaying()) {
             getTradeView().enableDomesticTrade(true);
@@ -207,8 +213,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
                 initializeAcceptOverlay();
             }
         }
-
-        logger.exiting("client.domestic.DomesticTradeController", "update");
     }
 
     private void initializeAcceptOverlay() {
