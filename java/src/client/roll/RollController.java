@@ -66,7 +66,7 @@ public class RollController extends Controller implements IRollController {
         if (Game.getInstance().localPlayerIsRolling()) {
             IRollView view = getRollView();
             if (!view.isModalShowing()) {
-                view.closeTopModal();
+                //view.closeTopModal();
                 view.setMessage("Roll the dice!");
                 view.showModal();
             }

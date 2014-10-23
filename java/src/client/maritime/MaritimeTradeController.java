@@ -124,7 +124,6 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         // set up the modal based on the player's resources and ports
         if(!getTradeOverlay().isModalShowing()) {
             resetModal();
-            setUpModal();
         }
 
         // if the if statements above are true, then re-enable the button
@@ -202,6 +201,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         unsetGiveValue();
         getTradeOverlay().showGiveOptions(ResourceType.values());
         getTradeOverlay().hideGetOptions();
+        setUpModal();
     }
 }
 
