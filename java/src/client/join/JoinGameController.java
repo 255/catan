@@ -108,9 +108,9 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void start() {
-        int secondsBetweenPolls = c_defaultPollingInterval;
-        m_timer = new Timer();
-        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
+//        int secondsBetweenPolls = c_defaultPollingInterval;
+//        m_timer = new Timer();
+//        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
 
         getGames();
 
@@ -245,9 +245,9 @@ public class JoinGameController extends Controller implements IJoinGameControlle
         public void run() {
 //            getJoinGameView().closeModal();
             if (getJoinGameView().isModalShowing() && !getNewGameView().isModalShowing() && !getSelectColorView().isModalShowing() && !getMessageView().isModalShowing()) {
-                getJoinGameView().closeThisModal();
-                getGames();
-                getJoinGameView().showModal();
+//                getJoinGameView().closeThisModal();
+//                getGames();
+//                getJoinGameView().showModal();
             }
 
             if (m_joinGame != null && getSelectColorView().isModalShowing()) {
