@@ -86,9 +86,11 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void startTrade() {
         logger.entering("client.domestic.DomesticTradeController", "startTrade");
+
+        getTradeOverlay().reset();
+
         m_tradeOffer = new PendingOffer();
         updateButtons();
-        getTradeOverlay().setCancelEnabled(true);
 
 		getTradeOverlay().showModal();
         logger.exiting("client.domestic.DomesticTradeController", "startTrade");
@@ -108,7 +110,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void sendTradeOffer() {
-        getTradeOverlay().setCancelEnabled(false); //TODO: determine if need this
 		getTradeOverlay().closeModal();
 
         try {
@@ -177,9 +178,11 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         }
 
         // initialize players list only once
+        // TODO: what if player changes color?
         if (m_needToInitializePlayersList) {
             getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(Game.getInstance().getNonLocalPlayers()));
             m_needToInitializePlayersList = false;
+            getTradeOverlay().setCancelEnabled(true); //just to be sure -- this never needs to be disabled
         }
 
         // initialize the buttons and dialogs

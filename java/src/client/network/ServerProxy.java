@@ -104,7 +104,7 @@ public class ServerProxy implements IServerProxy {
     @Override
     public String acceptTrade(int playerIndex, boolean willAccept) throws NetworkException {
         JsonObject json = new JsonObject();
-        json.addProperty("type", "willAccept");
+        json.addProperty("type", "acceptTrade");
         json.addProperty("playerIndex", playerIndex);
         json.addProperty("willAccept", willAccept);
 
