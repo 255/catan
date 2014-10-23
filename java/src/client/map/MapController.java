@@ -90,6 +90,9 @@ public class MapController extends Controller implements IMapController {
 
         getView().placeRobber(map.getRobber());
 
+        // drop the island in the ocean
+        addWaterTiles();
+
         // determine the state
         IMapState nextState = MapState.determineState(game);
         if (nextState.getClass() != m_state.getClass()) {
@@ -177,6 +180,38 @@ public class MapController extends Controller implements IMapController {
         logger.entering("client.map.MapController", "update", o);
         initFromModel();
         logger.exiting("client.map.MapController", "update");
+    }
+
+    /* Add water tiles around the island */
+    private void addWaterTiles() {
+        final int MAX = 3;
+        final int MIN = -3;
+
+        // the east shore
+        for (int y = 0; y >= MIN; --y) {
+            getView().addHex(new HexLocation(MAX, y), HexType.WATER);
+        }
+
+        // the west shore
+        for (int y = 0; y <= MAX; ++y) {
+            getView().addHex(new HexLocation(MIN, y), HexType.WATER);
+        }
+
+        // NE and SW water, excluding completed corners
+        for (int x = 0; x <= MAX-1; ++x) {
+            getView().addHex(new HexLocation( x, MIN), HexType.WATER);
+            getView().addHex(new HexLocation(-x, MAX), HexType.WATER);
+        }
+
+        // NW and SE, excluding completed corners
+        int y = MAX-1;
+        int x = 1;
+        while (x <= MAX-1 && y >= 1) {
+            getView().addHex(new HexLocation( x,  y), HexType.WATER);
+            getView().addHex(new HexLocation(-x, -y), HexType.WATER);
+            --y;
+            ++x;
+        }
     }
 }
 
