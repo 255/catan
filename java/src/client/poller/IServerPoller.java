@@ -24,6 +24,16 @@ public interface IServerPoller {
     public void setProxy(IServerProxy serverProxy);
 
     /**
+     * Starts polling the server
+     */
+    public void startPolling();
+
+    /**
+     * Stops polling the server
+     */
+    public void stopPolling();
+
+    /**
      * Returns how many times the server poller has polled the server
      *
      * @return poll count

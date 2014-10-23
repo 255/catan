@@ -8,6 +8,7 @@ import client.join.*;
 import client.misc.*;
 import client.base.*;
 import client.network.*;
+import client.points.GameFinishedView;
 import client.poller.ServerPoller;
 import shared.model.ServerModelFacade;
 
@@ -112,7 +113,9 @@ public class Catan extends JFrame
                 ServerProxy proxy = new ServerProxy(communicator);
                 ServerModelFacade.getInstance().setServerProxy(proxy);
                 if(args.length == 1 && args[0].equals("--fake-poller")) {
-                    ServerPoller poller = new ServerPoller(testProxy, 15);
+                    ServerPoller poller = ServerPoller.getInstance();
+                    poller.setProxy(testProxy);
+                    poller.startPolling();
                     poller.updateGame();
                 }
 				
@@ -134,7 +137,8 @@ public class Catan extends JFrame
 					@Override
 					public void execute()
 					{
-						new ServerPoller(proxy).updateGame();
+                        ServerPoller.getInstance().setProxy(proxy);
+                        ServerPoller.getInstance().updateGame();
                         playerWaitingController.start();
 					}
 				});

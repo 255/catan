@@ -13,7 +13,10 @@ public class ServerPollerTest {
     @org.junit.Test
     public void testUpdateGame() throws Exception {
         m_mockServerProxy = new TestServerProxy();
-        m_serverPoller = new ServerPoller(m_mockServerProxy);
+        m_serverPoller = ServerPoller.getInstance();
+        m_serverPoller.setProxy(m_mockServerProxy);
+        m_serverPoller.startPolling();
+
         Thread.sleep(10000);
 
         assertEquals("Poller should have polled 3 times in 10 seconds", 3, m_serverPoller.getPollCount());

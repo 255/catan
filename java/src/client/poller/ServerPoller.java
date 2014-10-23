@@ -28,12 +28,17 @@ public class ServerPoller implements IServerPoller {
     private Timer m_timer;
     private int m_pollCount = 0;
 
-    public ServerPoller(IServerProxy serverProxy) {
-        this(serverProxy, c_defaultPollingSeconds);
+    private static ServerPoller m_serverPoller = null;
+
+    public static ServerPoller getInstance() {
+        if (m_serverPoller == null) {
+            m_serverPoller = new ServerPoller();
+        }
+
+        return m_serverPoller;
     }
 
-    public ServerPoller(IServerProxy serverProxy, int secondsBetweenPolls) {
-        m_serverProxy = serverProxy;
+    private ServerPoller() {
         m_modelSerializer = new ModelInitializer();
         m_timer = new Timer(c_defaultPollingSeconds * c_millisecondsPerSecond, new ActionListener() {
             @Override
@@ -42,8 +47,36 @@ public class ServerPoller implements IServerPoller {
                 ++m_pollCount;
             }
         });
+    }
+
+    public void setServerProxy(IServerProxy serverProxy) {
+        m_serverProxy = serverProxy;
+    }
+
+    public void startPolling() {
         m_timer.start();
     }
+
+    public void stopPolling() {
+        m_timer.stop();
+    }
+
+//    public ServerPoller(IServerProxy serverProxy) {
+//        this(serverProxy, c_defaultPollingSeconds);
+//    }
+//
+//    public ServerPoller(IServerProxy serverProxy, int secondsBetweenPolls) {
+//        m_serverProxy = serverProxy;
+//        m_modelSerializer = new ModelInitializer();
+//        m_timer = new Timer(c_defaultPollingSeconds * c_millisecondsPerSecond, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                updateGame();
+//                ++m_pollCount;
+//            }
+//        });
+//        m_timer.start();
+//    }
     @Override
     public void updateGame() {
         try {

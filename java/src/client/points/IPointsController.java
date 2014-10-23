@@ -7,7 +7,6 @@ import client.base.*;
  */
 public interface IPointsController extends IController
 {   
-	
-	// EMPTY
+	public void gameFinishedModalClosed();
 }
 

@@ -172,8 +172,8 @@
   "players": [
     {
       "resources": {
-        "brick": 0,
-        "wood": 0,
+        "brick": 2,
+        "wood": 2,
         "sheep": 0,
         "wheat": 0,
         "ore": 0
@@ -207,8 +207,8 @@
     },
     {
       "resources": {
-        "brick": 0,
-        "wood": 0,
+        "brick": 2,
+        "wood": 2,
         "sheep": 0,
         "wheat": 0,
         "ore": 0
@@ -242,8 +242,8 @@
     },
     {
       "resources": {
-        "brick": 0,
-        "wood": 0,
+        "brick": 2,
+        "wood": 2,
         "sheep": 0,
         "wheat": 0,
         "ore": 0
@@ -277,8 +277,8 @@
     },
     {
       "resources": {
-        "brick": 0,
-        "wood": 0,
+        "brick": 2,
+        "wood": 2,
         "sheep": 0,
         "wheat": 0,
         "ore": 0
@@ -318,8 +318,8 @@
     "lines": []
   },
   "bank": {
-    "brick": 19,
-    "wood": 19,
+    "brick": 11,
+    "wood": 11,
     "sheep": 19,
     "wheat": 19,
     "ore": 19

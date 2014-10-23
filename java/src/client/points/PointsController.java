@@ -1,10 +1,11 @@
 package client.points;
 
 import client.base.*;
-import shared.model.CatanConstants;
-import shared.model.Game;
-import shared.model.GameModelFacade;
-import shared.model.GameState;
+import client.join.*;
+import client.misc.MessageView;
+import client.network.*;
+import client.poller.ServerPoller;
+import shared.model.*;
 
 import java.util.Observable;
 import java.util.logging.Logger;
@@ -45,6 +46,11 @@ public class PointsController extends Controller implements IPointsController {
 	public void setFinishedView(IGameFinishedView finishedView) {
 		this.finishedView = finishedView;
 	}
+
+    @Override
+    public void gameFinishedModalClosed() {
+
+    }
 
 	private void initFromModel() {
         if (Game.getInstance().getWinner() != null) {
