@@ -68,12 +68,12 @@ public class DiscardController extends Controller implements IDiscardController 
         }
 
         if(everyoneHasDiscarded()) {
-            getDiscardView().closeTopModal();
-            getWaitView().closeTopModal();
+            getDiscardView().closeThisModal();
+            getWaitView().closeThisModal();
             resetModal();
         }
         else{
-            getDiscardView().closeTopModal();
+            getDiscardView().closeThisModal();
             resetModal();
             getWaitView().showModal();
         }

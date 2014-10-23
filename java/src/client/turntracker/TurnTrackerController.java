@@ -7,6 +7,7 @@ import shared.model.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -34,7 +35,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
         try {
             ServerModelFacade.getInstance().finishTurn();
         } catch (Exception e) {
-            logger.finest("ERROR ending turn! See endTurn() in the TurnTrackerController");
+            logger.log(Level.WARNING, "ERROR ending turn! See endTurn() in the TurnTrackerController.", e);
         }
     }
 	

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -69,17 +70,18 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         try {
             ServerModelFacade.getInstance().maritimeTrade(ratio, m_givingResource, m_gettingResource);
         } catch (ModelException e) {
-            logger.fine("ERROR: MaritimeTrade failed in the makeTrade() method.  Server Error?");
+            logger.log(Level.WARNING, "ERROR: MaritimeTrade failed in the makeTrade() method.  Server Error?", e);
         }
 
-        initFromModel();
         getTradeOverlay().closeTopModal();
+        resetModal();
 	}
 
 	@Override
 	public void cancelTrade() {
         initFromModel();
 		getTradeOverlay().closeTopModal();
+        resetModal();
 	}
 
 	@Override
