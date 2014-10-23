@@ -21,16 +21,17 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 //    private static final int c_defaultPollingInterval = 3;
 //    private Timer m_timer;
 
-    private Game m_game;
-
     //private GameInfo m_joinGame;
+
+    PlayerInfo[] m_previousPlayers;
 
 	public PlayerWaitingController(IPlayerWaitingView view) {
 
 		super(view);
 
-        m_game = Game.getInstance();
-        m_game.addObserver(this);
+        m_previousPlayers = null;
+
+        Game.getInstance().addObserver(this);
 	}
 
 	@Override
@@ -44,7 +45,6 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 //        int secondsBetweenPolls = c_defaultPollingInterval;
 //        m_timer = new Timer();
 //        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
-
         try {
             getView().setAIChoices(GameAdministrator.getInstance().listAI());
         } catch (NetworkException e) {
@@ -61,7 +61,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
         try {
             GameAdministrator.getInstance().addAI(getView().getSelectedAI());
         } catch (NetworkException ex) {
-            logger.finer("When adding an AI, this error was thrown: " + ex.getMessage());
+            logger.log(Level.WARNING, "When adding an AI, this error was thrown: " + ex.getMessage(), ex);
         }
 	}
 
@@ -70,16 +70,16 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
         if (Game.getInstance().gameHasStarted()) {
             if (getView().isModalShowing()) {
                 getView().closeThisModal();
+                m_previousPlayers = null;
             }
         }
         else {
-            List<IPlayer> playerList = m_game.getPlayers();
-            PlayerInfo[] players = new PlayerInfo[playerList.size()];
-            for (int i = 0; i < playerList.size(); i++) {
-                players[i] = new PlayerInfo(playerList.get(i).getId(), playerList.get(i).getIndex(), playerList.get(i).getName(), playerList.get(i).getColor());
+            List<IPlayer> playerList = Game.getInstance().getPlayers();
+            PlayerInfo[] players = PlayerInfo.fromPlayers(playerList);
+            if (m_previousPlayers == null || !Arrays.equals(m_previousPlayers, players)) {
+                getView().setPlayers(players);
+                m_previousPlayers = players;
             }
-
-            getView().setPlayers(players);
         }
     }
 
