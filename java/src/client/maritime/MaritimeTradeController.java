@@ -55,7 +55,6 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 
 	@Override
 	public void makeTrade() {
-        Set<PortType> playerPorts = GameModelFacade.getInstance().getPlayerPorts();
         int ratio = 4;
         if (hasPort(PortType.THREE))
             ratio = 3;
