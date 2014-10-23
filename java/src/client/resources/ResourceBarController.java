@@ -85,13 +85,13 @@ public class ResourceBarController extends Controller implements IResourceBarCon
         getView().setElementAmount(ResourceBarElement.WHEAT, resourceCards.getWheat());
         getView().setElementAmount(ResourceBarElement.ORE, resourceCards.getOre());
 
-        getView().setElementEnabled(ResourceBarElement.ROAD, localPlayer.canBuyRoad());
+        getView().setElementEnabled(ResourceBarElement.ROAD, GameModelFacade.getInstance().canBuyRoad());
         getView().setElementAmount(ResourceBarElement.ROAD, localPlayer.getPieceBank().availableRoads());
 
-        getView().setElementEnabled(ResourceBarElement.SETTLEMENT, localPlayer.canBuySettlement());
+        getView().setElementEnabled(ResourceBarElement.SETTLEMENT, GameModelFacade.getInstance().canBuySettlement());
         getView().setElementAmount(ResourceBarElement.SETTLEMENT, localPlayer.getPieceBank().availableSettlements());
 
-        getView().setElementEnabled(ResourceBarElement.CITY, localPlayer.canBuyCity());
+        getView().setElementEnabled(ResourceBarElement.CITY, GameModelFacade.getInstance().canBuyCity());
         getView().setElementAmount(ResourceBarElement.CITY, localPlayer.getPieceBank().availableCities());
 
         getView().setElementEnabled(ResourceBarElement.BUY_CARD, GameModelFacade.getInstance().canBuyDevCard());
