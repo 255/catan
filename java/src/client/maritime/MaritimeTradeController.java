@@ -57,15 +57,10 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	public void makeTrade() {
         Set<PortType> playerPorts = GameModelFacade.getInstance().getPlayerPorts();
         int ratio = 4;
-        for (PortType pt : playerPorts) {
-            if(pt == convertRTypeToPType(m_gettingResource)) {
-                ratio = 2;
-            }
-            else if (pt == PortType.THREE)
-            {
-                ratio = 3;
-            }
-        }
+        if (hasPort(PortType.THREE))
+            ratio = 3;
+        if(hasPort(convertRTypeToPType(m_givingResource)))
+            ratio = 2;
 
         try {
             ServerModelFacade.getInstance().maritimeTrade(ratio, m_givingResource, m_gettingResource);
