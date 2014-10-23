@@ -651,6 +651,8 @@ public class ModelInitializer implements IModelInitializer {
 
     /** Read a town from JSON */
     private ITown readTown(JsonReader reader, String type) throws IOException, ModelException {
+        assert type.equalsIgnoreCase("cities") || type.equalsIgnoreCase("settlements");
+
         IPlayer owner = null;
         VertexLocation vertex = null;
 
@@ -675,7 +677,7 @@ public class ModelInitializer implements IModelInitializer {
             throw new ModelException("Failed reading road.");
         }
 
-        if (type.equals("city")) {
+        if (type.equalsIgnoreCase("cities")) {
             return new City(owner, vertex);
         }
         else {
