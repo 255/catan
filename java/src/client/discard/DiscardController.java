@@ -67,12 +67,15 @@ public class DiscardController extends Controller implements IDiscardController 
                     " method. Server Network Error?");
         }
 
+        // when the local player finishes discarding, bring up the appropriate modal
         if(everyoneHasDiscarded()) {
-            getDiscardView().closeModal();
-            getWaitView().closeModal();
+            getDiscardView().closeThisModal();
+            getWaitView().closeThisModal();
+            resetModal();
         }
         else{
-            getDiscardView().closeModal();
+            getDiscardView().closeThisModal();
+            resetModal();
             getWaitView().showModal();
         }
 	}
@@ -86,23 +89,24 @@ public class DiscardController extends Controller implements IDiscardController 
         // check that the state is set to DISCARDING
         if(Game.getInstance().getGameState() != GameState.DISCARDING) {
             // close all discarding modals
-            if(getWaitView().isModalShowing()) getWaitView().closeModal();
-            if(getDiscardView().isModalShowing()) getDiscardView().closeModal();
+            if(getWaitView().isModalShowing()) getWaitView().closeThisModal();
+            if(getDiscardView().isModalShowing()) getDiscardView().closeThisModal();
         }
         else {
             if(Game.getInstance().getLocalPlayer().needsToDiscard()) {
-                if (!getDiscardView().isModalShowing()) getDiscardView().showModal();
+                if (!getDiscardView().isModalShowing()) {
+                    resetModal();
+                    getDiscardView().showModal();
+                }
 
                 // reset the modal to its default setup
-                resetModal();
             }
             else {
                 // check if everyone has finished discarding
                 if(everyoneHasDiscarded()) {
                     // close all discarding modals
-                    if(getWaitView().isModalShowing()) getWaitView().closeModal();
-                    if(getDiscardView().isModalShowing()) getDiscardView().closeModal();
-                    //TODO: do I need to change the state here?
+                    if(getWaitView().isModalShowing()) getWaitView().closeThisModal();
+                    if(getDiscardView().isModalShowing()) getDiscardView().closeThisModal();
                     return;
                 }
 
@@ -135,7 +139,9 @@ public class DiscardController extends Controller implements IDiscardController 
     }
 
     private void enableIncDecButtons(ResourceType r) {
-        if(discardRb.getCount(r) <= 0)
+        if(discardRb.getCount(r) == 0 && playerBank.getCount(r) == 0)
+            getDiscardView().setResourceAmountChangeEnabled(r, false, false);
+        else if(discardRb.getCount(r) <= 0)
             getDiscardView().setResourceAmountChangeEnabled(r, true, false);
         else if (discardRb.getCount(r) >= playerBank.getCount(r))
             getDiscardView().setResourceAmountChangeEnabled(r, false, true);
@@ -188,7 +194,7 @@ public class DiscardController extends Controller implements IDiscardController 
         for(ResourceType r : ResourceType.values()) {
             getDiscardView().setResourceMaxAmount(r, playerBank.getCount(r));
             getDiscardView().setResourceDiscardAmount(r, 0);
-            getDiscardView().setResourceAmountChangeEnabled(r,true, false);
+            getDiscardView().setResourceAmountChangeEnabled(r, playerBank.getCount(r) > 0, false);
         }
     }
 

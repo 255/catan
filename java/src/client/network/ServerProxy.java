@@ -104,7 +104,7 @@ public class ServerProxy implements IServerProxy {
     @Override
     public String acceptTrade(int playerIndex, boolean willAccept) throws NetworkException {
         JsonObject json = new JsonObject();
-        json.addProperty("type", "willAccept");
+        json.addProperty("type", "acceptTrade");
         json.addProperty("playerIndex", playerIndex);
         json.addProperty("willAccept", willAccept);
 
@@ -175,11 +175,7 @@ public class ServerProxy implements IServerProxy {
         JsonObject json = new JsonObject();
         json.addProperty("type", "buildRoad");
         json.addProperty("playerIndex", playerIndex);
-        JsonObject roadLocObject = new JsonObject();
-        roadLocObject.addProperty("x", edgeLoc.getHexLoc().getX());
-        roadLocObject.addProperty("y", edgeLoc.getHexLoc().getY());
-        roadLocObject.addProperty("direction", edgeLoc.getDir().toAbbreviation());
-        json.add("roadLocation", roadLocObject);
+        json.add("roadLocation", toJSON(edgeLoc));
         json.addProperty("free", free);
 
         String response = m_httpCommunicator.post("/moves/buildRoad", json.toString());
@@ -235,7 +231,7 @@ public class ServerProxy implements IServerProxy {
         vertexLocObject.addProperty("direction", location.getDir().toAbbreviation());
         json.add("vertexLocation", vertexLocObject);
 
-        String response = m_httpCommunicator.post("/moves/buildCity", vertexLocObject.toString());
+        String response = m_httpCommunicator.post("/moves/buildCity", json.toString());
 
         return response;
     }
@@ -373,14 +369,8 @@ public class ServerProxy implements IServerProxy {
         JsonObject json = new JsonObject();
         json.addProperty("type", "Road_Building");
         json.addProperty("playerIndex", playerIndex);
-        JsonObject spot1 = new JsonObject();
-        spot1.addProperty("x", location1.getHexLoc().getX());
-        spot1.addProperty("y", location1.getHexLoc().getY());
-        JsonObject spot2 = new JsonObject();
-        spot2.addProperty("x", location2.getHexLoc().getX());
-        spot2.addProperty("y", location2.getHexLoc().getY());
-        json.add("spot1", spot1);
-        json.add("spot2", spot2);
+        json.add("spot1", toJSON(location1));
+        json.add("spot2", toJSON(location2));
 
         String response = m_httpCommunicator.post("/moves/Road_Building", json.toString());
 
@@ -475,5 +465,17 @@ public class ServerProxy implements IServerProxy {
     @Override
     public int getPlayerId() {
         return m_httpCommunicator.getPlayerId();
+    }
+
+    // Convert an EdgeLocation to JSON
+    private JsonObject toJSON(EdgeLocation location) {
+        assert location != null;
+
+        JsonObject edge = new JsonObject();
+        edge.addProperty("x", location.getHexLoc().getX());
+        edge.addProperty("y", location.getHexLoc().getY());
+        edge.addProperty("direction", location.getDir().toAbbreviation());
+
+        return edge;
     }
 }

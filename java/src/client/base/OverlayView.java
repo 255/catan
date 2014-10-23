@@ -44,6 +44,11 @@ public class OverlayView extends PanelView implements IOverlayView
 	 */
 	public void showModal()
 	{
+        assert !isModalShowing() : "You are adding a modal that is already showing! (%s) That causes problems!".format(this.toString());
+        //if (isModalShowing()) {
+        //  throw new RuntimeException("You are displaying a modal that is already showing! (%s) That causes problems!".format(this.toString()));
+        //
+
 		// Open the new overlay
 		JPanel overlayPanel = new JPanel();
 		overlayPanel.setLayout(new BorderLayout());
@@ -97,9 +102,8 @@ public class OverlayView extends PanelView implements IOverlayView
 	/**
 	 * Hides the top-most overlay
 	 */
-	public void closeModal()
+	public void closeTopModal()
 	{
-		
 		assert overlayStack.size() > 0;
 		assert window.getGlassPane() == overlayStack.peek().getOverlayPanel();
 		
@@ -121,8 +125,47 @@ public class OverlayView extends PanelView implements IOverlayView
 			}
 		}
 	}
-	
+
+
 	/**
+	 * Removes all of this modal's instances from the overlay stack.
+	 */
+    @Override
+	public void closeThisModal() {
+		assert overlayStack.size() > 0;
+		//assert window.getGlassPane() == overlayStack.peek().getOverlayPanel();
+
+		if (this == overlayStack.peek().getOverlayView()) {
+			overlayStack.pop().getOverlayPanel().setVisible(false);
+
+			if (overlayStack.size() > 0) {
+				window.setGlassPane(overlayStack.peek().getOverlayPanel());
+				overlayStack.peek().getOverlayPanel().setVisible(true);
+			}
+			else {
+				window.setGlassPane(defaultGlassPane);
+				window.getGlassPane().setVisible(false);
+			}
+		}
+
+        // If there are any other pointers to this dialog in the stack, remove them
+        Iterator<OverlayInfo> infoIterator = overlayStack.iterator();
+        if (infoIterator.hasNext()) {
+            infoIterator.next(); // skipped the first -- already checked it
+
+            while (infoIterator.hasNext()) {
+                OverlayInfo info = infoIterator.next();
+                if (this == info.getOverlayView()) {
+                    infoIterator.remove();
+                    info.getOverlayPanel().setVisible(false);
+                    break;
+                    // not affecting what's on top of the stack -- don't shouldn't change anything else's visibility
+                }
+            }
+        }
+    }
+
+    /**
 	 * Is the overlay currently showing?
 	 * 
 	 * @return True if overlay is showing, false otherwise

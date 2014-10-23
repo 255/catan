@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -54,32 +55,27 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 
 	@Override
 	public void makeTrade() {
-        Set<PortType> playerPorts = GameModelFacade.getInstance().getPlayerPorts();
         int ratio = 4;
-        for (PortType pt : playerPorts) {
-            if(pt == convertRTypeToPType(m_gettingResource)) {
-                ratio = 2;
-            }
-            else if (pt == PortType.THREE)
-            {
-                ratio = 3;
-            }
-        }
+        if (hasPort(PortType.THREE))
+            ratio = 3;
+        if(hasPort(convertRTypeToPType(m_givingResource)))
+            ratio = 2;
 
         try {
             ServerModelFacade.getInstance().maritimeTrade(ratio, m_givingResource, m_gettingResource);
         } catch (ModelException e) {
-            logger.fine("ERROR: MaritimeTrade failed in the makeTrade() method.  Server Error?");
+            logger.log(Level.WARNING, "ERROR: MaritimeTrade failed in the makeTrade() method.  Server Error?", e);
         }
 
-        initFromModel();
-        getTradeOverlay().closeModal();
+        getTradeOverlay().closeTopModal();
+        resetModal();
 	}
 
 	@Override
 	public void cancelTrade() {
         initFromModel();
-		getTradeOverlay().closeModal();
+		getTradeOverlay().closeTopModal();
+        resetModal();
 	}
 
 	@Override
@@ -125,8 +121,9 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         }
 
         // set up the modal based on the player's resources and ports
-        resetModal();
-        setUpModal();
+        if(!getTradeOverlay().isModalShowing()) {
+            resetModal();
+        }
 
         // if the if statements above are true, then re-enable the button
         getTradeView().enableMaritimeTrade(true);
@@ -203,6 +200,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         unsetGiveValue();
         getTradeOverlay().showGiveOptions(ResourceType.values());
         getTradeOverlay().hideGetOptions();
+        setUpModal();
     }
 }
 

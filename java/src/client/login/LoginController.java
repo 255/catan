@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 
+
 /**
  * Implementation for the login controller
  */
@@ -86,7 +87,7 @@ public class LoginController extends Controller implements ILoginController {
 
 		// If log in succeeded
         if (success) {
-            getLoginView().closeModal();
+            getLoginView().closeTopModal();
             loginAction.execute();
         } else {
             getMessageView().showModal();
@@ -118,7 +119,7 @@ public class LoginController extends Controller implements ILoginController {
 
                 // If register succeeded
                 if (success) {
-                    getLoginView().closeModal();
+                    getLoginView().closeTopModal();
                     loginAction.execute();
                 } else {
                     getMessageView().showModal();

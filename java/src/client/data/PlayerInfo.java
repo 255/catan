@@ -21,6 +21,7 @@ import java.util.Collection;
  */
 public class PlayerInfo
 {
+    public static final int NO_PLAYER = -1;
 	
 	private int id;
 	private int playerIndex;
@@ -30,7 +31,7 @@ public class PlayerInfo
 	public PlayerInfo()
 	{
 		setId(-1);
-		setPlayerIndex(-1);
+		setPlayerIndex(NO_PLAYER);
 		setName("");
 		setColor(CatanColor.WHITE);
 	}

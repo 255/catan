@@ -86,9 +86,11 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 	@Override
 	public void startTrade() {
         logger.entering("client.domestic.DomesticTradeController", "startTrade");
+
+        getTradeOverlay().reset();
+
         m_tradeOffer = new PendingOffer();
         updateButtons();
-        getTradeOverlay().setCancelEnabled(true);
 
 		getTradeOverlay().showModal();
         logger.exiting("client.domestic.DomesticTradeController", "startTrade");
@@ -108,12 +110,11 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void sendTradeOffer() {
-        getTradeOverlay().setCancelEnabled(false); //TODO: determine if need this
-		getTradeOverlay().closeModal();
+		getTradeOverlay().closeTopModal();
 
         try {
             ServerModelFacade.getInstance().offerTrade(m_tradeOffer.toResourceBank(), m_recipient);
-            getWaitOverlay().showModal();
+            // waiting modal is opened automatically when the new client model initializes
         }
         catch (ModelException e) {
             logger.log(Level.WARNING, "Sending trade offer failed.", e);
@@ -147,7 +148,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void cancelTrade() {
-		getTradeOverlay().closeModal();
+		getTradeOverlay().closeTopModal();
         getTradeOverlay().reset();
         m_tradeOffer = null;
         m_recipient = NO_PLAYER;
@@ -155,7 +156,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void acceptTrade(boolean willAccept) {
-        getAcceptOverlay().closeModal();
+        getAcceptOverlay().closeTopModal();
         getAcceptOverlay().reset();
 
         try {
@@ -177,11 +178,19 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         }
 
         // initialize players list only once
+        // TODO: what if player changes color?
         if (m_needToInitializePlayersList) {
             getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(Game.getInstance().getNonLocalPlayers()));
             m_needToInitializePlayersList = false;
+            getTradeOverlay().setCancelEnabled(true); //just to be sure -- this never needs to be disabled
         }
 
+        initializeDialogs();
+
+        logger.exiting("client.domestic.DomesticTradeController", "update");
+    }
+
+    private void initializeDialogs() {
         // initialize the buttons and dialogs
         if (Game.getInstance().localPlayerIsPlaying()) {
             getTradeView().enableDomesticTrade(true);
@@ -193,7 +202,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
                 }
             }
             else if (waitOverlay.isModalShowing()) {
-                waitOverlay.closeModal();
+                waitOverlay.closeTopModal();
             }
         }
         else {
@@ -204,8 +213,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
                 initializeAcceptOverlay();
             }
         }
-
-        logger.exiting("client.domestic.DomesticTradeController", "update");
     }
 
     private void initializeAcceptOverlay() {

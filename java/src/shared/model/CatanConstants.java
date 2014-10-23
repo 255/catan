@@ -10,6 +10,9 @@ public class CatanConstants {
     /** How many players there are in a game */
     public static final int NUM_PLAYERS = 4;
 
+    /** The number of victory points needed to win */
+    public static final int VICTORY_POINTS_TO_WIN = 10;
+
     /** Number of roads a player starts with, and the max that they can place on the board */
     public static final int MAX_ROADS = 15;
 

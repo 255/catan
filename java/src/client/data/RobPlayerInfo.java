@@ -21,7 +21,8 @@ import java.util.Collection;
  */
 public class RobPlayerInfo extends PlayerInfo
 {
-	
+    public final static RobPlayerInfo NO_PLAYER = new RobPlayerInfo(); // -1 ID
+
 	private int numCards;
 
     public RobPlayerInfo(IPlayer player) {

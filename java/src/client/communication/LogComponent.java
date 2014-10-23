@@ -54,6 +54,10 @@ public class LogComponent extends JComponent
 			updateSize(this.getWidth());
 		}
 	}
+
+    public List<LogEntry> getEntries() {
+        return entries;
+    }
 	
 	private void updateSize(int width) {
 		

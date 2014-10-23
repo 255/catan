@@ -12,11 +12,16 @@ public interface IOverlayView extends IView
 	void showModal();
 	
 	/**
-	 * Closes the modal overlay view.
+	 * Closes the TOP modal overlay view.
 	 */
-	void closeModal();
-	
-	/**
+	void closeTopModal();
+
+    /**
+     * Closes THIS modal.
+     */
+    void closeThisModal();
+
+    /**
 	 * Indicates whether or not the overlay is currently showing.
 	 * 
 	 * @return True if the overlay is showing, false otherwise

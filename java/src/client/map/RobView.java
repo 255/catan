@@ -4,11 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import java.util.*;
 
-import shared.definitions.PieceType;
 import client.base.*;
 import client.data.*;
 
@@ -71,13 +69,13 @@ public class RobView extends OverlayView implements IRobView {
 		public void actionPerformed(ActionEvent e) {
 			
 			if (e.getSource() == defaultButton) {
-				closeModal();
+				closeTopModal();
+                getController().robPlayer(RobPlayerInfo.NO_PLAYER);
 			}
 			else{
-				
 				for(int i = 0; i < victimButtons.size(); i++){
 					if(e.getSource() == victimButtons.get(i)){
-						closeModal();
+						closeTopModal();
 						getController().robPlayer(victims[i]);
 					}
 				}
@@ -99,12 +97,12 @@ public class RobView extends OverlayView implements IRobView {
 		int numberOfPlayers = 0;
 		if(candidateVictims != null)
 			numberOfPlayers = candidateVictims.length;
-		
+
+        this.remove(buttonPanel);
+        buttonPanel = new JPanel();
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(25,0,25,0));
+
 		if(numberOfPlayers != 0){
-			this.remove(buttonPanel);
-			buttonPanel = new JPanel();
-			buttonPanel.setBorder(BorderFactory.createEmptyBorder(25,0,25,0));
-			
 			victimButtons = new ArrayList<JButton>();
 			
 			for(int i=0; i < numberOfPlayers; i++){
@@ -127,7 +125,12 @@ public class RobView extends OverlayView implements IRobView {
 				this.add(buttonPanel, BorderLayout.CENTER);
 				revalidate();
 			}
-		}
+		} // why wasn't this code in here in the first place?
+        else {
+            buttonPanel.add(defaultButton);
+            this.add(buttonPanel, BorderLayout.CENTER);
+            revalidate();
+        }
 	}
 
 }

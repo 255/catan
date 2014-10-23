@@ -33,7 +33,8 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 		
 		this.titlePanel = titlePanel;
 		this.gameStatePanel = gameStatePanel;
-		
+
+        this.setOpaque(true);
 		this.setPreferredSize(new Dimension(350, 100));
 		this.setLayout(new GridLayout(2,2,3,3));
 		this.setBorder(BorderFactory.createEmptyBorder(3,3,3,3)); 
@@ -118,8 +119,8 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 			boolean largestArmy, boolean longestRoad) {
 		playerArmy[playerIndex].setVisible(largestArmy);
 		playerRoad[playerIndex].setVisible(longestRoad);
-        playerPoints[playerIndex].setText("");
         playerPoints[playerIndex].setText(String.format("%d", points));
+        this.repaint();
 
 		
 		if(highlight)

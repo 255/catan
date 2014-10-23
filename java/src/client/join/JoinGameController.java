@@ -127,14 +127,14 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	public void cancelCreateNewGame() {
         getGames();
 		
-		getNewGameView().closeModal();
+		getNewGameView().closeTopModal();
 	}
 
 	@Override
 	public void createNewGame() {
         try {
             m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getUseRandomPorts(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
-            getNewGameView().closeModal();
+            getNewGameView().closeTopModal();
             getGames();
         } catch (NetworkException e) {
             logger.log(Level.WARNING, "Create game failed. - Network Exception", e);
@@ -172,7 +172,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	public void cancelJoinGame() {
 	    m_timer.cancel();
 
-		getJoinGameView().closeModal();
+		getJoinGameView().closeTopModal();
 	}
 
 	@Override
@@ -185,8 +185,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
         }
 		// If join succeeded
         if (success) {
-            getSelectColorView().closeModal();
-            getJoinGameView().closeModal();
+            getSelectColorView().closeThisModal();
+            getJoinGameView().closeThisModal();
             joinAction.execute();
         } else {
             getMessageView().showModal();
