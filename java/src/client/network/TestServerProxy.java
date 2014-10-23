@@ -30,8 +30,15 @@ public class TestServerProxy implements IServerProxy {
     private static Logger logger = Logger.getLogger("catan");
 
     private Collection<Path> m_paths;
+    private boolean m_silent;
 
     public TestServerProxy() {
+        this(false);
+    }
+
+    public TestServerProxy(boolean silent) {
+        m_silent = silent;
+
         final String pattern = "*.json";
         String dir;
 
@@ -60,7 +67,9 @@ public class TestServerProxy implements IServerProxy {
         catch (IOException e) {
             logger.log(Level.WARNING, "Failed finding JSON inputs.", e);
             logger.fine("Current directory: " + System.getProperty("user.dir"));
+            assert m_paths.size() > 0 : "No JSON was found for the TestServerProxy!";
         }
+
     }
 
     /**
@@ -75,9 +84,15 @@ public class TestServerProxy implements IServerProxy {
         String clientModel = null;
 
         try {
-            Path path = (Path)JOptionPane.showInputDialog(null, "Choose the JSON to give to the GUI.",
-                    "Choose the Right (JSON)", JOptionPane.QUESTION_MESSAGE, null,
-                    m_paths.toArray(), m_paths.iterator().next());
+            Path path;
+            if (m_silent) {
+                path = m_paths.iterator().next();
+            }
+            else {
+                path = (Path) JOptionPane.showInputDialog(null, "Choose the JSON to give to the GUI.",
+                        "Choose the Right (JSON)", JOptionPane.QUESTION_MESSAGE, null,
+                        m_paths.toArray(), m_paths.iterator().next());
+            }
 
             if (path == null) {
                 logger.fine("Updating client model was canceled.");

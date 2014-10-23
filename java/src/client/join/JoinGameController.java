@@ -12,6 +12,8 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -26,6 +28,10 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	private IAction joinAction;
     private IGameAdministrator m_admin;
     private GameInfo m_joinGame;
+
+    private static final int c_millisecondsPerSecond = 1000;
+    private static final int c_defaultPollingInterval = 3;
+    private Timer m_timer;
 	
 	/**
 	 * JoinGameController constructor
@@ -102,6 +108,10 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void start() {
+//        int secondsBetweenPolls = c_defaultPollingInterval;
+//        m_timer = new Timer();
+//        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
+
         getGames();
 
 		getJoinGameView().showModal();
@@ -115,6 +125,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void cancelCreateNewGame() {
+        getGames();
 		
 		getNewGameView().closeTopModal();
 	}
@@ -123,6 +134,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	public void createNewGame() {
         try {
             m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getUseRandomPorts(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
+            getNewGameView().closeTopModal();
+            getGames();
         } catch (NetworkException e) {
             logger.log(Level.WARNING, "Create game failed. - Network Exception", e);
             getMessageView().showModal();
@@ -134,30 +147,31 @@ public class JoinGameController extends Controller implements IJoinGameControlle
             getMessageView().setTitle("Error!");
             getMessageView().setMessage("Create game failed.");
         }
-		getNewGameView().closeTopModal();
-        getGames();
 	}
 
 	@Override
 	public void startJoinGame(GameInfo game) {
         m_joinGame = game;
 
-        for (CatanColor color : CatanColor.values()) {
-            getSelectColorView().setColorEnabled(color, true);
-        }
+//        for (CatanColor color : CatanColor.values()) {
+//            getSelectColorView().setColorEnabled(color, true);
+//        }
+//
+//        for (PlayerInfo player : game.getPlayers()) {
+//            if (player.getId() != m_admin.getLocalPlayerId()) {
+//                getSelectColorView().setColorEnabled(player.getColor(), false);
+//            }
+//        }
 
-        for (PlayerInfo player : game.getPlayers()) {
-            if (player.getId() != m_admin.getLocalPlayerId()) {
-                getSelectColorView().setColorEnabled(player.getColor(), false);
-            }
-        }
+        getColors();
 
 		getSelectColorView().showModal();
 	}
 
 	@Override
 	public void cancelJoinGame() {
-	
+	    m_timer.cancel();
+
 		getJoinGameView().closeTopModal();
 	}
 
@@ -188,15 +202,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
     private void getGames() {
         try {
-//            List<GameInfo> gameList = m_admin.listGames();
-//            GameInfo[] games = new GameInfo[gameList.size()];
-//            for (int i = 0; i < gameList.size(); i++) {
-//                games[i] = new GameInfo();
-//                gameList.get(i);
-//            }
-
-
             List<GameInfo> gameList = m_admin.listGames();
+//            List<GameInfo> gameList = GameAdministrator.getInstance().listGames();
             GameInfo[] games = new GameInfo[gameList.size()];
             for (int i = 0; i < games.length; i++) {
                 GameInfo tempGame = new GameInfo();
@@ -212,12 +219,40 @@ public class JoinGameController extends Controller implements IJoinGameControlle
             }
 
             PlayerInfo player = new PlayerInfo(m_admin.getLocalPlayerId(), -1, m_admin.getLocalPlayerName(), null);
+//            PlayerInfo player = new PlayerInfo(GameAdministrator.getInstance().getLocalPlayerId(), -1, GameAdministrator.getInstance().getLocalPlayerName(), null);
 
             getJoinGameView().setGames(games, player);
         } catch (NetworkException e) {
             logger.log(Level.WARNING, "Update failed. - Network Exception", e);
         } catch (IOException e) {
             logger.log(Level.WARNING, "Update failed. - I/O Exception", e);
+        }
+    }
+
+    private void getColors() {
+        for (CatanColor color : CatanColor.values()) {
+            getSelectColorView().setColorEnabled(color, true);
+        }
+
+        for (PlayerInfo player : m_joinGame.getPlayers()) {
+            if (player.getId() != m_admin.getLocalPlayerId()) {
+                getSelectColorView().setColorEnabled(player.getColor(), false);
+            }
+        }
+    }
+
+    class QueryTask extends TimerTask {
+        public void run() {
+//            getJoinGameView().closeModal();
+            if (getJoinGameView().isModalShowing() && !getNewGameView().isModalShowing() && !getSelectColorView().isModalShowing() && !getMessageView().isModalShowing()) {
+//                getJoinGameView().closeThisModal();
+//                getGames();
+//                getJoinGameView().showModal();
+            }
+
+            if (m_joinGame != null && getSelectColorView().isModalShowing()) {
+//                getColors();
+            }
         }
     }
 }

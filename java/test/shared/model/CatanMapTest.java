@@ -334,7 +334,13 @@ public class CatanMapTest {
         // test having one player on a tile
         Set<IPlayer> playersOnTile = map.getRobbablePlayersOnTile(new HexLocation(2, -2), null);
 
-        assertTrue("Failed to find player on tile.", playersOnTile.contains(player1));
+        assertFalse("Player has no resources and so is not robbable.", playersOnTile.contains(player1));
+        assertFalse("Found wrong player on tile.", playersOnTile.contains(player2));
+        assertFalse("Found wrong player on tile.", playersOnTile.contains(player3));
+
+        player1.setResources(new ResourceBank(0, 0, 0, 0, 1));
+        playersOnTile = map.getRobbablePlayersOnTile(new HexLocation(2, -2), null);
+        assertTrue("Failed to find player (with resources) on tile.", playersOnTile.contains(player1));
         assertFalse("Found wrong player on tile.", playersOnTile.contains(player2));
         assertFalse("Found wrong player on tile.", playersOnTile.contains(player3));
 
@@ -342,6 +348,19 @@ public class CatanMapTest {
         map.placeSettlement(new Settlement(player1), new VertexLocation(0, 0, VertexDirection.West));
         map.placeSettlement(new Settlement(player2), new VertexLocation(0, 0, VertexDirection.NorthEast));
         map.placeSettlement(new Settlement(player3), new VertexLocation(0, 0, VertexDirection.SouthEast));
+
+
+        // only player1 has resources
+        playersOnTile = map.getRobbablePlayersOnTile(new HexLocation(0, 0), null);
+
+        assertEquals("Wrong number of players found.", 1, playersOnTile.size());
+        assertTrue("Failed to find player on tile.", playersOnTile.contains(player1));
+        assertFalse("Found player with no resources on tile.", playersOnTile.contains(player2));
+        assertFalse("Found player with no resources on tile.", playersOnTile.contains(player3));
+
+        // all players have resources
+        player2.setResources(new ResourceBank(3231, 34870, 218390, 384093740, 8309));
+        player3.setResources(new ResourceBank(1, 0, 0, 0, 0));
 
         playersOnTile = map.getRobbablePlayersOnTile(new HexLocation(0, 0), null);
 
