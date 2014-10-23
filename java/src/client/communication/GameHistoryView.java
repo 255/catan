@@ -50,7 +50,7 @@ public class GameHistoryView extends PanelView implements IGameHistoryView
 			{
 				logPanel.setEntries(entries);
 				JScrollBar vertical = logScroll.getVerticalScrollBar();
-				vertical.setValue(vertical.getMaximum());
+				//vertical.setValue(vertical.getMaximum()); // This makes the game history jump to the top every three seconds...
 			}
 		});
 	}
