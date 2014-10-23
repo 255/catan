@@ -54,7 +54,7 @@ public class MapController extends Controller implements IMapController {
             logger.fine("Not intializing MapController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
-        logger.fine("Initializing MapController.");
+        logger.finer("Initializing MapController.");
 
         ICatanMap map = game.getMap();
 

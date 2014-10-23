@@ -135,7 +135,7 @@ public class DevCardController extends Controller implements IDevCardController 
             logger.fine("Not intializing DevCardController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
-        logger.fine("Initializing DevCardController.");
+        logger.finer("Initializing DevCardController.");
 
         IPlayer player = Game.getInstance().getLocalPlayer();
         IDevCardHand devCards = player.getPlayableDevCards();

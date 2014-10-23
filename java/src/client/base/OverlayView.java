@@ -45,10 +45,9 @@ public class OverlayView extends PanelView implements IOverlayView
 	public void showModal()
 	{
         assert !isModalShowing() : "You are adding a modal that is already showing! (%s) That causes problems!".format(this.toString());
-        // TODO: assertions don't work when debugging?!
-        if (isModalShowing()) {
-            throw new RuntimeException("You are displaying a modal that is already showing! (%s) That causes problems!".format(this.toString()));
-        }
+        //if (isModalShowing()) {
+        //  throw new RuntimeException("You are displaying a modal that is already showing! (%s) That causes problems!".format(this.toString()));
+        //
 
 		// Open the new overlay
 		JPanel overlayPanel = new JPanel();
@@ -148,25 +147,25 @@ public class OverlayView extends PanelView implements IOverlayView
 				window.getGlassPane().setVisible(false);
 			}
 		}
-        //else {
-            Iterator<OverlayInfo> info = overlayStack.iterator();
-            if (info.hasNext()) {
-                info.next(); // skipped the first -- already checked it
 
-                while (info.hasNext()) {
-                    if (this == info.next().getOverlayView()) {
-                        info.remove();
-                        this.setVisible(false);
-                        window.setGlassPane(defaultGlassPane);
-                        // there are others showing -- do make anything else visible
-                        // keep checking -- remove duplicate overlays
-                    }
+        // If there are any other pointers to this dialog in the stack, remove them
+        Iterator<OverlayInfo> infoIterator = overlayStack.iterator();
+        if (infoIterator.hasNext()) {
+            infoIterator.next(); // skipped the first -- already checked it
+
+            while (infoIterator.hasNext()) {
+                OverlayInfo info = infoIterator.next();
+                if (this == info.getOverlayView()) {
+                    infoIterator.remove();
+                    info.getOverlayPanel().setVisible(false);
+                    break;
+                    // not affecting what's on top of the stack -- don't shouldn't change anything else's visibility
                 }
             }
-        //}
-	}
-	
-	/**
+        }
+    }
+
+    /**
 	 * Is the overlay currently showing?
 	 * 
 	 * @return True if overlay is showing, false otherwise

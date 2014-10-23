@@ -6,6 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import client.base.*;
+import shared.model.Log;
 
 /**
  * Game history view implementation
@@ -48,9 +49,14 @@ public class GameHistoryView extends PanelView implements IGameHistoryView
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run()
 			{
-				logPanel.setEntries(entries);
-				JScrollBar vertical = logScroll.getVerticalScrollBar();
-				//vertical.setValue(vertical.getMaximum()); // This makes the game history jump to the top every three seconds...
+                List<LogEntry> previous = logPanel.getEntries();
+                logPanel.setEntries(entries);
+                JScrollBar vertical = logScroll.getVerticalScrollBar();
+
+                // only update & scroll to bottom if there are new entries (only checking size should be good enough)
+                if (!previous.equals(entries)) {
+                    vertical.setValue(vertical.getMaximum()); // This makes the game history jump to the top every three seconds...
+                }
 			}
 		});
 	}

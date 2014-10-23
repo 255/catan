@@ -4,6 +4,7 @@ import java.awt.*;
 
 import client.base.*;
 import client.utils.*;
+import shared.model.CatanConstants;
 
 /**
  * Implementation for the points view, which displays the user's victory points
@@ -16,7 +17,7 @@ public class PointsView extends ComponentView implements IPointsView
 	private final int IMAGE_SPACING = 5;
 	private final float FULL_IMAGE_SCALE = 0.25f;
 	private final float EMPTY_IMAGE_SCALE = 0.25f;
-	private final int MAX_POINTS = 10;
+	private final int MAX_POINTS = CatanConstants.VICTORY_POINTS_TO_WIN;
 	
 	private Image fullPointImage;
 	private Image emptyPointImage;

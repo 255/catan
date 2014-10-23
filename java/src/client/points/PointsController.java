@@ -1,6 +1,7 @@
 package client.points;
 
 import client.base.*;
+import shared.model.CatanConstants;
 import shared.model.Game;
 import shared.model.GameModelFacade;
 import shared.model.GameState;
@@ -50,7 +51,17 @@ public class PointsController extends Controller implements IPointsController {
             getFinishedView().setWinner(Game.getInstance().getWinner().getName(), Game.getInstance().getWinner().equals(Game.getInstance().getLocalPlayer()));
             getFinishedView().showModal();
         }
-        getPointsView().setPoints(GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints());
+
+        // only set up to 10 points so that the view doesn't get angry at us
+        int points = GameModelFacade.getInstance().getCurrentPlayer().getVictoryPoints();
+        assert points >= 0;
+
+        if (points <= CatanConstants.VICTORY_POINTS_TO_WIN) {
+            getPointsView().setPoints(points);
+        }
+        else {
+            getPointsView().setPoints(CatanConstants.VICTORY_POINTS_TO_WIN);
+        }
     }
 
     @Override

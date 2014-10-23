@@ -194,7 +194,7 @@ public class DiscardController extends Controller implements IDiscardController 
         for(ResourceType r : ResourceType.values()) {
             getDiscardView().setResourceMaxAmount(r, playerBank.getCount(r));
             getDiscardView().setResourceDiscardAmount(r, 0);
-            getDiscardView().setResourceAmountChangeEnabled(r,true, false);
+            getDiscardView().setResourceAmountChangeEnabled(r, playerBank.getCount(r) > 0, false);
         }
     }
 
