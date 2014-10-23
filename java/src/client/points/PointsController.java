@@ -49,7 +49,10 @@ public class PointsController extends Controller implements IPointsController {
 	private void initFromModel() {
         if (Game.getInstance().getWinner() != null) {
             getFinishedView().setWinner(Game.getInstance().getWinner().getName(), Game.getInstance().getWinner().equals(Game.getInstance().getLocalPlayer()));
-            getFinishedView().showModal();
+
+            if (!getFinishedView().isModalShowing()) {
+                getFinishedView().showModal();
+            }
         }
 
         // only set up to 10 points so that the view doesn't get angry at us
