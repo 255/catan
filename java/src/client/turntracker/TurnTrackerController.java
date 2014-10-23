@@ -50,6 +50,9 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 	private void initFromModel() {
         // get the list of players
         List<IPlayer> players = Game.getInstance().getPlayers();
+        if(players.size() < CatanConstants.NUM_PLAYERS) {
+            return;
+        }
 
         // iterate through them and set up their box on the tracker
         for(IPlayer pl : players) {
