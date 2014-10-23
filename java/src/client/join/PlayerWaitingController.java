@@ -69,7 +69,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
     public void update(Observable o, Object arg) {
         if (Game.getInstance().gameHasStarted()) {
             if (getView().isModalShowing()) {
-                getView().closeTopModal();
+                getView().closeThisModal();
             }
         }
         else {
@@ -78,6 +78,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             for (int i = 0; i < playerList.size(); i++) {
                 players[i] = new PlayerInfo(playerList.get(i).getId(), playerList.get(i).getIndex(), playerList.get(i).getName(), playerList.get(i).getColor());
             }
+
             getView().setPlayers(players);
         }
     }

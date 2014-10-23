@@ -235,7 +235,7 @@ public class ServerProxy implements IServerProxy {
         vertexLocObject.addProperty("direction", location.getDir().toAbbreviation());
         json.add("vertexLocation", vertexLocObject);
 
-        String response = m_httpCommunicator.post("/moves/buildCity", vertexLocObject.toString());
+        String response = m_httpCommunicator.post("/moves/buildCity", json.toString());
 
         return response;
     }
