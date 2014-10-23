@@ -2,17 +2,13 @@ package client.login;
 
 import client.base.*;
 import client.misc.*;
+import client.network.*;
 
-import java.net.*;
-import java.io.*;
 import java.util.*;
-import java.lang.reflect.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import client.network.*;
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 
 /**
@@ -105,27 +101,39 @@ public class LoginController extends Controller implements ILoginController {
         String password = getLoginView().getRegisterPassword();
         String passwordRepeat = getLoginView().getRegisterPasswordRepeat();
 
-        if (password.equals(passwordRepeat)) {
-            boolean success = false;
-            try {
-                success = m_admin.register(username, password);
-            } catch (NetworkException e) {
-                logger.log(Level.WARNING, "Register failed.", e);
-            }
+        Pattern usernamePattern = Pattern.compile("^[a-z0-9_-]{3,7}$");
+        Pattern passwordPattern = Pattern.compile("^[a-z0-9_-]{5,}$");
 
-            // If register succeeded
-            if (success) {
-                getLoginView().closeModal();
-                loginAction.execute();
+        Matcher usernameMatch = usernamePattern.matcher(username);
+        Matcher passwordMatch = passwordPattern.matcher(password);
+
+        if(usernameMatch.matches() && passwordMatch.matches()) {
+            if (password.equals(passwordRepeat)) {
+                boolean success = false;
+                try {
+                    success = m_admin.register(username, password);
+                } catch (NetworkException e) {
+                    logger.log(Level.WARNING, "Register failed.", e);
+                }
+
+                // If register succeeded
+                if (success) {
+                    getLoginView().closeModal();
+                    loginAction.execute();
+                } else {
+                    getMessageView().showModal();
+                    getMessageView().setTitle("Error!");
+                    getMessageView().setMessage("Register failed.");
+                }
             } else {
                 getMessageView().showModal();
-                getMessageView().setTitle("Error!");
-                getMessageView().setMessage("Register failed.");
+                getMessageView().setTitle("Warning!");
+                getMessageView().setMessage("Passwords don't match.");
             }
         } else {
             getMessageView().showModal();
             getMessageView().setTitle("Warning!");
-            getMessageView().setMessage("Passwords don't match.");
+            getMessageView().setMessage("Invalid username or password.");
         }
 	}
 
