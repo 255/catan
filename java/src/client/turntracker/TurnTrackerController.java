@@ -54,7 +54,28 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
                         );
         }
 
-        String gameState = Game.getInstance().localPlayerIsPlaying() ? "Finish Turn" : "Waiting for Other Players";
+        String gameState;
+        if (Game.getInstance().localPlayerIsPlaying()) {
+            gameState = "Finish Turn";
+        }
+        else if (Game.getInstance().localPlayerIsBeingOfferedTrade()) {
+            gameState = "Accept or Reject Trade";
+        }
+        else if (Game.getInstance().localPlayerIsDiscarding()) {
+            gameState = "Discard Cards";
+        }
+        else if (Game.getInstance().localPlayerIsRolling()) {
+            gameState = "Roll the Dice";
+        }
+        else if (Game.getInstance().localPlayerIsRobbing()) {
+            gameState = "Place the Robber";
+        }
+        else if (Game.getInstance().localPlayerIsPlacingInitialPieces()) {
+            gameState = "Place Initial Pieces";
+        }
+        else {
+            gameState = "Waiting for Other Players";
+        }
 
         getView().updateGameState(gameState, Game.getInstance().localPlayerIsPlaying());
 	}

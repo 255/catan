@@ -8,7 +8,6 @@ import client.data.*;
 import client.misc.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -117,7 +116,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	@Override
 	public void cancelCreateNewGame() {
 		
-		getNewGameView().closeModal();
+		getNewGameView().closeTopModal();
 	}
 
 	@Override
@@ -135,7 +134,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
             getMessageView().setTitle("Error!");
             getMessageView().setMessage("Create game failed.");
         }
-		getNewGameView().closeModal();
+		getNewGameView().closeTopModal();
         getGames();
 	}
 
@@ -159,7 +158,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	@Override
 	public void cancelJoinGame() {
 	
-		getJoinGameView().closeModal();
+		getJoinGameView().closeTopModal();
 	}
 
 	@Override
@@ -172,8 +171,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
         }
 		// If join succeeded
         if (success) {
-            getSelectColorView().closeModal();
-            getJoinGameView().closeModal();
+            getSelectColorView().closeTopModal();
+            getJoinGameView().closeTopModal();
             joinAction.execute();
         } else {
             getMessageView().showModal();

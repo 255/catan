@@ -68,11 +68,13 @@ public class DiscardController extends Controller implements IDiscardController 
         }
 
         if(everyoneHasDiscarded()) {
-            getDiscardView().closeModal();
-            getWaitView().closeModal();
+            getDiscardView().closeTopModal();
+            getWaitView().closeTopModal();
+            resetModal();
         }
         else{
-            getDiscardView().closeModal();
+            getDiscardView().closeTopModal();
+            resetModal();
             getWaitView().showModal();
         }
 	}
@@ -86,23 +88,24 @@ public class DiscardController extends Controller implements IDiscardController 
         // check that the state is set to DISCARDING
         if(Game.getInstance().getGameState() != GameState.DISCARDING) {
             // close all discarding modals
-            if(getWaitView().isModalShowing()) getWaitView().closeModal();
-            if(getDiscardView().isModalShowing()) getDiscardView().closeModal();
+            if(getWaitView().isModalShowing()) getWaitView().closeThisModal();
+            if(getDiscardView().isModalShowing()) getDiscardView().closeThisModal();
         }
         else {
             if(Game.getInstance().getLocalPlayer().needsToDiscard()) {
-                if (!getDiscardView().isModalShowing()) getDiscardView().showModal();
+                if (!getDiscardView().isModalShowing()) {
+                    resetModal();
+                    getDiscardView().showModal();
+                }
 
                 // reset the modal to its default setup
-                resetModal();
             }
             else {
                 // check if everyone has finished discarding
                 if(everyoneHasDiscarded()) {
                     // close all discarding modals
-                    if(getWaitView().isModalShowing()) getWaitView().closeModal();
-                    if(getDiscardView().isModalShowing()) getDiscardView().closeModal();
-                    //TODO: do I need to change the state here?
+                    if(getWaitView().isModalShowing()) getWaitView().closeThisModal();
+                    if(getDiscardView().isModalShowing()) getDiscardView().closeThisModal();
                     return;
                 }
 

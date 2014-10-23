@@ -1,6 +1,5 @@
 package client.devcards;
 
-import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import client.base.*;
@@ -62,7 +61,7 @@ public class DevCardController extends Controller implements IDevCardController 
 	@Override
 	public void cancelBuyCard() {
 		
-		getBuyCardView().closeModal();
+		getBuyCardView().closeTopModal();
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class DevCardController extends Controller implements IDevCardController 
         } catch (ModelException e) {
             logger.log(Level.WARNING, "Buy card failed.", e);
         }
-		getBuyCardView().closeModal();
+		getBuyCardView().closeTopModal();
 	}
 
 	@Override
@@ -84,7 +83,7 @@ public class DevCardController extends Controller implements IDevCardController 
 	@Override
 	public void cancelPlayCard() {
 
-		getPlayCardView().closeModal();
+		getPlayCardView().closeTopModal();
 	}
 
 	@Override

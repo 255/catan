@@ -2,7 +2,6 @@ package client.roll;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.net.MalformedURLException;
 
 import javax.swing.*;
 
@@ -82,7 +81,7 @@ public class RollResultView extends OverlayView implements IRollResultView {
 			
 			if (e.getSource() == okayButton) {
 				
-				closeModal();
+				closeTopModal();
 			}
 		}	
 	};

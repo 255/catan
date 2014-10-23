@@ -3,16 +3,11 @@ package client.login;
 import client.base.*;
 import client.misc.*;
 
-import java.net.*;
-import java.io.*;
 import java.util.*;
-import java.lang.reflect.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import client.network.*;
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 
 
 /**
@@ -90,7 +85,7 @@ public class LoginController extends Controller implements ILoginController {
 
 		// If log in succeeded
         if (success) {
-            getLoginView().closeModal();
+            getLoginView().closeTopModal();
             loginAction.execute();
         } else {
             getMessageView().showModal();
@@ -115,7 +110,7 @@ public class LoginController extends Controller implements ILoginController {
 
             // If register succeeded
             if (success) {
-                getLoginView().closeModal();
+                getLoginView().closeTopModal();
                 loginAction.execute();
             } else {
                 getMessageView().showModal();

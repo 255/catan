@@ -110,7 +110,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void sendTradeOffer() {
-		getTradeOverlay().closeModal();
+		getTradeOverlay().closeTopModal();
 
         try {
             ServerModelFacade.getInstance().offerTrade(m_tradeOffer.toResourceBank(), m_recipient);
@@ -148,7 +148,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void cancelTrade() {
-		getTradeOverlay().closeModal();
+		getTradeOverlay().closeTopModal();
         getTradeOverlay().reset();
         m_tradeOffer = null;
         m_recipient = NO_PLAYER;
@@ -156,7 +156,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void acceptTrade(boolean willAccept) {
-        getAcceptOverlay().closeModal();
+        getAcceptOverlay().closeTopModal();
         getAcceptOverlay().reset();
 
         try {
@@ -196,7 +196,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
                 }
             }
             else if (waitOverlay.isModalShowing()) {
-                waitOverlay.closeModal();
+                waitOverlay.closeTopModal();
             }
         }
         else {

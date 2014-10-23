@@ -73,13 +73,13 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         }
 
         initFromModel();
-        getTradeOverlay().closeModal();
+        getTradeOverlay().closeTopModal();
 	}
 
 	@Override
 	public void cancelTrade() {
         initFromModel();
-		getTradeOverlay().closeModal();
+		getTradeOverlay().closeTopModal();
 	}
 
 	@Override

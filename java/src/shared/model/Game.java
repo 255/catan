@@ -301,7 +301,7 @@ public class Game extends Observable implements IGame {
 
     @Override
     public boolean localPlayerIsDiscarding() {
-        return localPlayerAndGameState(GameState.DISCARDING);
+        return (m_state == GameState.DISCARDING) && m_localPlayer.needsToDiscard();
     }
 
     @Override

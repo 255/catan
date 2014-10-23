@@ -153,11 +153,11 @@ public class PlayDevCardView extends OverlayView implements IPlayDevCardView {
 			} 
 			else if (e.getSource() == useButton) {
 				if (devCards.getSelectedDevCard() == DevCardType.MONOPOLY) {					
-					closeModal();
+					closeTopModal();
 					getController().playMonopolyCard(resCard1.getSelectedResourceCard());
 				}
 				else if (devCards.getSelectedDevCard() == DevCardType.YEAR_OF_PLENTY) {
-					closeModal();
+					closeTopModal();
 					getController().playYearOfPlentyCard(resCard1.getSelectedResourceCard(),
 														resCard2.getSelectedResourceCard());
 				}
@@ -184,7 +184,7 @@ public class PlayDevCardView extends OverlayView implements IPlayDevCardView {
 				resCard1.setEnabled(false);
 				resCard2.setEnabled(false);
 				
-				closeModal();
+				closeTopModal();
 				getController().playMonumentCard();
 			}
 			else if (selectedDevCard == DevCardType.ROAD_BUILD) {
@@ -193,7 +193,7 @@ public class PlayDevCardView extends OverlayView implements IPlayDevCardView {
 				resCard1.setEnabled(false);
 				resCard2.setEnabled(false);
 				
-				closeModal();
+				closeTopModal();
 				getController().playRoadBuildCard();
 			}
 			else if (selectedDevCard == DevCardType.SOLDIER) {
@@ -202,7 +202,7 @@ public class PlayDevCardView extends OverlayView implements IPlayDevCardView {
 				resCard1.setEnabled(false);
 				resCard2.setEnabled(false);
 				
-				closeModal();
+				closeTopModal();
 				getController().playSoldierCard();
 			}
 			else if (selectedDevCard == DevCardType.MONOPOLY) {
