@@ -102,8 +102,8 @@ public class LoginController extends Controller implements ILoginController {
         String password = getLoginView().getRegisterPassword();
         String passwordRepeat = getLoginView().getRegisterPasswordRepeat();
 
-        Pattern usernamePattern = Pattern.compile("^[a-z0-9_-]{3,7}$");
-        Pattern passwordPattern = Pattern.compile("^[a-z0-9_-]{5,}$");
+        final Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,7}$");
+        final Pattern passwordPattern = Pattern.compile("^[a-zA-Z0-9_-]{5,}$");
 
         Matcher usernameMatch = usernamePattern.matcher(username);
         Matcher passwordMatch = passwordPattern.matcher(password);
