@@ -12,7 +12,7 @@ public class ServerPollerTest {
 
     @org.junit.Test
     public void testUpdateGame() throws Exception {
-        m_mockServerProxy = new TestServerProxy();
+        m_mockServerProxy = new TestServerProxy(true);
         m_serverPoller = new ServerPoller(m_mockServerProxy);
         Thread.sleep(10000);
 
