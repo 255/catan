@@ -161,6 +161,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
                 m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getUseRandomPorts(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
                 getNewGameView().closeTopModal();
                 getGames();
+                m_admin.joinGame(prevGames.length - 1, CatanColor.RED);
+                getGames();
             } catch (NetworkException e) {
                 logger.log(Level.WARNING, "Create game failed. - Network Exception", e);
                 getMessageView().showModal();
