@@ -65,7 +65,8 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
                             pl.getVictoryPoints(),
                             GameModelFacade.getInstance().isPlayersTurn(pl),
                             GameModelFacade.getInstance().playerHasLargestArmy(pl),
-                            GameModelFacade.getInstance().playerHasLongestRoad(pl)
+                            GameModelFacade.getInstance().playerHasLongestRoad(pl),
+                            pl.getColor()
                         );
         }
         m_playersInitialized = true;

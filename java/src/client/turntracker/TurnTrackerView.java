@@ -20,6 +20,7 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 	private TitlePanel titlePanel;
 	private GameStatePanel gameStatePanel;
 	private JPanel [] playerPanel;
+    private JPanel [] indicatorPanels;
 	private JLabel [] playerPoints;
 	private JLabel [] playerRoad;
 	private JLabel [] playerArmy;
@@ -38,7 +39,8 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 		this.setPreferredSize(new Dimension(350, 100));
 		this.setLayout(new GridLayout(2,2,3,3));
 		this.setBorder(BorderFactory.createEmptyBorder(3,3,3,3)); 
-		
+
+        indicatorPanels = new JPanel[NUM_PLAYERS];
 		playerPanel = new JPanel[NUM_PLAYERS];
 		for(int i = 0; i < NUM_PLAYERS; i++)
 		{
@@ -103,7 +105,9 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 		playerRoad[playerIndex].setIcon(new ImageIcon(longestRoadImage));
 		indicatorPanel.add(playerRoad[playerIndex]);
 		playerRoad[playerIndex].setVisible(false);
-		
+        indicatorPanels[playerIndex] = indicatorPanel;
+
+
 		playerPoints[playerIndex] = new JLabel("0");
 		playerPoints[playerIndex].setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 		playerPoints[playerIndex].setFont(labelFont);
@@ -111,15 +115,17 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 		
 		playerPanel[playerIndex].setBackground(playerColor.getJavaColor());
 		playerPanel[playerIndex].setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		
 	}
 
 	@Override
 	public void updatePlayer(int playerIndex, int points, boolean highlight,
-			boolean largestArmy, boolean longestRoad) {
+			boolean largestArmy, boolean longestRoad, CatanColor playerColor) {
 		playerArmy[playerIndex].setVisible(largestArmy);
 		playerRoad[playerIndex].setVisible(longestRoad);
         playerPoints[playerIndex].setText(String.format("%d", points));
+        playerPanel[playerIndex].setBackground(playerColor.getJavaColor());
+        indicatorPanels[playerIndex].setBackground(playerColor.getJavaColor());
+
         this.repaint();
 
 		
