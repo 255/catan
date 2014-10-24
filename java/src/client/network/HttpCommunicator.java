@@ -162,6 +162,7 @@ public class HttpCommunicator implements IHttpCommunicator {
 
     @Override
     public int getGameIdCookie() {
+        assert m_gameIdCookie != null : "Game ID has not been set.";
         return Integer.parseInt(m_gameIdCookie);
     }
 
@@ -182,6 +183,11 @@ public class HttpCommunicator implements IHttpCommunicator {
         }
 
         throw new NetworkException("Player ID or name not found in cookie.");
+    }
+
+    @Override
+    public void clearGameCookie() {
+        m_gameIdCookie = null;
     }
 
 

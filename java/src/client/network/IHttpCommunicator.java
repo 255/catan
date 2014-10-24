@@ -48,4 +48,11 @@ public interface IHttpCommunicator {
      * @return current game id
      */
     public int getGameIdCookie();
+
+    public void clearGameCookie();
+
+    /**
+     * Clear the game ID cookie set when a game is joined.
+     */
 }
+

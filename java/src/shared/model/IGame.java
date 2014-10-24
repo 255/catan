@@ -17,7 +17,12 @@ public interface IGame {
      * Set all of its members to null.
      * This is used before re-initializing the game.
      */
-    void reset();
+    public void reset();
+
+    /**
+     * Delete the current game, so a new one will be created.
+     */
+    public void newGame();
 
     /**
      * Get whether the game has been initialized yet.

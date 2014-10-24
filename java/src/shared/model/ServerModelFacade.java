@@ -249,7 +249,9 @@ public class ServerModelFacade implements IServerModelFacade {
     @Override
     public void robPlayer(HexLocation hex, int victimIndex) throws ModelException {
         assert hex != null;
-// TODO
+
+        // TODO: check conditions?
+
         try {
             String clientModel = m_theProxy.robPlayer(Game.getInstance().getLocalPlayer().getIndex(), victimIndex, hex);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());

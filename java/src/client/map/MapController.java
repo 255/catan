@@ -49,14 +49,14 @@ public class MapController extends Controller implements IMapController {
         logger.entering("client.map.MapController", "initFromModel");
 
         IGame game = Game.getInstance();
-        assert game != null;
-        if (game.isNotInitialized()) {
+        assert Game.getInstance() != null;
+        if (Game.getInstance().isNotInitialized()) {
             logger.fine("Not intializing MapController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
         logger.finer("Initializing MapController.");
 
-        ICatanMap map = game.getMap();
+        ICatanMap map = Game.getInstance().getMap();
 
         // add the tiles
         for (ITile tile : map.getTiles()) {
@@ -94,7 +94,7 @@ public class MapController extends Controller implements IMapController {
         addWaterTiles();
 
         // determine the state
-        IMapState nextState = MapState.determineState(game);
+        IMapState nextState = MapState.determineState();
         if (nextState.getClass() != m_state.getClass()) {
             m_state = nextState;
         }

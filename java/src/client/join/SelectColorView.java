@@ -402,6 +402,5 @@ public class SelectColorView extends OverlayView implements ISelectColorView {
         this.revalidate();
         this.repaint();
     }
-	
 }
 

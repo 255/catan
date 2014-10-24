@@ -1,9 +1,6 @@
 package client.points;
 
 import client.base.*;
-import client.join.*;
-import client.misc.MessageView;
-import client.network.*;
 import client.poller.ServerPoller;
 import shared.model.*;
 
@@ -49,7 +46,7 @@ public class PointsController extends Controller implements IPointsController {
 
     @Override
     public void gameFinishedModalClosed() {
-
+        client.main.Catan.leaveGame();
     }
 
 	private void initFromModel() {

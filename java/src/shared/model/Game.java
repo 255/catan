@@ -55,6 +55,11 @@ public class Game extends Observable implements IGame {
         m_winner = null;
     }
 
+    @Override
+    public void newGame() {
+        m_game = null;
+    }
+
     /**
      * Get whether the game has been initialized yet.
      * This must be called before initializing from the model.

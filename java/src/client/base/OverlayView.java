@@ -9,124 +9,124 @@ import javax.swing.*;
  * Base class for overlay views
  */
 @SuppressWarnings("serial")
-public class OverlayView extends PanelView implements IOverlayView
-{
-	/**
-	 * The frame window for the overlays
-	 */
-	private static JFrame window;
-	
-	/**
-	 * Default glass pane component (displayed when no overlays are visible)
-	 */
-	private static Component defaultGlassPane;
-	
-	/**
-	 * Stack of overlays that are currently displayed
-	 */
-	private static Deque<OverlayInfo> overlayStack;
-	
-	public static void setWindow(JFrame window)
-	{
-		OverlayView.window = window;
-		defaultGlassPane = window.getGlassPane();
-		overlayStack = new ArrayDeque<OverlayInfo>();
-	}
-	
-	public OverlayView()
-	{
-		super();
-	}
-	
-	/**
-	 * Displays the overlay. The overlay is displayed on top of any other
-	 * overlays that are already visible.
-	 */
-	public void showModal()
-	{
+public class OverlayView extends PanelView implements IOverlayView {
+    /**
+     * The frame window for the overlays
+     */
+    private static JFrame window;
+
+    /**
+     * Default glass pane component (displayed when no overlays are visible)
+     */
+    private static Component defaultGlassPane;
+
+    /**
+     * Stack of overlays that are currently displayed
+     */
+    private static Deque<OverlayInfo> overlayStack;
+
+    public static void setWindow(JFrame window) {
+        OverlayView.window = window;
+        defaultGlassPane = window.getGlassPane();
+        overlayStack = new ArrayDeque<OverlayInfo>();
+    }
+
+    public OverlayView() {
+        super();
+    }
+
+    /**
+     * Displays the overlay. The overlay is displayed on top of any other
+     * overlays that are already visible.
+     */
+    public void showModal() {
         assert !isModalShowing() : "You are adding a modal that is already showing! (%s) That causes problems!".format(this.toString());
         //if (isModalShowing()) {
         //  throw new RuntimeException("You are displaying a modal that is already showing! (%s) That causes problems!".format(this.toString()));
         //
 
-		// Open the new overlay
-		JPanel overlayPanel = new JPanel();
-		overlayPanel.setLayout(new BorderLayout());
-		overlayPanel.setOpaque(false);
-		
-		// Discard all mouse and keyboard events
-		MouseAdapter mouseAdapter = new MouseAdapter() {};
-		overlayPanel.addMouseListener(mouseAdapter);
-		overlayPanel.addMouseMotionListener(mouseAdapter);
-		overlayPanel.addMouseWheelListener(mouseAdapter);
-		
-		KeyAdapter keyAdapter = new KeyAdapter() {};
-		overlayPanel.addKeyListener(keyAdapter);
-		
-		Dimension winSize = window.getContentPane().getSize();
-		Dimension prefSize = this.getPreferredSize();
-		
-		int widthDiff = (int)(winSize.getWidth() - prefSize.getWidth());
-		int heightDiff = (int)(winSize.getHeight() - prefSize.getHeight());
-		
-		overlayPanel.add(this, BorderLayout.CENTER);
-		if(widthDiff / 2 > 0)
-		{
-			overlayPanel.add(Box.createRigidArea(new Dimension(widthDiff / 2, 0)),
-							 BorderLayout.WEST);
-			overlayPanel.add(Box.createRigidArea(new Dimension(widthDiff / 2, 0)),
-							 BorderLayout.EAST);
-		}
-		if(heightDiff / 2 > 0)
-		{
-			overlayPanel.add(Box.createRigidArea(new Dimension(0,
-															   heightDiff / 2)),
-							 BorderLayout.NORTH);
-			overlayPanel.add(Box.createRigidArea(new Dimension(0,
-															   heightDiff / 2)),
-							 BorderLayout.SOUTH);
-		}
-		
-		if(overlayStack.size() > 0)
-		{
-			
-			// Hide the currently-visible overlay
-			overlayStack.peek().getOverlayPanel().setVisible(false);
-		}
-		
-		window.setGlassPane(overlayPanel);
-		overlayPanel.setVisible(true);
-		overlayStack.push(new OverlayInfo(this, overlayPanel));
-	}
-	
-	/**
-	 * Hides the top-most overlay
-	 */
-	public void closeTopModal()
-	{
-		//assert overlayStack.size() > 0;
-        if (overlayStack.size() == 0) return;
-		assert window.getGlassPane() == overlayStack.peek().getOverlayPanel();
-		
-		if(overlayStack.size() > 0)
-		{
-			
-			overlayStack.pop().getOverlayPanel().setVisible(false);
-			
-			if(overlayStack.size() > 0)
-			{
-				
-				window.setGlassPane(overlayStack.peek().getOverlayPanel());
-				overlayStack.peek().getOverlayPanel().setVisible(true);
-			}
-			else
-			{
-				window.setGlassPane(defaultGlassPane);
-				window.getGlassPane().setVisible(false);
-			}
-		}
-	}
+        // Open the new overlay
+        JPanel overlayPanel = new JPanel();
+        overlayPanel.setLayout(new BorderLayout());
+        overlayPanel.setOpaque(false);
 
+        // Discard all mouse and keyboard events
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+        };
+        overlayPanel.addMouseListener(mouseAdapter);
+        overlayPanel.addMouseMotionListener(mouseAdapter);
+        overlayPanel.addMouseWheelListener(mouseAdapter);
+
+        KeyAdapter keyAdapter = new KeyAdapter() {
+        };
+        overlayPanel.addKeyListener(keyAdapter);
+
+        Dimension winSize = window.getContentPane().getSize();
+        Dimension prefSize = this.getPreferredSize();
+
+        int widthDiff = (int) (winSize.getWidth() - prefSize.getWidth());
+        int heightDiff = (int) (winSize.getHeight() - prefSize.getHeight());
+
+        overlayPanel.add(this, BorderLayout.CENTER);
+        if (widthDiff / 2 > 0) {
+            overlayPanel.add(Box.createRigidArea(new Dimension(widthDiff / 2, 0)),
+                    BorderLayout.WEST);
+            overlayPanel.add(Box.createRigidArea(new Dimension(widthDiff / 2, 0)),
+                    BorderLayout.EAST);
+        }
+        if (heightDiff / 2 > 0) {
+            overlayPanel.add(Box.createRigidArea(new Dimension(0,
+                            heightDiff / 2)),
+                    BorderLayout.NORTH);
+            overlayPanel.add(Box.createRigidArea(new Dimension(0,
+                            heightDiff / 2)),
+                    BorderLayout.SOUTH);
+        }
+
+        if (overlayStack.size() > 0) {
+
+            // Hide the currently-visible overlay
+            overlayStack.peek().getOverlayPanel().setVisible(false);
+        }
+
+        window.setGlassPane(overlayPanel);
+        overlayPanel.setVisible(true);
+        overlayStack.push(new OverlayInfo(this, overlayPanel));
+    }
+
+    /**
+     * Hides the top-most overlay
+     */
+    public void closeTopModal() {
+        //assert overlayStack.size() > 0;
+        if (overlayStack.size() == 0) return;
+        assert window.getGlassPane() == overlayStack.peek().getOverlayPanel();
+
+        if (overlayStack.size() > 0) {
+
+            overlayStack.pop().getOverlayPanel().setVisible(false);
+
+            if (overlayStack.size() > 0) {
+
+                window.setGlassPane(overlayStack.peek().getOverlayPanel());
+                overlayStack.peek().getOverlayPanel().setVisible(true);
+            } else {
+                window.setGlassPane(defaultGlassPane);
+                window.getGlassPane().setVisible(false);
+            }
+        }
+    }
+
+    public static void closeAllModals() {
+        for (OverlayInfo info : overlayStack) {
+            info.getOverlayPanel().setVisible(false);
+        }
+
+        window.setGlassPane(defaultGlassPane);
+        window.getGlassPane().setVisible(false);
+
+        overlayStack = new ArrayDeque<>();
+    }
 
 	/**
 	 * Removes all of this modal's instances from the overlay stack.

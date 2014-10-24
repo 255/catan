@@ -3,8 +3,10 @@ package client.join;
 import client.base.*;
 import client.data.PlayerInfo;
 import client.network.*;
+import client.poller.ServerPoller;
 import shared.model.Game;
 import shared.model.IPlayer;
+import shared.model.ServerModelFacade;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -51,6 +53,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 	public void addAI() {
         try {
             GameAdministrator.getInstance().addAI(getView().getSelectedAI());
+            ServerPoller.getInstance().updateGame();
         } catch (NetworkException ex) {
             logger.log(Level.WARNING, "When adding an AI, this error was thrown: " + ex.getMessage(), ex);
         }

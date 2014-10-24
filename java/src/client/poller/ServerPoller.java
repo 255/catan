@@ -24,7 +24,6 @@ public class ServerPoller implements IServerPoller {
     private static final int c_defaultPollingSeconds = 3;
 
     private IServerProxy m_serverProxy;
-    private IModelInitializer m_modelSerializer;
     private Timer m_timer;
     private int m_pollCount = 0;
 
@@ -39,7 +38,6 @@ public class ServerPoller implements IServerPoller {
     }
 
     private ServerPoller() {
-        m_modelSerializer = new ModelInitializer();
         m_timer = new Timer(c_defaultPollingSeconds * c_millisecondsPerSecond, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -47,10 +45,6 @@ public class ServerPoller implements IServerPoller {
                 ++m_pollCount;
             }
         });
-    }
-
-    public void setServerProxy(IServerProxy serverProxy) {
-        m_serverProxy = serverProxy;
     }
 
     public void startPolling() {
@@ -80,7 +74,7 @@ public class ServerPoller implements IServerPoller {
     @Override
     public void updateGame() {
         try {
-            m_modelSerializer.initializeClientModel(m_serverProxy.getGameState(), m_serverProxy.getPlayerId());
+            new ModelInitializer().initializeClientModel(m_serverProxy.getGameState(), m_serverProxy.getPlayerId());
         } catch (ModelException | NetworkException e) {
             logger.log(Level.WARNING, "Polling failed.", e);
         }
