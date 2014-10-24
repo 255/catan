@@ -136,20 +136,26 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void createNewGame() {
-        try {
-            m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getUseRandomPorts(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
-            getNewGameView().closeTopModal();
-            getGames();
-        } catch (NetworkException e) {
-            logger.log(Level.WARNING, "Create game failed. - Network Exception", e);
+        if (!getNewGameView().getTitle().equals("")) {
+            try {
+                m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getUseRandomPorts(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
+                getNewGameView().closeTopModal();
+                getGames();
+            } catch (NetworkException e) {
+                logger.log(Level.WARNING, "Create game failed. - Network Exception", e);
+                getMessageView().showModal();
+                getMessageView().setTitle("Error!");
+                getMessageView().setMessage("Create game failed.");
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "Create game failed. - I/O Exception", e);
+                getMessageView().showModal();
+                getMessageView().setTitle("Error!");
+                getMessageView().setMessage("Create game failed.");
+            }
+        } else {
             getMessageView().showModal();
-            getMessageView().setTitle("Error!");
-            getMessageView().setMessage("Create game failed.");
-        } catch (IOException e) {
-            logger.log(Level.WARNING, "Create game failed. - I/O Exception", e);
-            getMessageView().showModal();
-            getMessageView().setTitle("Error!");
-            getMessageView().setMessage("Create game failed.");
+            getMessageView().setTitle("Warning!");
+            getMessageView().setMessage("The game title is empty. Please create a title.");
         }
 	}
 
@@ -171,22 +177,28 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void joinGame(CatanColor color) {
-        boolean success = false;
-        try {
-            success = m_admin.joinGame(m_joinGame.getId(), color);
-        } catch (NetworkException e) {
-            logger.log(Level.WARNING, "Join game failed. - Network Exception", e);
-        }
-		// If join succeeded
-        if (success) {
-            getSelectColorView().closeThisModal();
-            getJoinGameView().closeThisModal();
-            m_timer.cancel();
-            joinAction.execute();
+        if (color != null) {
+            boolean success = false;
+            try {
+                success = m_admin.joinGame(m_joinGame.getId(), color);
+            } catch (NetworkException e) {
+                logger.log(Level.WARNING, "Join game failed. - Network Exception", e);
+            }
+            // If join succeeded
+            if (success) {
+                getSelectColorView().closeThisModal();
+                getJoinGameView().closeThisModal();
+                m_timer.cancel();
+                joinAction.execute();
+            } else {
+                getMessageView().showModal();
+                getMessageView().setTitle("Error!");
+                getMessageView().setMessage("Join game failed.");
+            }
         } else {
             getMessageView().showModal();
-            getMessageView().setTitle("Error!");
-            getMessageView().setMessage("Join game failed.");
+            getMessageView().setTitle("Warning!");
+            getMessageView().setMessage("Please choose a color.");
         }
 	}
 
