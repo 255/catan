@@ -35,6 +35,10 @@ public class SelectColorView extends OverlayView implements ISelectColorView {
 	private int selButton = 0;
 			
 	public SelectColorView() {
+        this.initialize();
+    }
+
+    private void initialize() {
 
 		this.setOpaque(true);
 		this.setLayout(new BorderLayout());
@@ -385,6 +389,19 @@ public class SelectColorView extends OverlayView implements ISelectColorView {
 			return null;
 		}
 	}
+
+    @Override
+    public void refresh() {
+//        this.removeAll();
+//        this.initialize();
+        if (selButton != 0) {
+            if (!getButtonForColor(getColorByNumber(selButton)).isEnabled()) {
+                selButton = 0;
+            }
+        }
+        this.revalidate();
+        this.repaint();
+    }
 	
 }
 

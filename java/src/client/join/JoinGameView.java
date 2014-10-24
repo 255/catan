@@ -166,6 +166,8 @@ public class JoinGameView extends OverlayView implements IJoinGameView
 		this.localPlayer = localPlayer;
 		this.removeAll();
 		this.initialize();
+        this.revalidate();
+//        this.repaint();
 	}
 	
 	private ActionListener actionListener = new ActionListener()

@@ -6,6 +6,7 @@ import shared.definitions.CatanColor;
 import client.base.*;
 import client.data.*;
 import client.misc.*;
+import shared.model.Player;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -14,6 +15,7 @@ import java.util.logging.Logger;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Arrays;
 
 
 /**
@@ -32,6 +34,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
     private static final int c_millisecondsPerSecond = 1000;
     private static final int c_defaultPollingInterval = 3;
     private Timer m_timer;
+    private GameInfo[] prevGames = null;
+    private List<PlayerInfo> prevPlayers = null;
 	
 	/**
 	 * JoinGameController constructor
@@ -108,9 +112,9 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void start() {
-//        int secondsBetweenPolls = c_defaultPollingInterval;
-//        m_timer = new Timer();
-//        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
+        int secondsBetweenPolls = c_defaultPollingInterval;
+        m_timer = new Timer();
+        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
 
         getGames();
 
@@ -152,16 +156,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	@Override
 	public void startJoinGame(GameInfo game) {
         m_joinGame = game;
-
-//        for (CatanColor color : CatanColor.values()) {
-//            getSelectColorView().setColorEnabled(color, true);
-//        }
-//
-//        for (PlayerInfo player : game.getPlayers()) {
-//            if (player.getId() != m_admin.getLocalPlayerId()) {
-//                getSelectColorView().setColorEnabled(player.getColor(), false);
-//            }
-//        }
+        prevPlayers = null;
 
         getColors();
 
@@ -170,7 +165,6 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void cancelJoinGame() {
-	    m_timer.cancel();
 
 		getJoinGameView().closeTopModal();
 	}
@@ -187,6 +181,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
         if (success) {
             getSelectColorView().closeThisModal();
             getJoinGameView().closeThisModal();
+            m_timer.cancel();
             joinAction.execute();
         } else {
             getMessageView().showModal();
@@ -203,7 +198,6 @@ public class JoinGameController extends Controller implements IJoinGameControlle
     private void getGames() {
         try {
             List<GameInfo> gameList = m_admin.listGames();
-//            List<GameInfo> gameList = GameAdministrator.getInstance().listGames();
             GameInfo[] games = new GameInfo[gameList.size()];
             for (int i = 0; i < games.length; i++) {
                 GameInfo tempGame = new GameInfo();
@@ -219,9 +213,12 @@ public class JoinGameController extends Controller implements IJoinGameControlle
             }
 
             PlayerInfo player = new PlayerInfo(m_admin.getLocalPlayerId(), -1, m_admin.getLocalPlayerName(), null);
-//            PlayerInfo player = new PlayerInfo(GameAdministrator.getInstance().getLocalPlayerId(), -1, GameAdministrator.getInstance().getLocalPlayerName(), null);
 
-            getJoinGameView().setGames(games, player);
+            if (!Arrays.equals(games, prevGames)) {
+                getJoinGameView().setGames(games, player);
+                prevGames = games;
+            }
+
         } catch (NetworkException e) {
             logger.log(Level.WARNING, "Update failed. - Network Exception", e);
         } catch (IOException e) {
@@ -243,15 +240,21 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
     class QueryTask extends TimerTask {
         public void run() {
-//            getJoinGameView().closeModal();
-            if (getJoinGameView().isModalShowing() && !getNewGameView().isModalShowing() && !getSelectColorView().isModalShowing() && !getMessageView().isModalShowing()) {
-//                getJoinGameView().closeThisModal();
-//                getGames();
-//                getJoinGameView().showModal();
-            }
+            getGames();
 
-            if (m_joinGame != null && getSelectColorView().isModalShowing()) {
-//                getColors();
+            if (prevGames != null && m_joinGame != null && getSelectColorView().isModalShowing()) {
+                for (int i = 0; i < prevGames.length; i++) {
+                    if (prevGames[i].getId() == m_joinGame.getId()) {
+                        if (!prevGames[i].equals(m_joinGame)) {
+                            m_joinGame = prevGames[i];
+//                            getSelectColorView().closeThisModal();
+                            getColors();
+//                            getSelectColorView().showModal();
+                            getSelectColorView().refresh();
+                        }
+                        break;
+                    }
+                }
             }
         }
     }

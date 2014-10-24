@@ -59,5 +59,27 @@ public class GameInfo
     public boolean isFull() {
         return players.size() == 4;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            if (this == null) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (o instanceof GameInfo) {
+                if (((GameInfo) o).getId() == getId()) {
+                    if (((GameInfo) o).getTitle().equals(getTitle())) {
+                        if (((GameInfo) o).getPlayers().equals(getPlayers())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+    }
 }
 
