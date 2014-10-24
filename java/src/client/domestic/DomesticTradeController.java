@@ -29,8 +29,6 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
     private int m_recipient;
     private boolean m_needToInitializePlayersList;
 
-    public static final int NO_PLAYER = -1;
-
 	/**
 	 * DomesticTradeController constructor
 	 * 
@@ -49,7 +47,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		setAcceptOverlay(acceptOverlay);
 
         m_tradeOffer = null;
-        m_recipient = NO_PLAYER;
+        m_recipient = Player.NO_PLAYER;
         m_needToInitializePlayersList = true;
 
         Game.getInstance().addObserver(this);
@@ -89,6 +87,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
         getTradeOverlay().reset();
 
+        m_recipient = Player.NO_PLAYER;
         m_tradeOffer = new PendingOffer();
         updateButtons();
 
@@ -115,6 +114,8 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         try {
             ServerModelFacade.getInstance().offerTrade(m_tradeOffer.toResourceBank(), m_recipient);
             // waiting modal is opened automatically when the new client model initializes
+            m_recipient = Player.NO_PLAYER;
+            m_tradeOffer = null;
         }
         catch (ModelException e) {
             logger.log(Level.WARNING, "Sending trade offer failed.", e);
@@ -123,7 +124,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
 	@Override
 	public void setPlayerToTradeWith(int playerIndex) {
-        assert playerIndex >= NO_PLAYER && playerIndex < 4;
+        assert playerIndex >= Player.NO_PLAYER && playerIndex < 4;
         m_recipient = playerIndex;
         updateButtons();
 	}
@@ -151,7 +152,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 		getTradeOverlay().closeTopModal();
         getTradeOverlay().reset();
         m_tradeOffer = null;
-        m_recipient = NO_PLAYER;
+        m_recipient = Player.NO_PLAYER;
 	}
 
 	@Override
@@ -243,7 +244,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         updateResourceButtons();
 
         boolean resourcesChosen = m_tradeOffer.hasTradeSet();
-        boolean playerChosen = m_recipient != NO_PLAYER;
+        boolean playerChosen = m_recipient != Player.NO_PLAYER;
         if (resourcesChosen && playerChosen) {
             getTradeOverlay().setTradeEnabled(true);
             getTradeOverlay().setStateMessage("Trade!");
