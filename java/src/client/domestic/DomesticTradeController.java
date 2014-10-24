@@ -358,7 +358,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         public ResourceBank toResourceBank() {
             ResourceBank resources = new ResourceBank();
 
-            for (Entry<ResourceType, PendingResourceOffer> entry : this.entrySet()) {
+            for (Map.Entry<ResourceType, PendingResourceOffer> entry : this.entrySet()) {
                 if (entry.getValue().type == OfferType.SEND) {
                     resources.setCount(entry.getKey(), entry.getValue().amount);
                 } // negative values indicate the use wants to receive that resource
