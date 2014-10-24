@@ -120,13 +120,13 @@ public interface IPlayer {
      * Return true if the player has enough resources for a trade currently being offered to them.
      * @return true if can accept trade, false if not enough resources (or no trade is offered currently)
      */
-    boolean canAcceptTrade(IResourceBank asking);
+    public boolean canAcceptTrade(IResourceBank asking);
 
     /**
      * Whether the user has dev cards to play in their new hand and has not played yet.
      * @return true if user can play a card
      */
-    boolean canPlayDevCard();
+    public boolean canPlayDevCard();
 
     /**
      * Get whether the player has at least one of the specified type of dev card
@@ -134,7 +134,7 @@ public interface IPlayer {
      * @param card the type
      * @return true if has one or more of card
      */
-    boolean canPlayDevCard(DevCardType card);
+    public boolean canPlayDevCard(DevCardType card);
 
     /**
      * Checks to see if player can afford a specific purchase

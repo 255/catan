@@ -40,8 +40,6 @@ public class DevCardController extends Controller implements IDevCardController 
 
         Game.getInstance().addObserver(this);
         m_facade = ServerModelFacade.getInstance();
-
-        //update(); is this needed?
 	}
 
 	public IPlayDevCardView getPlayCardView() {
@@ -135,7 +133,6 @@ public class DevCardController extends Controller implements IDevCardController 
             logger.fine("Not intializing DevCardController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
-        logger.finer("Initializing DevCardController.");
 
         IPlayer player = Game.getInstance().getLocalPlayer();
         IDevCardHand devCards = player.getPlayableDevCards();
@@ -144,6 +141,7 @@ public class DevCardController extends Controller implements IDevCardController 
             getPlayCardView().setCardEnabled(type, player.canPlayDevCard(type));
             getPlayCardView().setCardAmount(type, devCards.getCount(type));
         }
+        logger.exiting("client.devcards.DevCardController", "initFromModel");
     }
 }
 

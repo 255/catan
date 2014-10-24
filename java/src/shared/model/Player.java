@@ -263,24 +263,41 @@ public class Player implements IPlayer {
      */
     @Override
     public boolean canPlayDevCard() {
-        return m_playableDevCards.getCount() > 0 && !m_playedDevCard;
+        for (DevCardType card : DevCardType.values()) {
+            if (canPlayDevCard(card)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Get whether the player has at least one of the specified type of dev card
      * and they have not played a card this round.
+     * Also, allows for playing monuments if victory points is within reach.
+     * This does not check whose turn it is!
      *
      * @param card the type
      * @return true if has one or more of card
      */
     @Override
     public boolean canPlayDevCard(DevCardType card) {
-        // they must have two available road pieces for the road building card
-        if (card == DevCardType.ROAD_BUILD && m_pieceBank.availableRoads() < 2) {
+        // check that player has the card
+        if (m_playableDevCards.getCount(card) <= 0) {
             return false;
         }
 
-        return !m_playedDevCard && (m_playableDevCards.getCount(card) > 0);
+        // they must have two available road pieces for the road building card
+        if (card == DevCardType.ROAD_BUILD && m_pieceBank.availableRoads() < 2) {
+            return false;
+        } // can only play monuments if they will give you 10 victory points
+        else if (card == DevCardType.MONUMENT) {
+            return (m_victoryPoints + m_playableDevCards.getCount(DevCardType.MONUMENT)) >= CatanConstants.VICTORY_POINTS_TO_WIN;
+        }
+
+        // true if have not played a card yet
+        return !m_playedDevCard;
     }
 
     /**
