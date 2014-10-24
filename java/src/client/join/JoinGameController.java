@@ -6,15 +6,15 @@ import shared.definitions.CatanColor;
 import client.base.*;
 import client.data.*;
 import client.misc.*;
-import shared.model.Player;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.Timer;
 import java.util.Arrays;
 
 
@@ -32,7 +32,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
     private GameInfo m_joinGame;
 
     private static final int c_millisecondsPerSecond = 1000;
-    private static final int c_defaultPollingInterval = 3;
+    private static final int c_defaultPollingSeconds = 3;
     private Timer m_timer;
     private GameInfo[] prevGames = null;
     private List<PlayerInfo> prevPlayers = null;
@@ -55,6 +55,27 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 		setMessageView(messageView);
 
         m_admin = GameAdministrator.getInstance();
+        m_timer = new Timer(c_defaultPollingSeconds * c_millisecondsPerSecond, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getGames();
+
+                if (prevGames != null && m_joinGame != null && getSelectColorView().isModalShowing()) {
+                    for (int i = 0; i < prevGames.length; i++) {
+                        if (prevGames[i].getId() == m_joinGame.getId()) {
+                            if (!prevGames[i].equals(m_joinGame)) {
+                                m_joinGame = prevGames[i];
+//                            getSelectColorView().closeThisModal();
+                                getColors();
+//                            getSelectColorView().showModal();
+                                getSelectColorView().refresh();
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        });
 	}
 	
 	public IJoinGameView getJoinGameView() {
@@ -112,9 +133,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void start() {
-        int secondsBetweenPolls = c_defaultPollingInterval;
-        m_timer = new Timer();
-        m_timer.schedule(new QueryTask(), c_millisecondsPerSecond * secondsBetweenPolls, c_millisecondsPerSecond * secondsBetweenPolls);
+        m_timer.start();
 
         getGames();
 
@@ -123,7 +142,8 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 
 	@Override
 	public void startCreateNewGame() {
-		
+
+        getNewGameView().setTitle("");
 		getNewGameView().showModal();
 	}
 
@@ -155,7 +175,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
         } else {
             getMessageView().showModal();
             getMessageView().setTitle("Warning!");
-            getMessageView().setMessage("The game title is empty. Please create a title.");
+            getMessageView().setMessage("The game title is empty.");
         }
 	}
 
@@ -188,7 +208,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
             if (success) {
                 getSelectColorView().closeThisModal();
                 getJoinGameView().closeThisModal();
-                m_timer.cancel();
+                m_timer.stop();
                 joinAction.execute();
             } else {
                 getMessageView().showModal();
@@ -246,27 +266,6 @@ public class JoinGameController extends Controller implements IJoinGameControlle
         for (PlayerInfo player : m_joinGame.getPlayers()) {
             if (player.getId() != m_admin.getLocalPlayerId()) {
                 getSelectColorView().setColorEnabled(player.getColor(), false);
-            }
-        }
-    }
-
-    class QueryTask extends TimerTask {
-        public void run() {
-            getGames();
-
-            if (prevGames != null && m_joinGame != null && getSelectColorView().isModalShowing()) {
-                for (int i = 0; i < prevGames.length; i++) {
-                    if (prevGames[i].getId() == m_joinGame.getId()) {
-                        if (!prevGames[i].equals(m_joinGame)) {
-                            m_joinGame = prevGames[i];
-//                            getSelectColorView().closeThisModal();
-                            getColors();
-//                            getSelectColorView().showModal();
-                            getSelectColorView().refresh();
-                        }
-                        break;
-                    }
-                }
             }
         }
     }

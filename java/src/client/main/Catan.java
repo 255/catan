@@ -105,10 +105,12 @@ public class Catan extends JFrame
 			{
 				new Catan();
 
+                // Initialize the HTTP communicator
                 IHttpCommunicator communicator = new HttpCommunicator();
                 GameAdminServerProxy gameAdminProxy = new GameAdminServerProxy(communicator);
                 GameAdministrator.getInstance().setGameAdminServerProxy(gameAdminProxy);
 
+                // initialize server proxies
                 TestServerProxy testProxy = new TestServerProxy();
                 ServerProxy proxy = new ServerProxy(communicator);
                 ServerModelFacade.getInstance().setServerProxy(proxy);
@@ -120,8 +122,7 @@ public class Catan extends JFrame
                 }
 				
 				PlayerWaitingView playerWaitingView = new PlayerWaitingView();
-				final PlayerWaitingController playerWaitingController = new PlayerWaitingController(
-																									playerWaitingView);
+				final PlayerWaitingController playerWaitingController = new PlayerWaitingController(playerWaitingView);
 				playerWaitingView.setController(playerWaitingController);
 				
 				JoinGameView joinView = new JoinGameView();
@@ -150,8 +151,7 @@ public class Catan extends JFrame
 				
 				LoginView loginView = new LoginView();
 				MessageView loginMessageView = new MessageView();
-				LoginController loginController = new LoginController(
-																	  loginView,
+				LoginController loginController = new LoginController(loginView,
 																	  loginMessageView);
 				loginController.setLoginAction(new IAction() {
 					@Override
