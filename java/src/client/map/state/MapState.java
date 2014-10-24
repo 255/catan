@@ -20,7 +20,6 @@ public abstract class MapState implements IMapState {
     /**
      * Determine the game state based on the provided game object.
      * A null game means that gameplay has not started yet.
-     * @param game the game object for the current game, or null if no game is ongoing
      * @return the the correct state object
      */
     public static MapState determineState() {

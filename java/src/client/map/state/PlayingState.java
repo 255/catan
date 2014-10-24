@@ -206,6 +206,9 @@ public class PlayingState extends MapState {
             }
             m_road1 = null;
         }
+
+        m_isPlayingSoldier = false;
+        m_newRobberLocation = null;
     }
 
     /**
