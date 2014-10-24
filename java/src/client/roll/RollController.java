@@ -6,6 +6,9 @@ import shared.model.GameModelFacade;
 import shared.model.ModelException;
 import shared.model.ServerModelFacade;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +21,9 @@ public class RollController extends Controller implements IRollController {
     private final static Logger logger = Logger.getLogger("catan");
 
 	private IRollResultView resultView;
+    private Timer m_rollTimer;
+
+    private static final int TIMEOUT_MS = 4000;
 
 	/**
 	 * RollController constructor
@@ -30,6 +36,13 @@ public class RollController extends Controller implements IRollController {
 		super(view);
 		
 		setResultView(resultView);
+
+        m_rollTimer = new Timer(TIMEOUT_MS, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                rollDice();
+            }
+        });
 
         Game.getInstance().addObserver(this);
     }
@@ -48,6 +61,10 @@ public class RollController extends Controller implements IRollController {
 	@Override
 	public void rollDice() {
         logger.entering("client.roll.RollController", "RollDice");
+
+        getRollView().closeThisModal();
+        m_rollTimer.stop();
+
         try {
             int rollValue = ServerModelFacade.getInstance().rollNumber();
             getResultView().setRollValue(rollValue);
@@ -64,6 +81,10 @@ public class RollController extends Controller implements IRollController {
         logger.entering("client.roll.RollController", "update", o);
 
         if (Game.getInstance().localPlayerIsRolling()) {
+            if (!m_rollTimer.isRunning()) {
+                m_rollTimer.restart();
+            }
+
             IRollView view = getRollView();
             if (!view.isModalShowing()) {
                 view.setMessage("Roll the dice!");
