@@ -2,6 +2,7 @@ package client.data;
 
 import shared.definitions.*;
 import shared.model.IPlayer;
+import shared.model.Player;
 
 import javax.imageio.event.IIOReadProgressListener;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.Collection;
  */
 public class PlayerInfo
 {
-    public static final int NO_PLAYER = -1;
+    public static final int NO_PLAYER = Player.NO_PLAYER;
 	
 	private int id;
 	private int playerIndex;

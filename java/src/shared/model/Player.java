@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * This class represents a Player Object
  */
 public class Player implements IPlayer {
+    public static final int NO_PLAYER = -1;
 
     private int m_id;
     private int m_index;

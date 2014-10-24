@@ -276,8 +276,20 @@ public class ModelInitializer implements IModelInitializer {
                     break;
                 case "winner":
                     int winner = reader.nextInt();
-                    if (winner != -1) {
-                        newGame.setWinner(m_players.get(winner));
+                    if (winner != Player.NO_PLAYER) {
+                        // The server returns the player ID instead of index, which contradicts the specs
+                        boolean foundPlayer = false;
+                        for (IPlayer player : m_players.values()) {
+                            if (player.getId() == winner) {
+                                newGame.setWinner(player);
+                                foundPlayer = true;
+                                break;
+                            }
+                        }
+
+                        if (!foundPlayer) {
+                            throw new ModelException("Unrecognized player ID " + winner + " was provided for the winner.");
+                        }
                     }
                     break;
                 default:

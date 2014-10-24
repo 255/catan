@@ -139,6 +139,7 @@ public class Catan extends JFrame
 					{
                         ServerPoller.getInstance().setProxy(proxy);
                         ServerPoller.getInstance().updateGame();
+                        ServerPoller.getInstance().startPolling();
                         playerWaitingController.start();
 					}
 				});
