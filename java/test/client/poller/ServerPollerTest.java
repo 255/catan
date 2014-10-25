@@ -17,8 +17,8 @@ public class ServerPollerTest {
         m_serverPoller.setProxy(m_mockServerProxy);
         m_serverPoller.startPolling();
 
-        Thread.sleep(10000);
+        Thread.sleep(11000);
 
-        assertEquals("Poller should have polled 3 times in 10 seconds", 3, m_serverPoller.getPollCount());
+        assertEquals("Poller should have polled 3 times in 11 seconds", 3, m_serverPoller.getPollCount());
     }
 }

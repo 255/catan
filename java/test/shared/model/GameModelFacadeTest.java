@@ -289,7 +289,7 @@ public class GameModelFacadeTest {
 
         game.setCurrentPlayer(game.getPlayers().get(1));
         game.setLocalPlayer(game.getPlayers().get(1));
-        assertFalse("Already played dev card", facade.canPlayDevCard());
+        assertTrue("Should be able to play a monument", facade.canPlayDevCard());
 
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not your turn", facade.canPlayDevCard());
@@ -380,7 +380,7 @@ public class GameModelFacadeTest {
 
         game.setCurrentPlayer(game.getPlayers().get(1));
         game.setLocalPlayer(game.getPlayers().get(1));
-        assertFalse("Already played dev card", facade.canPlayMonument());
+        assertTrue("Can always play monument card if have any", facade.canPlayMonument());
 
         game.setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not your turn", facade.canPlayMonument());
