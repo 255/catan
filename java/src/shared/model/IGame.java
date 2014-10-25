@@ -180,4 +180,9 @@ public interface IGame {
     public boolean isLocalPlayersTurn();
 
     public boolean gameHasStarted();
+
+    /**
+     * The ModelInitializer needs to tell the Game object when it is done updating.
+     */
+    public void updateComplete();
 }

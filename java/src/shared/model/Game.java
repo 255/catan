@@ -333,4 +333,13 @@ public class Game extends Observable implements IGame {
     private boolean localPlayerAndGameState(GameState state) {
         return m_localPlayer.equals(m_currentPlayer) && m_state == state;
     }
+
+    /**
+     * The ModelInitializer needs to tell the Game object when it is done updating.
+     */
+    @Override
+    public void updateComplete() {
+        assert !isNotInitialized();
+        notifyObservers();
+    }
 }

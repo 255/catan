@@ -77,7 +77,7 @@ public class ModelInitializer implements IModelInitializer {
             logger.finer("Local player is " + localPlayer.getName() + " (" + localPlayer.getColor() + ")");
             newGame.setLocalPlayer(localPlayer);
 
-            Game.getInstance().notifyObservers(); // TODO: have the game handle this itself
+            Game.getInstance().updateComplete();
             logger.finest("Notified " + newGame.countObservers() + " about model update.");
         }
         catch (IOException | IllegalStateException e) {
