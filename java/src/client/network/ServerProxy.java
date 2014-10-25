@@ -303,7 +303,7 @@ public class ServerProxy implements IServerProxy {
     public String finishTurn(int playerIndex) throws NetworkException {
         JsonObject json = new JsonObject();
         json.addProperty("type", "finishTurn");
-        json.addProperty("playerIndex", 0);
+        json.addProperty("playerIndex", playerIndex);
 
         String response = m_httpCommunicator.post("/moves/finishTurn", json.toString());
 
