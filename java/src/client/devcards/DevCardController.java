@@ -134,8 +134,6 @@ public class DevCardController extends Controller implements IDevCardController 
             return; // do nothing if the game object has not been created yet
         }
 
-        assert Game.getInstance().localPlayerIsPlaying();
-
         IPlayer player = Game.getInstance().getLocalPlayer();
         IDevCardHand totalDevCards = player.getAllDevCards();
         //for each card type set enabled and amount
