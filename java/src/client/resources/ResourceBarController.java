@@ -96,7 +96,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 
         getView().setElementEnabled(ResourceBarElement.BUY_CARD, GameModelFacade.getInstance().canBuyDevCard());
 
-        getView().setElementEnabled(ResourceBarElement.PLAY_CARD, GameModelFacade.getInstance().canPlayDevCard());
+        getView().setElementEnabled(ResourceBarElement.PLAY_CARD, Game.getInstance().localPlayerIsPlaying());
 
         getView().setElementAmount(ResourceBarElement.SOLDIERS, localPlayer.getSoldiers());
     }

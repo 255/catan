@@ -211,6 +211,16 @@ public class Player implements IPlayer {
         return m_playableDevCards;
     }
 
+    /**
+     * Get all of the dev cards, whether new or playable.
+     *
+     * @return
+     */
+    @Override
+    public IDevCardHand getAllDevCards() {
+        return m_playableDevCards.sum(m_newDevCards);
+    }
+
     @Override
     public boolean canAfford(IResourceBank purchase) {
         return m_resources.canAfford(purchase);
@@ -291,9 +301,10 @@ public class Player implements IPlayer {
         // they must have two available road pieces for the road building card
         if (card == DevCardType.ROAD_BUILD && m_pieceBank.availableRoads() < 2) {
             return false;
-        } // can only play monuments if they will give you 10 victory points
+        } // IN OFFICIAL RULES, can only play monuments if they will give you 10 victory points, but can play any time in spec
         else if (card == DevCardType.MONUMENT) {
-            return (m_victoryPoints + m_playableDevCards.getCount(DevCardType.MONUMENT)) >= CatanConstants.VICTORY_POINTS_TO_WIN;
+            //return (m_victoryPoints + m_playableDevCards.getCount(DevCardType.MONUMENT)) >= CatanConstants.VICTORY_POINTS_TO_WIN;
+            return true;
         }
 
         // true if have not played a card yet

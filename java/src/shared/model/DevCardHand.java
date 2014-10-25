@@ -63,6 +63,29 @@ public class DevCardHand implements IDevCardHand {
     }
 
     /**
+     * Return the sum of the dev card hands. Neither object is changed.
+     *
+     * @param other the other dev card hand
+     * @return a new object that contains the sum of the two dev card hands
+     */
+    @Override
+    public IDevCardHand sum(IDevCardHand other) {
+        DevCardHand o = (DevCardHand)other;
+        try {
+            return new DevCardHand(
+                    this.m_monopoly + o.m_monopoly,
+                    this.m_monument + o.m_monument,
+                    this.m_roadBuilding + o.m_roadBuilding,
+                    this.m_soldier + o.m_soldier,
+                    this.m_yearOfPlenty + o.m_yearOfPlenty
+            );
+        } catch (ModelException e) {
+            assert false : "Both DevCardHands should have positive numbers of cards!";
+            return new DevCardHand();
+        }
+    }
+
+    /**
      * Add one of the specified type of card to the development card hand.
      *
      * @param devCardType the type of development card to add to the hand

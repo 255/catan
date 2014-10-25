@@ -53,7 +53,7 @@ public class PieceBank implements IPieceBank {
     @Override
     public void setAvailableRoads(int availableRoads) throws ModelException {
         if (availableRoads < 0) {
-            throw new ModelException("Attempted to set a negative number of roads.");
+            throw new ModelException("Attempted to set a negative number of roads (" + availableRoads + ").");
         }
         m_numRoads = availableRoads;
     }

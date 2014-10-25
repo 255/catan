@@ -22,6 +22,13 @@ public interface IDevCardHand {
     public int getCount(DevCardType devCardType);
 
     /**
+     * Return the sum of the dev card hands. Neither object is changed.
+     * @param other the other dev card hand
+     * @return a new object that contains the sum of the two dev card hands
+     */
+    public IDevCardHand sum(IDevCardHand other);
+
+    /**
      * Add one of the specified type of card to the development card hand.
      * @param devCardType the type of development card to add to the hand
      */

@@ -98,6 +98,12 @@ public interface IPlayer {
     public IDevCardHand getNewDevCards();
 
     public IDevCardHand getPlayableDevCards();
+
+    /**
+     * Get all of the dev cards, whether new or playable.
+     * @return
+     */
+    public IDevCardHand getAllDevCards();
         /**
      * Have enough money to buy a city and have place to put it and a piece to use.
      * @return true if can buy city, false if not
