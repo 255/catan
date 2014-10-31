@@ -94,6 +94,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
             gameState = "Waiting for Other Players";
         }
 
+        getView().setLocalPlayerColor((Game.getInstance().getLocalPlayer().getColor()));
         getView().updateGameState(gameState, Game.getInstance().localPlayerIsPlaying());
 	}
 }
