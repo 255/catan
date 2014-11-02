@@ -1,10 +1,8 @@
 package client.turntracker;
 
-import shared.definitions.CatanColor;
 import client.base.*;
 import shared.model.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
@@ -23,7 +21,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 		
 		super(view);
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 
         m_playersInitialized = false;
 	}
@@ -49,7 +47,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
 
 	private void initFromModel() {
         // get the list of players
-        List<IPlayer> players = Game.getInstance().getPlayers();
+        List<IPlayer> players = GameModelFacade.instance().getGame().getPlayers();
         if(players.size() < CatanConstants.NUM_PLAYERS) {
             return;
         }
@@ -63,39 +61,39 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
             getView().updatePlayer(
                             pl.getIndex(),
                             pl.getVictoryPoints(),
-                            GameModelFacade.getInstance().isPlayersTurn(pl),
-                            GameModelFacade.getInstance().playerHasLargestArmy(pl),
-                            GameModelFacade.getInstance().playerHasLongestRoad(pl),
+                            GameModelFacade.instance().isPlayersTurn(pl),
+                            GameModelFacade.instance().playerHasLargestArmy(pl),
+                            GameModelFacade.instance().playerHasLongestRoad(pl),
                             pl.getColor()
                         );
         }
         m_playersInitialized = true;
 
         String gameState;
-        if (Game.getInstance().localPlayerIsPlaying()) {
+        if (GameModelFacade.instance().getGame().localPlayerIsPlaying()) {
             gameState = "Finish Turn";
         }
-        else if (Game.getInstance().localPlayerIsBeingOfferedTrade()) {
+        else if (GameModelFacade.instance().getGame().localPlayerIsBeingOfferedTrade()) {
             gameState = "Accept or Reject Trade";
         }
-        else if (Game.getInstance().localPlayerIsDiscarding()) {
+        else if (GameModelFacade.instance().getGame().localPlayerIsDiscarding()) {
             gameState = "Discard Cards";
         }
-        else if (Game.getInstance().localPlayerIsRolling()) {
+        else if (GameModelFacade.instance().getGame().localPlayerIsRolling()) {
             gameState = "Roll the Dice";
         }
-        else if (Game.getInstance().localPlayerIsRobbing()) {
+        else if (GameModelFacade.instance().getGame().localPlayerIsRobbing()) {
             gameState = "Place the Robber";
         }
-        else if (Game.getInstance().localPlayerIsPlacingInitialPieces()) {
+        else if (GameModelFacade.instance().getGame().localPlayerIsPlacingInitialPieces()) {
             gameState = "Place Initial Pieces";
         }
         else {
             gameState = "Waiting for Other Players";
         }
 
-        getView().setLocalPlayerColor((Game.getInstance().getLocalPlayer().getColor()));
-        getView().updateGameState(gameState, Game.getInstance().localPlayerIsPlaying());
+        getView().setLocalPlayerColor((GameModelFacade.instance().getGame().getLocalPlayer().getColor()));
+        getView().updateGameState(gameState, GameModelFacade.instance().getGame().localPlayerIsPlaying());
 	}
 }
 

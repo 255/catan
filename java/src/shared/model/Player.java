@@ -5,6 +5,7 @@ import shared.definitions.DevCardType;
 
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * This class represents a Player Object
@@ -152,12 +153,12 @@ public class Player implements IPlayer {
 
     @Override
     public Collection<IRoad> getRoads() {
-        return m_roads;
+        return Collections.unmodifiableCollection(m_roads);
     }
 
     @Override
     public Collection<ITown> getTowns() {
-        return m_towns;
+        return Collections.unmodifiableCollection(m_towns);
     }
 
     @Override

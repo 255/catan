@@ -5,8 +5,6 @@ import java.util.*;
 import client.base.*;
 import shared.model.*;
 
-import javax.annotation.Resource;
-
 
 /**
  * Implementation for the resource bar controller
@@ -21,7 +19,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 		
 		elementActions = new HashMap<ResourceBarElement, IAction>();
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 	}
 
 	@Override
@@ -76,7 +74,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 
     public void initFromModel() {
 
-        IPlayer localPlayer = Game.getInstance().getLocalPlayer();
+        IPlayer localPlayer = GameModelFacade.instance().getGame().getLocalPlayer();
 
         IResourceBank resourceCards = localPlayer.getResources();
         getView().setElementAmount(ResourceBarElement.WOOD, resourceCards.getWood());
@@ -85,18 +83,18 @@ public class ResourceBarController extends Controller implements IResourceBarCon
         getView().setElementAmount(ResourceBarElement.WHEAT, resourceCards.getWheat());
         getView().setElementAmount(ResourceBarElement.ORE, resourceCards.getOre());
 
-        getView().setElementEnabled(ResourceBarElement.ROAD, GameModelFacade.getInstance().canBuyRoad());
+        getView().setElementEnabled(ResourceBarElement.ROAD, GameModelFacade.instance().canBuyRoad());
         getView().setElementAmount(ResourceBarElement.ROAD, localPlayer.getPieceBank().availableRoads());
 
-        getView().setElementEnabled(ResourceBarElement.SETTLEMENT, GameModelFacade.getInstance().canBuySettlement());
+        getView().setElementEnabled(ResourceBarElement.SETTLEMENT, GameModelFacade.instance().canBuySettlement());
         getView().setElementAmount(ResourceBarElement.SETTLEMENT, localPlayer.getPieceBank().availableSettlements());
 
-        getView().setElementEnabled(ResourceBarElement.CITY, GameModelFacade.getInstance().canBuyCity());
+        getView().setElementEnabled(ResourceBarElement.CITY, GameModelFacade.instance().canBuyCity());
         getView().setElementAmount(ResourceBarElement.CITY, localPlayer.getPieceBank().availableCities());
 
-        getView().setElementEnabled(ResourceBarElement.BUY_CARD, GameModelFacade.getInstance().canBuyDevCard());
+        getView().setElementEnabled(ResourceBarElement.BUY_CARD, GameModelFacade.instance().canBuyDevCard());
 
-        getView().setElementEnabled(ResourceBarElement.PLAY_CARD, Game.getInstance().localPlayerIsPlaying());
+        getView().setElementEnabled(ResourceBarElement.PLAY_CARD, GameModelFacade.instance().getGame().localPlayerIsPlaying());
 
         getView().setElementAmount(ResourceBarElement.SOLDIERS, localPlayer.getSoldiers());
     }

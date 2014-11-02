@@ -57,7 +57,7 @@ public class ModelInitializer implements IModelInitializer {
 
         // read the main body of the client JSON model
         try (JsonReader reader = new JsonReader(new StringReader(json))) {
-            Game newGame = Game.getInstance();
+            IGame newGame = GameModelFacade.instance().getGame();
             assert newGame != null;
 
             readClientModel(newGame, reader);
@@ -77,8 +77,7 @@ public class ModelInitializer implements IModelInitializer {
             logger.finer("Local player is " + localPlayer.getName() + " (" + localPlayer.getColor() + ")");
             newGame.setLocalPlayer(localPlayer);
 
-            Game.getInstance().updateComplete();
-            logger.finest("Notified " + newGame.countObservers() + " about model update.");
+            GameModelFacade.instance().getGame().updateComplete();
         }
         catch (IOException | IllegalStateException e) {
             final String msg = "Failed to deserialize JSON.";

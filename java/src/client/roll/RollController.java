@@ -1,7 +1,6 @@
 package client.roll;
 
 import client.base.*;
-import shared.model.Game;
 import shared.model.GameModelFacade;
 import shared.model.ModelException;
 import shared.model.ServerModelFacade;
@@ -44,7 +43,7 @@ public class RollController extends Controller implements IRollController {
             }
         });
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
     }
 	
 	public IRollResultView getResultView() {
@@ -80,7 +79,7 @@ public class RollController extends Controller implements IRollController {
     public void update(Observable o, Object arg) {
         logger.entering("client.roll.RollController", "update", o);
 
-        if (Game.getInstance().localPlayerIsRolling()) {
+        if (GameModelFacade.instance().getGame().localPlayerIsRolling()) {
             if (!m_rollTimer.isRunning()) {
                 m_rollTimer.restart();
             }

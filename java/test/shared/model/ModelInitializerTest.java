@@ -1,7 +1,6 @@
 package shared.model;
 
 import client.communication.LogEntry;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.CatanColor;
@@ -12,10 +11,8 @@ import shared.locations.EdgeDirection;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexDirection;
-import shared.model.ILog.ILogMessage;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +29,7 @@ public class ModelInitializerTest {
         m_modelInitializer = new ModelInitializer();
         m_clientModel = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_1.json")));
         m_modelInitializer.initializeClientModel(m_clientModel, 0);
-        m_game = Game.getInstance();
+        m_game = GameModelFacade.instance().getGame();
     }
 
     @Test(expected=ModelException.class)

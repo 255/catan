@@ -1,7 +1,6 @@
 package client.points;
 
 import client.base.*;
-import client.poller.ServerPoller;
 import shared.model.*;
 
 import java.util.Observable;
@@ -29,7 +28,7 @@ public class PointsController extends Controller implements IPointsController {
 		
 		setFinishedView(finishedView);
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 	}
 	
 	public IPointsView getPointsView() {
@@ -50,8 +49,8 @@ public class PointsController extends Controller implements IPointsController {
     }
 
 	private void initFromModel() {
-        if (Game.getInstance().getWinner() != null) {
-            getFinishedView().setWinner(Game.getInstance().getWinner().getName(), Game.getInstance().getWinner().equals(Game.getInstance().getLocalPlayer()));
+        if (GameModelFacade.instance().getGame().getWinner() != null) {
+            getFinishedView().setWinner(GameModelFacade.instance().getGame().getWinner().getName(), GameModelFacade.instance().getGame().getWinner().equals(GameModelFacade.instance().getGame().getLocalPlayer()));
 
             if (!getFinishedView().isModalShowing()) {
                 getFinishedView().showModal();
@@ -59,7 +58,7 @@ public class PointsController extends Controller implements IPointsController {
         }
 
         // only set up to 10 points so that the view doesn't get angry at us
-        int points = Game.getInstance().getLocalPlayer().getVictoryPoints();
+        int points = GameModelFacade.instance().getGame().getLocalPlayer().getVictoryPoints();
         assert points >= 0;
 
         if (points <= CatanConstants.VICTORY_POINTS_TO_WIN) {

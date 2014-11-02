@@ -9,6 +9,7 @@ import client.base.*;
 import client.catan.*;
 import client.utils.ImageUtils;
 import shared.model.Game;
+import shared.model.GameModelFacade;
 
 
 /**
@@ -139,7 +140,7 @@ public class TurnTrackerView extends PanelView implements ITurnTrackerView {
 	@Override
 	public void updateGameState(String stateMessage, boolean enable) {
 
-		gameStatePanel.updateGameState(stateMessage, enable, Game.getInstance().getLocalPlayer().getColor());
+		gameStatePanel.updateGameState(stateMessage, enable, GameModelFacade.instance().getGame().getLocalPlayer().getColor());
 	}
 	
 }

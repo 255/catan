@@ -7,6 +7,7 @@ import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 import shared.model.Game;
+import shared.model.GameModelFacade;
 import shared.model.IGame;
 import shared.model.ModelException;
 
@@ -23,12 +24,12 @@ public abstract class MapState implements IMapState {
      * @return the the correct state object
      */
     public static MapState determineState() {
-        if (Game.getInstance().isNotInitialized() || !Game.getInstance().gameHasStarted() || !Game.getInstance().isLocalPlayersTurn()) {
+        if (GameModelFacade.instance().getGame().isNotInitialized() || !GameModelFacade.instance().getGame().gameHasStarted() || !GameModelFacade.instance().getGame().isLocalPlayersTurn()) {
             logger.finer("MapState is NotPlaying.");
             return new NotPlayingState();
         }
         else { // isLocalPlayersTurn()
-            switch (Game.getInstance().getGameState()) {
+            switch (GameModelFacade.instance().getGame().getGameState()) {
                 case PLAYING:
                     logger.finer("MapState is Playing.");
                     return new PlayingState();

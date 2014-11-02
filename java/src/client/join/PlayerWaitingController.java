@@ -5,6 +5,7 @@ import client.data.PlayerInfo;
 import client.network.*;
 import client.poller.ServerPoller;
 import shared.model.Game;
+import shared.model.GameModelFacade;
 import shared.model.IPlayer;
 import shared.model.ServerModelFacade;
 
@@ -27,7 +28,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
 
         m_previousPlayers = null;
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
             logger.log(Level.WARNING, "When attempting to list AI's, this error was thrown: " + e.getMessage(), e);
         }
 
-        if (!Game.getInstance().gameHasStarted()) {
+        if (!GameModelFacade.instance().getGame().gameHasStarted()) {
             getView().showModal();
         }
 	}
@@ -65,14 +66,14 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
     }
 
     private void initFromModel() {
-        if (Game.getInstance().gameHasStarted()) {
+        if (GameModelFacade.instance().getGame().gameHasStarted()) {
             if (getView().isModalShowing()) {
                 getView().closeThisModal();
                 m_previousPlayers = null;
             }
         }
         else {
-            List<IPlayer> playerList = Game.getInstance().getPlayers();
+            List<IPlayer> playerList = GameModelFacade.instance().getGame().getPlayers();
             PlayerInfo[] players = PlayerInfo.fromPlayers(playerList);
             if (m_previousPlayers == null || !Arrays.equals(m_previousPlayers, players)) {
                 getView().setPlayers(players);

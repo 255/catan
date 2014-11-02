@@ -41,10 +41,10 @@ public class RobbingState extends MapState {
      */
     @Override
     public void placeRobber(MapController controller, HexLocation hexLoc) {
-        assert hexLoc != null && Game.getInstance().getMap().canPlaceRobber(hexLoc);
+        assert hexLoc != null && GameModelFacade.instance().getGame().getMap().canPlaceRobber(hexLoc);
 
         m_newRobberLocation = hexLoc;
-        Collection<IPlayer> players = GameModelFacade.getInstance().getRobbablePlayers(m_newRobberLocation);
+        Collection<IPlayer> players = GameModelFacade.instance().getRobbablePlayers(m_newRobberLocation);
         controller.getRobView().setPlayers(RobPlayerInfo.fromPlayers(players));
         controller.getRobView().showModal();
     }
@@ -60,7 +60,7 @@ public class RobbingState extends MapState {
      */
     @Override
     public boolean canPlaceRobber(HexLocation hexLoc) {
-        return Game.getInstance().getMap().canPlaceRobber(hexLoc);
+        return GameModelFacade.instance().getGame().getMap().canPlaceRobber(hexLoc);
     }
 
     /**

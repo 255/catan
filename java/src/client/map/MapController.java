@@ -28,7 +28,7 @@ public class MapController extends Controller implements IMapController {
 		
 		setRobView(robView);
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
         m_state = new NotPlayingState();
 	}
 	
@@ -48,15 +48,15 @@ public class MapController extends Controller implements IMapController {
 	protected void initFromModel() {
         logger.entering("client.map.MapController", "initFromModel");
 
-        IGame game = Game.getInstance();
-        assert Game.getInstance() != null;
-        if (Game.getInstance().isNotInitialized()) {
+        IGame game = GameModelFacade.instance().getGame();
+        assert GameModelFacade.instance().getGame() != null;
+        if (GameModelFacade.instance().getGame().isNotInitialized()) {
             logger.fine("Not intializing MapController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
         logger.finer("Initializing MapController.");
 
-        ICatanMap map = Game.getInstance().getMap();
+        ICatanMap map = GameModelFacade.instance().getGame().getMap();
 
         // add the tiles
         for (ITile tile : map.getTiles()) {

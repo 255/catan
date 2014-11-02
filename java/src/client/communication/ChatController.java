@@ -1,7 +1,7 @@
 package client.communication;
 
 import client.base.*;
-import shared.model.Game;
+import shared.model.GameModelFacade;
 import shared.model.ModelException;
 import shared.model.ServerModelFacade;
 
@@ -20,7 +20,7 @@ public class ChatController extends Controller implements IChatController {
 		
 		super(view);
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class ChatController extends Controller implements IChatController {
 
     @Override
     public void update(Observable o, Object arg) {
-        getView().setEntries(Game.getInstance().getChatHistory().getMessages());
+        getView().setEntries(GameModelFacade.instance().getGame().getChatHistory().getMessages());
     }
 }
 

@@ -10,6 +10,7 @@ import client.base.*;
 import client.network.*;
 import client.poller.ServerPoller;
 import shared.model.Game;
+import shared.model.GameModelFacade;
 import shared.model.ServerModelFacade;
 
 import java.io.IOException;
@@ -144,7 +145,7 @@ public class Catan extends JFrame
     public static void leaveGame() {
         assert instance != null : "Never initialized Catan instance.";
         ServerPoller.getInstance().stopPolling();
-        Game.getInstance().newGame();
+        GameModelFacade.instance().newGame();
         communicator.clearGameCookie();
 
         instance.dispose();

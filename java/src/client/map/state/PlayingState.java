@@ -33,7 +33,7 @@ public class PlayingState extends MapState {
      */
     @Override
     public boolean canPlaceCity(VertexLocation vertLoc) {
-        return GameModelFacade.getInstance().canPlaceCity(vertLoc);
+        return GameModelFacade.instance().canPlaceCity(vertLoc);
     }
 
     /**
@@ -55,7 +55,7 @@ public class PlayingState extends MapState {
     @Override
     public void startMove(MapController controller, PieceType pieceType) {
         // allowed to cancel
-        controller.getView().startDrop(pieceType, Game.getInstance().getLocalPlayer().getColor(), true);
+        controller.getView().startDrop(pieceType, GameModelFacade.instance().getGame().getLocalPlayer().getColor(), true);
     }
 
     /**
@@ -70,7 +70,7 @@ public class PlayingState extends MapState {
     @Override
     public boolean canPlaceRobber(HexLocation hexLoc) {
         assert m_newRobberLocation == null;
-        return Game.getInstance().getMap().canPlaceRobber(hexLoc);
+        return GameModelFacade.instance().getGame().getMap().canPlaceRobber(hexLoc);
     }
 
     /**
@@ -81,11 +81,11 @@ public class PlayingState extends MapState {
      */
     @Override
     public void placeRobber(MapController controller, HexLocation hexLoc) {
-        assert hexLoc != null && Game.getInstance().getMap().canPlaceRobber(hexLoc);
+        assert hexLoc != null && GameModelFacade.instance().getGame().getMap().canPlaceRobber(hexLoc);
         assert m_newRobberLocation == null;
 
         m_newRobberLocation = hexLoc;
-        Collection<IPlayer> players = GameModelFacade.getInstance().getRobbablePlayers(m_newRobberLocation);
+        Collection<IPlayer> players = GameModelFacade.instance().getRobbablePlayers(m_newRobberLocation);
         controller.getRobView().setPlayers(RobPlayerInfo.fromPlayers(players));
         controller.getRobView().showModal();
     }
@@ -116,13 +116,11 @@ public class PlayingState extends MapState {
     @Override
     public void playSoldierCard(MapController controller) {
         assert m_isPlayingSoldier == false;
-        assert Game.getInstance().getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER);
+        assert GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER);
 
         m_isPlayingSoldier = true;
 
-        // TODO: implement (need to have the player place the robber)
         controller.startMove(PieceType.ROBBER);
-        //ServerModelFacade.getInstance().playSoldier(hex, victim);
     }
 
     /**
@@ -134,7 +132,7 @@ public class PlayingState extends MapState {
     @Override
     public void playRoadBuildingCard(MapController controller) {
         assert m_isPlayingRoadBuildingCard == false : "Wait -- already was playing road building card!";
-        assert Game.getInstance().getLocalPlayer().canPlayDevCard(DevCardType.ROAD_BUILD);
+        assert GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.ROAD_BUILD);
 
         m_isPlayingRoadBuildingCard = true;
         controller.startMove(PieceType.ROAD);
@@ -153,10 +151,10 @@ public class PlayingState extends MapState {
     public boolean canPlaceRoad(EdgeLocation edgeLoc) {
         //if they are playing road build card && are on second road
         if (m_isPlayingRoadBuildingCard && m_road1 != null) {
-            return GameModelFacade.getInstance().canPlayRoadBuilding(m_road1, edgeLoc);
+            return GameModelFacade.instance().canPlayRoadBuilding(m_road1, edgeLoc);
         }
         else {
-            return GameModelFacade.getInstance().canPlaceRoad(edgeLoc);
+            return GameModelFacade.instance().canPlaceRoad(edgeLoc);
         }
     }
 
@@ -170,12 +168,12 @@ public class PlayingState extends MapState {
     public void placeRoad(MapController controller, EdgeLocation edgeLoc) throws ModelException {
         if (m_isPlayingRoadBuildingCard) {
             if (m_road1 == null) {
-                assert GameModelFacade.getInstance().canPlaceRoad(edgeLoc);
+                assert GameModelFacade.instance().canPlaceRoad(edgeLoc);
 
                 // if the only the first road, set the local variable
                 m_road1 = edgeLoc;
                 // and temporarily add to the view
-                controller.getView().placeRoad(m_road1, GameModelFacade.getInstance().getLocalColor());
+                controller.getView().placeRoad(m_road1, GameModelFacade.instance().getLocalColor());
                 // immediately choose the next road
                 controller.startMove(PieceType.ROAD);
             }
@@ -222,7 +220,7 @@ public class PlayingState extends MapState {
      */
     @Override
     public boolean canPlaceSettlement(VertexLocation vertLoc) {
-        return GameModelFacade.getInstance().canPlaceSettlement(vertLoc);
+        return GameModelFacade.instance().canPlaceSettlement(vertLoc);
     }
 
     /**

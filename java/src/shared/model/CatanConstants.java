@@ -13,6 +13,9 @@ public class CatanConstants {
     /** The number of victory points needed to win */
     public static final int VICTORY_POINTS_TO_WIN = 10;
 
+    /** The minimum number of roads needed to qualify for the longest road */
+    public static final int MIN_ROADS_FOR_LONGEST_ROAD = 5;
+
     /** Number of roads a player starts with, and the max that they can place on the board */
     public static final int MAX_ROADS = 15;
 

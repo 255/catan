@@ -171,4 +171,10 @@ public interface ICatanMap {
      * @return true if the location is valid
      */
     public boolean canPlaceRobber(HexLocation location);
+
+    /**
+     * Find the player with the longest road.
+     * @return the player with the longest road, or null if no player qualifies (length is < 5)
+     */
+    public IPlayer getLongestRoad();
 }

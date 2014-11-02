@@ -488,6 +488,131 @@ public class CatanMap implements ICatanMap {
         return players;
     }
 
+
+    /**
+     * Find the player with the longest road.
+     * @return the player with the longest road, or null if no player qualifies (length is < 5)
+     */
+    @Override
+    public IPlayer getLongestRoad() {
+        IPlayer longestRoadPlayer = null;
+        int longestRoad = 0;
+
+        // TODO: maybe better form to pass in the list of players?
+        for (IPlayer player : GameModelFacade.instance().getGame().getPlayers()) {
+            int playerLongestRoad = getPlayersLongestRoad(player);
+
+            if (playerLongestRoad > longestRoad && playerLongestRoad >= CatanConstants.MIN_ROADS_FOR_LONGEST_ROAD) {
+                longestRoad = playerLongestRoad;
+                longestRoadPlayer = player;
+            }
+        }
+
+        return longestRoadPlayer;
+    }
+
+    /**
+     * Find the player's longest road.
+     * @param player the player whose longest road to calculate
+     */
+    public int getPlayersLongestRoad(IPlayer player) {
+        int longestSoFar = 0;
+
+        // could optimize by only checking starting from roads at intersections or ends... but this is fast enough
+        for (IRoad road : player.getRoads()) {
+            // road length starts at 1
+            Set<EdgeLocation> pathEdges = new HashSet<>();
+            pathEdges.add(road.getLocation());
+
+            int pathLength = longestRoad(player, road, pathEdges, longestSoFar);
+            if (pathLength > longestSoFar) {
+                longestSoFar = pathLength;
+            }
+        }
+
+        return longestSoFar;
+    }
+
+
+    /**
+     * Find the player's longest road.
+     * @param player the player to look at
+     * @param startRoad the road from which to start
+     * @param pathEdges the edges used by the roads along the path
+     * @return the longest road seen so far
+     */
+    private int longestRoad(IPlayer player, IRoad startRoad, Set<EdgeLocation> pathEdges, int longestSoFar) {
+        assert pathEdges.contains(startRoad) : "The start road should be added to the path before calling this function.";
+
+        // find the roads that can legally be added to the path
+        Collection<IRoad> candidateRoads = getCandidateRoads(player, startRoad, pathEdges);
+
+        // if there are no branches to explore, stop searching this branch
+        if (candidateRoads.isEmpty()) {
+            return pathEdges.size();
+        }
+
+        // start a new search down each branch
+        for (IRoad road : candidateRoads) {
+            // look for the longest path with the next road added
+            pathEdges.add(road.getLocation());
+
+            int pathLength = longestRoad(player, road, pathEdges, longestSoFar);
+            if (pathLength > longestSoFar) {
+                longestSoFar = pathLength;
+            }
+
+            pathEdges.remove(road.getLocation());
+        }
+
+        return longestSoFar;
+    }
+
+    /**
+     * Get the roads that are candidates for being added to the path.
+     * @param player
+     * @param lastRoad
+     * @param pathEdges
+     * @return the potential roads to add to the path
+     */
+    private Collection<IRoad> getCandidateRoads(IPlayer player, IRoad lastRoad, Set<EdgeLocation> pathEdges) {
+        Collection<EdgeLocation> candidateEdges = new ArrayList<>();
+        EdgeLocation startEdge = lastRoad.getLocation();
+
+        EdgeLocation edge1;
+        EdgeLocation edge2;
+
+        // get the edges on one end of the road -- don't add them if either is on the path (prevent backtracking in a path)
+        edge1 = startEdge.getNormalizedClockwise();
+        edge2 = startEdge.getEquivalentEdge().getNormalizedCounterClockwise();
+        if (!pathEdges.contains(edge1) && !pathEdges.contains(edge2) && roadIsNotBrokenByOpponentTown(player, edge1, lastRoad)) {
+            candidateEdges.add(edge1);
+            candidateEdges.add(edge2);
+        }
+
+        // now, do the same for the other end of the road
+        edge1 = startEdge.getNormalizedCounterClockwise();
+        edge2 = startEdge.getEquivalentEdge().getNormalizedClockwise();
+        if (!pathEdges.contains(edge1) && !pathEdges.contains(edge2) && roadIsNotBrokenByOpponentTown(player, edge1, lastRoad)) {
+            candidateEdges.add(edge1);
+            candidateEdges.add(edge2);
+        }
+
+        // add the player's roads on the candidate edges, if any
+        Collection<IRoad> roads = new ArrayList<>();
+        for (EdgeLocation edge : candidateEdges) {
+            if (m_roads.containsKey(edge)) {
+                IRoad road = m_roads.get(edge);
+
+                if (player.equals(road.getOwner())) {
+                    roads.add(road);
+                }
+            }
+        }
+
+        return roads;
+    }
+
     /**
      * Get the tiles adjacent to the specified edge.
      * @param edge the edge around which to check for tiles

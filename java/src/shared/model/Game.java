@@ -23,18 +23,8 @@ public class Game extends Observable implements IGame {
     private int m_version;
     private IPlayer m_winner;
 
-    private Game() {
+    public Game() {
         reset();
-    }
-
-    private static Game m_game = null;
-
-    public static Game getInstance() {
-        if (m_game == null) {
-            m_game = new Game();
-        }
-
-        return m_game;
     }
 
     @Override
@@ -53,11 +43,6 @@ public class Game extends Observable implements IGame {
         m_chatHistory = null;
         m_version = -1;
         m_winner = null;
-    }
-
-    @Override
-    public void newGame() {
-        m_game = null;
     }
 
     /**
@@ -283,14 +268,14 @@ public class Game extends Observable implements IGame {
 
     @Override
     public boolean localPlayerIsOfferingTrade() {
-        ITradeOffer tradeOffer = Game.getInstance().getTradeOffer();
+        ITradeOffer tradeOffer = GameModelFacade.instance().getGame().getTradeOffer();
 
         return tradeOffer != null && m_localPlayer.equals(tradeOffer.getSender());
     }
 
     @Override
     public boolean localPlayerIsBeingOfferedTrade() {
-        ITradeOffer tradeOffer = Game.getInstance().getTradeOffer();
+        ITradeOffer tradeOffer = GameModelFacade.instance().getGame().getTradeOffer();
 
         return tradeOffer != null && m_localPlayer.equals(tradeOffer.getReceiver());
     }

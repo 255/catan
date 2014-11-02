@@ -32,7 +32,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 
 		setTradeOverlay(tradeOverlay);
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 	}
 	
 	public IMaritimeTradeView getTradeView() {
@@ -116,7 +116,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         getTradeView().enableMaritimeTrade(false);
 
         // if the local player is not playing, return
-        if(!Game.getInstance().localPlayerIsPlaying()) {
+        if(!GameModelFacade.instance().getGame().localPlayerIsPlaying()) {
             return;
         }
 
@@ -150,7 +150,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
     }
 
     private boolean canGive(ResourceType r) {
-        IResourceBank rb = GameModelFacade.getInstance().getPlayerResources();
+        IResourceBank rb = GameModelFacade.instance().getPlayerResources();
 
         if(hasPort(convertRTypeToPType(r))) {
             return (rb.getCount(r) >= TYPE_THRESHOLD);
@@ -164,7 +164,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
     }
 
     private boolean hasPort(PortType p) {
-        Set<PortType> ports = GameModelFacade.getInstance().getPlayerPorts();
+        Set<PortType> ports = GameModelFacade.instance().getPlayerPorts();
         for(PortType pt : ports) {
             if(pt == p)
                 return true;

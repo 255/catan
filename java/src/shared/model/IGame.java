@@ -1,7 +1,7 @@
 package shared.model;
 
-import javax.imageio.event.IIOReadProgressListener;
 import java.util.List;
+import java.util.Observer;
 
 /**
  * The Game object holds pointers to all of the essential components of the game.
@@ -18,11 +18,6 @@ public interface IGame {
      * This is used before re-initializing the game.
      */
     public void reset();
-
-    /**
-     * Delete the current game, so a new one will be created.
-     */
-    public void newGame();
 
     /**
      * Get whether the game has been initialized yet.
@@ -185,4 +180,6 @@ public interface IGame {
      * The ModelInitializer needs to tell the Game object when it is done updating.
      */
     public void updateComplete();
+
+    public void addObserver(Observer o);
 }

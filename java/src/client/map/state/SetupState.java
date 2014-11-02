@@ -4,7 +4,6 @@ import client.map.MapController;
 import shared.definitions.PieceType;
 import shared.locations.EdgeLocation;
 import shared.locations.VertexLocation;
-import shared.model.Game;
 import shared.model.GameModelFacade;
 import shared.model.ModelException;
 import shared.model.ServerModelFacade;
@@ -27,7 +26,7 @@ public abstract class SetupState extends MapState {
     @Override
     public void startMove(MapController controller, PieceType pieceType) {
         // cannot cancel
-        controller.getView().startDrop(pieceType, Game.getInstance().getLocalPlayer().getColor(), false);
+        controller.getView().startDrop(pieceType, GameModelFacade.instance().getGame().getLocalPlayer().getColor(), false);
     }
 
     /**
@@ -41,7 +40,7 @@ public abstract class SetupState extends MapState {
      */
     @Override
     public boolean canPlaceRoad(EdgeLocation edgeLoc) {
-        return GameModelFacade.getInstance().canPlaceRoad(edgeLoc);
+        return GameModelFacade.instance().canPlaceRoad(edgeLoc);
     }
 
     /**
@@ -83,7 +82,7 @@ public abstract class SetupState extends MapState {
      */
     @Override
     public boolean canPlaceSettlement(VertexLocation vertLoc) {
-        return GameModelFacade.getInstance().canPlaceSettlement(vertLoc);
+        return GameModelFacade.instance().canPlaceSettlement(vertLoc);
     }
 
     /**

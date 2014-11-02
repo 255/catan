@@ -16,12 +16,12 @@ public class GameModelFacadeTest {
 
     @Before
     public void setUp() throws Exception {
-        facade = GameModelFacade.getInstance();
+        facade = GameModelFacade.instance();
         serializer = new ModelInitializer();
         //initializes the model with test data from JSON file
         String testJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("sample/test_2.json")));
         serializer.initializeClientModel(testJSON, 0);
-        game = Game.getInstance();
+        game = GameModelFacade.instance().getGame();
     }
 
     @After
@@ -149,7 +149,7 @@ public class GameModelFacadeTest {
     @Test
     public void testCanPlaceInitialRoad() throws Exception {
         IGame initGame = initAGame("sample/empty_board.json");
-        IGameModelFacade gf = GameModelFacade.getInstance();
+        IGameModelFacade gf = GameModelFacade.instance();
 
         // assert that it is the first round
         assertTrue("Not the First Round",
@@ -261,7 +261,7 @@ public class GameModelFacadeTest {
         // player 3 only has 3 resource cards
         // player 0 has 100 of each resource
         IGame tradeGame = initAGame("sample/pending_trade.json");
-        IGameModelFacade gf = GameModelFacade.getInstance();
+        IGameModelFacade gf = GameModelFacade.instance();
 
         // assert that there is a pending trade offer
         assertTrue("There is no pending trade in a game that has a trade offer pending",
@@ -458,6 +458,6 @@ public class GameModelFacadeTest {
         String emptyBoardJSON = new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get(jsonTestFile)));
         ModelInitializer initModel = new ModelInitializer();
         initModel.initializeClientModel(emptyBoardJSON, 0);
-        return Game.getInstance();
+        return GameModelFacade.instance().getGame();
     }
 }

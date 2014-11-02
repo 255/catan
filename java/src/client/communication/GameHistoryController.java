@@ -1,14 +1,10 @@
 package client.communication;
 
 import java.util.*;
-import java.util.List;
 import java.util.logging.Logger;
 
 import client.base.*;
-import shared.definitions.*;
-import shared.model.Game;
 import shared.model.GameModelFacade;
-import shared.model.ModelException;
 
 
 /**
@@ -22,7 +18,7 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 		
 		super(view);
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 	}
 	
 	@Override
@@ -31,7 +27,7 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	}
 	
 	private void initFromModel() {
-        getView().setEntries(GameModelFacade.getInstance().getMoveHistory().getMessages());
+        getView().setEntries(GameModelFacade.instance().getMoveHistory().getMessages());
 	}
 
     @Override

@@ -38,7 +38,7 @@ public class DevCardController extends Controller implements IDevCardController 
 		this.soldierAction = soldierAction;
 		this.roadAction = roadAction;
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
         m_facade = ServerModelFacade.getInstance();
 	}
 
@@ -129,16 +129,16 @@ public class DevCardController extends Controller implements IDevCardController 
     public void initFromModel() {
         logger.entering("client.devcards.DevCardController", "initFromModel");
 
-        if (Game.getInstance().isNotInitialized()) {
+        if (GameModelFacade.instance().getGame().isNotInitialized()) {
             logger.fine("Not intializing DevCardController: the game object has not been initialized");
             return; // do nothing if the game object has not been created yet
         }
 
-        IPlayer player = Game.getInstance().getLocalPlayer();
+        IPlayer player = GameModelFacade.instance().getGame().getLocalPlayer();
         IDevCardHand totalDevCards = player.getAllDevCards();
         //for each card type set enabled and amount
         for (DevCardType type : DevCardType.values()) {
-            getPlayCardView().setCardEnabled(type, Game.getInstance().localPlayerIsPlaying() && player.canPlayDevCard(type));
+            getPlayCardView().setCardEnabled(type, GameModelFacade.instance().getGame().localPlayerIsPlaying() && player.canPlayDevCard(type));
             getPlayCardView().setCardAmount(type, totalDevCards.getCount(type));
         }
         logger.exiting("client.devcards.DevCardController", "initFromModel");

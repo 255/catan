@@ -15,6 +15,10 @@ import java.util.Set;
  */
 public interface IGameModelFacade {
 
+    IGame getGame();
+
+    void setGame(IGame game);
+
     /**
      * Takes an edge location and determines if a road can be placed on it
      *
@@ -169,4 +173,9 @@ public interface IGameModelFacade {
      * @return the local player's color
      */
     public CatanColor getLocalColor();
+
+    /**
+     * Create a new game object.
+     */
+    public void newGame();
 }

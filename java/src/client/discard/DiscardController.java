@@ -31,7 +31,7 @@ public class DiscardController extends Controller implements IDiscardController 
 
 		super(view);
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
 
 		this.waitView = waitView;
 	}
@@ -87,13 +87,13 @@ public class DiscardController extends Controller implements IDiscardController 
 
     private void initFromModel() {
         // check that the state is set to DISCARDING
-        if(Game.getInstance().getGameState() != GameState.DISCARDING) {
+        if(GameModelFacade.instance().getGame().getGameState() != GameState.DISCARDING) {
             // close all discarding modals
             if(getWaitView().isModalShowing()) getWaitView().closeThisModal();
             if(getDiscardView().isModalShowing()) getDiscardView().closeThisModal();
         }
         else {
-            if(Game.getInstance().getLocalPlayer().needsToDiscard()) {
+            if(GameModelFacade.instance().getGame().getLocalPlayer().needsToDiscard()) {
                 if (!getDiscardView().isModalShowing()) {
                     resetModal();
                     getDiscardView().showModal();
@@ -174,8 +174,8 @@ public class DiscardController extends Controller implements IDiscardController 
     }
 
     private boolean everyoneHasDiscarded() {
-        List<IPlayer> players = Game.getInstance().getPlayers();
-        int localIndex = Game.getInstance().getLocalPlayer().getIndex();
+        List<IPlayer> players = GameModelFacade.instance().getGame().getPlayers();
+        int localIndex = GameModelFacade.instance().getGame().getLocalPlayer().getIndex();
         for(IPlayer p : players) {
             if(!p.hasDiscarded() && p.getIndex() != localIndex) {
                 return false;
@@ -186,7 +186,7 @@ public class DiscardController extends Controller implements IDiscardController 
 
     private void resetModal() {
         discardRb = new ResourceBank();
-        playerBank = GameModelFacade.getInstance().getPlayerResources();
+        playerBank = GameModelFacade.instance().getPlayerResources();
         half = (int)((float)(playerBank.getCount() / 2.0));
         getDiscardView().setStateMessage(generateStateMessage());
 

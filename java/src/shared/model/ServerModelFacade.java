@@ -60,7 +60,7 @@ public class ServerModelFacade implements IServerModelFacade {
         assert message != null;
 
         try {
-            String clientModel = m_theProxy.sendChat(Game.getInstance().getLocalPlayer().getIndex(), message);
+            String clientModel = m_theProxy.sendChat(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), message);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -76,12 +76,12 @@ public class ServerModelFacade implements IServerModelFacade {
     public void placeRoad(EdgeLocation edge) throws ModelException {
         assert edge != null;
 
-        if (!GameModelFacade.getInstance().canPlaceRoad(edge)) {
+        if (!GameModelFacade.instance().canPlaceRoad(edge)) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel =  m_theProxy.buildRoad(Game.getInstance().getLocalPlayer().getIndex(), edge, GameModelFacade.getInstance().isFreeRound());
+            String clientModel =  m_theProxy.buildRoad(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), edge, GameModelFacade.instance().isFreeRound());
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -97,12 +97,12 @@ public class ServerModelFacade implements IServerModelFacade {
     @Override
     public void placeSettlement(VertexLocation vertex) throws ModelException {
         assert vertex != null;
-        if (!GameModelFacade.getInstance().canPlaceSettlement(vertex)) {
+        if (!GameModelFacade.instance().canPlaceSettlement(vertex)) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel = m_theProxy.buildSettlement(Game.getInstance().getLocalPlayer().getIndex(), vertex, GameModelFacade.getInstance().isFreeRound());
+            String clientModel = m_theProxy.buildSettlement(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), vertex, GameModelFacade.instance().isFreeRound());
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -117,12 +117,12 @@ public class ServerModelFacade implements IServerModelFacade {
     @Override
     public void placeCity(VertexLocation vertex) throws ModelException {
         assert vertex != null;
-        if (!GameModelFacade.getInstance().canPlaceCity(vertex)) {
+        if (!GameModelFacade.instance().canPlaceCity(vertex)) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel = m_theProxy.buildCity(Game.getInstance().getLocalPlayer().getIndex(), vertex);
+            String clientModel = m_theProxy.buildCity(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), vertex);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -134,11 +134,11 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void buyDevCard() throws ModelException {
-        if (!GameModelFacade.getInstance().canBuyDevCard()) {
+        if (!GameModelFacade.instance().canBuyDevCard()) {
             throw new ModelException("Preconditions for action not met.");
         }
 
-        IPlayer curPlayer = Game.getInstance().getLocalPlayer();
+        IPlayer curPlayer = GameModelFacade.instance().getGame().getLocalPlayer();
         try {
             String clientModel = m_theProxy.buyDevCard(curPlayer.getIndex());
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
@@ -156,12 +156,12 @@ public class ServerModelFacade implements IServerModelFacade {
     public void playSoldier(HexLocation hex, int victimIndex) throws ModelException {
         assert hex != null;
 
-        if (!GameModelFacade.getInstance().canPlaySoldier(hex)) {
+        if (!GameModelFacade.instance().canPlaySoldier(hex)) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel = m_theProxy.playSoldier(Game.getInstance().getLocalPlayer().getIndex(), hex, victimIndex);
+            String clientModel = m_theProxy.playSoldier(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), hex, victimIndex);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -175,12 +175,12 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void playYearOfPlenty(ResourceType r1, ResourceType r2) throws ModelException {
-        if (!GameModelFacade.getInstance().canPlayYearOfPlenty(r1, r2)) {
+        if (!GameModelFacade.instance().canPlayYearOfPlenty(r1, r2)) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel = m_theProxy.playYearOfPlenty(Game.getInstance().getLocalPlayer().getIndex(), r1, r2);
+            String clientModel = m_theProxy.playYearOfPlenty(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), r1, r2);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -194,12 +194,12 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void playRoadBuilding(EdgeLocation e1, EdgeLocation e2) throws ModelException {
-        if (!GameModelFacade.getInstance().canPlayRoadBuilding(e1, e2)) {
+        if (!GameModelFacade.instance().canPlayRoadBuilding(e1, e2)) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel = m_theProxy.playRoadBuilding(Game.getInstance().getLocalPlayer().getIndex(), e1, e2);
+            String clientModel = m_theProxy.playRoadBuilding(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), e1, e2);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -212,12 +212,12 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void playMonopoly(ResourceType rType) throws ModelException {
-        if (!GameModelFacade.getInstance().canPlayMonopoly(rType)) {
+        if (!GameModelFacade.instance().canPlayMonopoly(rType)) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel = m_theProxy.playMonopoly(Game.getInstance().getLocalPlayer().getIndex(), rType);
+            String clientModel = m_theProxy.playMonopoly(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), rType);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -229,12 +229,12 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void playMonument() throws ModelException {
-        if (!GameModelFacade.getInstance().canPlayMonument()) {
+        if (!GameModelFacade.instance().canPlayMonument()) {
             throw new ModelException("Preconditions for action not met.");
         }
 
         try {
-            String clientModel = m_theProxy.playMonument(Game.getInstance().getLocalPlayer().getIndex());
+            String clientModel = m_theProxy.playMonument(GameModelFacade.instance().getGame().getLocalPlayer().getIndex());
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -253,7 +253,7 @@ public class ServerModelFacade implements IServerModelFacade {
         // TODO: check conditions?
 
         try {
-            String clientModel = m_theProxy.robPlayer(Game.getInstance().getLocalPlayer().getIndex(), victimIndex, hex);
+            String clientModel = m_theProxy.robPlayer(GameModelFacade.instance().getGame().getLocalPlayer().getIndex(), victimIndex, hex);
             new ModelInitializer().initializeClientModel(clientModel, m_theProxy.getPlayerId());
         } catch (NetworkException e) {
             throw new ModelException(e);
@@ -267,12 +267,12 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void acceptTrade(boolean willAccept) throws ModelException {
-        if (willAccept && !GameModelFacade.getInstance().canAcceptTrade()) {
+        if (willAccept && !GameModelFacade.instance().canAcceptTrade()) {
             throw new ModelException("Preconditions for action not met.");
         }
 
-        IPlayer p = Game.getInstance().getLocalPlayer();
-        assert Game.getInstance().getTradeOffer().getReceiver().equals(p);
+        IPlayer p = GameModelFacade.instance().getGame().getLocalPlayer();
+        assert GameModelFacade.instance().getGame().getTradeOffer().getReceiver().equals(p);
 
         try {
             String clientModel = m_theProxy.acceptTrade(p.getIndex(), willAccept);
@@ -289,9 +289,9 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void offerTrade(IResourceBank offer, int recipientPlayerIndex) throws ModelException {
-        IPlayer p = Game.getInstance().getLocalPlayer();
+        IPlayer p = GameModelFacade.instance().getGame().getLocalPlayer();
 
-        if (!p.canAfford(offer) || !Game.getInstance().localPlayerIsPlaying() || !offer.containsResources()) {
+        if (!p.canAfford(offer) || !GameModelFacade.instance().getGame().localPlayerIsPlaying() || !offer.containsResources()) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -314,9 +314,9 @@ public class ServerModelFacade implements IServerModelFacade {
     public void maritimeTrade(int ratio, ResourceType giving, ResourceType getting) throws ModelException {
         assert ratio == 2 || ratio == 3 || ratio == 4;
 
-        IPlayer p = Game.getInstance().getLocalPlayer();
+        IPlayer p = GameModelFacade.instance().getGame().getLocalPlayer();
 
-        if (!Game.getInstance().localPlayerIsPlaying() || p.getResources().getCount(giving) < ratio) {
+        if (!GameModelFacade.instance().getGame().localPlayerIsPlaying() || p.getResources().getCount(giving) < ratio) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -335,9 +335,9 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void discardCards(IResourceBank discardedCards) throws ModelException {
-        IPlayer p = Game.getInstance().getLocalPlayer();
+        IPlayer p = GameModelFacade.instance().getGame().getLocalPlayer();
 
-        if (Game.getInstance().getGameState() != GameState.DISCARDING
+        if (GameModelFacade.instance().getGame().getGameState() != GameState.DISCARDING
                 || p.getResources().getCount() <= 7
                 || !p.canAfford(discardedCards)) {
             throw new ModelException("Preconditions for action not met.");
@@ -365,8 +365,8 @@ public class ServerModelFacade implements IServerModelFacade {
         int rolledNumber = randomNumberGenerator.nextInt(ROLL_NUMBERS_RANGE) + MINIMUM_ROLL;
         assert rolledNumber >= 2 && rolledNumber <= 12;
 
-        IPlayer p = Game.getInstance().getLocalPlayer();
-        if (Game.getInstance().getGameState() != GameState.ROLLING || !p.equals(Game.getInstance().getCurrentPlayer())) {
+        IPlayer p = GameModelFacade.instance().getGame().getLocalPlayer();
+        if (GameModelFacade.instance().getGame().getGameState() != GameState.ROLLING || !p.equals(GameModelFacade.instance().getGame().getCurrentPlayer())) {
             throw new ModelException("Preconditions for action not met.");
         }
 
@@ -388,11 +388,11 @@ public class ServerModelFacade implements IServerModelFacade {
     public void finishTurn() throws ModelException {
         logger.entering("shared.model.ServerModelFacade", "finishTurn");
 
-        IPlayer p = Game.getInstance().getLocalPlayer();
+        IPlayer p = GameModelFacade.instance().getGame().getLocalPlayer();
         logger.fine("Player " + p.getName() + " ended turn.");
 
-        if (!Game.getInstance().localPlayerIsPlaying()
-                && !Game.getInstance().localPlayerIsPlacingInitialPieces()) {
+        if (!GameModelFacade.instance().getGame().localPlayerIsPlaying()
+                && !GameModelFacade.instance().getGame().localPlayerIsPlacingInitialPieces()) {
             throw new ModelException("Preconditions for action not met.");
         }
 

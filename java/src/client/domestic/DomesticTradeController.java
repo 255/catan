@@ -50,7 +50,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         m_recipient = Player.NO_PLAYER;
         m_needToInitializePlayersList = true;
 
-        Game.getInstance().addObserver(this);
+        GameModelFacade.instance().getGame().addObserver(this);
     }
 	
 	public IDomesticTradeView getTradeView() {
@@ -172,7 +172,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
     public void update(Observable o, Object arg) {
         logger.entering("client.domestic.DomesticTradeController", "update");
 
-        if (!Game.getInstance().gameHasStarted()) {
+        if (!GameModelFacade.instance().getGame().gameHasStarted()) {
             logger.finer("Game has not started yet, not initializing.");
             logger.exiting("client.domestic.DomesticTradeController", "update");
             return;
@@ -181,7 +181,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         // initialize players list only once
         // TODO: what if player changes color?
         if (m_needToInitializePlayersList) {
-            getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(Game.getInstance().getNonLocalPlayers()));
+            getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(GameModelFacade.instance().getGame().getNonLocalPlayers()));
             m_needToInitializePlayersList = false;
             getTradeOverlay().setCancelEnabled(true); //just to be sure -- this never needs to be disabled
         }
@@ -193,11 +193,11 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
     private void initializeDialogs() {
         // initialize the buttons and dialogs
-        if (Game.getInstance().localPlayerIsPlaying()) {
+        if (GameModelFacade.instance().getGame().localPlayerIsPlaying()) {
             getTradeView().enableDomesticTrade(true);
 
             // player sent a trade: keep the dialog open
-            if (Game.getInstance().localPlayerIsOfferingTrade()) {
+            if (GameModelFacade.instance().getGame().localPlayerIsOfferingTrade()) {
                 if (!waitOverlay.isModalShowing()) {
                     waitOverlay.showModal();
                 }
@@ -209,7 +209,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         else {
             getTradeView().enableDomesticTrade(false);
 
-            if (Game.getInstance().localPlayerIsBeingOfferedTrade()) {
+            if (GameModelFacade.instance().getGame().localPlayerIsBeingOfferedTrade()) {
                 // if the accept modal is not showing yet, initialize it and show it
                 initializeAcceptOverlay();
             }
@@ -222,9 +222,9 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         }
 
         acceptOverlay.reset();
-        acceptOverlay.setAcceptEnabled(GameModelFacade.getInstance().canAcceptTrade());
+        acceptOverlay.setAcceptEnabled(GameModelFacade.instance().canAcceptTrade());
 
-        IResourceBank tradeResources = Game.getInstance().getTradeOffer().getOffer();
+        IResourceBank tradeResources = GameModelFacade.instance().getGame().getTradeOffer().getOffer();
 
         for (ResourceType resourceType : ResourceType.values()) {
             int resourceCount = tradeResources.getCount(resourceType);
@@ -262,7 +262,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
     }
 
     private void updateResourceButtons() {
-        IResourceBank playerResourcees = GameModelFacade.getInstance().getPlayerResources();
+        IResourceBank playerResourcees = GameModelFacade.instance().getPlayerResources();
 
         // look at each resource in the current offer and decide if buttons should be enabled
         for (Map.Entry<ResourceType, PendingResourceOffer> entry : m_tradeOffer.entrySet()) {
