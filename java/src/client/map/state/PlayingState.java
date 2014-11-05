@@ -33,7 +33,7 @@ public class PlayingState extends MapState {
      */
     @Override
     public boolean canPlaceCity(VertexLocation vertLoc) {
-        return GameModelFacade.instance().getGame().getMap().canPlaceCity(GameModelFacade.instance().getGame().getLocalPlayer(), vertLoc);
+        return GameModelFacade.instance().canPlaceCity(vertLoc);
     }
 
     /**
