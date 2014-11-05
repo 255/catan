@@ -1,5 +1,7 @@
 package server.facade;
 
+import shared.communication.CredentialsParams;
+
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
@@ -9,8 +11,8 @@ public class UserFacade implements IUserFacade{
      * Swagger URL Equivalent: /user/login
      */
     @Override
-    public void login() {
-
+    public boolean login(CredentialsParams creds) {
+        return false;
     }
 
     /**
@@ -18,7 +20,7 @@ public class UserFacade implements IUserFacade{
      * Swagger URL Equivalent: /user/register
      */
     @Override
-    public void register() {
-
+    public boolean register(CredentialsParams creds) {
+        return false;
     }
 }

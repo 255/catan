@@ -1,5 +1,7 @@
 package server.facade;
 
+import java.util.logging.Level;
+
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
@@ -9,7 +11,7 @@ public class UtilityFacade implements IUtilityFacade{
      * Swagger URL Equivalent: /util/changeLogLevel
      */
     @Override
-    public void changeLogLevel() {
+    public void changeLogLevel(Level lvl) {
 
     }
 }

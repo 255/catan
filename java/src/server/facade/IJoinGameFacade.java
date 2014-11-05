@@ -1,9 +1,6 @@
 package server.facade;
 
-import shared.communication.CreateGameRequestParams;
-import shared.communication.JoinGameRequestParams;
-import shared.communication.LoadGameRequestParams;
-import shared.communication.SaveGameRequestParams;
+import shared.communication.*;
 
 /**
  * Created by Spencer Weight - 11/4/2014.
@@ -15,7 +12,7 @@ public interface IJoinGameFacade {
      * Swagger URL Equivalent: /games/list (get request)
      */
     //TODO update inputs and outputs for list()
-    public void list();
+    public GamesList list();
 
     /**
      * Creates a game and puts it in the Games List

@@ -10,9 +10,10 @@ public class GameFacade implements IGameFacade{
     /**
      * Fetch the model
      * Swagger URL Equivalent: /game/model (get request)
+     * @param theModel
      */
     @Override
-    public Game model() {
+    public Game model(int theModel) {
         return null;
     }
 
