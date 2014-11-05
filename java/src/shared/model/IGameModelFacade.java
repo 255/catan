@@ -15,9 +15,9 @@ import java.util.Set;
  */
 public interface IGameModelFacade {
 
-    IGame getGame();
+    public IGame getGame();
 
-    void setGame(IGame game);
+    public void setGame(IGame game);
 
     /**
      * Takes an edge location and determines if a road can be placed on it
