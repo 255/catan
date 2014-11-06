@@ -7,11 +7,13 @@ import shared.model.Game;
  * Created by Spencer Weight - 11/5/2014.
  */
 public class MovesFacade implements IMovesFacade {
+
     /**
      * Sends a chat message
      * Swagger URL Equivalent: /moves/sendChat
      *
-     * @param sendChat
+     * @param sendChat JSON wrapper with parameters to send a chat message
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game sendChat(SendChatParams sendChat) {
@@ -22,7 +24,8 @@ public class MovesFacade implements IMovesFacade {
      * Used to roll a number at the beginning of a turn
      * Swagger URL Equivalent: /moves/rollNumber
      *
-     * @param rollNumber
+     * @param rollNumber JSON wrapper with parameters to roll a number
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game rollNumber(RollNumberParams rollNumber) {
@@ -33,10 +36,11 @@ public class MovesFacade implements IMovesFacade {
      * Moves the robber to a new location and selects a player to rob
      * Swagger URL Equivalent: /moves/robPlayer
      *
-     * @param robPlayer
+     * @param robbing JSON wrapper with parameters to rob a player
+     * @return Game object containing a pointer to the model
      */
     @Override
-    public Game robPlayer(RobPlayerParams robPlayer) {
+    public Game robPlayer(RobbingParams robbing) {
         return null;
     }
 
@@ -44,10 +48,11 @@ public class MovesFacade implements IMovesFacade {
      * Used to finish a turn
      * Swagger URL Equivalent: /moves/finishTurn
      *
-     * @param finishTurn
+     * @param playerIndex JSON wrapper with parameters to finish a turn
+     * @return Game object containing a pointer to the model
      */
     @Override
-    public Game finishTurn(FinishTurnParams finishTurn) {
+    public Game finishTurn(PlayerIndexParam playerIndex) {
         return null;
     }
 
@@ -55,10 +60,11 @@ public class MovesFacade implements IMovesFacade {
      * Buys a development card for yourself
      * Swagger URL Equivalent: /moves/buyDevCard
      *
-     * @param buyDevCard
+     * @param playerIndex JSON wrapper with parameters to buy a dev card
+     * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buyDevCard(BuyDevCardParams buyDevCard) {
+    public Game buyDevCard(PlayerIndexParam playerIndex) {
         return null;
     }
 
@@ -66,7 +72,8 @@ public class MovesFacade implements IMovesFacade {
      * Plays a Year of Plenty card and its effects
      * Swagger URL Equivalent: /moves/Year_of_Plenty
      *
-     * @param yearOfPlenty
+     * @param yearOfPlenty JSON wrapper with parameters to play a year of plenty card
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game yearOfPlenty(YearOfPlentyParams yearOfPlenty) {
@@ -77,7 +84,8 @@ public class MovesFacade implements IMovesFacade {
      * Plays a Road Building card and its effects
      * Swagger URL Equivalent: /moves/Road_Building
      *
-     * @param roadBuilding
+     * @param roadBuilding JSON wrapper with parameters to play a road building card
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game roadBuilding(RoadBuildingParams roadBuilding) {
@@ -88,10 +96,11 @@ public class MovesFacade implements IMovesFacade {
      * Plays a Soldier card and its effects
      * Swagger URL Equivalent: /moves/Soldier
      *
-     * @param soldier
+     * @param robbing JSON wrapper with parameters to play a soldier card
+     * @return Game object containing a pointer to the model
      */
     @Override
-    public Game soldier(SoldierParams soldier) {
+    public Game soldier(RobbingParams robbing) {
         return null;
     }
 
@@ -99,7 +108,8 @@ public class MovesFacade implements IMovesFacade {
      * Plays a Monopoly card and its effects
      * Swagger URL Equivalent: /moves/Monopoly
      *
-     * @param monopoly
+     * @param monopoly JSON wrapper with parameters to play a monopoly card
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game monopoly(MonopolyParams monopoly) {
@@ -110,10 +120,11 @@ public class MovesFacade implements IMovesFacade {
      * Plays a Monument card and its effects
      * Swagger URL Equivalent: /moves/Monument
      *
-     * @param monument
+     * @param playerIndex JSON wrapper with parameters to play a monument card
+     * @return Game object containing a pointer to the model
      */
     @Override
-    public Game monument(MonumentParams monument) {
+    public Game monument(PlayerIndexParam playerIndex) {
         return null;
     }
 
@@ -122,7 +133,8 @@ public class MovesFacade implements IMovesFacade {
      * Set free to true if it is the setup stage
      * Swagger URL Equivalent: /moves/buildRoad
      *
-     * @param buildRoad
+     * @param buildRoad JSON wrapper with parameters to build a road
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game buildRoad(BuildRoadParams buildRoad) {
@@ -134,7 +146,8 @@ public class MovesFacade implements IMovesFacade {
      * Set free to true if it is the setup stage
      * Swagger URL Equivalent: /moves/buildSettlement
      *
-     * @param buildSettlement
+     * @param buildSettlement JSON wrapper with parameters to build a settlement
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game buildSettlement(BuildSettlementParams buildSettlement) {
@@ -146,7 +159,8 @@ public class MovesFacade implements IMovesFacade {
      * Set free to true if it is the setup stage
      * Swagger URL Equivalent: /moves/buildCity
      *
-     * @param buildCity
+     * @param buildCity JSON wrapper with parameters to build a city
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game buildCity(BuildCityParams buildCity) {
@@ -157,7 +171,8 @@ public class MovesFacade implements IMovesFacade {
      * Offers a trade to another player
      * Swagger URL Equivalent: /moves/offerTrade
      *
-     * @param offerTrade
+     * @param offerTrade JSON wrapper with parameters to offer a trade
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game offerTrade(OfferTradeParams offerTrade) {
@@ -168,7 +183,8 @@ public class MovesFacade implements IMovesFacade {
      * Accept or reject a trade offered to you
      * Swagger URL Equivalent: /moves/acceptTrade
      *
-     * @param acceptTrade
+     * @param acceptTrade JSON wrapper with parameters to accept a trade
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game acceptTrade(AcceptTradeParams acceptTrade) {
@@ -179,7 +195,8 @@ public class MovesFacade implements IMovesFacade {
      * Execute a maritime trade operation
      * Swagger URL Equivalent: /moves/maritimeTrade
      *
-     * @param maritimeTrade
+     * @param maritimeTrade JSON wrapper with parameters to do a maritime trade
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game maritimeTrade(MaritimeTradeParams maritimeTrade) {
@@ -190,7 +207,8 @@ public class MovesFacade implements IMovesFacade {
      * Discards selected cards because of a rolled 7
      * Swagger URL Equivalent: /moves/discardCards
      *
-     * @param discardCards
+     * @param discardCards JSON wrapper with parameters to discard card from the player hand
+     * @return Game object containing a pointer to the model
      */
     @Override
     public Game discardCards(DiscardCardParams discardCards) {

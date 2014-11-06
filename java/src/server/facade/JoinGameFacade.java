@@ -1,64 +1,69 @@
 package server.facade;
 
-import shared.communication.CreateGameRequestParams;
-import shared.communication.JoinGameRequestParams;
-import shared.communication.LoadGameRequestParams;
-import shared.communication.SaveGameRequestParams;
+import shared.communication.*;
+import shared.model.Game;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
 public class JoinGameFacade implements IJoinGameFacade{
+
     /**
      * Get a list of all games in progress
      * Swagger URL Equivalent: /games/list (get request)
+     *
+     * @return GamesList object containing the list of current running games on the server
      */
     @Override
-    public void list() {
-
+    public GamesList list() {
+        return null;
     }
 
     /**
      * Creates a game and puts it in the Games List
      * Swagger URL Equivalent: /games/create
      *
-     * @param createGame
+     * @param createGame the JSON wrapper with the parameters for creating a game
+     * @return Game object containing a pointer to the created game
      */
     @Override
-    public void create(CreateGameRequestParams createGame) {
-
+    public Game create(CreateGameRequestParams createGame) {
+        return null;
     }
 
     /**
      * Join or re-join a game (modifies cookie)
      * Swagger URL Equivalent: /games/join
      *
-     * @param joinGame
+     * @param joinGame the JSON wrapper with the parameters for joining a game
+     * @return boolean containing true or false depending on if the join was successful
      */
     @Override
-    public void join(JoinGameRequestParams joinGame) {
-
+    public boolean join(JoinGameRequestParams joinGame) {
+        return false;
     }
 
     /**
      * Saves a game
      * Swagger URL Equivalent: /games/save
      *
-     * @param saveGame
+     * @param saveGame the JSON wrapper with the parameters for saving a game
+     * @return boolean containing true or false depending on if the save was successful
      */
     @Override
-    public void save(SaveGameRequestParams saveGame) {
-
+    public boolean save(SaveGameRequestParams saveGame) {
+        return false;
     }
 
     /**
      * Loads a game
      * Swagger URL Equivalent: /games/load
      *
-     * @param loadGame
+     * @param loadGame the JSON wrapper with the parameters for loading a game
+     * @return Game object containing a pointer to the loaded game
      */
     @Override
-    public void load(LoadGameRequestParams loadGame) {
-
+    public Game load(LoadGameRequestParams loadGame) {
+        return null;
     }
 }
