@@ -5,6 +5,9 @@ package server.command;
  */
 public class AcceptTradeCommand  implements ICommand {
 
+    /**
+     *
+     */
     public void execute() {
 
     }
