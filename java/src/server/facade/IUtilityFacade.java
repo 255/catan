@@ -11,7 +11,8 @@ public interface IUtilityFacade {
     /**
      * Changes the logging level of the server
      * Swagger URL Equivalent: /util/changeLogLevel
+     *
+     * @param lvl is the logging level to be passed to the server
      */
-    // TODO define the inputs and outputs for changeLogLevel()
     public void changeLogLevel(Level lvl);
 }

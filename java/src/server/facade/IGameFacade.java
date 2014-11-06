@@ -11,15 +11,18 @@ public interface IGameFacade {
     /**
      * Fetch the model
      * Swagger URL Equivalent: /game/model (get request)
-     * @param theModel
+     *
+     * @param theModel an integer with the id of the game to get the model of
+     * @return Game object containing a pointer to the model
      */
-    //TODO update inputs and outputs for model()
     public Game model(int theModel);
 
     /**
      * Resets the current game
      * (Optional)
      * Swagger URL Equivalent: /game/reset
+     *
+     * @return Game object containing a pointer to the model
      */
     public Game reset();
 
@@ -27,6 +30,8 @@ public interface IGameFacade {
      * Send a list of moves to the server
      * (Optional)
      * Swagger URL Equivalent: /game/commands (post request)
+     *
+     * @return Game object containing a pointer to the model
      */
     public Game postCommands();
 
@@ -34,6 +39,8 @@ public interface IGameFacade {
      * Fetch a list of commands for the current game
      * (Optional)
      * Swagger URL Equivalent: /game/commands (get request)
+     *
+     * @return Game object containing a pointer to the model
      */
     public Game getCommands();
 
@@ -41,13 +48,18 @@ public interface IGameFacade {
      * Add an AI player to the game
      * (Optional)
      * Swagger URL Equivalent: /game/addAI
+     *
+     * @param addAI JSON wrapper containing the parameters for adding an AI player
+     * @return boolean true/false depending on if AI is added or not
      */
-    public Game addAI(AddAIRequestParams addAI);
+    public boolean addAI(AddAIRequestParams addAI);
 
     /**
      * Get a list of the AI Players
      * (Optional)
      * Swagger URL Equivalent: /game/listAI (get request)
+     *
+     * @return Game object containing a pointer to the model
      */
     public Game listAI();
 }
