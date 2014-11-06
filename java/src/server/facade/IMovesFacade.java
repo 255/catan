@@ -30,28 +30,28 @@ public interface IMovesFacade {
      * Moves the robber to a new location and selects a player to rob
      * Swagger URL Equivalent: /moves/robPlayer
      *
-     * @param robPlayer JSON wrapper with parameters to rob a player
+     * @param robbing JSON wrapper with parameters to rob a player
      * @return Game object containing a pointer to the model
      */
-    public Game robPlayer(RobPlayerParams robPlayer);
+    public Game robPlayer(RobbingParams robbing);
 
     /**
      * Used to finish a turn
      * Swagger URL Equivalent: /moves/finishTurn
      *
-     * @param finishTurn JSON wrapper with parameters to finish a turn
+     * @param playerIndex JSON wrapper with parameters to finish a turn
      * @return Game object containing a pointer to the model
      */
-    public Game finishTurn(FinishTurnParams finishTurn);
+    public Game finishTurn(PlayerIndexParam playerIndex);
 
     /**
      * Buys a development card for yourself
      * Swagger URL Equivalent: /moves/buyDevCard
      *
-     * @param buyDevCard JSON wrapper with parameters to buy a dev card
+     * @param playerIndex JSON wrapper with parameters to buy a dev card
      * @return Game object containing a pointer to the model
      */
-    public Game buyDevCard(BuyDevCardParams buyDevCard);
+    public Game buyDevCard(PlayerIndexParam playerIndex);
 
     /**
      * Plays a Year of Plenty card and its effects
@@ -75,10 +75,10 @@ public interface IMovesFacade {
      * Plays a Soldier card and its effects
      * Swagger URL Equivalent: /moves/Soldier
      *
-     * @param soldier JSON wrapper with parameters to play a soldier card
+     * @param robbing JSON wrapper with parameters to play a soldier card
      * @return Game object containing a pointer to the model
      */
-    public Game soldier(SoldierParams soldier);
+    public Game soldier(RobbingParams robbing);
 
     /**
      * Plays a Monopoly card and its effects
@@ -93,10 +93,11 @@ public interface IMovesFacade {
      * Plays a Monument card and its effects
      * Swagger URL Equivalent: /moves/Monument
      *
-     *@param monument JSON wrapper with parameters to play a monument card
-     * @return Game object containing a pointer to the model
+     *
+     * @param playerIndex JSON wrapper with parameters to play a monument card
+     *  @return Game object containing a pointer to the model
      */
-    public Game monument(MonumentParams monument);
+    public Game monument(PlayerIndexParam playerIndex);
 
     /**
      * Builds a road for a player at a specified spot;

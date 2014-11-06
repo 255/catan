@@ -3,7 +3,7 @@ package shared.communication;
 /**
  * Created by jeffreybacon on 11/4/14.
  */
-public abstract class AbstractJoinGameParams implements IAbstractJoinGameParams {
+public abstract class AbstractJoinGameParams implements IJoinGameParams {
 
     private int userId;
 

@@ -36,11 +36,11 @@ public class MovesFacade implements IMovesFacade {
      * Moves the robber to a new location and selects a player to rob
      * Swagger URL Equivalent: /moves/robPlayer
      *
-     * @param robPlayer JSON wrapper with parameters to rob a player
+     * @param robbing JSON wrapper with parameters to rob a player
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game robPlayer(RobPlayerParams robPlayer) {
+    public Game robPlayer(RobbingParams robbing) {
         return null;
     }
 
@@ -48,11 +48,11 @@ public class MovesFacade implements IMovesFacade {
      * Used to finish a turn
      * Swagger URL Equivalent: /moves/finishTurn
      *
-     * @param finishTurn JSON wrapper with parameters to finish a turn
+     * @param playerIndex JSON wrapper with parameters to finish a turn
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game finishTurn(FinishTurnParams finishTurn) {
+    public Game finishTurn(PlayerIndexParam playerIndex) {
         return null;
     }
 
@@ -60,11 +60,11 @@ public class MovesFacade implements IMovesFacade {
      * Buys a development card for yourself
      * Swagger URL Equivalent: /moves/buyDevCard
      *
-     * @param buyDevCard JSON wrapper with parameters to buy a dev card
+     * @param playerIndex JSON wrapper with parameters to buy a dev card
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buyDevCard(BuyDevCardParams buyDevCard) {
+    public Game buyDevCard(PlayerIndexParam playerIndex) {
         return null;
     }
 
@@ -96,11 +96,11 @@ public class MovesFacade implements IMovesFacade {
      * Plays a Soldier card and its effects
      * Swagger URL Equivalent: /moves/Soldier
      *
-     * @param soldier JSON wrapper with parameters to play a soldier card
+     * @param robbing JSON wrapper with parameters to play a soldier card
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game soldier(SoldierParams soldier) {
+    public Game soldier(RobbingParams robbing) {
         return null;
     }
 
@@ -120,11 +120,11 @@ public class MovesFacade implements IMovesFacade {
      * Plays a Monument card and its effects
      * Swagger URL Equivalent: /moves/Monument
      *
-     * @param monument JSON wrapper with parameters to play a monument card
+     * @param playerIndex JSON wrapper with parameters to play a monument card
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game monument(MonumentParams monument) {
+    public Game monument(PlayerIndexParam playerIndex) {
         return null;
     }
 
