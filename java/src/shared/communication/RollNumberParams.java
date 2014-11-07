@@ -1,6 +1,8 @@
 package shared.communication;
 
 /**
+ * Class that represents the RollNumber params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class RollNumberParams extends AbstractGameParams{

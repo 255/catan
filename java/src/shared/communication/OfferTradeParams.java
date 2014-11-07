@@ -3,6 +3,8 @@ package shared.communication;
 import shared.model.ResourceBank;
 
 /**
+ * Class that represents the OfferTrade params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class OfferTradeParams extends AbstractGameParams{

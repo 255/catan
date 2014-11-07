@@ -1,6 +1,8 @@
 package shared.communication;
 
 /**
+ * Class that represents the AcceptTrade params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class AcceptTradeParams extends AbstractGameParams{

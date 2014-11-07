@@ -3,6 +3,8 @@ package shared.communication;
 import shared.locations.HexLocation;
 
 /**
+ * Class that represents the robbing and soldier params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class RobbingParams extends AbstractGameParams{

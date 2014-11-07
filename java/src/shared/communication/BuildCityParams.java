@@ -3,6 +3,8 @@ package shared.communication;
 import shared.locations.VertexLocation;
 
 /**
+ * Class that represents the BuildCity params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class BuildCityParams extends AbstractGameParams{
