@@ -32,5 +32,10 @@ public interface IPlayerWaitingView extends IOverlayView
 	 * @return The type of AI selected by the user
 	 */
 	String getSelectedAI();
+
+    /**
+     * Close and reopen the dialog to it resizes properly.
+     */
+    void refresh();
 }
 

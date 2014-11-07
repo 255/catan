@@ -40,11 +40,6 @@ public class OverlayView extends PanelView implements IOverlayView {
      * overlays that are already visible.
      */
     public void showModal() {
-        assert !isModalShowing() : "You are adding a modal that is already showing! (%s) That causes problems!".format(this.toString());
-        //if (isModalShowing()) {
-        //  throw new RuntimeException("You are displaying a modal that is already showing! (%s) That causes problems!".format(this.toString()));
-        //
-
         // Open the new overlay
         JPanel overlayPanel = new JPanel();
         overlayPanel.setLayout(new BorderLayout());
