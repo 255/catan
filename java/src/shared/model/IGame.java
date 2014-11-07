@@ -24,19 +24,19 @@ public interface IGame {
      * This must be called before initializing from the model.
      * @return true if the game is ready-to-go, false if not
      */
-    boolean isNotInitialized();
+    public boolean isNotInitialized();
 
     /**
      * Get the dev card hand for the game.
-     * @return
+     * @return the game's dev cards
      */
-    IDevCardHand getDevCards();
+    public IDevCardHand getDevCards();
 
     /**
      * Set the dev card bank for the game.
-     * @param m_devCards
+     * @param m_devCards the new dev cards
      */
-    void setDevCards(IDevCardHand m_devCards);
+    public void setDevCards(IDevCardHand m_devCards);
 
     /**
      * Return the current game state of an ongoing game.

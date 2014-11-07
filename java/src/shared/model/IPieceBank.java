@@ -10,7 +10,6 @@ public interface IPieceBank {
      * and a new city object is returned.
      *
      * This will only be used server-side.
-     * @return the new road
      */
     public void takeRoad();
 
@@ -33,7 +32,6 @@ public interface IPieceBank {
      * new city object is returned.
      *
      * This will only be used server-side.
-     * @return the new city
      */
     public void takeCity();
 
@@ -55,7 +53,6 @@ public interface IPieceBank {
      * decremented and a new settlement object is returned.
      *
      * This will only be used server-side.
-     * @return the new settlement
      */
     public void takeSettlement();
 

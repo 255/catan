@@ -37,8 +37,6 @@ public class PieceBank implements IPieceBank {
      * and a new city object is returned.
      * <p>
      * This will only be used server-side.
-     *
-     * @return the new road
      */
     @Override
     public void takeRoad() {
@@ -74,8 +72,6 @@ public class PieceBank implements IPieceBank {
      * new city object is returned.
      * <p>
      * This will only be used server-side.
-     *
-     * @return the new city
      */
     @Override
     public void takeCity() {
@@ -110,8 +106,6 @@ public class PieceBank implements IPieceBank {
      * decremented and a new settlement object is returned.
      * <p>
      * This will only be used server-side.
-     *
-     * @return the new settlement
      */
     @Override
     public void takeSettlement() {
