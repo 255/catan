@@ -163,7 +163,7 @@ public class Player implements IPlayer {
 
     @Override
     public boolean needsToDiscard() {
-        return m_resources.getCount() > CatanConstants.MAX_SAFE_CARDS;
+        return m_resources.getCount() > CatanConstants.MAX_SAFE_CARDS && !m_discarded;
     }
 
     @Override
