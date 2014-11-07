@@ -4,6 +4,7 @@ import shared.communication.AddAIRequestParams;
 import shared.model.Game;
 
 /**
+ * A facade to support /game operations
  * Created by Spencer Weight - 11/4/2014.
  */
 public interface IGameFacade {

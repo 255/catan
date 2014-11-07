@@ -7,7 +7,6 @@ package shared.communication;
  * Created by jeffreybacon on 11/4/14.
  */
 public abstract class AbstractGameParams implements IGameParams {
-
     private int userId;
     private int gameId;
 
@@ -27,5 +26,25 @@ public abstract class AbstractGameParams implements IGameParams {
     @Override
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    /**
+     * Get the user ID of the user who made the request
+     *
+     * @return the user ID
+     */
+    @Override
+    public int getUserId() {
+        return userId;
+    }
+
+    /**
+     * Get the game ID of the game this request is for
+     *
+     * @return the game ID
+     */
+    @Override
+    public int getGameId() {
+        return gameId;
     }
 }

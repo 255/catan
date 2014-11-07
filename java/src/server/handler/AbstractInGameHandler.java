@@ -1,6 +1,6 @@
 package server.handler;
 
-import shared.communication.AbstractGameParams;
+import shared.communication.IGameParams;
 import shared.model.IGame;
 
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * HTTP handlers that check for a user cookie and game cookie.
  */
-public abstract class AbstractInGameHandler<ReqType extends AbstractGameParams, FacadeType> extends AbstractHandler<ReqType, IGame, FacadeType> {
+public abstract class AbstractInGameHandler<ReqType extends IGameParams, FacadeType> extends AbstractHandler<ReqType, IGame, FacadeType> {
     /**
      * Setup a new RequestHandler.
      */

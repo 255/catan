@@ -4,6 +4,7 @@ import shared.communication.CredentialsParams;
 import shared.model.IUser;
 
 /**
+ * A facade to support /user operations.
  * Created by Spencer Weight - 11/4/2014.
  */
 public interface IUserFacade {

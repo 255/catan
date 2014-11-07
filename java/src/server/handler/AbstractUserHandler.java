@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 
 /**
  * A handler for registering and logging in.
+ * @see server.Server#setupHandlers(com.sun.net.httpserver.HttpServer)
  */
 public abstract class AbstractUserHandler extends AbstractHandler<CredentialsParams, IUser, IUserFacade> {
     /**

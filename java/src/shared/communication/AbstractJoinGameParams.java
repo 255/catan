@@ -6,8 +6,17 @@ package shared.communication;
  * Created by jeffreybacon on 11/4/14.
  */
 public abstract class AbstractJoinGameParams implements IJoinGameParams {
-
     private int userId;
+
+    /**
+     * Get the user ID of the user who made the request
+     *
+     * @return the user ID
+     */
+    @Override
+    public int getUserId() {
+        return userId;
+    }
 
     /**
      * Change the user id
