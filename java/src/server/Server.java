@@ -22,7 +22,8 @@ import shared.model.Game;
 import shared.model.IUser;
 
 /**
- * The main class of the record indexer server.
+ * The main class of the Settlers of Catan server.
+ * This class starts an HttpServer.
  */
 public class Server {
 	private static Logger logger;
@@ -34,7 +35,7 @@ public class Server {
 	}
 	
 	/**
-	 * Initialize the logger for this project. The logging level is hard-coded.
+	 * Initialize the logger for this project.
 	 */
 	public static void initializeLog() {
 		try {

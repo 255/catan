@@ -35,6 +35,10 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
     private Class<ReqType> m_reqClass;
     private FacadeType m_facade; // the class where the request data is forwarded
 
+    /**
+     * Get the facade that this handler should call methods on.
+     * @return the appropriate facade
+     */
     protected final FacadeType getFacade() {
         return m_facade;
     }

@@ -24,7 +24,7 @@ public class GameSerializer extends TypeAdapter<Game> {
     /**
      * This will not be implemented, since we already have Game deserialization code.
      * @param jsonReader
-     * @return
+     * @return the game object
      * @throws IOException
      */
     @Override
