@@ -1,40 +1,29 @@
 package server.handler;
 
-import com.sun.net.httpserver.HttpExchange;
-import server.ServerException;
-import server.facade.JoinGameFacade;
 import shared.communication.AbstractGameParams;
-import shared.communication.JoinGameRequestParams;
-import shared.model.Game;
+import shared.model.IGame;
 
 import java.io.IOException;
 import java.net.HttpCookie;
-import java.net.HttpURLConnection;
 import java.util.List;
 
 /**
  * HTTP handlers that check for a user cookie and game cookie.
- * TODO: may make separate game and move handlers...
  */
-public abstract class AbstractGameHandler<ReqType extends AbstractGameParams, FacadeType> extends AbstractRequestHandler<ReqType, Game> {
-    private FacadeType m_facade;
-
+public abstract class AbstractInGameHandler<ReqType extends AbstractGameParams, FacadeType> extends AbstractHandler<ReqType, IGame, FacadeType> {
     /**
      * Setup a new RequestHandler.
      */
-    public AbstractGameHandler(Class<ReqType> reqTypeClass, FacadeType facade) {
-        super(reqTypeClass);
-        m_facade = facade;
+    public AbstractInGameHandler(Class<ReqType> reqTypeClass, FacadeType facade) {
+        super(reqTypeClass, facade);
     }
 
     /**
-     * Get the facade used by this game handler.
-     * @return the facade
+     * Look for the user and game cookies.
+     * @param cookies the list of cookies the client has set
+     * @param requestData the request sent by the client (in case cookie info should be attached to it)
+     * @throws IOException
      */
-    protected FacadeType getFacade() {
-        return m_facade;
-    }
-
     @Override
     protected void processRequestCookies(List<HttpCookie> cookies, ReqType requestData) throws IOException {
         boolean foundUser = false;

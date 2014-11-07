@@ -2,6 +2,7 @@ package shared.communication;
 
 /**
  * Abstract class for parameter objects used when playing a game
+ * These adds a userId and a gameId, which are found in the client's cookies.
  *
  * Created by jeffreybacon on 11/4/14.
  */

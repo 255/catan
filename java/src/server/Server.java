@@ -14,12 +14,12 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import server.facade.*;
-import server.handler.AbstractGameHandler;
-import server.handler.JoinHandler;
+import server.handler.*;
 import shared.communication.*;
 
 import com.sun.net.httpserver.HttpServer;
 import shared.model.Game;
+import shared.model.IUser;
 
 /**
  * The main class of the record indexer server.
@@ -77,34 +77,92 @@ public class Server {
 		try {
 			logger.info("Initializing server.");
 			server = HttpServer.create(new InetSocketAddress(portNumber), MAX_WAITING_CONNECTIONS);
-		} catch (IOException e) {
+		}
+        catch (IOException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 			logger.severe("The server cannot intialize. Terminating.");
 			logger.exiting("server.Server", "run");
 			return;
 		}
 
-        final IJoinGameFacade joinGameFacade = new JoinGameFacade();
-        final IGameFacade gameFacade = new GameFacade();
-        final IMovesFacade movesFacade = new MovesFacade();
-
-		// Create HTTPHandlers for each type of request
-		server.createContext("/games/join", new JoinHandler(joinGameFacade));
-
-		server.createContext("/moves/sendChat", new AbstractGameHandler<SendChatParams, IMovesFacade>(SendChatParams.class, movesFacade) {
-            @Override
-            public Game exchangeData(SendChatParams requestData) throws ServerException {
-                return getFacade().sendChat(requestData);
-            }
-        });
-
-        // TODO: fill out the rest of the handlers
+        setupHandlers(server);
 
 		logger.info("Starting server on port " + portNumber + ".");
 		server.start();
 		
 		logger.exiting("server.Server", "run");
 	}
+
+    /**
+     * Create and add the handlers for HTTP requests.
+     * @param server the server object
+     */
+    private void setupHandlers(HttpServer server) {
+        // define the facades
+        final IUserFacade userFacade = new UserFacade();
+        final IJoinGameFacade joinGameFacade = new JoinGameFacade();
+        final IGameFacade gameFacade = new GameFacade();
+        final IMovesFacade movesFacade = new MovesFacade();
+        final IUtilityFacade utilityFacade = new UtilityFacade();
+
+        // Create HTTPHandlers for each type of request
+
+        //
+        // user
+        //
+        server.createContext("/user/login", new AbstractUserHandler(userFacade) {
+            @Override
+            protected IUser exchangeData(CredentialsParams requestData) throws ServerException {
+                return getFacade().login(requestData);
+            }
+        });
+
+        server.createContext("/user/register", new AbstractUserHandler(userFacade) {
+            @Override
+            protected IUser exchangeData(CredentialsParams requestData) throws ServerException {
+                return getFacade().register(requestData);
+            }
+        });
+
+        //
+        // games
+        //
+		server.createContext("/games/join", new JoinHandler(joinGameFacade));
+
+        //
+        // game
+        //
+        server.createContext("/game/model", new GameModelHandler(gameFacade));
+
+        //
+        // moves
+        //
+		server.createContext("/moves/sendChat", new AbstractMovesHandler<SendChatParams>(SendChatParams.class, movesFacade) {
+            @Override
+            protected Game exchangeData(SendChatParams requestData) throws ServerException {
+                return getFacade().sendChat(requestData);
+            }
+        });
+
+	    server.createContext("/moves/rollNumber", new AbstractMovesHandler<RollNumberParams>(RollNumberParams.class, movesFacade) {
+            @Override
+            protected Game exchangeData(RollNumberParams requestData) throws ServerException {
+                return getFacade().rollNumber(requestData);
+            }
+        });
+
+        //
+        // util
+        //
+        server.createContext("/util/changeLogLevel", new AbstractHandler<Level, String, IUtilityFacade>(Level.class, utilityFacade) {
+            @Override
+            protected String exchangeData(Level requestData) throws ServerException {
+                getFacade().changeLogLevel(requestData);
+                return "Logging level changed to " + requestData;
+            }
+        });
+        // TODO: fill out the rest of the handlers
+    }
 	
 	/**
 	 * Start and run the server.

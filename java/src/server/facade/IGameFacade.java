@@ -15,7 +15,7 @@ public interface IGameFacade {
      * @param theModel an integer with the id of the game to get the model of
      * @return Game object containing a pointer to the model
      */
-    public Game model(int theModel);
+    public Game model(Integer theModel);
 
     /**
      * Resets the current game

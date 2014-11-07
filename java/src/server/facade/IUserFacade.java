@@ -1,6 +1,7 @@
 package server.facade;
 
 import shared.communication.CredentialsParams;
+import shared.model.IUser;
 
 /**
  * Created by Spencer Weight - 11/4/2014.
@@ -14,7 +15,7 @@ public interface IUserFacade {
      * @param creds is the set of credentials to be used for logging in
      * @return boolean containing true or false depending on if the login was successful
      */
-    public boolean login(CredentialsParams creds);
+    public IUser login(CredentialsParams creds);
 
     /**
      * Used to register a new user and then create a cookie to log them in
@@ -23,5 +24,5 @@ public interface IUserFacade {
      * @param creds is the set of credentials to be used for registering/logging in
      * @return boolean containing true or false depending on if the login was successful
      */
-    public boolean register(CredentialsParams creds);
+    public IUser register(CredentialsParams creds);
 }

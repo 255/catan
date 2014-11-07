@@ -15,15 +15,12 @@ import java.util.List;
  * The handler for join games requests. This is the only handler that checks only the user cookie.
  * The join handler also sets the game cookie.
  */
-public class JoinHandler extends AbstractRequestHandler<JoinGameRequestParams, Integer> {
-    private IJoinGameFacade m_joinGameFacade;
-
+public class JoinHandler extends AbstractHandler<JoinGameRequestParams, Integer, IJoinGameFacade> {
     /**
      * Setup a new RequestHandler.
      */
     public JoinHandler(IJoinGameFacade joinGameFacade) {
-        super(JoinGameRequestParams.class);
-        m_joinGameFacade = joinGameFacade;
+        super(JoinGameRequestParams.class, joinGameFacade);
     }
 
     @Override
@@ -47,8 +44,8 @@ public class JoinHandler extends AbstractRequestHandler<JoinGameRequestParams, I
      *                                in which case handle() sends back an empty error (500) response
      */
     @Override
-    public Integer exchangeData(JoinGameRequestParams requestData) throws ServerException {
-        return m_joinGameFacade.join(requestData);
+    protected Integer exchangeData(JoinGameRequestParams requestData) throws ServerException {
+        return getFacade().join(requestData);
     }
 
     @Override

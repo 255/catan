@@ -16,7 +16,7 @@ public class GameFacade implements IGameFacade{
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game model(int theModel) {
+    public Game model(Integer theModel) {
         return null;
     }
 
