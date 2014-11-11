@@ -163,7 +163,7 @@ public class Player implements IPlayer {
 
     @Override
     public boolean needsToDiscard() {
-        return m_resources.getCount() > CatanConstants.MAX_SAFE_CARDS;
+        return m_resources.getCount() > CatanConstants.MAX_SAFE_CARDS && !m_discarded;
     }
 
     @Override
@@ -224,7 +224,7 @@ public class Player implements IPlayer {
     /**
      * Get all of the dev cards, whether new or playable.
      *
-     * @return
+     * @return a dev card hand with the sum of the playable and new cards
      */
     @Override
     public IDevCardHand getAllDevCards() {

@@ -152,9 +152,9 @@ public interface ICatanMap {
 
     /**
      * Get the players who have towns around this tile.
-     * @param tile
-     * @param exclude
-     * @return
+     * @param tile the tile
+     * @param exclude the player to exclude from the robbing
+     * @return the players that can be robbed
      */
     public Collection<IPlayer> getRobbablePlayersOnTile(HexLocation tile, IPlayer exclude);
 

@@ -1,6 +1,8 @@
 package shared.communication;
 
 /**
+ * Class that wraps the user credentials params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class CredentialsParams extends AbstractJoinGameParams{

@@ -76,7 +76,6 @@ public class DiscardController extends Controller implements IDiscardController 
         else{
             getDiscardView().closeThisModal();
             resetModal();
-            getWaitView().showModal();
         }
 	}
 

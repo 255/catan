@@ -39,8 +39,8 @@ public class JoinGameFacade implements IJoinGameFacade{
      * @return boolean containing true or false depending on if the join was successful
      */
     @Override
-    public boolean join(JoinGameRequestParams joinGame) {
-        return false;
+    public Integer join(JoinGameRequestParams joinGame) {
+        return null;
     }
 
     /**

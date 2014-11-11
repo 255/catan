@@ -4,6 +4,7 @@ import shared.communication.*;
 import shared.model.Game;
 
 /**
+ * A facade to support /games operations.
  * Created by Spencer Weight - 11/4/2014.
  */
 public interface IJoinGameFacade {
@@ -32,7 +33,7 @@ public interface IJoinGameFacade {
      * @param joinGame the JSON wrapper with the parameters for joining a game
      * @return boolean containing true or false depending on if the join was successful
      */
-    public boolean join(JoinGameRequestParams joinGame);
+    public Integer join(JoinGameRequestParams joinGame);
 
     /**
      * Saves a game

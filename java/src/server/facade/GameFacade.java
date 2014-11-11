@@ -4,6 +4,7 @@ import shared.communication.AddAIRequestParams;
 import shared.model.Game;
 
 /**
+ * A facade to support /game operations
  * Created by Spencer Weight - 11/5/2014.
  */
 public class GameFacade implements IGameFacade{
@@ -16,7 +17,7 @@ public class GameFacade implements IGameFacade{
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game model(int theModel) {
+    public Game model(Integer theModel) {
         return null;
     }
 

@@ -3,6 +3,8 @@ package shared.communication;
 import shared.definitions.ResourceType;
 
 /**
+ * Class that represents the Monopoly params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class MonopolyParams extends AbstractGameParams{

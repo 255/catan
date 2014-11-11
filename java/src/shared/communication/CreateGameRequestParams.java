@@ -1,6 +1,8 @@
 package shared.communication;
 
 /**
+ * Class that represents the CreateGameRequest params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class CreateGameRequestParams extends AbstractJoinGameParams{

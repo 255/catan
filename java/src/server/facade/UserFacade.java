@@ -1,6 +1,7 @@
 package server.facade;
 
 import shared.communication.CredentialsParams;
+import shared.model.IUser;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
@@ -14,8 +15,8 @@ public class UserFacade implements IUserFacade{
      * @return boolean containing true or false depending on if the login was successful
      */
     @Override
-    public boolean login(CredentialsParams creds) {
-        return false;
+    public IUser login(CredentialsParams creds) {
+        return null;
     }
 
     /**
@@ -26,7 +27,7 @@ public class UserFacade implements IUserFacade{
      * @return boolean containing true or false depending on if the login was successful
      */
     @Override
-    public boolean register(CredentialsParams creds) {
-        return false;
+    public IUser register(CredentialsParams creds) {
+        return null;
     }
 }

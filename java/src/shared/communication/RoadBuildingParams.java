@@ -3,6 +3,8 @@ package shared.communication;
 import shared.locations.EdgeLocation;
 
 /**
+ * Class that represents the RoadBuilding params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class RoadBuildingParams extends AbstractGameParams{

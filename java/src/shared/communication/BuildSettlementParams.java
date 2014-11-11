@@ -3,6 +3,8 @@ package shared.communication;
 import shared.locations.VertexLocation;
 
 /**
+ * Class that represents the BuildSettlement params
+ *
  * Created by jeffreybacon on 11/4/14.
  */
 public class BuildSettlementParams extends AbstractGameParams{

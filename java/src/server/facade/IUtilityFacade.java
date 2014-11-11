@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * A facade to support /util operations.
  * Created by Spencer Weight - 11/4/2014
  */
 public interface IUtilityFacade {

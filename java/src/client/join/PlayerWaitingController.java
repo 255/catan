@@ -79,6 +79,7 @@ public class PlayerWaitingController extends Controller implements IPlayerWaitin
                 getView().setPlayers(players);
                 m_previousPlayers = players;
             }
+            getView().refresh();
         }
     }
 }

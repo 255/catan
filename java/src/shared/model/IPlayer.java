@@ -105,7 +105,7 @@ public interface IPlayer {
 
     /**
      * Get all of the dev cards, whether new or playable.
-     * @return
+     * @return a dev card hand with the sum of the playable and new cards
      */
     public IDevCardHand getAllDevCards();
         /**

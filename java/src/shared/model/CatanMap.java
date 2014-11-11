@@ -466,9 +466,9 @@ public class CatanMap implements ICatanMap {
     /**
      * Get the players who have towns around this tile and have resources to rob.
      *
-     * @param tile
-     * @param exclude the player to exclude from the set (the local player)
-     * @return
+     * @param tile the tile
+     * @param exclude the player to exclude from the robbing
+     * @return the players that can be robbed
      */
     @Override
     public Set<IPlayer> getRobbablePlayersOnTile(HexLocation tile, IPlayer exclude) {
