@@ -2,6 +2,8 @@ package shared.model;
 
 import shared.definitions.DevCardType;
 
+import java.util.Random;
+
 /**
  * Represents the cards in a players hand
  */
@@ -123,6 +125,30 @@ public class DevCardHand implements IDevCardHand {
             default:
                 assert false;
         }
+    }
+
+    @Override
+    public DevCardType drawCard() {
+
+        DevCardType drawnCard = null;
+
+        Random rand = new Random();
+
+        boolean foundCard = false;
+
+        while (!foundCard) {
+            drawnCard = (DevCardType.values()[rand.nextInt(4)]);
+            if (this.getCount(drawnCard) > 0) {
+                foundCard = true;
+                try {
+                    this.remove(drawnCard);
+                } catch (ModelException ex) {
+
+                }
+            }
+        }
+
+        return drawnCard;
     }
 
     /**

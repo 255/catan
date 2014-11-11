@@ -47,4 +47,11 @@ public interface IDevCardHand {
      * @param devCardHand the dev card hand to which to transfer the cards in this hand
      */
     public void transferAllCardsToHand(IDevCardHand devCardHand);
+
+    /**
+     * Draws a random card from the DevCardHand
+     *
+     * @return the type of dev card that was drawn
+     */
+    public DevCardType drawCard();
 }

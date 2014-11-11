@@ -191,6 +191,15 @@ public class Player implements IPlayer {
         return m_resources;
     }
 
+    @Override
+    public void addResources(IResourceBank rb) {
+        m_resources.add(rb);
+    }
+
+    @Override
+    public void removeResources(IResourceBank rb) {
+        m_resources.subtract(rb);
+    }
     /**
      * Get whether the has any resources. This will be used to test if the player can be robbed from when placing
      * the robber.
