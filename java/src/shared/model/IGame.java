@@ -1,7 +1,16 @@
 package shared.model;
 
+import shared.definitions.CatanColor;
+import shared.definitions.PortType;
+import shared.definitions.ResourceType;
+import shared.locations.EdgeLocation;
+import shared.locations.HexLocation;
+import shared.locations.VertexLocation;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Observer;
+import java.util.Set;
 
 /**
  * The Game object holds pointers to all of the essential components of the game.
@@ -175,6 +184,53 @@ public interface IGame {
     public boolean isLocalPlayersTurn();
 
     public boolean gameHasStarted();
+
+    boolean localPlayerAndGameState(GameState state);
+
+    boolean canPlaceRoad(EdgeLocation edge);
+
+    boolean canPlaceSettlement(VertexLocation vertex);
+
+    boolean canPlaceCity(VertexLocation vertex);
+
+    Collection<IPlayer> getRobbablePlayers(HexLocation location);
+
+    IResourceBank getPlayerResources();
+
+    Set<PortType> getPlayerPorts();
+
+    boolean canBuyCity();
+
+    boolean canBuyRoad();
+
+    boolean canBuySettlement();
+
+    boolean canBuyDevCard();
+
+    boolean canAcceptTrade();
+
+    boolean canPlayDevCard();
+
+    boolean canPlayMonopoly(ResourceType resource);
+
+    boolean canPlaySoldier(HexLocation robberDestination);
+
+    boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2);
+
+    boolean canPlayMonument();
+
+    boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2);
+
+    CatanColor getLocalColor();
+
+    boolean playerHasLongestRoad(IPlayer player);
+
+    boolean playerHasLargestArmy(IPlayer player);
+
+    boolean isPlayersTurn(IPlayer player);
+
+    // this method is just for determining from the GameState if it is a free round
+    boolean isFreeRound();
 
     /**
      * The ModelInitializer needs to tell the Game object when it is done updating.

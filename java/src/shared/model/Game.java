@@ -1,8 +1,14 @@
 package shared.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import shared.definitions.CatanColor;
+import shared.definitions.DevCardType;
+import shared.definitions.PortType;
+import shared.definitions.ResourceType;
+import shared.locations.EdgeLocation;
+import shared.locations.HexLocation;
+import shared.locations.VertexLocation;
+
+import java.util.*;
 
 /**
  * Created by jeffreybacon on 9/25/14.
@@ -268,16 +274,12 @@ public class Game extends Observable implements IGame {
 
     @Override
     public boolean localPlayerIsOfferingTrade() {
-        ITradeOffer tradeOffer = GameModelFacade.instance().getGame().getTradeOffer();
-
-        return tradeOffer != null && m_localPlayer.equals(tradeOffer.getSender());
+        return m_tradeOffer != null && m_localPlayer.equals(m_tradeOffer.getSender());
     }
 
     @Override
     public boolean localPlayerIsBeingOfferedTrade() {
-        ITradeOffer tradeOffer = GameModelFacade.instance().getGame().getTradeOffer();
-
-        return tradeOffer != null && m_localPlayer.equals(tradeOffer.getReceiver());
+        return m_tradeOffer != null && m_localPlayer.equals(m_tradeOffer.getReceiver());
     }
 
     /**
@@ -315,8 +317,296 @@ public class Game extends Observable implements IGame {
         return m_players.size() == CatanConstants.NUM_PLAYERS;
     }
 
-    private boolean localPlayerAndGameState(GameState state) {
+    @Override
+    public boolean localPlayerAndGameState(GameState state) {
         return m_localPlayer.equals(m_currentPlayer) && m_state == state;
+    }
+
+        /**
+     * Takes an edge location and determines if a road can be placed on it
+     * This does NOT check if the player can afford the road.
+     *
+     * @param edge the location of the side of a terrain hex
+     * @return a boolean value that reports if the user can place a road
+     */
+    @Override
+    public boolean canPlaceRoad(EdgeLocation edge) {
+        if (!isLocalPlayersTurn()) {
+            return false;
+        }
+
+        // road placement rules are different for initial roads
+        if (isFreeRound()) {
+            return getMap().canPlaceInitialRoad(getLocalPlayer(), edge);
+        }
+
+        // if playing, check the map with normal rules
+        if (getGameState() == GameState.PLAYING) {
+            return getMap().canPlaceRoad(getLocalPlayer(), edge);
+        }
+
+        return false;
+    }
+
+    /**
+     * Takes a vertex location and determines if a settlement can be placed on it
+     *
+     * @param vertex the location of a corner/intersection of terrain hexes
+     * @return a boolean value that reports if the user can place a settlement
+     */
+    @Override
+    public boolean canPlaceSettlement(VertexLocation vertex) {
+        assert vertex != null;
+
+        // check if it's the player's turn
+        if (!isLocalPlayersTurn()) {
+            return false;
+        }
+
+        // check if map is open (same logic for initial round and normal playing
+        if (!getMap().canPlaceSettlement(getLocalPlayer(), vertex)) {
+            return false;
+        }
+
+        // check if a normal gameplay
+        if (getGameState() == GameState.PLAYING) {
+            return getLocalPlayer().canBuySettlement();
+        }
+
+        // assert that (if it's a free round) the player has enough pieces
+        assert !isFreeRound() || getLocalPlayer().getPieceBank().availableSettlements() > 0;
+
+        // if it's a free round, they can place
+        return isFreeRound();
+    }
+
+    /**
+     * Takes a vertex location and determines if a city can be placed on it
+     *
+     * @param vertex the location of a corner/intersection of terrain hexes
+     * @return a boolean value that reports if the user can place a city
+     */
+    @Override
+    public boolean canPlaceCity(VertexLocation vertex) {
+        assert vertex != null;
+
+        if (getGameState() != GameState.PLAYING) {
+            return false;
+        }
+
+        // is there a settlement at the vertex?
+        boolean mapOpen = getMap().canPlaceCity(getLocalPlayer(), vertex);
+        // does the player have enough resources?
+        boolean haveResourcesAndPiece = getLocalPlayer().canBuyCity();
+
+        return mapOpen && (isFreeRound() || haveResourcesAndPiece);
+    }
+
+    /**
+     * Get a list of players around a hex that can be robbed (all with towns except local player)
+     *
+     * @param location the location being robbed
+     * @return a collection of players (may be empty)
+     */
+    @Override
+    public Collection<IPlayer> getRobbablePlayers(HexLocation location) {
+        return getMap().getRobbablePlayersOnTile(location, getLocalPlayer());
+    }
+
+    /**
+     * Returns the info for the current player's resource counts
+     *
+     * @return the ResourceBank object containing the counts for the current player
+     */
+    @Override
+    public IResourceBank getPlayerResources() {
+        assert getLocalPlayer().getResources() != null;
+
+        return getLocalPlayer().getResources();
+    }
+
+    /**
+     * Returns the ports the current player has
+     *
+     * @return the ports that the current player has
+     */
+    @Override
+    public Set<PortType> getPlayerPorts() {
+        Set<PortType> ports = getMap().getPlayersPorts(getLocalPlayer());
+
+        assert ports != null;
+
+        return ports;
+    }
+
+    /**
+     * Have enough money to buy a city and have place to put it and a piece to use.
+     *
+     * @return true if can buy city, false if not
+     */
+    @Override
+    public boolean canBuyCity() {
+        return localPlayerIsPlaying() && getLocalPlayer().canBuyCity();
+    }
+
+    /**
+     * Have enough money to buy a road and a piece to use.
+     *
+     * @return true if can buy road, false if not
+     */
+    @Override
+    public boolean canBuyRoad() {
+        return localPlayerIsPlaying() && getLocalPlayer().canBuyRoad();
+    }
+
+    /**
+     * Have enough money to buy a settlement and a piece to use.
+     *
+     * @return true if can buy a settlement, false if not
+     */
+    @Override
+    public boolean canBuySettlement() {
+        return localPlayerIsPlaying() && getLocalPlayer().canBuySettlement();
+    }
+
+    /**
+     * Have enough money to buy a dev card and a card is available to buy
+     *
+     * @return true if can buy
+     */
+    @Override
+    public boolean canBuyDevCard() {
+        return localPlayerIsPlaying() && getLocalPlayer().canAfford(Prices.DEV_CARD)
+                && getDevCards().getCount() > 0;
+    }
+
+    /**
+     * Return true if the player has enough resources for a trade currently being offered to them.
+     *
+     * @return true if can accept trade, false if not enough resources (or no trade is offered currently)
+     */
+    @Override
+    public boolean canAcceptTrade() {
+        // is there a trade offer?
+        if (m_tradeOffer == null) {
+            return false;
+        }
+
+        // these shouldn't matter, but testing anyway
+        if (getGameState() != GameState.PLAYING || !getCurrentPlayer().equals(m_tradeOffer.getSender())) {
+            return false;
+        }
+
+        // check that the trade is for the player and that they can afford it
+        return  getLocalPlayer().equals(m_tradeOffer.getReceiver())
+                && getLocalPlayer().canAffordTrade(m_tradeOffer.getOffer());
+    }
+
+    /**
+     * Whether the local player can play any dev cards.
+     *
+     * @return true if the user can play a dev card
+     */
+    @Override
+    public boolean canPlayDevCard() {
+        return localPlayerIsPlaying() && getLocalPlayer().canPlayDevCard();
+    }
+
+    /**
+     * Get whether the local player can play this specific dev card.
+     *
+     * @return true if the user can play this card
+     */
+    @Override
+    public boolean canPlayMonopoly(ResourceType resource) {
+        return localPlayerIsPlaying()
+                && getLocalPlayer().canPlayDevCard(DevCardType.MONOPOLY);
+    }
+
+    /**
+     * Get whether the local player can play this specific dev card.
+     * @param robberDestination new location of the robber
+     * @return true if the user can play this card
+     */
+    @Override
+    public boolean canPlaySoldier(HexLocation robberDestination) {
+        return localPlayerIsPlaying()
+                && getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER) // has and can play card
+                && !robberDestination.equals(getMap().getRobber()); // moved robber
+    }
+
+    /**
+     * Get whether the local player can play this specific dev card.
+     * NOTE: The preconditions specified in the document seem wrong to me. You need BOTH resources to play the card?
+     *       What if there is only one kind of card left.
+     * @return true if the user can play this card
+     * @param r1 resource
+     * @param r2 resource
+     */
+    @Override
+    public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
+        return localPlayerIsPlaying()
+                && getLocalPlayer().canPlayDevCard(DevCardType.YEAR_OF_PLENTY)
+                && getResourceBank().getCount(r1) > 0 && getResourceBank().getCount(r2) > 0;
+    }
+
+    /**
+     * Get whether the local player can play this specific dev card.
+     *
+     * @return true if the user can play this card
+     */
+    @Override
+    public boolean canPlayMonument() {
+        return localPlayerIsPlaying()
+                && getLocalPlayer().canPlayDevCard(DevCardType.MONUMENT);
+    }
+
+    /**
+     * Get whether the local player can play this specific dev card.
+     *
+     * @return true if the user can play this card
+     * @param edge1 first road
+     * @param edge2 second road
+     */
+    @Override
+    public boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2) {
+        assert edge1 != null && edge2 != null;
+
+        return localPlayerIsPlaying()
+                && getLocalPlayer().canPlayDevCard(DevCardType.ROAD_BUILD)
+                && getMap().canPlaceTwoRoads(getLocalPlayer(), edge1, edge2);
+    }
+
+    /**
+     * Get the local player's color.
+     *
+     * @return the local player's color
+     */
+    @Override
+    public CatanColor getLocalColor() {
+        return getLocalPlayer().getColor();
+    }
+
+    @Override
+    public boolean playerHasLongestRoad(IPlayer player) {
+        return player.equals(getLongestRoad());
+    }
+
+    @Override
+    public boolean playerHasLargestArmy(IPlayer player) {
+        return player.equals(getLargestArmy());
+    }
+
+    @Override
+    public boolean isPlayersTurn(IPlayer player) {
+        return player.equals(getCurrentPlayer());
+    }
+
+    // this method is just for determining from the GameState if it is a free round
+    @Override
+    public boolean isFreeRound() {
+        GameState gs = getGameState();
+        return (gs == GameState.FIRST_ROUND || gs == GameState.SECOND_ROUND);
     }
 
     /**
