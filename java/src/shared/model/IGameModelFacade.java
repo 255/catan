@@ -143,7 +143,7 @@ public interface IGameModelFacade {
      *
      * @return the ports that the local player has
      */
-    public Set<PortType> getPlayerPorts();
+    public Set<PortType> getLocalPlayerPorts();
 
     /**
      * Returns the chat history of the game

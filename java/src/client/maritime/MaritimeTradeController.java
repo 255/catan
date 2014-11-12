@@ -164,7 +164,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
     }
 
     private boolean hasPort(PortType p) {
-        Set<PortType> ports = GameModelFacade.instance().getPlayerPorts();
+        Set<PortType> ports = GameModelFacade.instance().getLocalPlayerPorts();
         for(PortType pt : ports) {
             if(pt == p)
                 return true;

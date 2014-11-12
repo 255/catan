@@ -197,7 +197,7 @@ public interface IGame {
 
     IResourceBank getPlayerResources();
 
-    Set<PortType> getPlayerPorts();
+    Set<PortType> getLocalPlayerPorts();
 
     boolean canBuyCity();
 

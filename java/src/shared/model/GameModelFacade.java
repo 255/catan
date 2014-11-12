@@ -1,7 +1,6 @@
 package shared.model;
 
 import shared.definitions.CatanColor;
-import shared.definitions.DevCardType;
 import shared.definitions.PortType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
@@ -59,21 +58,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceRoad(EdgeLocation edge) {
-        if (!GameModelFacade.instance().getGame().isLocalPlayersTurn()) {
-            return false;
-        }
-
-        // road placement rules are different for initial roads
-        if (isFreeRound()) {
-            return GameModelFacade.instance().getGame().getMap().canPlaceInitialRoad(GameModelFacade.instance().getGame().getLocalPlayer(), edge);
-        }
-
-        // if playing, check the map with normal rules
-        if (GameModelFacade.instance().getGame().getGameState() == GameState.PLAYING) {
-            return GameModelFacade.instance().getGame().getMap().canPlaceRoad(GameModelFacade.instance().getGame().getLocalPlayer(), edge);
-        }
-
-        return false;
+        return m_game.canPlaceRoad(edge);
     }
 
     /**
@@ -84,28 +69,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceSettlement(VertexLocation vertex) {
-        assert vertex != null;
-
-        // check if it's the player's turn
-        if (!GameModelFacade.instance().getGame().isLocalPlayersTurn()) {
-            return false;
-        }
-
-        // check if map is open (same logic for initial round and normal playing
-        if (!GameModelFacade.instance().getGame().getMap().canPlaceSettlement(GameModelFacade.instance().getGame().getLocalPlayer(), vertex)) {
-            return false;
-        }
-
-        // check if a normal gameplay
-        if (GameModelFacade.instance().getGame().getGameState() == GameState.PLAYING) {
-            return GameModelFacade.instance().getGame().getLocalPlayer().canBuySettlement();
-        }
-
-        // assert that (if it's a free round) the player has enough pieces
-        assert !isFreeRound() || GameModelFacade.instance().getGame().getLocalPlayer().getPieceBank().availableSettlements() > 0;
-
-        // if it's a free round, they can place
-        return isFreeRound();
+        return m_game.canPlaceSettlement(vertex);
     }
 
     /**
@@ -116,18 +80,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceCity(VertexLocation vertex) {
-        assert vertex != null;
-
-        if (GameModelFacade.instance().getGame().getGameState() != GameState.PLAYING) {
-            return false;
-        }
-
-        // is there a settlement at the vertex?
-        boolean mapOpen = GameModelFacade.instance().getGame().getMap().canPlaceCity(GameModelFacade.instance().getGame().getLocalPlayer(), vertex);
-        // does the player have enough resources?
-        boolean haveResourcesAndPiece = GameModelFacade.instance().getGame().getLocalPlayer().canBuyCity();
-
-        return mapOpen && (isFreeRound() || haveResourcesAndPiece);
+        return m_game.canPlaceCity(vertex);
     }
 
     /**
@@ -137,8 +90,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public IPlayer getCurrentPlayer() {
-        assert GameModelFacade.instance().getGame().getCurrentPlayer() != null;
-        return GameModelFacade.instance().getGame().getCurrentPlayer();
+        return m_game.getCurrentPlayer();
     }
 
     /**
@@ -149,7 +101,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public Collection<IPlayer> getRobbablePlayers(HexLocation location) {
-        return GameModelFacade.instance().getGame().getMap().getRobbablePlayersOnTile(location, GameModelFacade.instance().getGame().getLocalPlayer());
+        return m_game.getRobbablePlayers(location);
     }
 
     /**
@@ -159,23 +111,17 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public IResourceBank getPlayerResources() {
-        assert GameModelFacade.instance().getGame().getLocalPlayer().getResources() != null;
-
-        return GameModelFacade.instance().getGame().getLocalPlayer().getResources();
+        return m_game.getPlayerResources();
     }
 
     /**
-     * Returns the ports the current player has
+     * Returns the ports the local player has
      *
-     * @return the ports that the current player has
+     * @return the ports that the local player has
      */
     @Override
-    public Set<PortType> getPlayerPorts() {
-        Set<PortType> ports = GameModelFacade.instance().getGame().getMap().getPlayersPorts(GameModelFacade.instance().getGame().getLocalPlayer());
-
-        assert ports != null;
-
-        return ports;
+    public Set<PortType> getLocalPlayerPorts() {
+        return m_game.getLocalPlayerPorts();
     }
 
     /**
@@ -185,11 +131,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public ILog getChatHistory() {
-        ILog chat = GameModelFacade.instance().getGame().getChatHistory();
-
-        assert chat != null;
-
-        return chat;
+        return m_game.getChatHistory();
     }
 
     /**
@@ -199,11 +141,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public ILog getMoveHistory() {
-        ILog gameplay = GameModelFacade.instance().getGame().getGameplayLog();
-
-        assert gameplay != null;
-
-        return gameplay;
+        return m_game.getGameplayLog();
     }
 
     /**
@@ -213,7 +151,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyCity() {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying() && GameModelFacade.instance().getGame().getLocalPlayer().canBuyCity();
+        return m_game.canBuyCity();
     }
 
     /**
@@ -223,7 +161,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyRoad() {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying() && GameModelFacade.instance().getGame().getLocalPlayer().canBuyRoad();
+        return m_game.canBuyRoad();
     }
 
     /**
@@ -233,7 +171,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuySettlement() {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying() && GameModelFacade.instance().getGame().getLocalPlayer().canBuySettlement();
+        return m_game.canBuySettlement();
     }
 
     /**
@@ -243,8 +181,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyDevCard() {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying() && GameModelFacade.instance().getGame().getLocalPlayer().canAfford(Prices.DEV_CARD)
-                && GameModelFacade.instance().getGame().getDevCards().getCount() > 0;
+        return m_game.canBuyDevCard();
     }
 
     /**
@@ -254,21 +191,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canAcceptTrade() {
-        ITradeOffer tradeOffer = GameModelFacade.instance().getGame().getTradeOffer();
-
-        // is there a trade offer?
-        if (tradeOffer == null) {
-            return false;
-        }
-
-        // these shouldn't matter, but testing anyway
-        if (GameModelFacade.instance().getGame().getGameState() != GameState.PLAYING || !GameModelFacade.instance().getGame().getCurrentPlayer().equals(tradeOffer.getSender())) {
-            return false;
-        }
-
-        // check that the trade is for the player and that they can afford it
-        return  GameModelFacade.instance().getGame().getLocalPlayer().equals(tradeOffer.getReceiver())
-                && GameModelFacade.instance().getGame().getLocalPlayer().canAffordTrade(tradeOffer.getOffer());
+        return m_game.canAcceptTrade();
     }
 
     /**
@@ -278,7 +201,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayDevCard() {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying() && GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard();
+        return m_game.canPlayDevCard();
     }
 
     /**
@@ -288,8 +211,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonopoly(ResourceType resource) {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying()
-                && GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.MONOPOLY);
+        return m_game.canPlayMonopoly(resource);
     }
 
     /**
@@ -299,9 +221,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaySoldier(HexLocation robberDestination) {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying()
-                && GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER) // has and can play card
-                && !robberDestination.equals(GameModelFacade.instance().getGame().getMap().getRobber()); // moved robber
+        return m_game.canPlaySoldier(robberDestination);
     }
 
     /**
@@ -314,10 +234,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
-        IResourceBank bank = GameModelFacade.instance().getGame().getResourceBank();
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying()
-                && GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.YEAR_OF_PLENTY)
-                && bank.getCount(r1) > 0 && bank.getCount(r2) > 0;
+        return m_game.canPlayYearOfPlenty(r1, r2);
     }
 
     /**
@@ -327,8 +244,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonument() {
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying()
-                && GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.MONUMENT);
+        return m_game.canPlayMonument();
     }
 
     /**
@@ -340,14 +256,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2) {
-        assert edge1 != null && edge2 != null;
-
-        ICatanMap map = GameModelFacade.instance().getGame().getMap();
-        IPlayer player = GameModelFacade.instance().getGame().getLocalPlayer();
-
-        return GameModelFacade.instance().getGame().localPlayerIsPlaying()
-                && player.canPlayDevCard(DevCardType.ROAD_BUILD)
-                && map.canPlaceTwoRoads(player, edge1, edge2);
+        return m_game.canPlayRoadBuilding(edge1, edge2);
     }
 
     /**
@@ -357,22 +266,22 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public CatanColor getLocalColor() {
-        return GameModelFacade.instance().getGame().getLocalPlayer().getColor();
+        return m_game.getLocalColor();
     }
 
     @Override
     public boolean playerHasLongestRoad(IPlayer player) {
-        return player.equals(GameModelFacade.instance().getGame().getLongestRoad());
+        return m_game.playerHasLongestRoad(player);
     }
 
     @Override
     public boolean playerHasLargestArmy(IPlayer player) {
-        return player.equals(GameModelFacade.instance().getGame().getLargestArmy());
+        return m_game.playerHasLargestArmy(player);
     }
 
     @Override
     public boolean isPlayersTurn(IPlayer player) {
-        return player.equals(GameModelFacade.instance().getGame().getCurrentPlayer());
+        return m_game.isPlayersTurn(player);
     }
 
     /**
@@ -386,7 +295,6 @@ public class GameModelFacade implements IGameModelFacade {
     // this method is just for determining from the GameState if it is a free round
     @Override
     public boolean isFreeRound() {
-        GameState gs = GameModelFacade.instance().getGame().getGameState();
-        return (gs == GameState.FIRST_ROUND || gs == GameState.SECOND_ROUND);
+        return m_game.isFreeRound();
     }
 }

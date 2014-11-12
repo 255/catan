@@ -426,12 +426,12 @@ public class Game extends Observable implements IGame {
     }
 
     /**
-     * Returns the ports the current player has
+     * Returns the ports the local player has
      *
-     * @return the ports that the current player has
+     * @return the ports that the local player has
      */
     @Override
-    public Set<PortType> getPlayerPorts() {
+    public Set<PortType> getLocalPlayerPorts() {
         Set<PortType> ports = getMap().getPlayersPorts(getLocalPlayer());
 
         assert ports != null;
