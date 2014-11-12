@@ -1,5 +1,6 @@
 package server.facade;
 
+import server.command.IllegalCommandException;
 import shared.communication.*;
 import shared.model.Game;
 
@@ -16,7 +17,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game sendChat(SendChatParams sendChat) {
+    public Game sendChat(SendChatParams sendChat) throws IllegalCommandException {
         return null;
     }
 
@@ -28,7 +29,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game rollNumber(RollNumberParams rollNumber) {
+    public Game rollNumber(RollNumberParams rollNumber) throws IllegalCommandException {
         return null;
     }
 
@@ -40,7 +41,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game robPlayer(RobbingParams robbing) {
+    public Game robPlayer(RobbingParams robbing) throws IllegalCommandException{
         return null;
     }
 
@@ -52,7 +53,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game finishTurn(PlayerIndexParam playerIndex) {
+    public Game finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException {
         return null;
     }
 
@@ -64,7 +65,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buyDevCard(PlayerIndexParam playerIndex) {
+    public Game buyDevCard(PlayerIndexParam playerIndex) throws IllegalCommandException {
         return null;
     }
 
@@ -76,7 +77,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game yearOfPlenty(YearOfPlentyParams yearOfPlenty) {
+    public Game yearOfPlenty(YearOfPlentyParams yearOfPlenty) throws IllegalCommandException {
         return null;
     }
 
@@ -88,7 +89,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game roadBuilding(RoadBuildingParams roadBuilding) {
+    public Game roadBuilding(RoadBuildingParams roadBuilding) throws IllegalCommandException {
         return null;
     }
 
@@ -100,7 +101,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game soldier(RobbingParams robbing) {
+    public Game soldier(RobbingParams robbing) throws IllegalCommandException {
         return null;
     }
 
@@ -112,7 +113,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game monopoly(MonopolyParams monopoly) {
+    public Game monopoly(MonopolyParams monopoly) throws IllegalCommandException {
         return null;
     }
 
@@ -124,7 +125,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game monument(PlayerIndexParam playerIndex) {
+    public Game monument(PlayerIndexParam playerIndex) throws IllegalCommandException {
         return null;
     }
 
@@ -137,7 +138,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buildRoad(BuildRoadParams buildRoad) {
+    public Game buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException {
         return null;
     }
 
@@ -150,7 +151,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buildSettlement(BuildSettlementParams buildSettlement) {
+    public Game buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException {
         return null;
     }
 
@@ -163,7 +164,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buildCity(BuildCityParams buildCity) {
+    public Game buildCity(BuildCityParams buildCity) throws IllegalCommandException {
         return null;
     }
 
@@ -175,7 +176,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game offerTrade(OfferTradeParams offerTrade) {
+    public Game offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException {
         return null;
     }
 
@@ -187,7 +188,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game acceptTrade(AcceptTradeParams acceptTrade) {
+    public Game acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException {
         return null;
     }
 
@@ -199,7 +200,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game maritimeTrade(MaritimeTradeParams maritimeTrade) {
+    public Game maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException {
         return null;
     }
 
@@ -211,7 +212,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game discardCards(DiscardCardParams discardCards) {
+    public Game discardCards(DiscardCardParams discardCards) throws IllegalCommandException {
         return null;
     }
 }

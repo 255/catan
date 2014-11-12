@@ -1,5 +1,6 @@
 package server.facade;
 
+import server.command.IllegalCommandException;
 import shared.communication.AddAIRequestParams;
 import shared.model.Game;
 
