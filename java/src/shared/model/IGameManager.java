@@ -19,7 +19,7 @@ public interface IGameManager {
      * @param playerColor color that player wants to be in the game.
      * @return game object of the game that the player joined
      */
-    public Game joinGame(int gameIndex, IUser user, CatanColor playerColor);
+    public IGame joinGame(int gameIndex, IUser user, CatanColor playerColor);
 
     /**
      * Creates a new game on the server.
@@ -30,7 +30,7 @@ public interface IGameManager {
      * @param randomNumbers flag indicating whether numbers should be placed randomly
      * @return the newly created game object
      */
-    public Game createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers);
+    public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers);
 
     /**
      * Gets the game with the specified index
@@ -38,7 +38,7 @@ public interface IGameManager {
      * @param gameIndex index of the requested game
      * @return the requested game object
      */
-    public Game getGame(int gameIndex);
+    public IGame getGame(int gameIndex);
 
     /**
      * Removes the game with the specified index from the server

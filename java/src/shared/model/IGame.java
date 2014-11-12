@@ -238,4 +238,6 @@ public interface IGame {
     public void updateComplete();
 
     public void addObserver(Observer o);
+
+    public void joinGame(IUser user, CatanColor playerColor);
 }

@@ -33,6 +33,10 @@ public class Game extends Observable implements IGame {
         reset();
     }
 
+    public Game(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) {
+        // TODO:use for server-side game construction from GameManager
+    }
+
     @Override
     public void reset() {
         m_state = null;
@@ -616,5 +620,19 @@ public class Game extends Observable implements IGame {
     public void updateComplete() {
         assert !isNotInitialized();
         notifyObservers();
+    }
+
+    @Override
+    public void joinGame(IUser user, CatanColor playerColor) {
+        // checks if player is already in game, if so exits method
+        for(IPlayer player : m_players) {
+            if(player.getId() == user.getId()) {
+                return;
+            }
+        }
+
+        // if player is not already in game they are added to the game
+        assert m_players.size() < 4;
+        m_players.add(new Player(user.getUsername(), user.getId(), playerColor, m_players.size()));
     }
 }
