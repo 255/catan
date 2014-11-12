@@ -16,9 +16,9 @@ public class GameManager implements IGameManager{
     }
 
     @Override
-    public IGame joinGame(int gameIndex, IUser user, CatanColor playerColor) {
-        m_games.get(gameIndex).joinGame(user, playerColor);
-        return m_games.get(gameIndex);
+    public IGame joinGame(int gameId, IUser user, CatanColor playerColor) {
+        m_games.get(gameId).joinGame(user, playerColor);
+        return m_games.get(gameId);
     }
 
     @Override

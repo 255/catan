@@ -14,12 +14,12 @@ public interface IGameManager {
      * Adds the specified user to the
      * specified game.
      *
-     * @param gameIndex index of the game the user wants to join
+     * @param gameId id of the game the user wants to join
      * @param user the user who wants to join the game
      * @param playerColor color that player wants to be in the game.
      * @return game object of the game that the player joined
      */
-    public IGame joinGame(int gameIndex, IUser user, CatanColor playerColor);
+    public IGame joinGame(int gameId, IUser user, CatanColor playerColor);
 
     /**
      * Creates a new game on the server.
@@ -35,10 +35,10 @@ public interface IGameManager {
     /**
      * Gets the game with the specified index
      *
-     * @param gameIndex index of the requested game
+     * @param gameId id of the requested game
      * @return the requested game object
      */
-    public IGame getGame(int gameIndex);
+    public IGame getGame(int gameId);
 
     /**
      * Removes the game with the specified index from the server
