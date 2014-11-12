@@ -2,6 +2,7 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
+import shared.locations.EdgeLocation;
 
 import java.util.Collection;
 import java.util.ArrayList;
@@ -106,14 +107,20 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Give the player a road.
+     * Have the player build a road.
      * The road must be owned by the player (this will be checked by an assertion).
      *
-     * @param road the new road
+     * @param location the new road
      */
     @Override
-    public void addRoad(IRoad road) {
+    public IRoad buildRoad(EdgeLocation location) {
+        assert m_pieceBank.availableRoads() > 0;
+
+        IRoad road = new Road(this, location);
+        m_pieceBank.takeRoad();
         m_roads.add(road);
+
+        return road;
     }
 
     /**

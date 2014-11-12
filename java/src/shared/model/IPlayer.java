@@ -2,6 +2,7 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
+import shared.locations.EdgeLocation;
 
 import java.util.Collection;
 
@@ -79,9 +80,9 @@ public interface IPlayer {
     /**
      * Give the player a road.
      * The road must be owned by the player (this will be checked by an assertion).
-     * @param road the new road
+     * @param location the new road
      */
-    public void addRoad(IRoad road);
+    public IRoad buildRoad(EdgeLocation location);
 
     /**
      * Give the player a town (city or settlement).

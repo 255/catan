@@ -8,7 +8,7 @@ import shared.model.IGame;
  * @author StevenBarnett
  */
 public class AcceptTradeCommand extends AbstractCommand {
-    public AcceptTradeCommand(IGame game) {
+    public AcceptTradeCommand(IGame game) throws IllegalCommandException {
         super(game);
     }
 

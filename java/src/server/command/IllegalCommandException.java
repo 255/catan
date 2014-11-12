@@ -1,7 +1,8 @@
 package server.command;
 
 /**
- * An exception thrown when there is a problem with the server.
+ * An exception thrown when a user tries to cheat!
+ * Or for some reason an illegal move was requested by a client.
  */
 @SuppressWarnings("serial")
 public class IllegalCommandException extends Exception {

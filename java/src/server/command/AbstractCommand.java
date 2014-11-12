@@ -10,7 +10,7 @@ import shared.model.IGame;
 public abstract class AbstractCommand implements ICommand {
     private IGame m_game;
 
-    protected AbstractCommand(IGame game) {
+    public AbstractCommand(IGame game) {
         m_game = game;
     }
 
