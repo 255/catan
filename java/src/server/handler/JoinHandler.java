@@ -2,6 +2,7 @@ package server.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import server.ServerException;
+import server.command.IllegalCommandException;
 import server.facade.IJoinGameFacade;
 
 import shared.communication.JoinGameRequestParams;
@@ -44,7 +45,7 @@ public class JoinHandler extends AbstractHandler<JoinGameRequestParams, Integer,
      *                                in which case handle() sends back an empty error (500) response
      */
     @Override
-    protected Integer exchangeData(JoinGameRequestParams requestData) throws ServerException {
+    protected Integer exchangeData(JoinGameRequestParams requestData) throws ServerException, IllegalCommandException {
         return getFacade().join(requestData);
     }
 

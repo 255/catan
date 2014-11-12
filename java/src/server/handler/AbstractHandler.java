@@ -14,6 +14,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import server.ServerException;
+import server.command.IllegalCommandException;
 import shared.model.Game;
 import shared.model.GameSerializer;
 
@@ -52,7 +53,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
     }
 
 	/**
-	 * Extract the data from the request and return the result.
+     * Extract the data from the request and return the result.
      * This is the only method most concrete classes will need to define. Basically, the need to define
      * which facade method to call.
 	 * @param requestData the data from the HTTP request
@@ -60,7 +61,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 	 * @throws server.ServerException if there was an error
 	 * in which case handle() sends back an error (500) response
 	 */
-	protected abstract RespType exchangeData(ReqType requestData) throws ServerException;
+	protected abstract RespType exchangeData(ReqType requestData) throws ServerException, IllegalCommandException;
 
     /**
      * Examine the cookies sent by the client and extract information as needed.
@@ -131,14 +132,14 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 
 			logger.fine("Responding to request with: " + respData);
 		}
+        catch (IllegalCommandException e) {
+            logger.log(Level.WARNING, "Client attempted an illegal command.", e);
+            exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, -1);
+            // TODO: should we send back the contents of the exception? Probably not...
+        }
         catch (ServerException e) {
 			logger.log(Level.WARNING, "Failed to generate a response to the HTTP request.", e);
-			try {
-				exch.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, -1);
-			} catch (IOException e2) {
-				logger.log(Level.WARNING, "An HTTP error occurred.", e2);
-				throw e2;
-			}
+            exch.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, -1);
 		}
         catch (IOException e) {
 			logger.log(Level.WARNING, "An HTTP error occurred.", e);

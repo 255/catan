@@ -330,23 +330,25 @@ public class Game extends Observable implements IGame {
      * Takes an edge location and determines if a road can be placed on it
      * This does NOT check if the player can afford the road.
      *
-     * @param edge the location of the side of a terrain hex
-     * @return a boolean value that reports if the user can place a road
+     *
+         * @param player
+         * @param edge the location of the side of a terrain hex
+         * @return a boolean value that reports if the user can place a road
      */
     @Override
-    public boolean canPlaceRoad(EdgeLocation edge) {
-        if (!isLocalPlayersTurn()) {
+    public boolean playerCanPlaceRoad(IPlayer player, EdgeLocation edge) {
+        if (!isPlayersTurn(player)) {
             return false;
         }
 
         // road placement rules are different for initial roads
         if (isFreeRound()) {
-            return getMap().canPlaceInitialRoad(getLocalPlayer(), edge);
+            return getMap().canPlaceInitialRoad(player, edge);
         }
 
         // if playing, check the map with normal rules
         if (getGameState() == GameState.PLAYING) {
-            return getMap().canPlaceRoad(getLocalPlayer(), edge);
+            return getMap().canPlaceRoad(player, edge);
         }
 
         return false;
@@ -355,30 +357,32 @@ public class Game extends Observable implements IGame {
     /**
      * Takes a vertex location and determines if a settlement can be placed on it
      *
+     *
+     * @param player
      * @param vertex the location of a corner/intersection of terrain hexes
      * @return a boolean value that reports if the user can place a settlement
      */
     @Override
-    public boolean canPlaceSettlement(VertexLocation vertex) {
+    public boolean playerCanPlaceSettlement(IPlayer player, VertexLocation vertex) {
         assert vertex != null;
 
         // check if it's the player's turn
-        if (!isLocalPlayersTurn()) {
+        if (!isPlayersTurn(player)) {
             return false;
         }
 
         // check if map is open (same logic for initial round and normal playing
-        if (!getMap().canPlaceSettlement(getLocalPlayer(), vertex)) {
+        if (!getMap().canPlaceSettlement(player, vertex)) {
             return false;
         }
 
         // check if a normal gameplay
         if (getGameState() == GameState.PLAYING) {
-            return getLocalPlayer().canBuySettlement();
+            return player.canBuySettlement();
         }
 
         // assert that (if it's a free round) the player has enough pieces
-        assert !isFreeRound() || getLocalPlayer().getPieceBank().availableSettlements() > 0;
+        assert !isFreeRound() || player.getPieceBank().availableSettlements() > 0;
 
         // if it's a free round, they can place
         return isFreeRound();
@@ -387,11 +391,13 @@ public class Game extends Observable implements IGame {
     /**
      * Takes a vertex location and determines if a city can be placed on it
      *
+     *
+     * @param player
      * @param vertex the location of a corner/intersection of terrain hexes
      * @return a boolean value that reports if the user can place a city
      */
     @Override
-    public boolean canPlaceCity(VertexLocation vertex) {
+    public boolean playerCanBuildCity(IPlayer player, VertexLocation vertex) {
         assert vertex != null;
 
         if (getGameState() != GameState.PLAYING) {
@@ -399,11 +405,10 @@ public class Game extends Observable implements IGame {
         }
 
         // is there a settlement at the vertex?
-        boolean mapOpen = getMap().canPlaceCity(getLocalPlayer(), vertex);
-        // does the player have enough resources?
-        boolean haveResourcesAndPiece = getLocalPlayer().canBuyCity();
+        boolean mapOpen = getMap().canPlaceCity(player, vertex);
 
-        return mapOpen && (isFreeRound() || haveResourcesAndPiece);
+        // does the player have enough resources?
+        return mapOpen && (isFreeRound() || player.canBuyCity());
     }
 
     /**

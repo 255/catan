@@ -2,7 +2,6 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
-import shared.locations.EdgeLocation;
 
 import java.util.Collection;
 import java.util.ArrayList;
@@ -110,17 +109,52 @@ public class Player implements IPlayer {
      * Have the player build a road.
      * The road must be owned by the player (this will be checked by an assertion).
      *
-     * @param location the new road
+     * @param free if the purchase is free or not
      */
     @Override
-    public IRoad buildRoad(EdgeLocation location) {
+    public IRoad buildRoad(boolean free) {
         assert m_pieceBank.availableRoads() > 0;
 
-        IRoad road = new Road(this, location);
+        if (!free) {
+            assert canBuyRoad();
+            m_resources.subtract(Prices.ROAD);
+        }
+
+        IRoad road = new Road(this);
         m_pieceBank.takeRoad();
         m_roads.add(road);
 
         return road;
+    }
+
+    @Override
+    public City buildCity() {
+        assert m_pieceBank.availableCities() > 0;
+        assert canBuyCity();
+
+        m_resources.subtract(Prices.CITY);
+
+        City city = new City(this);
+        m_pieceBank.takeCity();
+        m_towns.add(city);
+
+        return city;
+    }
+
+    @Override
+    public Settlement buildSettlement(boolean free) {
+        assert m_pieceBank.availableSettlements() > 0;
+
+        if (!free) {
+            assert canBuySettlement();
+            m_resources.subtract(Prices.SETTLEMENT);
+        }
+
+        Settlement settlement = new Settlement(this);
+        m_pieceBank.takeSettlement();
+        m_towns.add(settlement);
+
+        return settlement;
     }
 
     /**
@@ -131,10 +165,22 @@ public class Player implements IPlayer {
      */
     @Override
     public void addTown(ITown town) {
+        assert this.equals(town.getOwner());
         m_towns.add(town);
     }
 
-    //*********//
+    /**
+     * Give the player a road.
+     * The road must be owned by the player (this will be checked by an assertion).
+     *
+     * @param road the new road
+     */
+    @Override
+    public void addRoad(IRoad road) {
+        assert this.equals(road.getOwner());
+        m_roads.add(road);
+    }
+//*********//
     // Getters //
     //*********//
 

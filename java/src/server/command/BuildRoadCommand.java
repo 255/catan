@@ -3,8 +3,6 @@ package server.command;
 import shared.locations.EdgeLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;
-import shared.model.IRoad;
-import shared.model.Road;
 
 /**
  * Class that represents the BuildRoad request
@@ -12,15 +10,20 @@ import shared.model.Road;
  * @author StevenBarnett
  */
 public class BuildRoadCommand extends AbstractCommand {
+    private IPlayer m_player;
+    private EdgeLocation m_location;
+    private boolean m_free;
 
-    public BuildRoadCommand(IGame game, IPlayer player, EdgeLocation location) throws IllegalCommandException {
+    public BuildRoadCommand(IGame game, IPlayer player, EdgeLocation location, boolean free) throws IllegalCommandException {
         super(game);
 
-        // TODO: integrity check
+        if (!getGame().playerCanPlaceRoad(player, location)) {
+            throw new IllegalCommandException("Player " + player.getName() + " cannot build a road at " + location);
+        }
 
-        IRoad road = new Road(player, location);
-        player.buildRoad(road);
-        game.getMap().placeRoad()
+        m_player = player;
+        m_location = location;
+        m_free = free;
     }
 
     /**
@@ -29,6 +32,6 @@ public class BuildRoadCommand extends AbstractCommand {
      * player's resources.
      */
     public void execute() {
-
+        getGame().getMap().placeRoad(m_player.buildRoad(m_free), m_location);
     }
 }

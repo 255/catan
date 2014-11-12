@@ -2,6 +2,7 @@ package server.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import server.ServerException;
+import server.command.IllegalCommandException;
 import server.facade.IGameFacade;
 import shared.communication.GameModelParam;
 import shared.model.IGame;
@@ -31,7 +32,7 @@ public class GameModelHandler extends AbstractInGameHandler<GameModelParam, IGam
      *                                in which case handle() sends back an empty error (500) response
      */
     @Override
-    public IGame exchangeData(GameModelParam requestData) throws ServerException {
+    public IGame exchangeData(GameModelParam requestData) throws ServerException, IllegalCommandException {
         return getFacade().model(requestData.version);
     }
 

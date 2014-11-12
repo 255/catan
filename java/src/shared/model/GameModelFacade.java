@@ -58,7 +58,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceRoad(EdgeLocation edge) {
-        return m_game.canPlaceRoad(edge);
+        return m_game.playerCanPlaceRoad(m_game.getLocalPlayer(), edge);
     }
 
     /**
@@ -69,7 +69,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceSettlement(VertexLocation vertex) {
-        return m_game.canPlaceSettlement(vertex);
+        return m_game.playerCanPlaceSettlement(m_game.getLocalPlayer(), vertex);
     }
 
     /**
@@ -80,7 +80,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceCity(VertexLocation vertex) {
-        return m_game.canPlaceCity(vertex);
+        return m_game.playerCanBuildCity(m_game.getLocalPlayer(), vertex);
     }
 
     /**

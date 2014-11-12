@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import server.command.IllegalCommandException;
 import server.facade.*;
 import server.handler.*;
 import shared.communication.*;
@@ -113,14 +114,14 @@ public class Server {
         //
         server.createContext("/user/login", new AbstractUserHandler(userFacade) {
             @Override
-            protected IUser exchangeData(CredentialsParams requestData) throws ServerException {
+            protected IUser exchangeData(CredentialsParams requestData) throws ServerException, IllegalCommandException {
                 return getFacade().login(requestData);
             }
         });
 
         server.createContext("/user/register", new AbstractUserHandler(userFacade) {
             @Override
-            protected IUser exchangeData(CredentialsParams requestData) throws ServerException {
+            protected IUser exchangeData(CredentialsParams requestData) throws ServerException, IllegalCommandException {
                 return getFacade().register(requestData);
             }
         });
@@ -140,14 +141,14 @@ public class Server {
         //
 		server.createContext("/moves/sendChat", new AbstractMovesHandler<SendChatParams>(SendChatParams.class, movesFacade) {
             @Override
-            protected Game exchangeData(SendChatParams requestData) throws ServerException {
+            protected Game exchangeData(SendChatParams requestData) throws ServerException, IllegalCommandException {
                 return getFacade().sendChat(requestData);
             }
         });
 
 	    server.createContext("/moves/rollNumber", new AbstractMovesHandler<RollNumberParams>(RollNumberParams.class, movesFacade) {
             @Override
-            protected Game exchangeData(RollNumberParams requestData) throws ServerException {
+            protected Game exchangeData(RollNumberParams requestData) throws ServerException, IllegalCommandException {
                 return getFacade().rollNumber(requestData);
             }
         });
@@ -157,7 +158,7 @@ public class Server {
         //
         server.createContext("/util/changeLogLevel", new AbstractHandler<Level, String, IUtilityFacade>(Level.class, utilityFacade) {
             @Override
-            protected String exchangeData(Level requestData) throws ServerException {
+            protected String exchangeData(Level requestData) throws ServerException, IllegalCommandException {
                 getFacade().changeLogLevel(requestData);
                 return "Logging level changed to " + requestData;
             }

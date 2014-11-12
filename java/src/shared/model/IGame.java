@@ -187,11 +187,11 @@ public interface IGame {
 
     boolean localPlayerAndGameState(GameState state);
 
-    boolean canPlaceRoad(EdgeLocation edge);
+    boolean playerCanPlaceRoad(IPlayer player, EdgeLocation edge);
 
-    boolean canPlaceSettlement(VertexLocation vertex);
+    boolean playerCanPlaceSettlement(IPlayer player, VertexLocation vertex);
 
-    boolean canPlaceCity(VertexLocation vertex);
+    boolean playerCanBuildCity(IPlayer player, VertexLocation vertex);
 
     Collection<IPlayer> getRobbablePlayers(HexLocation location);
 

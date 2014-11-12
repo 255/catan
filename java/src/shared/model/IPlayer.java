@@ -78,11 +78,27 @@ public interface IPlayer {
     public IPieceBank getPieceBank();
 
     /**
-     * Give the player a road.
-     * The road must be owned by the player (this will be checked by an assertion).
-     * @param location the new road
+     * Build a new road. The road is constructed and returned.
+     * The road is not placed yet.
+     *
+     * @param free if free, no resources are subtracted; otherwise, the player spends the appropriate amount
+     * @return the new road
      */
-    public IRoad buildRoad(EdgeLocation location);
+    IRoad buildRoad(boolean free);
+
+    /**
+     * Build a city.
+     * Cities always cost resources, so this amount is subtracted from the player's resource bank.
+     * @return the new city
+     */
+    City buildCity();
+
+    /**
+     * Build a new settlement.
+     * @param free whether to charge the player for the settlement
+     * @return the new settlement
+     */
+    Settlement buildSettlement(boolean free);
 
     /**
      * Give the player a town (city or settlement).
@@ -90,6 +106,13 @@ public interface IPlayer {
      * @param town the new town
      */
     public void addTown(ITown town);
+
+    /**
+     * Give the player a road.
+     * The road must be owned by the player (this will be checked by an assertion).
+     * @param road the new road
+     */
+    public void addRoad(IRoad road);
 
     public IResourceBank getResources();
 

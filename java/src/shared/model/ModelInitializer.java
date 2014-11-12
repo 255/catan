@@ -474,7 +474,7 @@ public class ModelInitializer implements IModelInitializer {
                     while (reader.hasNext()) {
                         IRoad road = readRoad(reader);
                         roads.put(road.getLocation(), road);
-                        m_players.get(road.getOwner().getIndex()).buildRoad(road); //add to player's list
+                        m_players.get(road.getOwner().getIndex()).addRoad(road); //add to player's list
                     }
                     reader.endArray();
                     break;
