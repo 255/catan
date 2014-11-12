@@ -9,20 +9,23 @@ import shared.model.IPlayer;
  * @author StevenBarnett
  */
 public class AcceptTradeCommand extends AbstractCommand {
-    private int playerIndex;
+    //private int playerIndex;
+    private IPlayer player;
     private boolean willAccept;
 
     public AcceptTradeCommand(
-            int playerIndex,
+            //int playerIndex,
+            IPlayer player,
             boolean willAccept,
             IGame game) throws IllegalCommandException {
         super(game);
-        this.playerIndex = playerIndex;
+        //this.playerIndex = playerIndex;
+        this.player = player;
         this.willAccept = willAccept;
 
         // can the trade be accepted?
-        IPlayer p = getGame().getPlayers().get(playerIndex);
-        if(!p.canAcceptTrade(getGame().getTradeOffer().getOffer())) {
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
+        if(!player.canAcceptTrade(getGame().getTradeOffer().getOffer())) {
             throw new IllegalCommandException(
                     "The player is unable to accept the current trade offer"
             );
@@ -35,9 +38,14 @@ public class AcceptTradeCommand extends AbstractCommand {
      */
     public void execute() {
         // get the player object
-        IPlayer p = getGame().getPlayers().get(playerIndex);
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
 
         // mark the player as accepting/rejecting the trade
-        //TODO how do I accept/reject a trade offer?
+        if(willAccept) {
+
+        }
+        else {
+
+        }
     }
 }

@@ -11,21 +11,23 @@ import shared.model.ResourceBank;
  */
 public class DiscardCardsCommand extends AbstractCommand {
 
-    private int playerIndex;
+    //private int playerIndex;
+    private IPlayer player;
     private ResourceBank discardedCards;
 
     DiscardCardsCommand(
-            int playerIndex,
+            //int playerIndex,
+            IPlayer player,
             ResourceBank discardedCards,
             Game theGame) throws IllegalCommandException {
         super(theGame);
-        this.playerIndex = playerIndex;
+        this.player = player;
         this.discardedCards = discardedCards;
 
         // does the player have enough cards to merit a discard operation
         final int DISCARD_THRESHOLD = 7;
-        IPlayer p = getGame().getPlayers().get(playerIndex);
-        if(p.getResources().getCount() <= DISCARD_THRESHOLD) {
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
+        if(player.getResources().getCount() <= DISCARD_THRESHOLD) {
             throw new IllegalCommandException(
                     "The player has less than " + DISCARD_THRESHOLD +
                     " resource cards and should not have to discard"
@@ -39,8 +41,8 @@ public class DiscardCardsCommand extends AbstractCommand {
      */
     public void execute() {
         // remove the discarded cards from the provided player index
-        IPlayer p = getGame().getPlayers().get(playerIndex);
-        p.getResources().subtract(discardedCards);
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
+        player.getResources().subtract(discardedCards);
 
         // add the resources back to the bank
         getGame().getResourceBank().add(discardedCards);
