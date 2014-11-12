@@ -2,6 +2,7 @@ package server.command;
 
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.ITradeOffer;
 
 /**
  * Class that represents the AcceptTrade request
@@ -40,12 +41,19 @@ public class AcceptTradeCommand extends AbstractCommand {
         // get the player object
         //IPlayer p = getGame().getPlayers().get(playerIndex);
 
-        // mark the player as accepting/rejecting the trade
+        // complete the trade if the player as accepts the trade
         if(willAccept) {
+            // get the trade offer
+            ITradeOffer to = getGame().getTradeOffer();
 
-        }
-        else {
+            // subtract the trade offer from the sending player resource bank
+            to.getSender().getResources().subtract(to.getOffer());
 
+            // add the trade offer to the receiving player resource bank
+            to.getReceiver().getResources().add(to.getOffer());
         }
+
+        // clear the trade offer
+        getGame().setTradeOffer(null);
     }
 }
