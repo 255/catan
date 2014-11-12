@@ -1,5 +1,6 @@
 package server.command;
 
+import server.ServerException;
 import shared.definitions.DevCardType;
 import shared.model.IGame;
 import shared.model.IPlayer;
@@ -18,6 +19,16 @@ public class BuyDevCardCommand implements ICommand {
     public BuyDevCardCommand(IGame game, IPlayer player) {
         m_game = game;
         m_player = player;
+
+        // Check that player has enough resources
+        if (!m_player.canAfford(Prices.DEV_CARD)) {
+       //     throw new IllegalCommandException();
+        }
+
+        // Check that the game has enough dev cards in the bank
+        if (m_game.getDevCards().getCount() == 0) {
+//            thrown new Exception();
+        }
     }
 
     /**
@@ -29,16 +40,6 @@ public class BuyDevCardCommand implements ICommand {
      * player's resources.
      */
     public void execute() {
-
-        // Check that player has enough resources
-        if (!m_player.canAfford(Prices.DEV_CARD)) {
-//            throw new Exception();
-        }
-
-        // Check that the game has enough dev cards in the bank
-        if (m_game.getDevCards().getCount() == 0) {
-//            thrown new Exception();
-        }
 
         // Randomly pick a dev card from the dev card hand
         DevCardType devCard = m_game.getDevCards().drawCard();

@@ -137,13 +137,13 @@ public class DevCardHand implements IDevCardHand {
         boolean foundCard = false;
 
         while (!foundCard) {
-            drawnCard = (DevCardType.values()[rand.nextInt(4)]);
+            drawnCard = DevCardType.randomDevCardType();
             if (this.getCount(drawnCard) > 0) {
                 foundCard = true;
                 try {
                     this.remove(drawnCard);
                 } catch (ModelException ex) {
-
+                    assert false : "DevCardType should not be given if not removed if there is none in the hand";
                 }
             }
         }
