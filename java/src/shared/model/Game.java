@@ -527,9 +527,9 @@ public class Game extends Observable implements IGame {
      * @return true if the user can play this card
      */
     @Override
-    public boolean canPlayMonopoly(ResourceType resource) {
+    public boolean playerCanPlayMonopoly(ResourceType resource, IPlayer player) {
         return localPlayerIsPlaying()
-                && getLocalPlayer().canPlayDevCard(DevCardType.MONOPOLY);
+                && player.canPlayDevCard(DevCardType.MONOPOLY);
     }
 
     /**

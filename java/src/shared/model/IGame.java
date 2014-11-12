@@ -211,7 +211,7 @@ public interface IGame {
 
     boolean canPlayDevCard();
 
-    boolean canPlayMonopoly(ResourceType resource);
+    boolean playerCanPlayMonopoly(ResourceType resource, IPlayer player);
 
     boolean canPlaySoldier(HexLocation robberDestination);
 
