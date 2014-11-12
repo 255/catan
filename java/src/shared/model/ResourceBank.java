@@ -118,6 +118,11 @@ public class ResourceBank implements IResourceBank {
     }
 
     @Override
+    public void add(int amount, ResourceType rType) {
+        setCount(rType, getCount(rType) + amount);
+    }
+
+    @Override
     public IResourceBank subtract(IResourceBank resources) {
         IResourceBank bundle = new ResourceBank(resources.getWood(), resources.getBrick(), resources.getSheep(),
                 resources.getWheat(), resources.getOre());
@@ -157,6 +162,13 @@ public class ResourceBank implements IResourceBank {
             setOre(0);
         }
         return bundle;
+    }
+
+    @Override
+    public void subtract(int amount, ResourceType rType) {
+        int netAmount = getCount(rType) - amount;
+        assert netAmount >= 0;
+        setCount(rType, netAmount);
     }
 
     /**
@@ -199,6 +211,11 @@ public class ResourceBank implements IResourceBank {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public boolean canAfford(int amount, ResourceType rType) {
+        return getCount(rType) >= amount;
     }
 
     @Override

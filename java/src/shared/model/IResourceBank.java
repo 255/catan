@@ -15,12 +15,28 @@ public interface IResourceBank {
     public void add(IResourceBank resources);
 
     /**
+     * Add the specified resources to the resource bank.
+     * @param amount the number of a resource to add to the bank
+     * @param rType the type of resource to add
+     */
+    public void add(int amount, ResourceType rType);
+
+    /**
      * Subtract the specified resources from the resource bank.
      * If the number of resources being subtracted exceeds the number of
      * resources in the resource bank, an exception is thrown.
      * @param resources the bundle of resources to remove from the bank
      */
     public IResourceBank subtract(IResourceBank resources);
+
+    /**
+     * Subtract the specified resources from the resource bank.
+     * If the number of resources being subtracted exceeds the number of
+     * resources in the resource bank, an exception is thrown.
+     * @param amount the number to subtract
+     * @param rType the type of resource to subtract
+     */
+    public void subtract(int amount, ResourceType rType);
 
     /**
      * Add one of the specified resource to the resource bank.
@@ -36,10 +52,18 @@ public interface IResourceBank {
 
     /**
      * Checks if the resource bank has enough resources for the purchase
-     * @param purchase
+     * @param purchase the resource bank with the collection of resources to subtract
      * @return whether the resource bank has enough resources for the purchase
      */
     public boolean canAfford(IResourceBank purchase);
+
+    /**
+     * Checks if the resource bank has enough resources for the purchase
+     * @param amount the number of resources to check that the player has
+     * @param rType the type of resource to check the amount of
+     * @return whether the resource bank has enough resources for the purchase
+     */
+    public boolean canAfford(int amount, ResourceType rType);
 
     /**
      * Get the amount of wood in the resource collection.
