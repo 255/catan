@@ -35,6 +35,10 @@ public interface IPlayer {
 
     public void setResources(IResourceBank rb);
 
+    public void addResources(IResourceBank rb);
+
+    public void removeResources(IResourceBank rb);
+
     public void setNewDevCards(IDevCardHand newDevCards);
 
     public void setPlayableDevCards(IDevCardHand playableCards);
