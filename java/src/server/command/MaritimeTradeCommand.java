@@ -8,7 +8,7 @@ import shared.model.Game;
  *
  * @author StevenBarnett
  */
-public class MaritimeTradeCommand implements ICommand {
+public class MaritimeTradeCommand extends AbstractCommand {
 
     private int playerIndex;
     private int ratio;

@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class YearOfPlentyCommand implements ICommand {
+public class YearOfPlentyCommand extends AbstractCommand {
 
     /**
      * Gives the playing player two resource cards

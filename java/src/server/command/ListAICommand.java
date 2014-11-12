@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class ListAICommand implements ICommand {
+public class ListAICommand extends AbstractCommand {
 
     /**
      * Returns a list of available AI's to

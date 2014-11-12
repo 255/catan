@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class GetGameModelCommand implements ICommand {
+public class GetGameModelCommand extends AbstractCommand {
 
     /**
      * Returns the game model for the specified

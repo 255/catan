@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class BuildSettlementCommand implements ICommand {
+public class BuildSettlementCommand extends AbstractCommand {
 
     /**
      * Places a settlement on the map for the player that made

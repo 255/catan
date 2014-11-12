@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class MonopolyCommand implements ICommand {
+public class MonopolyCommand extends AbstractCommand {
 
     /**
      * Performs a monopoly request. Takes the resource that

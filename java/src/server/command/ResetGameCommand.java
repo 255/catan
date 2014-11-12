@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class ResetGameCommand implements ICommand {
+public class ResetGameCommand extends AbstractCommand {
 
     /**
      * Resets the specified game

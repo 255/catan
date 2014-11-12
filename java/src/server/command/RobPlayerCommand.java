@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class RobPlayerCommand implements ICommand {
+public class RobPlayerCommand extends AbstractCommand {
 
     /**
      * Takes a random card from the robbed player's hand

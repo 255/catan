@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class RollNumberCommand implements ICommand {
+public class RollNumberCommand extends AbstractCommand {
 
     /**
      * Determines what resources need to be given to

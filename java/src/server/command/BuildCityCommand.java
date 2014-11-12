@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class BuildCityCommand implements ICommand {
+public class BuildCityCommand extends AbstractCommand {
 
     /**
      * Places a city on the map for the player that made this

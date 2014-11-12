@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class MonumentCommand implements ICommand {
+public class MonumentCommand extends AbstractCommand {
 
     /**
      * Request representing a player playing a Monument

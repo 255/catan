@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class OfferTradeCommand implements ICommand {
+public class OfferTradeCommand extends AbstractCommand {
 
     /**
      * Offers a trade to the specified player. Shows the

@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class JoinGameCommand implements ICommand {
+public class JoinGameCommand extends AbstractCommand {
 
     /**
      * Adds the specified user to the specified

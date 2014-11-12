@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class BuildRoadCommand implements ICommand {
+public class BuildRoadCommand extends AbstractCommand {
 
     /**
      * Places a road on the map for the player that made this

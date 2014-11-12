@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class DiscardCardsCommand implements ICommand {
+public class DiscardCardsCommand extends AbstractCommand {
 
     /**
      * Subtracts the specified cards from the hand

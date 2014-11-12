@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class GetCommandsCommand implements ICommand {
+public class GetCommandsCommand extends AbstractCommand {
 
     /**
      * Returns a list of all the commands that have

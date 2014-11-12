@@ -11,7 +11,7 @@ import shared.model.Prices;
  *
  * @author StevenBarnett
  */
-public class BuyDevCardCommand implements ICommand {
+public class BuyDevCardCommand extends AbstractCommand {
 
     private IGame m_game;
     private IPlayer m_player;

@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class SendChatCommand implements ICommand {
+public class SendChatCommand extends AbstractCommand {
 
     /**
      * Adds a new chat to the chat history.

@@ -6,7 +6,6 @@ package server.command;
  * @author StevenBarnett
  */
 public interface ICommand {
-
     /**
      * Implements all the functionality and interaction with the Server Model that
      * this command requires

@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class LoadGameCommand implements ICommand {
+public class LoadGameCommand extends AbstractCommand {
 
     /**
      * Loads a specified game onto the server

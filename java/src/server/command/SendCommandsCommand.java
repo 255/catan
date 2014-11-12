@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class SendCommandsCommand implements ICommand {
+public class SendCommandsCommand extends AbstractCommand {
 
     /**
      * Sends a list of commands.

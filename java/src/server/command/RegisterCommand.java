@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class RegisterCommand implements ICommand {
+public class RegisterCommand extends AbstractCommand {
 
     /**
      * Registers a new user on the server

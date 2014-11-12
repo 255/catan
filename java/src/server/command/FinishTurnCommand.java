@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class FinishTurnCommand implements ICommand {
+public class FinishTurnCommand extends AbstractCommand {
 
     /**
      * Moves the turn to the next player in the

@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class SaveGameCommand implements ICommand {
+public class SaveGameCommand extends AbstractCommand {
 
     /**
      * Saves the current state of the specified game

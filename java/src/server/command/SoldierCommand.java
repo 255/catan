@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class SoldierCommand implements ICommand {
+public class SoldierCommand extends AbstractCommand {
 
     /**
      * Moves the robber to the selected location. Lets the

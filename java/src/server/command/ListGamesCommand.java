@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class ListGamesCommand implements ICommand {
+public class ListGamesCommand extends AbstractCommand {
 
     /**
      * Returns a list of games that are in the

@@ -1,11 +1,16 @@
 package server.command;
 
+import shared.model.IGame;
+
 /**
  * Class that represents the AcceptTrade request
  *
  * @author StevenBarnett
  */
-public class AcceptTradeCommand  implements ICommand {
+public class AcceptTradeCommand extends AbstractCommand {
+    public AcceptTradeCommand(IGame game) {
+        super(game);
+    }
 
     /**
      * Player indicates whether they accept the trade or not. If so,

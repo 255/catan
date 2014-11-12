@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class LoginCommand implements ICommand {
+public class LoginCommand extends AbstractCommand {
 
     /**
      * Logs an existing user into the server

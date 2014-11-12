@@ -5,7 +5,7 @@ package server.command;
  *
  * @author StevenBarnett
  */
-public class CreateGameCommand implements ICommand {
+public class CreateGameCommand extends AbstractCommand {
 
     /**
      * Creates a new game in the IGameManager, based on the
