@@ -13,39 +13,42 @@ import shared.model.ResourceBank;
  */
 public class MaritimeTradeCommand extends AbstractCommand {
 
-    private int playerIndex;
+    //private int playerIndex;
+    private IPlayer player;
     private int ratio;
     private ResourceType inputResource;
     private ResourceType outputResource;
 
     MaritimeTradeCommand (
-            int playerIndex,
+            //int playerIndex,
+            IPlayer player,
             int ratio,
             ResourceType inputResource,
             ResourceType outputResource,
             Game theGame) throws IllegalCommandException {
 
         super(theGame);
-        this.playerIndex = playerIndex;
+        //this.playerIndex = playerIndex;
+        this.player = player;
         this.ratio = ratio;
         this.inputResource = inputResource;
         this.outputResource = outputResource;
 
         // get the player object from the player index
-        IPlayer p = getGame().getPlayers().get(playerIndex);
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
 
         // check to see if the command is valid
         // is it the player's turn?
-        if(!getGame().isPlayersTurn(p)) {
+        if(!getGame().isPlayersTurn(player)) {
             throw new IllegalCommandException(
-                    "It is not this player's turn: " + playerIndex
+                    "It is not this player's turn: " + player.getName()
             );
         }
 
         // does the player have enough resources?
-        if(!p.getResources().canAfford(ratio, inputResource)) {
+        if(!player.getResources().canAfford(ratio, inputResource)) {
             throw new IllegalCommandException(
-                    "Player " + playerIndex + " does not have enough " + inputResource.name()
+                    "Player " + player.getName() + " does not have enough " + inputResource.name()
             );
         }
 
@@ -64,16 +67,16 @@ public class MaritimeTradeCommand extends AbstractCommand {
      */
     public void execute() {
         // get the player from the index
-        IPlayer p = getGame().getPlayers().get(playerIndex);
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
 
         // remove the input resources from the player
-        p.getResources().subtract(ratio, inputResource);
+        player.getResources().subtract(ratio, inputResource);
 
         // give the input resources to the game bank
         getGame().getResourceBank().add(ratio, inputResource);
 
         // add the output resources to the player
-        p.getResources().add(1, outputResource);
+        player.getResources().add(1, outputResource);
 
         // remove output resources from the game bank
         getGame().getResourceBank().subtract(1, outputResource);

@@ -211,7 +211,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonopoly(ResourceType resource) {
-        return m_game.canPlayMonopoly(resource);
+        return m_game.playerCanPlayMonopoly(resource, m_game.getLocalPlayer());
     }
 
     /**
@@ -244,7 +244,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonument() {
-        return m_game.canPlayMonument();
+        return m_game.playerCanPlayMonument(m_game.getLocalPlayer());
     }
 
     /**

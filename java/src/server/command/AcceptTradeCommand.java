@@ -2,6 +2,7 @@ package server.command;
 
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.ITradeOffer;
 
 /**
  * Class that represents the AcceptTrade request
@@ -9,20 +10,23 @@ import shared.model.IPlayer;
  * @author StevenBarnett
  */
 public class AcceptTradeCommand extends AbstractCommand {
-    private int playerIndex;
+    //private int playerIndex;
+    private IPlayer player;
     private boolean willAccept;
 
     public AcceptTradeCommand(
-            int playerIndex,
+            //int playerIndex,
+            IPlayer player,
             boolean willAccept,
             IGame game) throws IllegalCommandException {
         super(game);
-        this.playerIndex = playerIndex;
+        //this.playerIndex = playerIndex;
+        this.player = player;
         this.willAccept = willAccept;
 
         // can the trade be accepted?
-        IPlayer p = getGame().getPlayers().get(playerIndex);
-        if(!p.canAcceptTrade(getGame().getTradeOffer().getOffer())) {
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
+        if(!player.canAcceptTrade(getGame().getTradeOffer().getOffer())) {
             throw new IllegalCommandException(
                     "The player is unable to accept the current trade offer"
             );
@@ -35,9 +39,21 @@ public class AcceptTradeCommand extends AbstractCommand {
      */
     public void execute() {
         // get the player object
-        IPlayer p = getGame().getPlayers().get(playerIndex);
+        //IPlayer p = getGame().getPlayers().get(playerIndex);
 
-        // mark the player as accepting/rejecting the trade
-        //TODO how do I accept/reject a trade offer?
+        // complete the trade if the player as accepts the trade
+        if(willAccept) {
+            // get the trade offer
+            ITradeOffer to = getGame().getTradeOffer();
+
+            // subtract the trade offer from the sending player resource bank
+            to.getSender().getResources().subtract(to.getOffer());
+
+            // add the trade offer to the receiving player resource bank
+            to.getReceiver().getResources().add(to.getOffer());
+        }
+
+        // clear the trade offer
+        getGame().setTradeOffer(null);
     }
 }
