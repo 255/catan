@@ -7,7 +7,6 @@ import shared.model.IUser;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 
 /**
@@ -25,8 +24,11 @@ public abstract class AbstractUserHandler extends AbstractHandler<CredentialsPar
     @Override
     protected void generateResponse(HttpExchange exch, IUser responseData) throws IOException {
         if (responseData != null) {
-            HttpCookie userCookie = new HttpCookie("catan.user", gson.toJson(responseData));
-            exch.getResponseHeaders().add("Set-cookie", userCookie.toString() + ";path=/;");
+            CookieJar cookies = new CookieJar();
+            cookies.addCookie("catan.user", gson.toJson(responseData));
+            cookies.addCookie("path", "/");
+
+            exch.getResponseHeaders().add("Set-cookie", cookies.toString());
 
             // write success message
             exch.getResponseHeaders().add("Content-type", "text/plain");
