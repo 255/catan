@@ -31,6 +31,8 @@ public interface IPlayer {
      */
     public int getVictoryPoints();
 
+    public void addVictoryPoints(int amount);
+
     // other
     public void setPieceBank(IPieceBank pb);
 
@@ -54,6 +56,8 @@ public interface IPlayer {
     public CatanColor getColor();
 
     public int getMonuments();
+
+    public void incrementMonuments();
 
     public int getSoldiers();
 

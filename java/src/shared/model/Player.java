@@ -95,6 +95,11 @@ public class Player implements IPlayer {
         return m_victoryPoints;
     }
 
+    @Override
+    public void addVictoryPoints(int amount) {
+        m_victoryPoints += amount;
+    }
+
     /**
      * Get the pieces (roads, settlements, cities) that the player has remaining in their "bank".
      *
@@ -197,6 +202,11 @@ public class Player implements IPlayer {
     @Override
     public int getMonuments() {
         return m_monuments;
+    }
+
+    @Override
+    public void incrementMonuments() {
+        ++m_monuments;
     }
 
     @Override
