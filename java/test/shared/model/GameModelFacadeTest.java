@@ -305,22 +305,22 @@ public class GameModelFacadeTest {
 
     @Test
     public void testCanPlayMonopoly() throws Exception {
-        assertTrue("Player can play monopoly", facade.canPlayMonopoly(ResourceType.BRICK));
+        assertTrue("Player can play monopoly", facade.canPlayMonopoly());
 
         game.setCurrentPlayer(game.getPlayers().get(1));
         GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
-        assertFalse("Already played dev card", facade.canPlayMonopoly(ResourceType.BRICK));
+        assertFalse("Already played dev card", facade.canPlayMonopoly());
 
         GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
-        assertFalse("Not your turn", facade.canPlayMonopoly(ResourceType.BRICK));
+        assertFalse("Not your turn", facade.canPlayMonopoly());
 
         game.setCurrentPlayer(game.getPlayers().get(2));
-        assertFalse("No monopoly card", facade.canPlayMonopoly(ResourceType.BRICK));
+        assertFalse("No monopoly card", facade.canPlayMonopoly());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
         GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
-        assertFalse("Not playing phase", facade.canPlayMonopoly(ResourceType.BRICK));
+        assertFalse("Not playing phase", facade.canPlayMonopoly());
     }
 
     @Test

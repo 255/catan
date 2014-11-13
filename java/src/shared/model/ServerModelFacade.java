@@ -212,7 +212,7 @@ public class ServerModelFacade implements IServerModelFacade {
      */
     @Override
     public void playMonopoly(ResourceType rType) throws ModelException {
-        if (!GameModelFacade.instance().canPlayMonopoly(rType)) {
+        if (!GameModelFacade.instance().canPlayMonopoly()) {
             throw new ModelException("Preconditions for action not met.");
         }
 

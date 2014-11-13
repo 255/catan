@@ -91,7 +91,7 @@ public interface IGameModelFacade {
      * Get whether the local player can play this specific dev card.
      * @return true if the user can play this card
      */
-    public boolean canPlayMonopoly(ResourceType resource);
+    public boolean canPlayMonopoly();
 
     /**
      * Get whether the local player can play this specific dev card.

@@ -223,7 +223,7 @@ public class GameModelFacade implements IGameModelFacade {
      * @return true if the user can play this card
      */
     @Override
-    public boolean canPlayMonopoly(ResourceType resource) {
+    public boolean canPlayMonopoly() {
         return m_game.canPlayMonopoly(getLocalPlayer());
     }
 
