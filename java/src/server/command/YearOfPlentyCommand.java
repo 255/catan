@@ -1,7 +1,12 @@
 package server.command;
 
+import shared.definitions.ResourceType;
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.IResourceBank;
+import shared.model.ResourceBank;
+
+import java.util.logging.Logger;
 
 /**
  * Class that represents the YearOfPlenty request
@@ -10,8 +15,18 @@ import shared.model.IPlayer;
  */
 public class YearOfPlentyCommand extends AbstractCommand {
 
-    public YearOfPlentyCommand(IGame game, IPlayer player) {
+    private final static Logger logger = Logger.getLogger("catan");
+
+    private ResourceType m_firstType;
+    private ResourceType m_secondType;
+
+    public YearOfPlentyCommand(IGame game, IPlayer player, ResourceType firstType, ResourceType secondType) throws IllegalCommandException {
         super(game, player, "played a year of plenty card");
+
+        if (!getGame().canPlayYearOfPlenty(getPlayer(), firstType, secondType)) {
+            throw new IllegalCommandException("Attempted to play YearOfPlenty DevCard but that move is " +
+                    "not allowed");
+        }
     }
 
     /**
@@ -19,6 +34,13 @@ public class YearOfPlentyCommand extends AbstractCommand {
      * of their choosing.
      */
     public void performAction() {
-        // TODO: implement
+
+        // Remove the resource cards from the game's resource bank
+        getGame().getResourceBank().subtract(1, m_firstType);
+        getGame().getResourceBank().subtract(1, m_secondType);
+
+        // Add the resource cards to the player's hand
+        getGame().getResourceBank().add(1, m_firstType);
+        getGame().getResourceBank().add(1, m_secondType);
     }
 }
