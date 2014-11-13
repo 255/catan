@@ -563,11 +563,12 @@ public class Game extends Observable implements IGame {
      * Get whether the local player can play this specific dev card.
      *
      * @return true if the user can play this card
+     * @param player
      */
     @Override
-    public boolean canPlayMonument() {
+    public boolean playerCanPlayMonument(IPlayer player) {
         return localPlayerIsPlaying()
-                && getLocalPlayer().canPlayDevCard(DevCardType.MONUMENT);
+                && player.canPlayDevCard(DevCardType.MONUMENT);
     }
 
     /**

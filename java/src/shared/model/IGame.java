@@ -217,7 +217,7 @@ public interface IGame {
 
     boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2);
 
-    boolean canPlayMonument();
+    boolean playerCanPlayMonument(IPlayer player);
 
     boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2);
 

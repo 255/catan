@@ -244,7 +244,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonument() {
-        return m_game.canPlayMonument();
+        return m_game.playerCanPlayMonument(m_game.getLocalPlayer());
     }
 
     /**
