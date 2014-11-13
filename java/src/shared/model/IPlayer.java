@@ -88,21 +88,21 @@ public interface IPlayer {
      * @param free if free, no resources are subtracted; otherwise, the player spends the appropriate amount
      * @return the new road
      */
-    IRoad buildRoad(boolean free);
+    public IRoad buildRoad(boolean free);
 
     /**
      * Build a city.
      * Cities always cost resources, so this amount is subtracted from the player's resource bank.
      * @return the new city
      */
-    City buildCity();
+    public City buildCity();
 
     /**
      * Build a new settlement.
      * @param free whether to charge the player for the settlement
      * @return the new settlement
      */
-    Settlement buildSettlement(boolean free);
+    public Settlement buildSettlement(boolean free);
 
     /**
      * Give the player a town (city or settlement).
@@ -176,7 +176,7 @@ public interface IPlayer {
 
     /**
      * Checks to see if player can afford a specific purchase
-     * @param purchase
+     * @param purchase the resources of the item being purchased
      * @return whether the player can afford the purchase
      */
     public boolean canAfford(IResourceBank purchase);
@@ -187,4 +187,10 @@ public interface IPlayer {
      * @return whether the player can afford the offer
      */
     public boolean canAffordTrade(IResourceBank trade);
+
+    /**
+     * Set the player's color (when re-joining)
+     * @param m_color the new color
+     */
+    public void setColor(CatanColor m_color);
 }

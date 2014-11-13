@@ -14,6 +14,9 @@ import java.util.*;
  * Created by jeffreybacon on 9/25/14.
  */
 public class Game extends Observable implements IGame {
+    // only used server side
+    private transient String m_name;
+
     private GameState m_state;
     private IPlayer m_currentPlayer;
     private List<IPlayer> m_players;
@@ -33,6 +36,9 @@ public class Game extends Observable implements IGame {
     }
 
     public Game(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) {
+        m_name = gameName;
+
+        m_map = new CatanMap(randomPorts, randomTiles, randomNumbers);
         // TODO:use for server-side game construction from GameManager
     }
 
@@ -52,6 +58,8 @@ public class Game extends Observable implements IGame {
         m_version = -1;
         m_winner = null;
     }
+
+
 
     /**
      * Get whether the game has been initialized yet.
@@ -578,6 +586,7 @@ public class Game extends Observable implements IGame {
         // checks if player is already in game, if so exits method
         for(IPlayer player : m_players) {
             if(player.getId() == user.getId()) {
+                player.setColor(playerColor);
                 return;
             }
         }

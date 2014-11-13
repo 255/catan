@@ -14,12 +14,14 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import server.command.IllegalCommandException;
+import server.debug.SwaggerHandler;
 import server.facade.*;
 import server.handler.*;
 import shared.communication.*;
 
 import com.sun.net.httpserver.HttpServer;
 import shared.model.Game;
+import shared.model.GameManager;
 import shared.model.IUser;
 
 /**
@@ -103,7 +105,7 @@ public class Server {
         // define the facades
         final IUserFacade userFacade = new UserFacade();
         final IJoinGameFacade joinGameFacade = new JoinGameFacade();
-        final IGameFacade gameFacade = new GameFacade();
+        final IGameFacade gameFacade = new GameFacade(new GameManager());
         final IMovesFacade movesFacade = new MovesFacade();
         final IUtilityFacade utilityFacade = new UtilityFacade();
 
@@ -164,6 +166,10 @@ public class Server {
             }
         });
         // TODO: fill out the rest of the handlers
+
+        // Handlers for the Swagger UI
+        server.createContext("/docs/api/data", new SwaggerHandler.JSONAppender(""));
+        server.createContext("/docs/api/view", new SwaggerHandler.BasicFile(""));
     }
 	
 	/**

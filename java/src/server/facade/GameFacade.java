@@ -2,12 +2,18 @@ package server.facade;
 
 import shared.communication.AddAIRequestParams;
 import shared.model.Game;
+import shared.model.IGameManager;
 
 /**
  * A facade to support /game operations
  * Created by Spencer Weight - 11/5/2014.
  */
-public class GameFacade implements IGameFacade{
+public class GameFacade implements IGameFacade {
+    private IGameManager m_gameManager;
+
+    public GameFacade(IGameManager m_gameManager) {
+        this.m_gameManager = m_gameManager;
+    }
 
     /**
      * Fetch the model

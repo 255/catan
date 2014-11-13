@@ -19,6 +19,10 @@ public class CatanMap implements ICatanMap {
     private Map<EdgeLocation, PortType> m_ports;
     private HexLocation m_robber;
 
+    public CatanMap(boolean randomPorts, boolean randomTiles, boolean randomNumbers) {
+        // TODO: implement
+    }
+
     /** Construct a new, blank Catan Map */
     public CatanMap(Map<HexLocation, ITile> tiles, Map<EdgeLocation, PortType> ports) {
         m_tiles = tiles;

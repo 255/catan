@@ -17,9 +17,6 @@ public abstract class AbstractCommand implements ICommand {
     private IGame m_game;
     private String m_action;
 
-    //DEFAULT CONSTRUCTOR if you want to try compiling
-    //public AbstractCommand() { assert false; }
-
     public AbstractCommand(IGame game, IPlayer player, String actionDescription) {
         m_game = game;
         m_player = player;
@@ -54,6 +51,10 @@ public abstract class AbstractCommand implements ICommand {
      */
     protected abstract void performAction();
 
+    /**
+     * Add the game play log entry for this command.
+     * If no message is specified (e.g. for send chat), the message is not logged.
+     */
     private void logAction() {
         if (m_action != null) {
             String message = m_player.getName() + " " + m_action;

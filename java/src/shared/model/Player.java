@@ -423,4 +423,9 @@ public class Player implements IPlayer {
     public void setNewDevCards(IDevCardHand newDevCards) { m_newDevCards = newDevCards; }
     @Override
     public void setPlayableDevCards(IDevCardHand playableCards) { m_playableDevCards = playableCards; }
+
+    @Override
+    public void setColor(CatanColor m_color) {
+        this.m_color = m_color;
+    }
 }
