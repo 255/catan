@@ -30,7 +30,7 @@ public interface IGameManager {
      * @param randomNumbers flag indicating whether numbers should be placed randomly
      * @return the newly created game object
      */
-    public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers);
+    public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException;
 
     /**
      * Gets the game with the specified index

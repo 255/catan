@@ -8,9 +8,12 @@ import java.util.*;
 public class CookieJar implements Iterable<Cookie> {
     private Collection<Cookie> m_cookies;
 
-    public CookieJar(Collection<String> listOfCookies) {
+    public CookieJar() {
         m_cookies = new ArrayList<>();
+    }
 
+    public CookieJar(Collection<String> listOfCookies) {
+        this();
         addCookies(listOfCookies);
     }
 

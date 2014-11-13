@@ -30,6 +30,16 @@ public class ResourceBank implements IResourceBank {
         setOre(ore);
     }
 
+    public static ResourceBank generateInitial() {
+        return new ResourceBank(
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE
+        );
+    }
+
     @Override
     public int getWood() {
         return m_wood;

@@ -35,12 +35,31 @@ public class Game extends Observable implements IGame {
         reset();
     }
 
-    public Game(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) {
+    /**
+     * Create a new game
+     * @param gameName the name of the game
+     * @param randomPorts whether to use random ports
+     * @param randomTiles whether to randomize tile locations
+     * @param randomNumbers whether to randomize number placement
+     */
+    public Game(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
         m_name = gameName;
 
-        m_map = new CatanMap(randomPorts, randomTiles, randomNumbers);
-        m_players = new ArrayList<>();
         // TODO:use for server-side game construction from GameManager
+
+        m_state = GameState.FIRST_ROUND;
+        m_currentPlayer = null;
+        m_players = new ArrayList<>();
+        m_resourceBank = ResourceBank.generateInitial();
+        m_devCards = DevCardHand.generateInitial();
+        m_map = new MapGenerator(randomPorts, randomTiles, randomNumbers).generateMap();
+        m_longestRoad = null;
+        m_largestArmy = null;
+        m_tradeOffer = null;
+        m_gameplayLog = new Log();
+        m_chatHistory = new Log();
+        m_version = 0;
+        m_winner = null;
     }
 
     @Override
@@ -253,7 +272,7 @@ public class Game extends Observable implements IGame {
     /**
      * Get whether it is the player's turn and game state is playing, so the player can play cards, etc.
      * @return true / false
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean isPlaying(IPlayer player) {
@@ -290,14 +309,13 @@ public class Game extends Observable implements IGame {
         return player.equals(m_currentPlayer) && m_state == state;
     }
 
-        /**
+    /**
      * Takes an edge location and determines if a road can be placed on it
      * This does NOT check if the player can afford the road.
      *
-     *
-         * @param player
-         * @param edge the location of the side of a terrain hex
-         * @return a boolean value that reports if the user can place a road
+     * @param player the player
+     * @param edge the location of the side of a terrain hex
+     * @return a boolean value that reports if the user can place a road
      */
     @Override
     public boolean canPlaceRoad(IPlayer player, EdgeLocation edge) {
@@ -322,7 +340,7 @@ public class Game extends Observable implements IGame {
      * Takes a vertex location and determines if a settlement can be placed on it
      *
      *
-     * @param player
+     * @param player the player the player
      * @param vertex the location of a corner/intersection of terrain hexes
      * @return a boolean value that reports if the user can place a settlement
      */
@@ -356,7 +374,7 @@ public class Game extends Observable implements IGame {
      * Takes a vertex location and determines if a city can be placed on it
      *
      *
-     * @param player
+     * @param player the player
      * @param vertex the location of a corner/intersection of terrain hexes
      * @return a boolean value that reports if the user can place a city
      */
@@ -378,7 +396,7 @@ public class Game extends Observable implements IGame {
     /**
      * Get a list of players around a hex that can be robbed (all with towns except local player)
      *
-     * @param player
+     * @param player the player
      * @param location the location being robbed
      * @return a collection of players (may be empty)
      */
@@ -391,7 +409,7 @@ public class Game extends Observable implements IGame {
      * Returns the ports the player has
      *
      * @return the ports that the player has
-     * @param player
+     * @param player the player
      */
     @Override
     public Set<PortType> getPlayerPorts(IPlayer player) {
@@ -407,7 +425,7 @@ public class Game extends Observable implements IGame {
      * Have enough money to buy a city and have place to put it and a piece to use.
      *
      * @return true if can buy city, false if not
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean canBuyCity(IPlayer player) {
@@ -418,7 +436,7 @@ public class Game extends Observable implements IGame {
      * Have enough money to buy a road and a piece to use.
      *
      * @return true if can buy road, false if not
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean canBuyRoad(IPlayer player) {
@@ -429,7 +447,7 @@ public class Game extends Observable implements IGame {
      * Have enough money to buy a settlement and a piece to use.
      *
      * @return true if can buy a settlement, false if not
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean canBuySettlement(IPlayer player) {
@@ -440,7 +458,7 @@ public class Game extends Observable implements IGame {
      * Have enough money to buy a dev card and a card is available to buy
      *
      * @return true if can buy
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean canBuyDevCard(IPlayer player) {
@@ -452,7 +470,7 @@ public class Game extends Observable implements IGame {
      * Return true if the player has enough resources for a trade currently being offered to them.
      *
      * @return true if can accept trade, false if not enough resources (or no trade is offered currently)
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean canAcceptTrade(IPlayer player) {
@@ -475,7 +493,7 @@ public class Game extends Observable implements IGame {
      * Whether the local player can play any dev cards.
      *
      * @return true if the user can play a dev card
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean canPlayDevCard(IPlayer player) {
@@ -496,7 +514,7 @@ public class Game extends Observable implements IGame {
     /**
      * Get whether the local player can play this specific dev card.
      * @param robberDestination new location of the robber
-     * @param player
+     * @param player the player
      * @return true if the user can play this card
      */
     @Override
@@ -511,7 +529,7 @@ public class Game extends Observable implements IGame {
      * NOTE: The preconditions specified in the document seem wrong to me. You need BOTH resources to play the card?
      *       What if there is only one kind of card left.
      * @return true if the user can play this card
-     * @param player
+     * @param player the player
      * @param r1 resource
      * @param r2 resource
      */
@@ -526,7 +544,7 @@ public class Game extends Observable implements IGame {
      * Get whether the player can play this specific dev card.
      *
      * @return true if the user can play this card
-     * @param player
+     * @param player the player
      */
     @Override
     public boolean canPlayMonument(IPlayer player) {
@@ -538,7 +556,7 @@ public class Game extends Observable implements IGame {
      * Get whether the player can play this specific dev card.
      *
      * @return true if the user can play this card
-     * @param player
+     * @param player the player
      * @param edge1 first road
      * @param edge2 second road
      */
@@ -594,7 +612,14 @@ public class Game extends Observable implements IGame {
 
         // if player is not already in game they are added to the game
         if (m_players.size() < 4) {
-            m_players.add(new Player(user.getUsername(), user.getId(), playerColor, m_players.size())); // TODO: this player is uninitialized
+            IPlayer player = Player.createNewPlayer(user.getUsername(), user.getId(), playerColor, m_players.size());
+            m_players.add(player);
+
+            // if this is the first player added, make it their turn
+            if (m_players.size() == 1) {
+                m_currentPlayer = m_players.get(0);
+            }
+
             return true;
         }
         else {

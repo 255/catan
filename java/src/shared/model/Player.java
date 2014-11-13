@@ -84,6 +84,16 @@ public class Player implements IPlayer {
         m_towns = new ArrayList<ITown>();
     }
 
+    /**
+     * Create a new player with a fresh new piece bank.
+     * @return the newly intialized player
+     */
+    public static Player createNewPlayer(String name, int id, CatanColor color, int index) {
+        Player player = new Player(name, id, color, index);
+        player.m_pieceBank = PieceBank.generateInitial();
+
+        return player;
+    }
 
     /**
      * Calculates how many victory points this player has

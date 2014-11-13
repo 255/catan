@@ -25,4 +25,14 @@ public class CatanConstants {
     /** Number of cities a player starts with, and the max that they can place on the board */
     public static final int MAX_CITIES = 4;
 
+    /** Initial resource amounts */
+    public static final int TOTAL_CARDS_PER_RESOURCE = 19;
+
+    /** Initial development card amounts */
+    public static final int TOTAL_MONOPOLY_CARDS       = 2;
+    public static final int TOTAL_MONUMENT_CARDS       = 5;
+    public static final int TOTAL_ROAD_BUILDING_CARDS  = 2;
+    public static final int TOTAL_SOLDIER_CARDS        = 14;
+    public static final int TOTAL_YEAR_OF_PLENTY_CARDS = 2;
 }
+

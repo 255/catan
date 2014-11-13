@@ -1,13 +1,28 @@
 package server.handler;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 /**
- * Created by Wyatt on 11/13/2014.
+ * A class representing a cookie.
  */
 public class Cookie {
+    private static final URLDecoder decoder = new URLDecoder();
+    private static final String ENCODING = "UTF-8";
+
     private String name;
     private String value;
 
-    public Cookie(String cookie) {
+    public Cookie(String rawCookie) {
+        String cookie;
+        try {
+            cookie = decoder.decode(rawCookie, ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            assert false : "Invalid encoding selected for cookies.";
+            e.printStackTrace();
+            return;
+        }
+
         int equalsIndex = cookie.indexOf('=');
 
         if (equalsIndex <= 0 || equalsIndex >= cookie.length()) {

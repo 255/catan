@@ -37,6 +37,23 @@ public class Tile implements ITile {
     }
 
     /**
+     * This generates a new tile and places the robber on it if it is the desert hex.
+     * @param type the type of the tile
+     * @param location where it is
+     * @param number the number to place on it
+     * @return the tile object, with the robber on it if it is the desert
+     */
+    public static Tile generateNewTile(HexType type, HexLocation location, int number) {
+        Tile newTile = new Tile(type, location, number);
+
+        if (newTile.type() == HexType.DESERT) {
+            newTile.placeRobber();
+        }
+
+        return newTile;
+    }
+
+    /**
      * Returns the type of this tile
      *
      * @return hex type of this tile
