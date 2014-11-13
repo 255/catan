@@ -24,8 +24,8 @@ public class YearOfPlentyCommand extends AbstractCommand {
         super(game, player, "played a year of plenty card");
 
         if (!getGame().canPlayYearOfPlenty(getPlayer(), firstType, secondType)) {
-            throw new IllegalCommandException("Attempted to play YearOfPlenty DevCard but that move is " +
-                    "not allowed");
+            throw new IllegalCommandException("Player" + player.getName() + " attempted to play YearOfPlenty DevCard, requesting " + firstType.name() + " and "
+                    + secondType.name() + " but that move is not allowed");
         }
     }
 

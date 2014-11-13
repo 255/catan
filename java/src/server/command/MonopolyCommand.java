@@ -27,7 +27,7 @@ public class MonopolyCommand extends AbstractCommand {
         m_resourceType = resourceType;
 
         if (!getGame().canPlayMonopoly(getPlayer())) {
-            throw new IllegalCommandException("Player cannot play the Monopoly DevCard");
+            throw new IllegalCommandException("Player " + player.getName() + " cannot play the Monopoly DevCard");
         }
     }
     /**

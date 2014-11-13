@@ -18,12 +18,12 @@ public class BuyDevCardCommand extends AbstractCommand {
 
         // Check that player has enough resources
         if (!getPlayer().canAfford(Prices.DEV_CARD)) {
-            throw new IllegalCommandException("Player tried to buy DevCard, but player does not have the resources to buy one");
+            throw new IllegalCommandException("Player " + player.getName() + " tried to buy DevCard, but player does not have the resources to buy one");
         }
 
         // Check that the game has enough dev cards in the bank
         if (getGame().getDevCards().getCount() == 0) {
-            throw new IllegalCommandException("Player tried to buy DevCard, but game does not have any DevCards");
+            throw new IllegalCommandException("Player " + player.getName() + " tried to buy DevCard, but game does not have any DevCards");
         }
     }
 
