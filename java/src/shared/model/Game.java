@@ -508,9 +508,9 @@ public class Game extends Observable implements IGame {
      */
     @Override
     public boolean canPlayYearOfPlenty(IPlayer player, ResourceType r1, ResourceType r2) {
-        return isPlaying(player)
-                && player.canPlayDevCard(DevCardType.YEAR_OF_PLENTY)
-                && getResourceBank().getCount(r1) > 0 && getResourceBank().getCount(r2) > 0;
+
+        return isPlaying(player) && player.canPlayDevCard(DevCardType.YEAR_OF_PLENTY)
+                    && (r1.equals(r2) ? getResourceBank().getCount(r1) > 1 : getResourceBank().getCount(r1) > 0 && getResourceBank().getCount(r2) > 0);
     }
 
     /**
