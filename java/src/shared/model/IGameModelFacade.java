@@ -8,6 +8,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,6 +19,10 @@ public interface IGameModelFacade {
     public IGame getGame();
 
     public void setGame(IGame game);
+
+    IPlayer getLocalPlayer();
+
+    void setLocalPlayer(IPlayer player);
 
     /**
      * Takes an edge location and determines if a road can be placed on it
@@ -136,7 +141,7 @@ public interface IGameModelFacade {
      *
      * @return the ResourceBundle object containing the counts for the current player
      */
-    public IResourceBank getPlayerResources();
+    public IResourceBank getLocalPlayerResources();
 
     /**
      * Returns the ports the current player has
@@ -163,8 +168,6 @@ public interface IGameModelFacade {
 
     boolean playerHasLargestArmy(IPlayer player);
 
-    boolean isPlayersTurn(IPlayer player);
-
     // this method is just for determining from the GameState if it is a free round
     public boolean isFreeRound();
 
@@ -178,4 +181,26 @@ public interface IGameModelFacade {
      * Create a new game object.
      */
     public void newGame();
+
+    /**
+     * Get the list of players in turn order excluding the local player.
+     * @return the list of non-local players in turn order
+     */
+    public List<IPlayer> getNonLocalPlayers();
+
+    /**
+     * Get whether it is the player's turn and game state is playing, so the player can play cards, etc.
+     * @return true / false
+     */
+    public boolean localPlayerIsPlaying();
+    public boolean localPlayerIsDiscarding();
+    public boolean localPlayerIsRolling();
+    public boolean localPlayerPlayerIsRobbing();
+    public boolean localPlayerIsPlacingInitialPieces();
+
+    public boolean localPlayerIsOfferingTrade();
+    public boolean localPlayerIsBeingOfferedTrade();
+
+    public boolean isLocalPlayersTurn();
+
 }

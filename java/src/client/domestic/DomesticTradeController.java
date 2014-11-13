@@ -181,7 +181,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         // initialize players list only once
         // TODO: what if player changes color?
         if (m_needToInitializePlayersList) {
-            getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(GameModelFacade.instance().getGame().getNonLocalPlayers()));
+            getTradeOverlay().setPlayers(PlayerInfo.fromPlayers(GameModelFacade.instance().getNonLocalPlayers()));
             m_needToInitializePlayersList = false;
             getTradeOverlay().setCancelEnabled(true); //just to be sure -- this never needs to be disabled
         }
@@ -193,11 +193,11 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
 
     private void initializeDialogs() {
         // initialize the buttons and dialogs
-        if (GameModelFacade.instance().getGame().localPlayerIsPlaying()) {
+        if (GameModelFacade.instance().localPlayerIsPlaying()) {
             getTradeView().enableDomesticTrade(true);
 
             // player sent a trade: keep the dialog open
-            if (GameModelFacade.instance().getGame().localPlayerIsOfferingTrade()) {
+            if (GameModelFacade.instance().localPlayerIsOfferingTrade()) {
                 if (!waitOverlay.isModalShowing()) {
                     waitOverlay.showModal();
                 }
@@ -209,7 +209,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
         else {
             getTradeView().enableDomesticTrade(false);
 
-            if (GameModelFacade.instance().getGame().localPlayerIsBeingOfferedTrade()) {
+            if (GameModelFacade.instance().localPlayerIsBeingOfferedTrade()) {
                 // if the accept modal is not showing yet, initialize it and show it
                 initializeAcceptOverlay();
             }
@@ -262,7 +262,7 @@ public class DomesticTradeController extends Controller implements IDomesticTrad
     }
 
     private void updateResourceButtons() {
-        IResourceBank playerResourcees = GameModelFacade.instance().getPlayerResources();
+        IResourceBank playerResourcees = GameModelFacade.instance().getLocalPlayerResources();
 
         // look at each resource in the current offer and decide if buttons should be enabled
         for (Map.Entry<ResourceType, PendingResourceOffer> entry : m_tradeOffer.entrySet()) {

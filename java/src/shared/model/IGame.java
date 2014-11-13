@@ -72,28 +72,11 @@ public interface IGame {
     public void setCurrentPlayer(IPlayer currentPlayer);
 
     /**
-     * Return a reference to the local player (who is in front of the computer screen).
-     * @return the local player
-     */
-    public IPlayer getLocalPlayer();
-
-    /**
-     * Set which player is the local player // TODO
-     * @param localPlayer
-     */
-    public void setLocalPlayer(IPlayer localPlayer);
-
-    /**
      * Get the list of players in turn order.
      * @return the list of players in turn order
      */
     public List<IPlayer> getPlayers();
 
-    /**
-     * Get the list of players in turn order excluding the local player.
-     * @return the list of non-local players in turn order
-     */
-    public List<IPlayer> getNonLocalPlayers();
     /**
      * Set the list of players for the game
      * @param players the list of players in TURN ORDER
@@ -162,70 +145,59 @@ public interface IGame {
 
     // Game state checking methods
 
-    boolean localPlayerIsOfferingTrade();
+    boolean isOfferingTrade(IPlayer player);
 
-    boolean localPlayerIsBeingOfferedTrade();
+    boolean isBeingOfferedTrade(IPlayer player);
 
     /**
-     * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
+     * Get whether it is the player's turn and game state is playing, so the player can play cards, etc.
      * @return true / false
+     * @param player
      */
-    public boolean localPlayerIsPlaying();
-    public boolean localPlayerIsDiscarding();
-    public boolean localPlayerIsRolling();
-    public boolean localPlayerIsRobbing();
-    public boolean localPlayerIsPlacingInitialPieces();
+    public boolean isPlaying(IPlayer player);
+    public boolean isDiscarding(IPlayer player);
+    public boolean isRolling(IPlayer player);
+    public boolean isRobbing(IPlayer player);
+    public boolean isPlacingInitialPieces(IPlayer player);
 
-
-    /**
-     * Return true if it is the local player's turn.
-     * @return true if it is the local player's turn
-     */
-    public boolean isLocalPlayersTurn();
 
     public boolean gameHasStarted();
 
-    boolean localPlayerAndGameState(GameState state);
+    boolean canPlaceRoad(IPlayer player, EdgeLocation edge);
 
-    boolean playerCanPlaceRoad(IPlayer player, EdgeLocation edge);
+    boolean canPlaceSettlement(IPlayer player, VertexLocation vertex);
 
-    boolean playerCanPlaceSettlement(IPlayer player, VertexLocation vertex);
+    boolean canBuildCity(IPlayer player, VertexLocation vertex);
 
-    boolean playerCanBuildCity(IPlayer player, VertexLocation vertex);
+    Collection<IPlayer> getRobbablePlayers(IPlayer player, HexLocation location);
 
-    Collection<IPlayer> getRobbablePlayers(HexLocation location);
+    Set<PortType> getPlayerPorts(IPlayer player);
 
-    IResourceBank getPlayerResources();
+    boolean canBuyCity(IPlayer player);
 
-    Set<PortType> getLocalPlayerPorts();
+    boolean canBuyRoad(IPlayer player);
 
-    boolean canBuyCity();
+    boolean canBuySettlement(IPlayer player);
 
-    boolean canBuyRoad();
+    boolean canBuyDevCard(IPlayer player);
 
-    boolean canBuySettlement();
+    boolean canAcceptTrade(IPlayer player);
 
-    boolean canBuyDevCard();
+    boolean canPlayDevCard(IPlayer player);
 
-    boolean canAcceptTrade();
+    boolean canPlayMonopoly(IPlayer player);
 
-    boolean canPlayDevCard();
+    boolean canPlaySoldier(HexLocation robberDestination, IPlayer player);
 
-    boolean playerCanPlayMonopoly(ResourceType resource, IPlayer player);
+    boolean canPlayYearOfPlenty(IPlayer player, ResourceType r1, ResourceType r2);
 
-    boolean canPlaySoldier(HexLocation robberDestination);
+    boolean canPlayMonument(IPlayer player);
 
-    boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2);
+    boolean canPlayRoadBuilding(IPlayer player, EdgeLocation edge1, EdgeLocation edge2);
 
-    boolean playerCanPlayMonument(IPlayer player);
+    boolean hasLongestRoad(IPlayer player);
 
-    boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2);
-
-    CatanColor getLocalColor();
-
-    boolean playerHasLongestRoad(IPlayer player);
-
-    boolean playerHasLargestArmy(IPlayer player);
+    boolean hasLargestArmy(IPlayer player);
 
     boolean isPlayersTurn(IPlayer player);
 

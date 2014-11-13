@@ -79,7 +79,7 @@ public class RollController extends Controller implements IRollController {
     public void update(Observable o, Object arg) {
         logger.entering("client.roll.RollController", "update", o);
 
-        if (GameModelFacade.instance().getGame().localPlayerIsRolling()) {
+        if (GameModelFacade.instance().localPlayerIsRolling()) {
             if (!m_rollTimer.isRunning()) {
                 m_rollTimer.restart();
             }

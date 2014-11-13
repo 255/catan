@@ -7,7 +7,9 @@ import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,6 +20,7 @@ public class GameModelFacade implements IGameModelFacade {
 
     // The one and only game pointer
     private IGame m_game;
+    private IPlayer m_localPlayer;
 
     /**
      * This is a private constructor that is called only when the GameModelFacade has not been initialized yet
@@ -49,6 +52,16 @@ public class GameModelFacade implements IGameModelFacade {
         m_game = game;
     }
 
+    @Override
+    public IPlayer getLocalPlayer() {
+        return m_localPlayer;
+    }
+
+    @Override
+    public void setLocalPlayer(IPlayer player) {
+        m_localPlayer = player;
+    }
+
     /**
      * Takes an edge location and determines if a road can be placed on it
      * This does NOT check if the player can afford the road.
@@ -58,7 +71,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceRoad(EdgeLocation edge) {
-        return m_game.playerCanPlaceRoad(m_game.getLocalPlayer(), edge);
+        return m_game.canPlaceRoad(getLocalPlayer(), edge);
     }
 
     /**
@@ -69,7 +82,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceSettlement(VertexLocation vertex) {
-        return m_game.playerCanPlaceSettlement(m_game.getLocalPlayer(), vertex);
+        return m_game.canPlaceSettlement(getLocalPlayer(), vertex);
     }
 
     /**
@@ -80,7 +93,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaceCity(VertexLocation vertex) {
-        return m_game.playerCanBuildCity(m_game.getLocalPlayer(), vertex);
+        return m_game.canBuildCity(getLocalPlayer(), vertex);
     }
 
     /**
@@ -101,7 +114,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public Collection<IPlayer> getRobbablePlayers(HexLocation location) {
-        return m_game.getRobbablePlayers(location);
+        return m_game.getRobbablePlayers(getLocalPlayer(), location);
     }
 
     /**
@@ -110,8 +123,8 @@ public class GameModelFacade implements IGameModelFacade {
      * @return the ResourceBank object containing the counts for the current player
      */
     @Override
-    public IResourceBank getPlayerResources() {
-        return m_game.getPlayerResources();
+    public IResourceBank getLocalPlayerResources() {
+        return getLocalPlayer().getResources();
     }
 
     /**
@@ -121,7 +134,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public Set<PortType> getLocalPlayerPorts() {
-        return m_game.getLocalPlayerPorts();
+        return m_game.getPlayerPorts(getLocalPlayer());
     }
 
     /**
@@ -151,7 +164,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyCity() {
-        return m_game.canBuyCity();
+        return m_game.canBuyCity(getLocalPlayer());
     }
 
     /**
@@ -161,7 +174,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyRoad() {
-        return m_game.canBuyRoad();
+        return m_game.canBuyRoad(getLocalPlayer());
     }
 
     /**
@@ -171,7 +184,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuySettlement() {
-        return m_game.canBuySettlement();
+        return m_game.canBuySettlement(getLocalPlayer());
     }
 
     /**
@@ -181,7 +194,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canBuyDevCard() {
-        return m_game.canBuyDevCard();
+        return m_game.canBuyDevCard(getLocalPlayer());
     }
 
     /**
@@ -191,7 +204,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canAcceptTrade() {
-        return m_game.canAcceptTrade();
+        return m_game.canAcceptTrade(getLocalPlayer());
     }
 
     /**
@@ -201,7 +214,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayDevCard() {
-        return m_game.canPlayDevCard();
+        return m_game.canPlayDevCard(getLocalPlayer());
     }
 
     /**
@@ -211,7 +224,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonopoly(ResourceType resource) {
-        return m_game.playerCanPlayMonopoly(resource, m_game.getLocalPlayer());
+        return m_game.canPlayMonopoly(getLocalPlayer());
     }
 
     /**
@@ -221,7 +234,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlaySoldier(HexLocation robberDestination) {
-        return m_game.canPlaySoldier(robberDestination);
+        return m_game.canPlaySoldier(robberDestination, getLocalPlayer());
     }
 
     /**
@@ -234,7 +247,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
-        return m_game.canPlayYearOfPlenty(r1, r2);
+        return m_game.canPlayYearOfPlenty(getLocalPlayer(), r1, r2);
     }
 
     /**
@@ -244,7 +257,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayMonument() {
-        return m_game.playerCanPlayMonument(m_game.getLocalPlayer());
+        return m_game.canPlayMonument(getLocalPlayer());
     }
 
     /**
@@ -256,7 +269,7 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2) {
-        return m_game.canPlayRoadBuilding(edge1, edge2);
+        return m_game.canPlayRoadBuilding(getLocalPlayer(), edge1, edge2);
     }
 
     /**
@@ -266,22 +279,17 @@ public class GameModelFacade implements IGameModelFacade {
      */
     @Override
     public CatanColor getLocalColor() {
-        return m_game.getLocalColor();
+        return getLocalPlayer().getColor();
     }
 
     @Override
     public boolean playerHasLongestRoad(IPlayer player) {
-        return m_game.playerHasLongestRoad(player);
+        return m_game.hasLongestRoad(player);
     }
 
     @Override
     public boolean playerHasLargestArmy(IPlayer player) {
-        return m_game.playerHasLargestArmy(player);
-    }
-
-    @Override
-    public boolean isPlayersTurn(IPlayer player) {
-        return m_game.isPlayersTurn(player);
+        return m_game.hasLargestArmy(player);
     }
 
     /**
@@ -296,5 +304,69 @@ public class GameModelFacade implements IGameModelFacade {
     @Override
     public boolean isFreeRound() {
         return m_game.isFreeRound();
+    }
+    /**
+     * Get the list of players in turn order excluding the local player.
+     *
+     * @return the list of non-local players in turn order
+     */
+    @Override
+    public List<IPlayer> getNonLocalPlayers() {
+        List<IPlayer> nonLocalPlayers = new ArrayList<>(getGame().getPlayers().size() - 1);
+
+        for (IPlayer player : getGame().getPlayers()) {
+            if (!player.equals(getLocalPlayer())) {
+                nonLocalPlayers.add(player);
+            }
+        }
+
+        assert nonLocalPlayers.size() == 3 : "There should be 3 non-local players, but there are not!";
+
+        return nonLocalPlayers;
+    }
+
+    /**
+     * Get whether it is the player's turn and game state is playing, so the player can play cards, etc.
+     *
+     * @return true / false
+     */
+    @Override
+    public boolean localPlayerIsPlaying() {
+        return getGame().isPlaying(getLocalPlayer());
+    }
+
+    @Override
+    public boolean localPlayerIsDiscarding() {
+        return getGame().isDiscarding(getLocalPlayer());
+    }
+
+    @Override
+    public boolean localPlayerIsRolling() {
+        return getGame().isRolling(getLocalPlayer());
+    }
+
+    @Override
+    public boolean localPlayerPlayerIsRobbing() {
+        return getGame().isRobbing(getLocalPlayer());
+    }
+
+    @Override
+    public boolean localPlayerIsPlacingInitialPieces() {
+        return getGame().isPlacingInitialPieces(getLocalPlayer());
+    }
+
+    @Override
+    public boolean localPlayerIsOfferingTrade() {
+        return getGame().isOfferingTrade(getLocalPlayer());
+    }
+
+    @Override
+    public boolean localPlayerIsBeingOfferedTrade() {
+        return getGame().isBeingOfferedTrade(getLocalPlayer());
+    }
+
+    @Override
+    public boolean isLocalPlayersTurn() {
+        return getGame().isPlayersTurn(getLocalPlayer());
     }
 }

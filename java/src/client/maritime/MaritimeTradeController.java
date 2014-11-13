@@ -116,7 +116,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
         getTradeView().enableMaritimeTrade(false);
 
         // if the local player is not playing, return
-        if(!GameModelFacade.instance().getGame().localPlayerIsPlaying()) {
+        if(!GameModelFacade.instance().localPlayerIsPlaying()) {
             return;
         }
 
@@ -150,7 +150,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
     }
 
     private boolean canGive(ResourceType r) {
-        IResourceBank rb = GameModelFacade.instance().getPlayerResources();
+        IResourceBank rb = GameModelFacade.instance().getLocalPlayerResources();
 
         if(hasPort(convertRTypeToPType(r))) {
             return (rb.getCount(r) >= TYPE_THRESHOLD);

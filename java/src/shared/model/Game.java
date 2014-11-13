@@ -16,7 +16,6 @@ import java.util.*;
 public class Game extends Observable implements IGame {
     private GameState m_state;
     private IPlayer m_currentPlayer;
-    private IPlayer m_localPlayer;
     private List<IPlayer> m_players;
     private IResourceBank m_resourceBank;
     private IDevCardHand m_devCards;
@@ -41,7 +40,6 @@ public class Game extends Observable implements IGame {
     public void reset() {
         m_state = null;
         m_currentPlayer = null;
-        m_localPlayer = null;
         m_players = null;
         m_resourceBank = null;
         m_devCards = null;
@@ -65,7 +63,6 @@ public class Game extends Observable implements IGame {
         return (
                 m_state == null
              || m_currentPlayer == null
-             || m_localPlayer == null
              || m_players == null
              || m_resourceBank == null
              || m_devCards == null
@@ -113,18 +110,6 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public IPlayer getLocalPlayer() {
-        return m_localPlayer;
-    }
-
-    @Override
-    public void setLocalPlayer(IPlayer localPlayer) {
-        assert localPlayer != null;
-        m_localPlayer = localPlayer;
-        setChanged();
-    }
-
-    @Override
     public List<IPlayer> getPlayers() {
         return m_players;
     }
@@ -134,26 +119,6 @@ public class Game extends Observable implements IGame {
         assert players != null;
         m_players = players;
         setChanged();
-    }
-
-    /**
-     * Get the list of players in turn order excluding the local player.
-     *
-     * @return the list of non-local players in turn order
-     */
-    @Override
-    public List<IPlayer> getNonLocalPlayers() {
-        List<IPlayer> nonLocalPlayers = new ArrayList<>(m_players.size() - 1);
-
-        for (IPlayer player : m_players) {
-            if (!player.equals(m_localPlayer)) {
-                nonLocalPlayers.add(player);
-            }
-        }
-
-        assert nonLocalPlayers.size() == 3 : "There should be 3 non-local players, but there are not!";
-
-        return nonLocalPlayers;
     }
 
     /**
@@ -266,54 +231,45 @@ public class Game extends Observable implements IGame {
         setChanged();
     }
 
-    /**
-     * Return true if it is the local player's turn.
-     *
-     * @return true if it is the local player's turn
-     */
     @Override
-    public boolean isLocalPlayersTurn() {
-        return m_currentPlayer.equals(m_localPlayer);
+    public boolean isOfferingTrade(IPlayer player) {
+        return m_tradeOffer != null && player.equals(m_tradeOffer.getSender());
     }
 
     @Override
-    public boolean localPlayerIsOfferingTrade() {
-        return m_tradeOffer != null && m_localPlayer.equals(m_tradeOffer.getSender());
-    }
-
-    @Override
-    public boolean localPlayerIsBeingOfferedTrade() {
-        return m_tradeOffer != null && m_localPlayer.equals(m_tradeOffer.getReceiver());
+    public boolean isBeingOfferedTrade(IPlayer player) {
+        return m_tradeOffer != null && player.equals(m_tradeOffer.getReceiver());
     }
 
     /**
-     * Get whether it is the local player's turn and game state is playing, so the player can play cards, etc.
+     * Get whether it is the player's turn and game state is playing, so the player can play cards, etc.
      * @return true / false
+     * @param player
      */
     @Override
-    public boolean localPlayerIsPlaying() {
-        return localPlayerAndGameState(GameState.PLAYING);
+    public boolean isPlaying(IPlayer player) {
+        return playerAndGameState(player, GameState.PLAYING);
     }
 
     @Override
-    public boolean localPlayerIsDiscarding() {
-        return (m_state == GameState.DISCARDING) && m_localPlayer.needsToDiscard();
+    public boolean isDiscarding(IPlayer player) {
+        return (m_state == GameState.DISCARDING) && player.needsToDiscard();
     }
 
     @Override
-    public boolean localPlayerIsRolling() {
-        return localPlayerAndGameState(GameState.ROLLING);
+    public boolean isRolling(IPlayer player) {
+        return playerAndGameState(player, GameState.ROLLING);
     }
 
     @Override
-    public boolean localPlayerIsRobbing() {
-        return localPlayerAndGameState(GameState.ROBBING);
+    public boolean isRobbing(IPlayer player) {
+        return playerAndGameState(player, GameState.ROBBING);
     }
 
     @Override
-    public boolean localPlayerIsPlacingInitialPieces() {
+    public boolean isPlacingInitialPieces(IPlayer player) {
         return gameHasStarted()
-               && (localPlayerAndGameState(GameState.FIRST_ROUND) || localPlayerAndGameState(GameState.SECOND_ROUND));
+               && (playerAndGameState(player, GameState.FIRST_ROUND) || playerAndGameState(player, GameState.SECOND_ROUND));
     }
 
     @Override
@@ -321,9 +277,8 @@ public class Game extends Observable implements IGame {
         return m_players.size() == CatanConstants.NUM_PLAYERS;
     }
 
-    @Override
-    public boolean localPlayerAndGameState(GameState state) {
-        return m_localPlayer.equals(m_currentPlayer) && m_state == state;
+    private boolean playerAndGameState(IPlayer player, GameState state) {
+        return player.equals(m_currentPlayer) && m_state == state;
     }
 
         /**
@@ -336,7 +291,7 @@ public class Game extends Observable implements IGame {
          * @return a boolean value that reports if the user can place a road
      */
     @Override
-    public boolean playerCanPlaceRoad(IPlayer player, EdgeLocation edge) {
+    public boolean canPlaceRoad(IPlayer player, EdgeLocation edge) {
         if (!isPlayersTurn(player)) {
             return false;
         }
@@ -363,7 +318,7 @@ public class Game extends Observable implements IGame {
      * @return a boolean value that reports if the user can place a settlement
      */
     @Override
-    public boolean playerCanPlaceSettlement(IPlayer player, VertexLocation vertex) {
+    public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex) {
         assert vertex != null;
 
         // check if it's the player's turn
@@ -397,7 +352,7 @@ public class Game extends Observable implements IGame {
      * @return a boolean value that reports if the user can place a city
      */
     @Override
-    public boolean playerCanBuildCity(IPlayer player, VertexLocation vertex) {
+    public boolean canBuildCity(IPlayer player, VertexLocation vertex) {
         assert vertex != null;
 
         if (getGameState() != GameState.PLAYING) {
@@ -414,34 +369,25 @@ public class Game extends Observable implements IGame {
     /**
      * Get a list of players around a hex that can be robbed (all with towns except local player)
      *
+     * @param player
      * @param location the location being robbed
      * @return a collection of players (may be empty)
      */
     @Override
-    public Collection<IPlayer> getRobbablePlayers(HexLocation location) {
-        return getMap().getRobbablePlayersOnTile(location, getLocalPlayer());
+    public Collection<IPlayer> getRobbablePlayers(IPlayer player, HexLocation location) {
+        return getMap().getRobbablePlayersOnTile(location, player);
     }
 
     /**
-     * Returns the info for the current player's resource counts
+     * Returns the ports the player has
      *
-     * @return the ResourceBank object containing the counts for the current player
+     * @return the ports that the player has
+     * @param player
      */
     @Override
-    public IResourceBank getPlayerResources() {
-        assert getLocalPlayer().getResources() != null;
-
-        return getLocalPlayer().getResources();
-    }
-
-    /**
-     * Returns the ports the local player has
-     *
-     * @return the ports that the local player has
-     */
-    @Override
-    public Set<PortType> getLocalPlayerPorts() {
-        Set<PortType> ports = getMap().getPlayersPorts(getLocalPlayer());
+    public Set<PortType> getPlayerPorts(IPlayer player) {
+        assert player != null;
+        Set<PortType> ports = getMap().getPlayersPorts(player);
 
         assert ports != null;
 
@@ -452,40 +398,44 @@ public class Game extends Observable implements IGame {
      * Have enough money to buy a city and have place to put it and a piece to use.
      *
      * @return true if can buy city, false if not
+     * @param player
      */
     @Override
-    public boolean canBuyCity() {
-        return localPlayerIsPlaying() && getLocalPlayer().canBuyCity();
+    public boolean canBuyCity(IPlayer player) {
+        return isPlaying(player) && player.canBuyCity();
     }
 
     /**
      * Have enough money to buy a road and a piece to use.
      *
      * @return true if can buy road, false if not
+     * @param player
      */
     @Override
-    public boolean canBuyRoad() {
-        return localPlayerIsPlaying() && getLocalPlayer().canBuyRoad();
+    public boolean canBuyRoad(IPlayer player) {
+        return isPlaying(player) && player.canBuyRoad();
     }
 
     /**
      * Have enough money to buy a settlement and a piece to use.
      *
      * @return true if can buy a settlement, false if not
+     * @param player
      */
     @Override
-    public boolean canBuySettlement() {
-        return localPlayerIsPlaying() && getLocalPlayer().canBuySettlement();
+    public boolean canBuySettlement(IPlayer player) {
+        return isPlaying(player) && player.canBuySettlement();
     }
 
     /**
      * Have enough money to buy a dev card and a card is available to buy
      *
      * @return true if can buy
+     * @param player
      */
     @Override
-    public boolean canBuyDevCard() {
-        return localPlayerIsPlaying() && getLocalPlayer().canAfford(Prices.DEV_CARD)
+    public boolean canBuyDevCard(IPlayer player) {
+        return isPlaying(player) && player.canAfford(Prices.DEV_CARD)
                 && getDevCards().getCount() > 0;
     }
 
@@ -493,9 +443,10 @@ public class Game extends Observable implements IGame {
      * Return true if the player has enough resources for a trade currently being offered to them.
      *
      * @return true if can accept trade, false if not enough resources (or no trade is offered currently)
+     * @param player
      */
     @Override
-    public boolean canAcceptTrade() {
+    public boolean canAcceptTrade(IPlayer player) {
         // is there a trade offer?
         if (m_tradeOffer == null) {
             return false;
@@ -507,103 +458,97 @@ public class Game extends Observable implements IGame {
         }
 
         // check that the trade is for the player and that they can afford it
-        return  getLocalPlayer().equals(m_tradeOffer.getReceiver())
-                && getLocalPlayer().canAffordTrade(m_tradeOffer.getOffer());
+        return  player.equals(m_tradeOffer.getReceiver())
+                && player.canAffordTrade(m_tradeOffer.getOffer());
     }
 
     /**
      * Whether the local player can play any dev cards.
      *
      * @return true if the user can play a dev card
+     * @param player
      */
     @Override
-    public boolean canPlayDevCard() {
-        return localPlayerIsPlaying() && getLocalPlayer().canPlayDevCard();
+    public boolean canPlayDevCard(IPlayer player) {
+        return isPlaying(player) && player.canPlayDevCard();
     }
 
     /**
-     * Get whether the local player can play this specific dev card.
+     * Get whether the player can play this specific dev card.
      *
      * @return true if the user can play this card
      */
     @Override
-    public boolean playerCanPlayMonopoly(ResourceType resource, IPlayer player) {
-        return localPlayerIsPlaying()
+    public boolean canPlayMonopoly(IPlayer player) {
+        return isPlaying(player)
                 && player.canPlayDevCard(DevCardType.MONOPOLY);
     }
 
     /**
      * Get whether the local player can play this specific dev card.
      * @param robberDestination new location of the robber
+     * @param player
      * @return true if the user can play this card
      */
     @Override
-    public boolean canPlaySoldier(HexLocation robberDestination) {
-        return localPlayerIsPlaying()
-                && getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER) // has and can play card
+    public boolean canPlaySoldier(HexLocation robberDestination, IPlayer player) {
+        return isPlaying(player)
+                && player.canPlayDevCard(DevCardType.SOLDIER) // has and can play card
                 && !robberDestination.equals(getMap().getRobber()); // moved robber
     }
 
     /**
-     * Get whether the local player can play this specific dev card.
+     * Get whether the player can play this specific dev card.
      * NOTE: The preconditions specified in the document seem wrong to me. You need BOTH resources to play the card?
      *       What if there is only one kind of card left.
      * @return true if the user can play this card
+     * @param player
      * @param r1 resource
      * @param r2 resource
      */
     @Override
-    public boolean canPlayYearOfPlenty(ResourceType r1, ResourceType r2) {
-        return localPlayerIsPlaying()
-                && getLocalPlayer().canPlayDevCard(DevCardType.YEAR_OF_PLENTY)
+    public boolean canPlayYearOfPlenty(IPlayer player, ResourceType r1, ResourceType r2) {
+        return isPlaying(player)
+                && player.canPlayDevCard(DevCardType.YEAR_OF_PLENTY)
                 && getResourceBank().getCount(r1) > 0 && getResourceBank().getCount(r2) > 0;
     }
 
     /**
-     * Get whether the local player can play this specific dev card.
+     * Get whether the player can play this specific dev card.
      *
      * @return true if the user can play this card
      * @param player
      */
     @Override
-    public boolean playerCanPlayMonument(IPlayer player) {
-        return localPlayerIsPlaying()
+    public boolean canPlayMonument(IPlayer player) {
+        return isPlaying(player)
                 && player.canPlayDevCard(DevCardType.MONUMENT);
     }
 
     /**
-     * Get whether the local player can play this specific dev card.
+     * Get whether the player can play this specific dev card.
      *
      * @return true if the user can play this card
+     * @param player
      * @param edge1 first road
      * @param edge2 second road
      */
     @Override
-    public boolean canPlayRoadBuilding(EdgeLocation edge1, EdgeLocation edge2) {
+    public boolean canPlayRoadBuilding(IPlayer player, EdgeLocation edge1, EdgeLocation edge2) {
         assert edge1 != null && edge2 != null;
 
-        return localPlayerIsPlaying()
-                && getLocalPlayer().canPlayDevCard(DevCardType.ROAD_BUILD)
-                && getMap().canPlaceTwoRoads(getLocalPlayer(), edge1, edge2);
-    }
-
-    /**
-     * Get the local player's color.
-     *
-     * @return the local player's color
-     */
-    @Override
-    public CatanColor getLocalColor() {
-        return getLocalPlayer().getColor();
+        return isPlaying(player)
+                && player.canPlayDevCard(DevCardType.ROAD_BUILD)
+                && getMap().canPlaceTwoRoads(player, edge1, edge2);
     }
 
     @Override
-    public boolean playerHasLongestRoad(IPlayer player) {
+    public boolean hasLongestRoad(IPlayer player) {
         return player.equals(getLongestRoad());
     }
 
     @Override
-    public boolean playerHasLargestArmy(IPlayer player) {
+    public boolean hasLargestArmy(IPlayer player) {
         return player.equals(getLargestArmy());
     }
 

@@ -26,7 +26,7 @@ public abstract class SetupState extends MapState {
     @Override
     public void startMove(MapController controller, PieceType pieceType) {
         // cannot cancel
-        controller.getView().startDrop(pieceType, GameModelFacade.instance().getGame().getLocalPlayer().getColor(), false);
+        controller.getView().startDrop(pieceType, GameModelFacade.instance().getLocalPlayer().getColor(), false);
     }
 
     /**

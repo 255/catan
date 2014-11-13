@@ -16,7 +16,7 @@ public class BuildSettlementCommand extends AbstractCommand {
     public BuildSettlementCommand(IGame game, IPlayer player, VertexLocation location, boolean free) throws IllegalCommandException {
         super(game, player, "built a settlement");
 
-        if (!getGame().playerCanPlaceSettlement(player, location)) {
+        if (!getGame().canPlaceSettlement(player, location)) {
             throw new IllegalCommandException("Player " + player.getName() + " cannot build a settlement at " + location);
         }
 

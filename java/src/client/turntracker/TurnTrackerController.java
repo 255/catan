@@ -61,7 +61,7 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
             getView().updatePlayer(
                             pl.getIndex(),
                             pl.getVictoryPoints(),
-                            GameModelFacade.instance().isPlayersTurn(pl),
+                            GameModelFacade.instance().getGame().isPlayersTurn(pl),
                             GameModelFacade.instance().playerHasLargestArmy(pl),
                             GameModelFacade.instance().playerHasLongestRoad(pl),
                             pl.getColor()
@@ -70,30 +70,30 @@ public class TurnTrackerController extends Controller implements ITurnTrackerCon
         m_playersInitialized = true;
 
         String gameState;
-        if (GameModelFacade.instance().getGame().localPlayerIsPlaying()) {
+        if (GameModelFacade.instance().localPlayerIsPlaying()) {
             gameState = "Finish Turn";
         }
-        else if (GameModelFacade.instance().getGame().localPlayerIsBeingOfferedTrade()) {
+        else if (GameModelFacade.instance().localPlayerIsBeingOfferedTrade()) {
             gameState = "Accept or Reject Trade";
         }
-        else if (GameModelFacade.instance().getGame().localPlayerIsDiscarding()) {
+        else if (GameModelFacade.instance().localPlayerIsDiscarding()) {
             gameState = "Discard Cards";
         }
-        else if (GameModelFacade.instance().getGame().localPlayerIsRolling()) {
+        else if (GameModelFacade.instance().localPlayerIsRolling()) {
             gameState = "Roll the Dice";
         }
-        else if (GameModelFacade.instance().getGame().localPlayerIsRobbing()) {
+        else if (GameModelFacade.instance().localPlayerPlayerIsRobbing()) {
             gameState = "Place the Robber";
         }
-        else if (GameModelFacade.instance().getGame().localPlayerIsPlacingInitialPieces()) {
+        else if (GameModelFacade.instance().localPlayerIsPlacingInitialPieces()) {
             gameState = "Place Initial Pieces";
         }
         else {
             gameState = "Waiting for Other Players";
         }
 
-        getView().setLocalPlayerColor((GameModelFacade.instance().getGame().getLocalPlayer().getColor()));
-        getView().updateGameState(gameState, GameModelFacade.instance().getGame().localPlayerIsPlaying());
+        getView().setLocalPlayerColor((GameModelFacade.instance().getLocalColor()));
+        getView().updateGameState(gameState, GameModelFacade.instance().localPlayerIsPlaying());
 	}
 }
 

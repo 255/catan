@@ -74,7 +74,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 
     public void initFromModel() {
 
-        IPlayer localPlayer = GameModelFacade.instance().getGame().getLocalPlayer();
+        IPlayer localPlayer = GameModelFacade.instance().getLocalPlayer();
 
         IResourceBank resourceCards = localPlayer.getResources();
         getView().setElementAmount(ResourceBarElement.WOOD, resourceCards.getWood());
@@ -94,7 +94,7 @@ public class ResourceBarController extends Controller implements IResourceBarCon
 
         getView().setElementEnabled(ResourceBarElement.BUY_CARD, GameModelFacade.instance().canBuyDevCard());
 
-        getView().setElementEnabled(ResourceBarElement.PLAY_CARD, GameModelFacade.instance().getGame().localPlayerIsPlaying());
+        getView().setElementEnabled(ResourceBarElement.PLAY_CARD, GameModelFacade.instance().localPlayerIsPlaying());
 
         getView().setElementAmount(ResourceBarElement.SOLDIERS, localPlayer.getSoldiers());
     }

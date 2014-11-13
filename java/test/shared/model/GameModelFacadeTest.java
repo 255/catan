@@ -60,11 +60,11 @@ public class GameModelFacadeTest {
         assertFalse("Not playing phase", facade.canPlaceRoad(edge1));
 
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canPlaceRoad(edge1));
 
         game.setCurrentPlayer(game.getPlayers().get(2));
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("No road pieces", facade.canPlaceRoad(edge1));
 
         game.setCurrentPlayer(game.getPlayers().get(3));
@@ -105,11 +105,11 @@ public class GameModelFacadeTest {
         game.setGameState(GameState.PLAYING);
 
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canPlaceSettlement(ver1));
 
         game.setCurrentPlayer(game.getPlayers().get(2));
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough settlement pieces", facade.canPlaceSettlement(ver1));
 
         game.setCurrentPlayer(game.getPlayers().get(3));
@@ -135,11 +135,11 @@ public class GameModelFacadeTest {
         game.setGameState(GameState.PLAYING);
 
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canPlaceCity(ver1));
 
         game.setCurrentPlayer(game.getPlayers().get(2));
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough city pieces", facade.canPlaceCity(ver1));
 
         game.setCurrentPlayer(game.getPlayers().get(3));
@@ -161,7 +161,7 @@ public class GameModelFacadeTest {
         assertTrue("There should be no roads on a blank map",
                 initGame.getMap().getRoads().isEmpty());
         // assert that road can be placed on a terrain edge
-        initGame.setLocalPlayer(initGame.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(initGame.getPlayers().get(0));
         assertTrue("Somehow 0,0,SW is unacceptable",
                 gf.canPlaceRoad(new EdgeLocation(0,0,EdgeDirection.SouthWest)));
         // assert that a road cannot be placed off the map
@@ -179,18 +179,18 @@ public class GameModelFacadeTest {
     public void testCanBuyCity() throws Exception {
         assertTrue("Player can buy city", facade.canBuyCity());
 
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not your turn", facade.canBuyCity());
 
         game.setCurrentPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canBuyCity());
 
         game.setCurrentPlayer(game.getPlayers().get(2));
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough city pieces", facade.canBuyCity());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canBuyCity());
     }
@@ -199,18 +199,18 @@ public class GameModelFacadeTest {
     public void testCanBuyRoad() throws Exception {
         assertTrue("Player can buy road", facade.canBuyRoad());
 
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not your turn", facade.canBuyRoad());
 
         game.setCurrentPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canBuyRoad());
 
         game.setCurrentPlayer(game.getPlayers().get(2));
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough road pieces", facade.canBuyRoad());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canBuyRoad());
     }
@@ -219,18 +219,18 @@ public class GameModelFacadeTest {
     public void testCanBuySettlement() throws Exception {
         assertTrue("Player can buy settlement", facade.canBuySettlement());
 
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not your turn", facade.canBuySettlement());
 
         game.setCurrentPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canBuySettlement());
 
         game.setCurrentPlayer(game.getPlayers().get(2));
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not enough settlement pieces", facade.canBuySettlement());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canBuySettlement());
     }
@@ -239,19 +239,19 @@ public class GameModelFacadeTest {
     public void testCanBuyDevCard() throws Exception {
         assertTrue("Player can buy dev card", facade.canBuyDevCard());
 
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Not your turn", facade.canBuyDevCard());
 
         game.setCurrentPlayer(game.getPlayers().get(1));
         assertFalse("Not enough resources", facade.canBuyDevCard());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setDevCards(new DevCardHand());
         assertFalse("No available dev cards", facade.canBuyDevCard());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canBuyDevCard());
     }
@@ -270,15 +270,15 @@ public class GameModelFacadeTest {
         assertTrue("Game state should be set to playing",
                 tradeGame.getGameState() == GameState.PLAYING);
         // assert that player 3 can't afford the trade offer
-        tradeGame.setLocalPlayer(tradeGame.getPlayers().get(3));
-        assertTrue(tradeGame.getLocalPlayer().getIndex() == 3);
-        assertTrue(tradeGame.getLocalPlayer().getResources().getWood() == 1);
-        assertTrue(tradeGame.getLocalPlayer().getResources().getSheep() == 1);
-        assertTrue(tradeGame.getLocalPlayer().getResources().getOre() == 1);
+        GameModelFacade.instance().setLocalPlayer(tradeGame.getPlayers().get(3));
+        assertTrue(GameModelFacade.instance().getLocalPlayer().getIndex() == 3);
+        assertTrue(GameModelFacade.instance().getLocalPlayer().getResources().getWood() == 1);
+        assertTrue(GameModelFacade.instance().getLocalPlayer().getResources().getSheep() == 1);
+        assertTrue(GameModelFacade.instance().getLocalPlayer().getResources().getOre() == 1);
         assertFalse("Player 0 to player 3 trade should not be affordable by player 3",
                 gf.canAcceptTrade());
         // assert that player 0 can't accept the trade because he is not the receiver
-        tradeGame.setLocalPlayer(tradeGame.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(tradeGame.getPlayers().get(0));
         assertFalse("Player 0 should not be able to accept the trade if he is not the receiver ",
                 gf.canAcceptTrade());
     }
@@ -288,17 +288,17 @@ public class GameModelFacadeTest {
         assertTrue("Player can play dev card", facade.canPlayDevCard());
 
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertTrue("Should be able to play a monument", facade.canPlayDevCard());
 
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not your turn", facade.canPlayDevCard());
 
         game.setCurrentPlayer(game.getPlayers().get(2));
         assertFalse("No dev cards", facade.canPlayDevCard());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canPlayDevCard());
     }
@@ -308,17 +308,17 @@ public class GameModelFacadeTest {
         assertTrue("Player can play monopoly", facade.canPlayMonopoly(ResourceType.BRICK));
 
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Already played dev card", facade.canPlayMonopoly(ResourceType.BRICK));
 
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not your turn", facade.canPlayMonopoly(ResourceType.BRICK));
 
         game.setCurrentPlayer(game.getPlayers().get(2));
         assertFalse("No monopoly card", facade.canPlayMonopoly(ResourceType.BRICK));
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canPlayMonopoly(ResourceType.BRICK));
     }
@@ -326,27 +326,27 @@ public class GameModelFacadeTest {
     @Test
     public void testCanPlaySoldier() throws Exception {
         // make sure it fails if the local player is not playing
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("A player tried to play a solider when it was not their turn", facade.canPlaySoldier(new HexLocation(0, 2)));
 
         // make sure it fails if the player has a soldier card, but it's not playable
-        game.setLocalPlayer(game.getPlayers().get(0));
-        game.getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
-        game.getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
-        game.getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
+        GameModelFacade.instance().getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
+        GameModelFacade.instance().getLocalPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
         assertFalse("A player tried to play a soldier when it was not in their playable hand", facade.canPlaySoldier(new HexLocation(0, 2)));
 
         // make sure it fails if the player has no soldier card
-        game.getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
-        game.getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
-        game.getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
+        GameModelFacade.instance().getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
+        GameModelFacade.instance().getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
+        GameModelFacade.instance().getLocalPlayer().getNewDevCards().remove(DevCardType.SOLDIER);
         assertFalse("A player tried to play a soldier when they didn't have one", facade.canPlaySoldier(new HexLocation(0, 2)));
 
         // make sure it fails if the hex location has the robber on it.
-        game.getLocalPlayer().getPlayableDevCards().add(DevCardType.SOLDIER);
+        GameModelFacade.instance().getLocalPlayer().getPlayableDevCards().add(DevCardType.SOLDIER);
         assertFalse("A player tried to play a soldier on the hex that the robber was already on", facade.canPlaySoldier(new HexLocation(0, -2)));
 
-        game.getLocalPlayer().getPlayableDevCards().add(DevCardType.SOLDIER);
+        GameModelFacade.instance().getLocalPlayer().getPlayableDevCards().add(DevCardType.SOLDIER);
         assertTrue("A player can play a soldier because they have one in their playable hand, and the hex is valid", facade.canPlaySoldier(new HexLocation(0, 2)));
     }
 
@@ -355,17 +355,17 @@ public class GameModelFacadeTest {
         assertTrue("Player can play year of plenty", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
 
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Already played dev card", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
 
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not your turn", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
 
         game.setCurrentPlayer(game.getPlayers().get(2));
         assertFalse("No year of plenty card", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canPlayYearOfPlenty(ResourceType.BRICK, ResourceType.WHEAT));
 
@@ -379,17 +379,17 @@ public class GameModelFacadeTest {
         assertTrue("Player can play monument", facade.canPlayMonument());
 
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertTrue("Can always play monument card if have any", facade.canPlayMonument());
 
-        game.setLocalPlayer(game.getPlayers().get(2));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(2));
         assertFalse("Not your turn", facade.canPlayMonument());
 
         game.setCurrentPlayer(game.getPlayers().get(2));
         assertFalse("No monument card", facade.canPlayMonument());
 
         game.setCurrentPlayer(game.getPlayers().get(0));
-        game.setLocalPlayer(game.getPlayers().get(0));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(0));
         game.setGameState(GameState.DISCARDING);
         assertFalse("Not playing phase", facade.canPlayMonument());
     }
@@ -400,7 +400,7 @@ public class GameModelFacadeTest {
         EdgeLocation p1Next2 = new EdgeLocation(-2, 1, EdgeDirection.NorthEast);
 
         IPlayer localPlayer = game.getPlayers().get(0);
-        game.setLocalPlayer(localPlayer);
+        GameModelFacade.instance().setLocalPlayer(localPlayer);
 
         assertTrue("Player should be able to play road building card", facade.canPlayRoadBuilding(p1Next1, p1Next2));
         assertFalse("Player should not be able to play road building card with roads in wrong order.",
@@ -435,7 +435,7 @@ public class GameModelFacadeTest {
         EdgeLocation p2Next1 = new EdgeLocation(1, 1, EdgeDirection.SouthWest);
         EdgeLocation p2Next2 = new EdgeLocation(1, 1, EdgeDirection.South);
         game.setCurrentPlayer(game.getPlayers().get(1));
-        game.setLocalPlayer(game.getPlayers().get(1));
+        GameModelFacade.instance().setLocalPlayer(game.getPlayers().get(1));
         assertFalse("Already played dev card, should not be able to play.", facade.canPlayRoadBuilding(p2Next1, p2Next2));
     }
 

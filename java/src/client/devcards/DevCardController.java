@@ -134,11 +134,11 @@ public class DevCardController extends Controller implements IDevCardController 
             return; // do nothing if the game object has not been created yet
         }
 
-        IPlayer player = GameModelFacade.instance().getGame().getLocalPlayer();
+        IPlayer player = GameModelFacade.instance().getLocalPlayer();
         IDevCardHand totalDevCards = player.getAllDevCards();
         //for each card type set enabled and amount
         for (DevCardType type : DevCardType.values()) {
-            getPlayCardView().setCardEnabled(type, GameModelFacade.instance().getGame().localPlayerIsPlaying() && player.canPlayDevCard(type));
+            getPlayCardView().setCardEnabled(type, GameModelFacade.instance().localPlayerIsPlaying() && player.canPlayDevCard(type));
             getPlayCardView().setCardAmount(type, totalDevCards.getCount(type));
         }
         logger.exiting("client.devcards.DevCardController", "initFromModel");

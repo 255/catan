@@ -4,7 +4,6 @@ import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.model.IGame;
 import shared.model.IPlayer;
-import shared.model.Log;
 import shared.model.ModelException;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class MonopolyCommand extends AbstractCommand {
 
         m_resourceType = resourceType;
 
-        if (!getGame().playerCanPlayMonopoly(m_resourceType, getPlayer())) {
+        if (!getGame().canPlayMonopoly(getPlayer())) {
             throw new IllegalCommandException("Player cannot play the Monopoly DevCard");
         }
     }

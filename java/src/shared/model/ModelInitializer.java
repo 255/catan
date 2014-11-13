@@ -75,7 +75,7 @@ public class ModelInitializer implements IModelInitializer {
             if (localPlayer == null) throw new ModelException("Invalid ID for local player.");
 
             logger.finer("Local player is " + localPlayer.getName() + " (" + localPlayer.getColor() + ")");
-            newGame.setLocalPlayer(localPlayer);
+            GameModelFacade.instance().setLocalPlayer(localPlayer);
 
             GameModelFacade.instance().getGame().updateComplete();
         }

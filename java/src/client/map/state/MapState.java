@@ -6,9 +6,7 @@ import shared.definitions.PieceType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
-import shared.model.Game;
 import shared.model.GameModelFacade;
-import shared.model.IGame;
 import shared.model.ModelException;
 
 import java.util.logging.Logger;
@@ -24,7 +22,7 @@ public abstract class MapState implements IMapState {
      * @return the the correct state object
      */
     public static MapState determineState() {
-        if (GameModelFacade.instance().getGame().isNotInitialized() || !GameModelFacade.instance().getGame().gameHasStarted() || !GameModelFacade.instance().getGame().isLocalPlayersTurn()) {
+        if (GameModelFacade.instance().getGame().isNotInitialized() || !GameModelFacade.instance().getGame().gameHasStarted() || !GameModelFacade.instance().isLocalPlayersTurn()) {
             logger.finer("MapState is NotPlaying.");
             return new NotPlayingState();
         }

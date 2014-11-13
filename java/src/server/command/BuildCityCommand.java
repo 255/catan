@@ -15,7 +15,7 @@ public class BuildCityCommand extends AbstractCommand {
     public BuildCityCommand(IGame game, IPlayer player, VertexLocation location) throws IllegalCommandException {
         super(game, player, "built a city");
 
-        if (!getGame().playerCanBuildCity(player, location)) {
+        if (!getGame().canBuildCity(player, location)) {
             throw new IllegalCommandException("Player " + player.getName() + " cannot build a city at " + location);
         }
 

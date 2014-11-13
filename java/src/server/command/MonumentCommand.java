@@ -16,7 +16,7 @@ public class MonumentCommand extends AbstractCommand {
 
         super(game, player, "played a monument card");
 
-        if (!getGame().playerCanPlayMonument(m_player)) {
+        if (!getGame().canPlayMonument(m_player)) {
             throw new IllegalCommandException("Player attempting to play monument card cannot do that");
         }
     }

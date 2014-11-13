@@ -55,7 +55,7 @@ public class PlayingState extends MapState {
     @Override
     public void startMove(MapController controller, PieceType pieceType) {
         // allowed to cancel
-        controller.getView().startDrop(pieceType, GameModelFacade.instance().getGame().getLocalPlayer().getColor(), true);
+        controller.getView().startDrop(pieceType, GameModelFacade.instance().getLocalPlayer().getColor(), true);
     }
 
     /**
@@ -116,7 +116,7 @@ public class PlayingState extends MapState {
     @Override
     public void playSoldierCard(MapController controller) {
         assert m_isPlayingSoldier == false;
-        assert GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER);
+        assert GameModelFacade.instance().getLocalPlayer().canPlayDevCard(DevCardType.SOLDIER);
 
         m_isPlayingSoldier = true;
 
@@ -132,7 +132,7 @@ public class PlayingState extends MapState {
     @Override
     public void playRoadBuildingCard(MapController controller) {
         assert m_isPlayingRoadBuildingCard == false : "Wait -- already was playing road building card!";
-        assert GameModelFacade.instance().getGame().getLocalPlayer().canPlayDevCard(DevCardType.ROAD_BUILD);
+        assert GameModelFacade.instance().getLocalPlayer().canPlayDevCard(DevCardType.ROAD_BUILD);
 
         m_isPlayingRoadBuildingCard = true;
         controller.startMove(PieceType.ROAD);

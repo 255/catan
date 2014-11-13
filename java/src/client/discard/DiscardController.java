@@ -92,7 +92,7 @@ public class DiscardController extends Controller implements IDiscardController 
             if(getDiscardView().isModalShowing()) getDiscardView().closeThisModal();
         }
         else {
-            if(GameModelFacade.instance().getGame().getLocalPlayer().needsToDiscard()) {
+            if(GameModelFacade.instance().localPlayerIsDiscarding()) {
                 if (!getDiscardView().isModalShowing()) {
                     resetModal();
                     getDiscardView().showModal();
@@ -174,7 +174,7 @@ public class DiscardController extends Controller implements IDiscardController 
 
     private boolean everyoneHasDiscarded() {
         List<IPlayer> players = GameModelFacade.instance().getGame().getPlayers();
-        int localIndex = GameModelFacade.instance().getGame().getLocalPlayer().getIndex();
+        int localIndex = GameModelFacade.instance().getLocalPlayer().getIndex();
         for(IPlayer p : players) {
             if(!p.hasDiscarded() && p.getIndex() != localIndex) {
                 return false;
@@ -185,7 +185,7 @@ public class DiscardController extends Controller implements IDiscardController 
 
     private void resetModal() {
         discardRb = new ResourceBank();
-        playerBank = GameModelFacade.instance().getPlayerResources();
+        playerBank = GameModelFacade.instance().getLocalPlayerResources();
         half = (int)((float)(playerBank.getCount() / 2.0));
         getDiscardView().setStateMessage(generateStateMessage());
 
