@@ -19,7 +19,7 @@ public interface IGameManager {
      * @param playerColor color that player wants to be in the game.
      * @return game object of the game that the player joined
      */
-    public IGame joinGame(int gameId, IUser user, CatanColor playerColor);
+    public boolean joinGame(int gameId, IUser user, CatanColor playerColor);
 
     /**
      * Creates a new game on the server.
@@ -46,4 +46,5 @@ public interface IGameManager {
      * @param gameIndex index of game to remove
      */
     public void removeGame(int gameIndex);
+
 }

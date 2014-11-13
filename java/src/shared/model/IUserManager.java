@@ -34,4 +34,12 @@ public interface IUserManager {
      * @return user object if the user exists, otherwise returns null
      */
     public IUser loginUser(String username, String password);
+
+    /**
+     * Get user by ID (from cookie).
+     * This throws an exception if the user does not exist
+     * @param id the user's ID
+     * @return the user
+     */
+    public IUser getUser(int id) throws ModelException;
 }

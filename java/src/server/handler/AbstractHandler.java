@@ -1,22 +1,22 @@
 package server.handler;
 
 import java.io.*;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.MalformedJsonException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import server.ServerException;
 import server.command.IllegalCommandException;
-import shared.model.Game;
-import shared.model.GameSerializer;
+import shared.definitions.CatanColor;
+import shared.model.ModelException;
+import shared.model.serialization.CatanColorAdapter;
 
 /**
  * A superclass for all request handlers.
@@ -31,7 +31,8 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 	private static Logger logger = Logger.getLogger("catanserver");
 
     // the Gson deserializer, which will be configured to handle game objects
-    private static Gson gson = new GsonBuilder().registerTypeAdapter(Game.class, new GameSerializer()).create();
+    //protected static Gson gson = new GsonBuilder().registerTypeAdapter(Game.class, new GameSerializer()).create();
+    protected static Gson gson = new GsonBuilder().registerTypeAdapter(CatanColor.class, new CatanColorAdapter()).create();
 
     private Class<ReqType> m_reqClass;
     private FacadeType m_facade; // the class where the request data is forwarded
@@ -56,12 +57,12 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
      * Extract the data from the request and return the result.
      * This is the only method most concrete classes will need to define. Basically, the need to define
      * which facade method to call.
-	 * @param requestData the data from the HTTP request
-	 * @return the data to return to the requester
-	 * @throws server.ServerException if there was an error
+     * @param requestData the data from the HTTP request
+     * @return the data to return to the requester
+	 * @throws MissingCookieException if there was an error
 	 * in which case handle() sends back an error (500) response
 	 */
-	protected abstract RespType exchangeData(ReqType requestData) throws ServerException, IllegalCommandException;
+	protected abstract RespType exchangeData(ReqType requestData) throws MissingCookieException, IllegalCommandException, ModelException;
 
     /**
      * Examine the cookies sent by the client and extract information as needed.
@@ -70,7 +71,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
      * @param requestData the request sent by the client (in case cookie info should be attached to it)
      * @throws IOException
      */
-    protected void processRequestCookies(List<HttpCookie> cookies, ReqType requestData) throws IOException {
+    protected void processRequestCookies(CookieJar cookies, ReqType requestData) throws IOException, MissingCookieException {
         // cookies are not processed by default
     }
 
@@ -101,11 +102,12 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
         try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
             // if a valid response was generated, send it back
             if (responseData != null) {
+                exch.getResponseHeaders().add("Content-Type", "application/json");
                 gson.toJson(responseData, responseBody);
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
             }
             else {
-                exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, -1);
             }
         }
     }
@@ -118,13 +120,16 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 	public final void handle(HttpExchange exch) throws IOException {
 		logger.entering("server.RequestHandler", "handle");
 		
-		logger.info("Received HTTP request for " + this.getClass().getSimpleName()
+		logger.info("Received HTTP request for " + this.getClass().getName()
 			+ " from " + exch.getRemoteAddress() + '.'); 
 
         try {
             ReqType reqData = getRequestParameters(exch);
 
-            processRequestCookies(HttpCookie.parse(exch.getRequestHeaders().get("Cookie").toString()), reqData);
+            if (exch.getRequestHeaders().containsKey("Cookie")) {
+                CookieJar cookies = new CookieJar(exch.getRequestHeaders().get("Cookie"));
+                processRequestCookies(cookies, reqData);
+            }
 
 			RespType respData = exchangeData(reqData);
 
@@ -132,19 +137,26 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 
 			logger.fine("Responding to request with: " + respData);
 		}
-        catch (IllegalCommandException e) {
-            logger.log(Level.WARNING, "Client attempted an illegal command.", e);
+        catch (JsonSyntaxException | MalformedJsonException e) {
+            logger.log(Level.INFO, "Received an improperly formatted request.", e);
             exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, -1);
-            // TODO: should we send back the contents of the exception? Probably not...
         }
-        catch (ServerException e) {
-			logger.log(Level.WARNING, "Failed to generate a response to the HTTP request.", e);
-            exch.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, -1);
-		}
+        catch (MissingCookieException e) {
+            logger.log(Level.INFO, "Client does not have the correct cookies set to perform the desired action.", e);
+            exch.sendResponseHeaders(HttpURLConnection.HTTP_UNAUTHORIZED, -1);
+        }
+        catch (IllegalCommandException | ModelException e) {
+            logger.log(Level.WARNING, "Client attempted an illegal command.", e);
+            exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_METHOD, -1);
+        }
         catch (IOException e) {
-			logger.log(Level.WARNING, "An HTTP error occurred.", e);
+			logger.log(Level.SEVERE, "An HTTP error occurred.", e);
+            exch.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, -1);
 			throw e;
 		}
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         finally {
             logger.exiting("server.RequestHandler", "handle");
         }

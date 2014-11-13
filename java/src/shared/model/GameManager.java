@@ -2,23 +2,33 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * Created by jeffreybacon on 11/11/14.
  */
 public class GameManager implements IGameManager{
+    private static Logger logger = Logger.getLogger("catanserver");
+
     private int m_nextGameId;
     private HashMap<Integer, IGame> m_games;
 
     public GameManager() {
         m_nextGameId = 0;
-        m_games = new HashMap<Integer, IGame>();
+        m_games = new HashMap<>();
+
+        // TODO: remove this debugging code
+        createGame("Deep Blue vs. Garry Kasparov", false, false, false);
     }
 
     @Override
-    public IGame joinGame(int gameId, IUser user, CatanColor playerColor) {
-        m_games.get(gameId).joinGame(user, playerColor);
-        return m_games.get(gameId);
+    public boolean joinGame(int gameId, IUser user, CatanColor playerColor) {
+        if (m_games.containsKey(gameId)) {
+            return m_games.get(gameId).joinGame(user, playerColor);
+        }
+        else {
+            return false;
+        }
     }
 
     @Override

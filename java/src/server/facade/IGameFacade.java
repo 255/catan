@@ -1,8 +1,9 @@
 package server.facade;
 
-import server.command.IllegalCommandException;
 import shared.communication.AddAIRequestParams;
+import shared.communication.GameModelParam;
 import shared.model.Game;
+import shared.model.IGame;
 
 /**
  * A facade to support /game operations
@@ -17,7 +18,7 @@ public interface IGameFacade {
      * @param theModel an integer with the id of the game to get the model of
      * @return Game object containing a pointer to the model
      */
-    public Game model(Integer theModel);
+    public IGame model(GameModelParam theModel);
 
     /**
      * Resets the current game

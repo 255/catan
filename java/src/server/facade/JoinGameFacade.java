@@ -1,12 +1,19 @@
 package server.facade;
 
 import shared.communication.*;
-import shared.model.Game;
+import shared.model.*;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
 public class JoinGameFacade implements IJoinGameFacade{
+    private IGameManager m_gameManager;
+    private IUserManager m_userManager;
+
+    public JoinGameFacade(IGameManager gameManager, IUserManager userManager) {
+        m_gameManager = gameManager;
+        m_userManager = userManager;
+    }
 
     /**
      * Get a list of all games in progress
@@ -35,12 +42,13 @@ public class JoinGameFacade implements IJoinGameFacade{
      * Join or re-join a game (modifies cookie)
      * Swagger URL Equivalent: /games/join
      *
-     * @param joinGame the JSON wrapper with the parameters for joining a game
+     * @param params the JSON wrapper with the parameters for joining a game
      * @return boolean containing true or false depending on if the join was successful
      */
     @Override
-    public Integer join(JoinGameRequestParams joinGame) {
-        return null;
+    public Integer join(JoinGameRequestParams params) throws ModelException {
+        boolean joined = m_gameManager.joinGame(params.id, m_userManager.getUser(params.getUserId()), params.color);
+        return (joined ? params.id : null);
     }
 
     /**

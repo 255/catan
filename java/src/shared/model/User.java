@@ -4,19 +4,19 @@ package shared.model;
  * Created by jeffreybacon on 11/11/14.
  */
 public class User implements IUser {
-    private String m_username;
-    private String m_password;
-    private int m_id;
+    private String name;
+    private transient String m_password;
+    private int playerID;
 
     public User(String username, String password, int id) {
-        m_username = username;
+        name = username;
         m_password = password;
-        m_id = id;
+        playerID = id;
     }
 
     @Override
     public String getUsername() {
-        return m_username;
+        return name;
     }
 
     @Override
@@ -26,6 +26,6 @@ public class User implements IUser {
 
     @Override
     public int getId() {
-        return m_id;
+        return playerID;
     }
 }

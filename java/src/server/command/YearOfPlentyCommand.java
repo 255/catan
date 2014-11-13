@@ -3,8 +3,6 @@ package server.command;
 import shared.definitions.ResourceType;
 import shared.model.IGame;
 import shared.model.IPlayer;
-import shared.model.IResourceBank;
-import shared.model.ResourceBank;
 
 import java.util.logging.Logger;
 

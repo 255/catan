@@ -1,28 +1,28 @@
-package server;
+package server.handler;
 
 /**
- * An exception thrown when there is a problem with the server.
+ * An exception thrown when the user tries to do something without the proper cookies set.
  */
 @SuppressWarnings("serial")
-public class ServerException extends Exception {
+public class MissingCookieException extends Exception {
 	/**
-	 * Construct a ServerException with no specified message.
+	 * Construct an exception with no specified message.
 	 */
-	ServerException() {}
+	public MissingCookieException() {}
 
 	/**
 	 * Construct an exception with a specified message.
 	 * @param message a message containing details about the problem
 	 */
-	ServerException(String message) {
+	public MissingCookieException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Construct a ServerException with another exception as its cause.
+	 * Construct an with another exception as its cause.
 	 * @param cause the exception that triggered this exception
 	 */
-	ServerException(Throwable cause) {
+	public MissingCookieException(Throwable cause) {
 		super(cause);
 	}
 
@@ -32,7 +32,7 @@ public class ServerException extends Exception {
 	 * @param message a message to add to the exception
 	 * @param cause the exception that triggered this exception
 	 */
-	ServerException(String message, Throwable cause) {
+	public MissingCookieException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }

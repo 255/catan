@@ -2,11 +2,18 @@ package server.facade;
 
 import shared.communication.CredentialsParams;
 import shared.model.IUser;
+import shared.model.IUserManager;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
 public class UserFacade implements IUserFacade{
+    private IUserManager m_userManager;
+
+    public UserFacade(IUserManager userManager) {
+        m_userManager = userManager;
+    }
+
     /**
      * Used to create a login cookie and return it to the user
      * Swagger URL Equivalent: /user/login
@@ -16,7 +23,7 @@ public class UserFacade implements IUserFacade{
      */
     @Override
     public IUser login(CredentialsParams creds) {
-        return null;
+        return m_userManager.loginUser(creds.username, creds.password);
     }
 
     /**

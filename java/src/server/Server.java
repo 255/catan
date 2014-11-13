@@ -20,9 +20,7 @@ import server.handler.*;
 import shared.communication.*;
 
 import com.sun.net.httpserver.HttpServer;
-import shared.model.Game;
-import shared.model.GameManager;
-import shared.model.IUser;
+import shared.model.*;
 
 /**
  * The main class of the Settlers of Catan server.
@@ -103,9 +101,12 @@ public class Server {
      */
     private void setupHandlers(HttpServer server) {
         // define the facades
-        final IUserFacade userFacade = new UserFacade();
-        final IJoinGameFacade joinGameFacade = new JoinGameFacade();
-        final IGameFacade gameFacade = new GameFacade(new GameManager());
+        IGameManager gameManager = new GameManager();
+        IUserManager userManager = new UserManager();
+
+        final IUserFacade userFacade = new UserFacade(userManager);
+        final IJoinGameFacade joinGameFacade = new JoinGameFacade(gameManager, userManager);
+        final IGameFacade gameFacade = new GameFacade(gameManager);
         final IMovesFacade movesFacade = new MovesFacade();
         final IUtilityFacade utilityFacade = new UtilityFacade();
 
@@ -116,14 +117,14 @@ public class Server {
         //
         server.createContext("/user/login", new AbstractUserHandler(userFacade) {
             @Override
-            protected IUser exchangeData(CredentialsParams requestData) throws ServerException, IllegalCommandException {
+            protected IUser exchangeData(CredentialsParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().login(requestData);
             }
         });
 
         server.createContext("/user/register", new AbstractUserHandler(userFacade) {
             @Override
-            protected IUser exchangeData(CredentialsParams requestData) throws ServerException, IllegalCommandException {
+            protected IUser exchangeData(CredentialsParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().register(requestData);
             }
         });
@@ -143,14 +144,14 @@ public class Server {
         //
 		server.createContext("/moves/sendChat", new AbstractMovesHandler<SendChatParams>(SendChatParams.class, movesFacade) {
             @Override
-            protected Game exchangeData(SendChatParams requestData) throws ServerException, IllegalCommandException {
+            protected Game exchangeData(SendChatParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().sendChat(requestData);
             }
         });
 
 	    server.createContext("/moves/rollNumber", new AbstractMovesHandler<RollNumberParams>(RollNumberParams.class, movesFacade) {
             @Override
-            protected Game exchangeData(RollNumberParams requestData) throws ServerException, IllegalCommandException {
+            protected Game exchangeData(RollNumberParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().rollNumber(requestData);
             }
         });
@@ -160,7 +161,7 @@ public class Server {
         //
         server.createContext("/util/changeLogLevel", new AbstractHandler<Level, String, IUtilityFacade>(Level.class, utilityFacade) {
             @Override
-            protected String exchangeData(Level requestData) throws ServerException, IllegalCommandException {
+            protected String exchangeData(Level requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 getFacade().changeLogLevel(requestData);
                 return "Logging level changed to " + requestData;
             }

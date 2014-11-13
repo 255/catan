@@ -1,7 +1,9 @@
 package server.facade;
 
 import shared.communication.AddAIRequestParams;
+import shared.communication.GameModelParam;
 import shared.model.Game;
+import shared.model.IGame;
 import shared.model.IGameManager;
 
 /**
@@ -19,12 +21,12 @@ public class GameFacade implements IGameFacade {
      * Fetch the model
      * Swagger URL Equivalent: /game/model (get request)
      *
-     * @param theModel an integer with the id of the game to get the model of
+     * @param param an integer with the id of the game to get the model of
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game model(Integer theModel) {
-        return null;
+    public IGame model(GameModelParam param) {
+        return m_gameManager.getGame(param.getGameId());
     }
 
     /**

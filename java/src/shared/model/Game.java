@@ -39,6 +39,7 @@ public class Game extends Observable implements IGame {
         m_name = gameName;
 
         m_map = new CatanMap(randomPorts, randomTiles, randomNumbers);
+        m_players = new ArrayList<>();
         // TODO:use for server-side game construction from GameManager
     }
 
@@ -582,17 +583,22 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public void joinGame(IUser user, CatanColor playerColor) {
+    public boolean joinGame(IUser user, CatanColor playerColor) {
         // checks if player is already in game, if so exits method
         for(IPlayer player : m_players) {
             if(player.getId() == user.getId()) {
                 player.setColor(playerColor);
-                return;
+                return true;
             }
         }
 
         // if player is not already in game they are added to the game
-        assert m_players.size() < 4;
-        m_players.add(new Player(user.getUsername(), user.getId(), playerColor, m_players.size()));
+        if (m_players.size() < 4) {
+            m_players.add(new Player(user.getUsername(), user.getId(), playerColor, m_players.size())); // TODO: this player is uninitialized
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }

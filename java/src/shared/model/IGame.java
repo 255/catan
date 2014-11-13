@@ -211,5 +211,5 @@ public interface IGame {
 
     public void addObserver(Observer o);
 
-    public void joinGame(IUser user, CatanColor playerColor);
+    public boolean joinGame(IUser user, CatanColor playerColor);
 }

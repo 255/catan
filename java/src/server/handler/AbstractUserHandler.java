@@ -24,20 +24,24 @@ public abstract class AbstractUserHandler extends AbstractHandler<CredentialsPar
 
     @Override
     protected void generateResponse(HttpExchange exch, IUser responseData) throws IOException {
-        if (responseData == null) {
+        if (responseData != null) {
+            HttpCookie userCookie = new HttpCookie("catan.user", gson.toJson(responseData));
+            exch.getResponseHeaders().add("Set-cookie", userCookie.toString() + ";path=/;");
+
+            // write success message
+            exch.getResponseHeaders().add("Content-type", "text/plain");
+            try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
+                responseBody.write("Welcome, " + responseData.getUsername() + ".");
+                exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+            }
+        }
+        else {
             exch.getResponseHeaders().add("Content-type", "text/plain");
 
             // write an error string
             try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
                 responseBody.write("Invalid user credentials were supplied.");
+                exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
             }
-
-            exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-        }
-        else {
-            // TODO: THIS USER COOKIE WILL NOT BE CORRECTLY FORMATTED! IMPLEMENT THIS
-            HttpCookie userCookie = new HttpCookie("catan.user", responseData.toString());
-            exch.getResponseHeaders().add("Set-cookie", userCookie.toString() + ";path=/;");
-            exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
         }
     }}

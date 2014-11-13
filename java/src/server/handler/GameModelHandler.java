@@ -1,11 +1,14 @@
 package server.handler;
 
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import com.sun.net.httpserver.HttpExchange;
-import server.ServerException;
 import server.command.IllegalCommandException;
 import server.facade.IGameFacade;
 import shared.communication.GameModelParam;
 import shared.model.IGame;
+import shared.model.ModelException;
 
 import java.io.IOException;
 
@@ -28,12 +31,12 @@ public class GameModelHandler extends AbstractInGameHandler<GameModelParam, IGam
      *
      * @param requestData the data from the HTTP request
      * @return the data to return to the requester
-     * @throws server.ServerException if there was an error
+     * @throws MissingCookieException if there was an error
      *                                in which case handle() sends back an empty error (500) response
      */
     @Override
-    public IGame exchangeData(GameModelParam requestData) throws ServerException, IllegalCommandException {
-        return getFacade().model(requestData.version);
+    public IGame exchangeData(GameModelParam requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+        return getFacade().model(requestData);
     }
 
     /**
@@ -52,8 +55,14 @@ public class GameModelHandler extends AbstractInGameHandler<GameModelParam, IGam
             return new GameModelParam(null);
         }
         else {
-            int number = Integer.parseInt(query.substring(query.indexOf('=') + 1));
-            return new GameModelParam(number);
+            try {
+                int number = Integer.parseInt(query.substring(query.indexOf('=') + 1));
+                // TODO: do we have to handle if they pass in the correct model number? (returns true in this case)
+                return new GameModelParam(number);
+            }
+            catch (NumberFormatException e) {
+                throw new MalformedJsonException(e);
+            }
         }
     }
 }

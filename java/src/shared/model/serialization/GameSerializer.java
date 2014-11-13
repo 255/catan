@@ -1,8 +1,9 @@
-package shared.model;
+package shared.model.serialization;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import shared.model.Game;
 
 import java.io.IOException;
 
