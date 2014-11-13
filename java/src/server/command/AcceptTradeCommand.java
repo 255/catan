@@ -37,7 +37,7 @@ public class AcceptTradeCommand extends AbstractCommand {
      * Player indicates whether they accept the trade or not. If so,
      * resources are moved to complete the transaction.
      */
-    public void execute() {
+    public void performAction() {
         // get the player object
         //IPlayer p = getGame().getPlayers().get(playerIndex);
 

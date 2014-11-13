@@ -11,7 +11,7 @@ public class AddAICommand extends AbstractCommand {
      * Adds an AI player to the game that this request
      * was made from.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

@@ -38,7 +38,7 @@ public class MonopolyCommand extends AbstractCommand {
      * the player requested from all other player's hands
      * and adds them to the playing player's hand.
      */
-    public void execute() {
+    public void performAction() {
 
         // Get all the players in the game
         List<IPlayer> players = getGame().getPlayers();

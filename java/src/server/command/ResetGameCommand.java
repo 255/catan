@@ -10,7 +10,7 @@ public class ResetGameCommand extends AbstractCommand {
     /**
      * Resets the specified game
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

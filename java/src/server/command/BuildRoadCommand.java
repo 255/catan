@@ -10,18 +10,16 @@ import shared.model.IPlayer;
  * @author StevenBarnett
  */
 public class BuildRoadCommand extends AbstractCommand {
-    private IPlayer m_player;
     private EdgeLocation m_location;
     private boolean m_free;
 
     public BuildRoadCommand(IGame game, IPlayer player, EdgeLocation location, boolean free) throws IllegalCommandException {
-        super(game);
+        super(game, player, "built a road");
 
         if (!getGame().playerCanPlaceRoad(player, location)) {
             throw new IllegalCommandException("Player " + player.getName() + " cannot build a road at " + location);
         }
 
-        m_player = player;
         m_location = location;
         m_free = free;
     }
@@ -31,7 +29,7 @@ public class BuildRoadCommand extends AbstractCommand {
      * request. Reduces the price of a road from that
      * player's resources.
      */
-    public void execute() {
-        getGame().getMap().placeRoad(m_player.buildRoad(m_free), m_location);
+    public void performAction() {
+        getGame().getMap().placeRoad(getPlayer().buildRoad(m_free), m_location);
     }
 }

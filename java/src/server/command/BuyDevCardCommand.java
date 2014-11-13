@@ -1,6 +1,5 @@
 package server.command;
 
-import server.ServerException;
 import shared.definitions.DevCardType;
 import shared.model.IGame;
 import shared.model.IPlayer;
@@ -40,7 +39,7 @@ public class BuyDevCardCommand extends AbstractCommand {
      * The price of a development card is reduced from the
      * player's resources.
      */
-    public void execute() {
+    public void performAction() {
 
         // Randomly pick a dev card from the dev card hand
         DevCardType devCard = getGame().getDevCards().drawCard();

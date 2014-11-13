@@ -3,8 +3,6 @@ package server.command;
 import shared.definitions.ResourceType;
 import shared.model.Game;
 import shared.model.IPlayer;
-import shared.model.IResourceBank;
-import shared.model.ResourceBank;
 
 /**
  * Class that represents the MaritimeTrade request
@@ -65,7 +63,7 @@ public class MaritimeTradeCommand extends AbstractCommand {
      * player requests are added to their hand. Resources that
      * the player trades in are taken from their hand.
      */
-    public void execute() {
+    public void performAction() {
         // get the player from the index
         //IPlayer p = getGame().getPlayers().get(playerIndex);
 

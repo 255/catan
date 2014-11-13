@@ -25,7 +25,7 @@ public class MonumentCommand extends AbstractCommand {
      * dev card. Moves the dev card from the old dev cards hand.
      * Adds a victory point to the player's total.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

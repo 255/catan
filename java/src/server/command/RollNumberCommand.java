@@ -31,7 +31,7 @@ public class RollNumberCommand extends AbstractCommand {
      * what players based on the number rolled, and
      * adds those resources to the player's hands.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

@@ -12,7 +12,7 @@ public class SoldierCommand extends AbstractCommand {
      * player choose which player to rob from if multiple
      * players are on that tile location.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

@@ -36,7 +36,7 @@ public class OfferTradeCommand extends AbstractCommand {
      * player the requested resources and the resources
      * to be given.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

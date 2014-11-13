@@ -10,7 +10,7 @@ public class RegisterCommand extends AbstractCommand {
     /**
      * Registers a new user on the server
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

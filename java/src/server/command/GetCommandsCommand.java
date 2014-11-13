@@ -11,7 +11,7 @@ public class GetCommandsCommand extends AbstractCommand {
      * Returns a list of all the commands that have
      * been executed in the game so far.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

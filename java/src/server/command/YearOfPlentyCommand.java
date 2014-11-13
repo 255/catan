@@ -11,7 +11,7 @@ public class YearOfPlentyCommand extends AbstractCommand {
      * Gives the playing player two resource cards
      * of their choosing.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

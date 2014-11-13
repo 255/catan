@@ -10,7 +10,7 @@ public class SaveGameCommand extends AbstractCommand {
     /**
      * Saves the current state of the specified game
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

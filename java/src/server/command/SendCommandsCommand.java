@@ -10,7 +10,7 @@ public class SendCommandsCommand extends AbstractCommand {
     /**
      * Sends a list of commands.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

@@ -10,7 +10,7 @@ public class SendChatCommand extends AbstractCommand {
     /**
      * Adds a new chat to the chat history.
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }

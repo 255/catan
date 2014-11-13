@@ -39,7 +39,7 @@ public class DiscardCardsCommand extends AbstractCommand {
      * Subtracts the specified cards from the hand
      * of the player who has to discard cards.
      */
-    public void execute() {
+    public void performAction() {
         // remove the discarded cards from the provided player index
         //IPlayer p = getGame().getPlayers().get(playerIndex);
         player.getResources().subtract(discardedCards);

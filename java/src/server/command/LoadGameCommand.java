@@ -10,7 +10,7 @@ public class LoadGameCommand extends AbstractCommand {
     /**
      * Loads a specified game onto the server
      */
-    public void execute() {
+    public void performAction() {
 
     }
 }
