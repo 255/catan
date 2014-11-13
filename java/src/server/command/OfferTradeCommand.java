@@ -21,7 +21,7 @@ public class OfferTradeCommand extends AbstractCommand {
             IPlayer receiver,
             Game theGame) throws IllegalCommandException {
 
-        super(theGame, player, "offered a trade to" + receiver.getName());
+        super(theGame, player, "offered a trade to " + receiver.getName());
         this.offer = offer;
         this.receiver = receiver;
 

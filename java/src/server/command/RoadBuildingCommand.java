@@ -14,8 +14,8 @@ public class RoadBuildingCommand extends AbstractCommand {
     private EdgeLocation m_location1;
     private EdgeLocation m_location2;
 
-    public RoadBuildingCommand(IGame game, IPlayer player, EdgeLocation edge1, EdgeLocation edge2, String actionDescription) throws IllegalCommandException {
-        super(game, player, actionDescription);
+    public RoadBuildingCommand(IGame game, IPlayer player, EdgeLocation edge1, EdgeLocation edge2) throws IllegalCommandException {
+        super(game, player, "played a road building card");
 
         if (getGame().canPlayRoadBuilding(getPlayer(), edge1, edge2)) {
             throw new IllegalCommandException("Player " + player.getName() + " cannot build roads at " + edge1 + " and " + edge2);

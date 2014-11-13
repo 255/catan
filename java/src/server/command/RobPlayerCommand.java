@@ -11,8 +11,8 @@ import shared.model.IPlayer;
  */
 public class RobPlayerCommand extends AbstractCommand {
 
-    public RobPlayerCommand(IGame game, IPlayer player, String actionDescription, IPlayer victim, HexLocation location) {
-        super(game, player, actionDescription);
+    public RobPlayerCommand(IGame game, IPlayer player, IPlayer victim, HexLocation location) {
+        super(game, player, "robbed " + victim.getName());
         // TODO: implement
     }
 
