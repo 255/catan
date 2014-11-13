@@ -10,20 +10,25 @@ import shared.model.IPlayer;
  */
 public class SendChatCommand extends AbstractCommand {
 
+    private String m_message;
+
     /**
      * A constructor for a command that does not produce a log message.
      *
      * @param game
      * @param player
      */
-    public SendChatCommand(IGame game, IPlayer player) {
+    public SendChatCommand(IGame game, IPlayer player, String message) {
         super(game, player);
+
+        m_message = message;
     }
 
     /**
      * Adds a new chat to the chat history.
      */
     public void performAction() {
-        //TODO: implement
+
+        getGame().getChatHistory().addMessage(getPlayer().getColor(), m_message);
     }
 }
