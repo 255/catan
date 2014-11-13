@@ -12,18 +12,16 @@ import shared.model.ResourceBank;
  */
 public class OfferTradeCommand extends AbstractCommand {
 
-    private IPlayer player;
     private ResourceBank offer;
-    private int receiver;
+    private IPlayer receiver;
 
     OfferTradeCommand(
             IPlayer player,
             ResourceBank offer,
-            int receiver,
+            IPlayer receiver,
             Game theGame) throws IllegalCommandException {
 
-        super(theGame);
-        this.player = player;
+        super(theGame, player, "offered a trade to" + receiver.getName());
         this.offer = offer;
         this.receiver = receiver;
 

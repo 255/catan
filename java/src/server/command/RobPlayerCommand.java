@@ -1,5 +1,9 @@
 package server.command;
 
+import shared.locations.HexLocation;
+import shared.model.IGame;
+import shared.model.IPlayer;
+
 /**
  * Class that represents the RobPlayer request
  *
@@ -7,11 +11,17 @@ package server.command;
  */
 public class RobPlayerCommand extends AbstractCommand {
 
+    public RobPlayerCommand(IGame game, IPlayer player, String actionDescription, IPlayer victim, HexLocation location) {
+        super(game, player, actionDescription);
+        // TODO: implement
+    }
+
     /**
      * Takes a random card from the robbed player's hand
      * and moves that card to the robbing player's hand.
      */
     public void performAction() {
+        // TODO: implement
 
     }
 }

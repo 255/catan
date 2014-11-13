@@ -12,16 +12,12 @@ import shared.model.Prices;
  */
 public class BuyDevCardCommand extends AbstractCommand {
 
-    private IPlayer m_player;
-
     public BuyDevCardCommand(IGame game, IPlayer player) throws IllegalCommandException {
 
-        super(game);
-
-        m_player = player;
+        super(game, player, "bought a development card");
 
         // Check that player has enough resources
-        if (!m_player.canAfford(Prices.DEV_CARD)) {
+        if (!getPlayer().canAfford(Prices.DEV_CARD)) {
             throw new IllegalCommandException("Player tried to buy DevCard, but player does not have the resources to buy one");
         }
 
@@ -45,10 +41,10 @@ public class BuyDevCardCommand extends AbstractCommand {
         DevCardType devCard = getGame().getDevCards().drawCard();
 
         // Put it in the player's newDevCards hand
-        m_player.getNewDevCards().add(devCard);
+        getPlayer().getNewDevCards().add(devCard);
 
         // Remove resources from the player
-        m_player.removeResources(Prices.DEV_CARD);
+        getPlayer().removeResources(Prices.DEV_CARD);
 
         // Put removed resources in the Game ResourceBank
         getGame().getResourceBank().add(Prices.DEV_CARD);

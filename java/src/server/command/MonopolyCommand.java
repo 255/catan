@@ -19,17 +19,15 @@ public class MonopolyCommand extends AbstractCommand {
 
     private final static Logger logger = Logger.getLogger("catan");
 
-    private IPlayer m_player;
     private ResourceType m_resourceType;
 
     public MonopolyCommand(IGame game, IPlayer player, ResourceType resourceType) throws IllegalCommandException {
 
-        super(game);
+        super(game, player, "played a monopoly card");
 
-        m_player = player;
         m_resourceType = resourceType;
 
-        if (!getGame().playerCanPlayMonopoly(m_resourceType, m_player)) {
+        if (!getGame().playerCanPlayMonopoly(m_resourceType, getPlayer())) {
             throw new IllegalCommandException("Player cannot play the Monopoly DevCard");
         }
     }
@@ -60,10 +58,10 @@ public class MonopolyCommand extends AbstractCommand {
             }
         }
 
-        m_player.getResources().add(resourceCount, m_resourceType);
+        getPlayer().getResources().add(resourceCount, m_resourceType);
 
         try {
-            m_player.getPlayableDevCards().remove(DevCardType.MONOPOLY);
+            getPlayer().getPlayableDevCards().remove(DevCardType.MONOPOLY);
         } catch (ModelException ex) {
             logger.finer("ModelException was thrown in the MonopolyCommand class when attempting to remove a Monopoly DevCard from " +
                     "a player's hand after they played it. Exception message is as follows: " + ex.getMessage());

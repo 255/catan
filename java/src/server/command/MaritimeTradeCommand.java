@@ -12,7 +12,6 @@ import shared.model.IPlayer;
 public class MaritimeTradeCommand extends AbstractCommand {
 
     //private int playerIndex;
-    private IPlayer player;
     private int ratio;
     private ResourceType inputResource;
     private ResourceType outputResource;
@@ -25,9 +24,7 @@ public class MaritimeTradeCommand extends AbstractCommand {
             ResourceType outputResource,
             Game theGame) throws IllegalCommandException {
 
-        super(theGame);
-        //this.playerIndex = playerIndex;
-        this.player = player;
+        super(theGame, player, "performed a maritime trade");
         this.ratio = ratio;
         this.inputResource = inputResource;
         this.outputResource = outputResource;
@@ -68,13 +65,13 @@ public class MaritimeTradeCommand extends AbstractCommand {
         //IPlayer p = getGame().getPlayers().get(playerIndex);
 
         // remove the input resources from the player
-        player.getResources().subtract(ratio, inputResource);
+        getPlayer().getResources().subtract(ratio, inputResource);
 
         // give the input resources to the game bank
         getGame().getResourceBank().add(ratio, inputResource);
 
         // add the output resources to the player
-        player.getResources().add(1, outputResource);
+        getPlayer().getResources().add(1, outputResource);
 
         // remove output resources from the game bank
         getGame().getResourceBank().subtract(1, outputResource);

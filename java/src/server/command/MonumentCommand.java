@@ -14,7 +14,7 @@ public class MonumentCommand extends AbstractCommand {
 
     public MonumentCommand(IGame game, IPlayer player) throws IllegalCommandException {
 
-        super(game);
+        super(game, player, "played a monument card");
 
         if (!getGame().playerCanPlayMonument(m_player)) {
             throw new IllegalCommandException("Player attempting to play monument card cannot do that");

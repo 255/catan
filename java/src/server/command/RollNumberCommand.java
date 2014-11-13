@@ -9,19 +9,15 @@ import shared.model.IPlayer;
  * @author StevenBarnett
  */
 public class RollNumberCommand extends AbstractCommand {
-    private int m_playerIndex;
     private int m_number;
 
-    public RollNumberCommand(IGame game, int playerIndex, int number) throws IllegalCommandException{
-        super(game);
-        m_playerIndex = playerIndex;
+    public RollNumberCommand(IGame game, IPlayer player, int number) throws IllegalCommandException{
+        super(game, player, "rolled a " + number);
         m_number = number;
-
-        IPlayer player = getGame().getPlayers().get(m_playerIndex);
 
         if(!getGame().isPlayersTurn(player)) {
             throw new IllegalCommandException(
-                    "It is not this player's turn: " + m_playerIndex
+                    "It is not this player's turn: " + getPlayer().getName()
             );
         }
     }

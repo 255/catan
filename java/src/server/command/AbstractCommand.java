@@ -27,6 +27,17 @@ public abstract class AbstractCommand implements ICommand {
     }
 
     /**
+     * A constructor for a command that does not produce a log message.
+     * @param game
+     * @param player
+     */
+    public AbstractCommand(IGame game, IPlayer player) {
+        m_game = game;
+        m_player = player;
+        m_action = null;
+    }
+
+    /**
      * Implements all the functionality and interaction with the Server Model that
      * this command requires
      */
@@ -44,9 +55,11 @@ public abstract class AbstractCommand implements ICommand {
     protected abstract void performAction();
 
     private void logAction() {
-        String message = m_player.getName() + " " + m_action;
-        getGame().getGameplayLog().addMessage(m_player.getColor(), message);
-        logger.info(message);
+        if (m_action != null) {
+            String message = m_player.getName() + " " + m_action;
+            getGame().getGameplayLog().addMessage(m_player.getColor(), message);
+            logger.info(message);
+        }
     }
 
     protected IPlayer getPlayer() {

@@ -11,17 +11,14 @@ import shared.model.ITradeOffer;
  */
 public class AcceptTradeCommand extends AbstractCommand {
     //private int playerIndex;
-    private IPlayer player;
     private boolean willAccept;
 
     public AcceptTradeCommand(
-            //int playerIndex,
             IPlayer player,
             boolean willAccept,
             IGame game) throws IllegalCommandException {
-        super(game);
+        super(game, player, (willAccept ? "accepted the trade" : "rejected the trade"));
         //this.playerIndex = playerIndex;
-        this.player = player;
         this.willAccept = willAccept;
 
         // can the trade be accepted?
