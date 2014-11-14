@@ -30,12 +30,12 @@ public class JoinGameFacade implements IJoinGameFacade{
      * Creates a game and puts it in the Games List
      * Swagger URL Equivalent: /games/create
      *
-     * @param createGame the JSON wrapper with the parameters for creating a game
+     * @param params the JSON wrapper with the parameters for creating a game
      * @return Game object containing a pointer to the created game
      */
     @Override
-    public Game create(CreateGameRequestParams createGame) {
-        return null;
+    public GameInfo create(CreateGameRequestParams params) throws ModelException {
+        return new GameInfo(m_gameManager.createGame(params.name, params.randomPorts, params.randomTiles, params.randomNumbers));
     }
 
     /**

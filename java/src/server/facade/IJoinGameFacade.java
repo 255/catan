@@ -25,7 +25,7 @@ public interface IJoinGameFacade {
      * @param createGame the JSON wrapper with the parameters for creating a game
      * @return Game object containing a pointer to the created game
      */
-    public Game create(CreateGameRequestParams createGame);
+    public GameInfo create(CreateGameRequestParams createGame) throws ModelException;
 
     /**
      * Join or re-join a game (modifies cookie)

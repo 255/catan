@@ -5,6 +5,7 @@ import shared.communication.GameModelParam;
 import shared.model.Game;
 import shared.model.IGame;
 import shared.model.IGameManager;
+import shared.model.User;
 
 /**
  * A facade to support /game operations
@@ -70,12 +71,17 @@ public class GameFacade implements IGameFacade {
      * (Optional)
      * Swagger URL Equivalent: /game/addAI
      *
-     * @param addAI JSON wrapper containing the parameters for adding an AI player
+     * @param params JSON wrapper containing the parameters for adding an AI player
      * @return boolean true/false depending on if AI is added or not
      */
     @Override
-    public boolean addAI(AddAIRequestParams addAI) {
-        return false;
+    public boolean addAI(AddAIRequestParams params) {
+        // TODO: this is temporary test code
+        IGame game = m_gameManager.getGame(params.getGameId());
+        game.joinGame(new User("Hal 9000", "", 9000), shared.definitions.CatanColor.RED);
+        game.joinGame(new User("GLaDOS", "", 1234567), shared.definitions.CatanColor.BLUE);
+        game.joinGame(new User("The MCP", "", 1980), shared.definitions.CatanColor.WHITE);
+        return true;
     }
 
     /**

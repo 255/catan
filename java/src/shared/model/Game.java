@@ -688,6 +688,6 @@ public class Game extends Observable implements IGame {
         setCurrentPlayer(nextPlayer);
 
         // change state to the Rolling state for the next player to begin their turn
-        setGameState(GameState.ROLLING);
+        setGameState(GameState.Rolling);
     }
 }

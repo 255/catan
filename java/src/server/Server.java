@@ -141,6 +141,13 @@ public class Server {
             }
         });
 
+        server.createContext("/games/create", new AbstractHandler<CreateGameRequestParams, GameInfo, IJoinGameFacade>(CreateGameRequestParams.class, joinGameFacade) {
+            @Override
+            protected GameInfo exchangeData(CreateGameRequestParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().create(requestData);
+            }
+        });
+
         //
         // game
         //
@@ -150,6 +157,14 @@ public class Server {
             @Override
             protected String[] exchangeData(Void requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().listAI();
+            }
+        });
+
+        server.createContext("/game/addAI", new AbstractInGameHandler<AddAIRequestParams, IGameFacade>(AddAIRequestParams.class, gameFacade) {
+            @Override
+            protected IGame exchangeData(AddAIRequestParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                getFacade().addAI(requestData); // TODO: this is testing code
+                return null;
             }
         });
 

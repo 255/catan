@@ -20,6 +20,9 @@ public class GameAdapter extends TypeAdapter<Game> {
      */
     @Override
     public void write(JsonWriter jsonWriter, Game game) throws IOException {
+
+        // TODO: ADD TRADE OFFER SERIALIZATION!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         jsonWriter.beginObject();
 
         jsonWriter.name("deck");

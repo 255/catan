@@ -58,7 +58,7 @@ public class MapGenerator {
             9,
             3,
             // column 0
-            0, // desert hex
+            //Tile.DESERT_NUMBER, // desert hex: EXCLUDED since whichever hex is desert gets this #
             3,
             11,
             4,
@@ -100,7 +100,8 @@ public class MapGenerator {
         final int MIN_Y = -2;
         final int MAX_Y =  2;
 
-        int tileCount = 0;
+        Int tileCount = new Int(0);
+        Int numberCount = new Int(0);
 
         for (int x = MIN_X; x <= MAX_X; ++x) {
             int y_start;
@@ -115,8 +116,7 @@ public class MapGenerator {
                 y_end = MAX_X - x;
             }
             for (int y = y_start; y <= y_end; ++y) {
-                placeTile(x, y, tileCount);
-                tileCount++;
+                placeTile(x, y, tileCount, numberCount);
             }
         }
 
@@ -132,11 +132,18 @@ public class MapGenerator {
      * @param y the y
      * @param tileCount which tile this is
      */
-    private void placeTile(int x, int y, int tileCount) {
+    private void placeTile(int x, int y, Int tileCount, Int numberCount) {
         HexLocation hexLoc = new HexLocation(x, y);
 
-        HexType type = (randomTiles ? getRandom(HEXES, tileIndices)     : HEXES[tileCount]);
-        int number = (randomNumbers ? getRandom(NUMBERS, numberIndices) : NUMBERS[tileCount]);
+        HexType type = (randomTiles ? getRandom(HEXES, tileIndices)     : HEXES[tileCount.postincrement()]);
+
+        int number;
+        if (type == HexType.DESERT) {
+            number = Tile.DESERT_NUMBER;
+        }
+        else {
+            number = (randomNumbers ? getRandom(NUMBERS, numberIndices) : NUMBERS[numberCount.postincrement()]);
+        }
 
         ITile newTile = Tile.generateNewTile(type, hexLoc, number);
 
@@ -149,7 +156,7 @@ public class MapGenerator {
         tiles.put(hexLoc, newTile);
     }
 
-    private <T> List<Integer> generateIndexList(T[] sourceArray) {
+    private static <T> List<Integer> generateIndexList(T[] sourceArray) {
         List<Integer> indexList = new ArrayList<>(sourceArray.length);
         for (int i = 0; i < sourceArray.length; ++i) {
             indexList.add(i);
@@ -157,7 +164,7 @@ public class MapGenerator {
         return indexList;
     }
 
-    private <T> T getRandom(T[] source, List<Integer> remainingIndices) {
+    private static <T> T getRandom(T[] source, List<Integer> remainingIndices) {
         final Random rand = new Random();
 
         assert remainingIndices.size() > 0 : "No indices left to choose from!";
@@ -169,10 +176,35 @@ public class MapGenerator {
 
         T value = source[sourceIndex];
 
-        // swap in the last for the current index -- O(1) deletion
-        remainingIndices.add(index, remainingIndices.get(remainingIndices.size()-1));
-        remainingIndices.remove(remainingIndices.size()-1);
+        removeItem(remainingIndices, index);
 
         return value;
+    }
+
+    /** Remove in O(1) time by swapping in last index */
+    private static <T> void removeItem(List<T> items, int index) {
+        items.set(index, items.get(items.size()-1));
+        items.remove(items.size()-1);
+    }
+
+    /** An int that can be passed by reference */
+    private class Int {
+        public int value;
+
+        public int preincrement() {
+            return ++value;
+        }
+
+        public int postincrement() {
+            return value++;
+        }
+
+        public Int(int value) {
+            this.value = value;
+        }
+
+        public Int() {
+            this.value = 0;
+        }
     }
 }

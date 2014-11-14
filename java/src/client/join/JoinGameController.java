@@ -160,7 +160,7 @@ public class JoinGameController extends Controller implements IJoinGameControlle
 	public void createNewGame() {
         if (!getNewGameView().getTitle().equals("")) {
             try {
-                m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getUseRandomPorts(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
+                m_admin.createGame(getNewGameView().getRandomlyPlaceHexes(), getNewGameView().getRandomlyPlaceNumbers(), getNewGameView().getUseRandomPorts(), getNewGameView().getTitle());
                 getNewGameView().closeTopModal();
                 getGames();
                 m_admin.joinGame(prevGames.length - 1, CatanColor.RED);
