@@ -17,6 +17,7 @@ import server.command.IllegalCommandException;
 import shared.definitions.CatanColor;
 import shared.model.ModelException;
 import shared.model.serialization.CatanColorAdapter;
+import shared.model.serialization.Serializer;
 
 /**
  * A superclass for all request handlers.
@@ -29,10 +30,6 @@ import shared.model.serialization.CatanColorAdapter;
  */
 public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements HttpHandler {
 	private static Logger logger = Logger.getLogger("catanserver");
-
-    // the Gson deserializer, which will be configured to handle game objects
-    //protected static Gson gson = new GsonBuilder().registerTypeAdapter(Game.class, new GameSerializer()).create();
-    protected static Gson gson = new GsonBuilder().registerTypeAdapter(CatanColor.class, new CatanColorAdapter()).create();
 
     private Class<ReqType> m_reqClass;
     private FacadeType m_facade; // the class where the request data is forwarded
@@ -85,7 +82,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
      */
     protected ReqType getRequestParameters(HttpExchange exch) throws IOException {
        try (InputStreamReader requestBody = new InputStreamReader(exch.getRequestBody())) {
-           return gson.fromJson(requestBody, m_reqClass);
+           return Serializer.instance().fromJson(requestBody, m_reqClass);
        }
     }
 
@@ -103,7 +100,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
             // if a valid response was generated, send it back
             if (responseData != null) {
                 exch.getResponseHeaders().add("Content-Type", "application/json");
-                gson.toJson(responseData, responseBody);
+                Serializer.instance().toJson(responseData, responseBody);
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
             }
             else {

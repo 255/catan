@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import server.facade.IUserFacade;
 import shared.communication.CredentialsParams;
 import shared.model.IUser;
+import shared.model.serialization.Serializer;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -25,7 +26,7 @@ public abstract class AbstractUserHandler extends AbstractHandler<CredentialsPar
     protected void generateResponse(HttpExchange exch, IUser responseData) throws IOException {
         if (responseData != null) {
             CookieJar cookies = new CookieJar();
-            cookies.addCookie("catan.user", gson.toJson(responseData));
+            cookies.addCookie("catan.user", Serializer.instance().toJson(responseData));
             cookies.addCookie("path", "/");
 
             exch.getResponseHeaders().add("Set-cookie", cookies.toString());
