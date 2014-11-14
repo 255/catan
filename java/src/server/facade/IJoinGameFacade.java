@@ -16,7 +16,7 @@ public interface IJoinGameFacade {
      *
      * @return GamesList object containing the list of current running games on the server
      */
-    public GamesList list();
+    public GameInfo[] list();
 
     /**
      * Creates a game and puts it in the Games List

@@ -22,8 +22,8 @@ public class JoinGameFacade implements IJoinGameFacade{
      * @return GamesList object containing the list of current running games on the server
      */
     @Override
-    public GamesList list() {
-        return null;
+    public GameInfo[] list() {
+        return GameInfo.toGameInfoArray(m_gameManager.listGames());
     }
 
     /**

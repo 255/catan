@@ -16,6 +16,7 @@ import java.util.*;
 public class Game extends Observable implements IGame {
     // only used server side
     private transient String m_name;
+    private transient Integer m_id;
 
     private GameState m_state;
     private IPlayer m_currentPlayer;
@@ -32,6 +33,8 @@ public class Game extends Observable implements IGame {
     private IPlayer m_winner;
 
     public Game() {
+        m_name = null;
+        m_id = null;
         reset();
     }
 
@@ -42,8 +45,9 @@ public class Game extends Observable implements IGame {
      * @param randomTiles whether to randomize tile locations
      * @param randomNumbers whether to randomize number placement
      */
-    public Game(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
+    public Game(String gameName, int id, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
         m_name = gameName;
+        m_id = id;
 
         // TODO:use for server-side game construction from GameManager
 
@@ -80,6 +84,21 @@ public class Game extends Observable implements IGame {
     }
 
 
+    /**
+     * Get the game's name
+     */
+    @Override
+    public String getName() {
+        return m_name;
+    }
+
+    /**
+     * Get the game's gameID
+     */
+    @Override
+    public Integer getID() {
+        return m_id;
+    }
 
     /**
      * Get whether the game has been initialized yet.

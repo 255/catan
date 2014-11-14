@@ -1,6 +1,9 @@
 package shared.model;
 
 import shared.definitions.CatanColor;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -38,7 +41,7 @@ public class GameManager implements IGameManager{
 
     @Override
     public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
-        IGame newGame = new Game(gameName, randomPorts, randomTiles, randomNumbers);
+        IGame newGame = new Game(gameName, m_nextGameId, randomPorts, randomTiles, randomNumbers);
         m_games.put(m_nextGameId, newGame);
         m_nextGameId++;
         return newGame;
@@ -52,5 +55,15 @@ public class GameManager implements IGameManager{
     @Override
     public void removeGame(int gameIndex) {
         m_games.remove(gameIndex);
+    }
+
+    /**
+     * Get a list of games.
+     *
+     * @return a list of games
+     */
+    @Override
+    public Collection<IGame> listGames() {
+        return Collections.unmodifiableCollection(m_games.values());
     }
 }

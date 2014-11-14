@@ -134,6 +134,13 @@ public class Server {
         //
 		server.createContext("/games/join", new JoinHandler(joinGameFacade));
 
+        server.createContext("/games/list", new AbstractHandler<Void, GameInfo[], IJoinGameFacade>(Void.class, joinGameFacade) {
+            @Override
+            protected GameInfo[] exchangeData(Void requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().list();
+            }
+        });
+
         //
         // game
         //
