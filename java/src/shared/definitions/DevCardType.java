@@ -9,9 +9,7 @@ public enum DevCardType
 {
 	SOLDIER, YEAR_OF_PLENTY, MONOPOLY, ROAD_BUILD, MONUMENT;
 
-
-    private static final List<DevCardType> VALUES =
-            Collections.unmodifiableList(Arrays.asList(values()));
+    private static final List<DevCardType> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
 
