@@ -21,6 +21,12 @@ import java.util.Set;
  * @author Wyatt
  */
 public interface IGame {
+    /** Get the game's name */
+    public String getName();
+
+    /** Get the game's gameID */
+    public Integer getID();
+
     /**
      * Reset the game.
      * Set all of its members to null.

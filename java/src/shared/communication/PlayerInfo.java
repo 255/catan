@@ -1,6 +1,7 @@
 package shared.communication;
 
 import shared.definitions.CatanColor;
+import shared.model.IPlayer;
 
 /**
  * Class that represents the player info
@@ -16,5 +17,11 @@ public class PlayerInfo {
         this.id = id;
         this.name = name;
         this.color = color;
+    }
+
+    public PlayerInfo(IPlayer player) {
+        this.id = player.getId();
+        this.name = player.getName();
+        this.color = player.getColor();
     }
 }

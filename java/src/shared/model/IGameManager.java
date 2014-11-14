@@ -2,6 +2,8 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 
+import java.util.Collection;
+
 /**
  * Interface that manages all the games that are
  * currently on the server
@@ -47,4 +49,9 @@ public interface IGameManager {
      */
     public void removeGame(int gameIndex);
 
+    /**
+     * Get a list of games.
+     * @return a list of games
+     */
+    public Collection<IGame> listGames();
 }
