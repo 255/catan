@@ -9,7 +9,7 @@ import java.util.logging.Level;
 public class UtilityFacade implements IUtilityFacade{
     private static Logger logger = Logger.getLogger("catanserver");
 
-    UtilityFacade() {}
+    public UtilityFacade() {}
 
     /**
      * Changes the logging level of the server

@@ -1,5 +1,6 @@
 package shared.model;
 
+import com.sun.net.httpserver.HttpExchange;
 import shared.definitions.HexType;
 import shared.definitions.PortType;
 import shared.locations.EdgeLocation;
@@ -7,11 +8,14 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * Created by Boffin on 11/13/2014.
  */
 public class MapGenerator {
+    private static Logger logger = Logger.getLogger("catanserver");
+
     private boolean randomPorts;
     private boolean randomTiles;
     private boolean randomNumbers;
@@ -20,63 +24,65 @@ public class MapGenerator {
     private Map<EdgeLocation, PortType> ports;
     HexLocation robber;
 
-    private final static HexType[] HEXES = {
-            // column -2
-            HexType.ORE,
-            HexType.WHEAT,
-            HexType.WOOD,
-            // column -1
-            HexType.BRICK,
-            HexType.SHEEP,
-            HexType.SHEEP,
-            HexType.ORE,
-            // column 0
-            HexType.DESERT,
-            HexType.WOOD,
-            HexType.WHEAT,
-            HexType.WOOD,
-            HexType.WHEAT,
-            // column 1
-            HexType.BRICK,
-            HexType.ORE,
-            HexType.BRICK,
-            HexType.SHEEP,
-            // column 2
-            HexType.WOOD,
-            HexType.SHEEP,
-            HexType.WHEAT,
-    };
-
-    private final static Integer[] NUMBERS = {
-            // column -2
-            5,
-            2,
-            6,
-            // column -1
-            8,
-            10,
-            9,
-            3,
-            // column 0
-            //Tile.DESERT_NUMBER, // desert hex: EXCLUDED since whichever hex is desert gets this #
-            3,
-            11,
-            4,
-            8,
-            // column 1
-            4,
-            9,
-            5,
-            10,
-            // column 2
-            11,
-            12,
-            6,
-    };
-
     private List<Integer> numberIndices;
     private List<Integer> tileIndices;
     private List<Integer> portIndices;
+
+    /** The default tile placement */
+    private final static HexType[] HEXES = {
+            // radius = 2
+            HexType.ORE,
+            HexType.WHEAT,
+            HexType.WOOD,
+            HexType.ORE,
+            HexType.WHEAT,
+            HexType.SHEEP,
+            HexType.WHEAT,
+            HexType.SHEEP,
+            HexType.WOOD,
+            HexType.BRICK,
+            HexType.DESERT,
+            HexType.BRICK,
+            // radius = 1
+            HexType.SHEEP,
+            HexType.SHEEP,
+            HexType.WOOD,
+            HexType.BRICK,
+            HexType.ORE,
+            HexType.WOOD,
+            // center tile
+            HexType.WHEAT,
+    };
+
+    /** The default order of number placement */
+    private final static Integer[] NUMBERS = {
+            5,
+            2,
+            6,
+            3,
+            8,
+            10,
+            9,
+            12,
+            11,
+            4,
+            8,
+            10,
+            9,
+            //Tile.DESERT_NUMBER, // desert hex: EXCLUDED since whichever hex is desert gets this #
+            4,
+            5,
+            6,
+            3,
+            11,
+    };
+
+    private final List<HexLocation> HEX_LOCATIONS;
+
+    private void addHex(int x, int y) {
+        logger.finest(String.format("HexLoc (%d, %d)", x, y));
+        HEX_LOCATIONS.add(new HexLocation(x, y));
+    }
 
     public MapGenerator(boolean randomPorts, boolean randomTiles, boolean randomNumbers) {
         this.randomPorts = randomPorts;
@@ -91,36 +97,70 @@ public class MapGenerator {
         tiles = new HashMap<>();
         ports = new HashMap<>();
         robber = null;
+
+        HEX_LOCATIONS = new ArrayList<>();
+        spiral();
+        System.out.printf("%d tiles\n", HEX_LOCATIONS.size());
+        for (HexLocation hex : HEX_LOCATIONS) {
+            System.out.printf("(%d, %d)\n", hex.getX(), hex.getY());
+        }
+    }
+
+    /**
+     * Generate hexes in a spiral order (same as game rules).
+     */
+    private void spiral() {
+        final int RADIUS = 3;
+
+        int max = RADIUS-1;
+        int min = -max;
+
+        for (int r = RADIUS-1; r >= 1; --r) {
+            int x = min;
+            int y = 0;
+
+            for (; y < max; ++y) {
+                addHex(x, y);
+            }
+            addHex(x, y);
+            for (++x; x < 0; ++x) {
+                addHex(x, y);
+            }
+            addHex(x, y);
+            for (++x, --y; x < max; ++x, --y) {
+                addHex(x, y);
+            }
+            addHex(x, y);
+            for (--y; y > min; --y) {
+                addHex(x, y);
+            }
+            addHex(x, y);
+            for (--x; x > 0; --x) {
+                addHex(x, y);
+            }
+            addHex(x, y);
+            for (--x, ++y; x > min; --x, ++y) {
+                addHex(x, y);
+            }
+
+            max--;
+            min++;
+        }
+
+        addHex(0, 0);
     }
 
     public ICatanMap generateMap() throws ModelException {
-        // traverse the tiles left-to-right, top-to-bottom
-        final int MIN_X = -2;
-        final int MAX_X =  2;
-        final int MIN_Y = -2;
-        final int MAX_Y =  2;
+        final int RADIUS =  3;
 
+        // traverse the tiles in a spiral from the center
         Int tileCount = new Int(0);
         Int numberCount = new Int(0);
 
-        for (int x = MIN_X; x <= MAX_X; ++x) {
-            int y_start;
-            int y_end;
-
-            if (x <= 0) {
-                y_start = -x - MAX_X;
-                y_end = MAX_Y;
-            }
-            else {
-                y_start = MIN_Y;
-                y_end = MAX_X - x;
-            }
-            for (int y = y_start; y <= y_end; ++y) {
-                placeTile(x, y, tileCount, numberCount);
-            }
-        }
-
         // TODO: GENERATE / PLACE PORTS!
+        for (HexLocation hex : HEX_LOCATIONS) {
+            placeTile(hex, tileCount, numberCount);
+        }
 
         return new CatanMap(tiles, new HashMap<VertexLocation, ITown>(), new HashMap<EdgeLocation, IRoad>(), ports, robber);
     }
@@ -128,13 +168,10 @@ public class MapGenerator {
     /**
      * Create a place a tile a the specified location.
      * This checks if it is random or not.
-     * @param x the x location
-     * @param y the y
+     * @param hexLoc
      * @param tileCount which tile this is
      */
-    private void placeTile(int x, int y, Int tileCount, Int numberCount) {
-        HexLocation hexLoc = new HexLocation(x, y);
-
+    private void placeTile(HexLocation hexLoc, Int tileCount, Int numberCount) {
         HexType type = (randomTiles ? getRandom(HEXES, tileIndices)     : HEXES[tileCount.postincrement()]);
 
         int number;
