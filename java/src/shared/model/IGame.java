@@ -242,4 +242,6 @@ public interface IGame {
     public boolean joinGame(IUser user, CatanColor playerColor);
 
     public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation);
+
+    public void finishTurn(IPlayer player);
 }

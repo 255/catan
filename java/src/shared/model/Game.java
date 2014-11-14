@@ -666,4 +666,9 @@ public class Game extends Observable implements IGame {
         // Add that random card to the player's hand
         player.getResources().add(1, resource);
     }
+
+    @Override
+    public void finishTurn(IPlayer player) {
+        // doing a diff of the model json from demo server to see what changed
+    }
 }
