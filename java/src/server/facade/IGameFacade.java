@@ -64,5 +64,5 @@ public interface IGameFacade {
      *
      * @return Game object containing a pointer to the model
      */
-    public Game listAI();
+    public String[] listAI();
 }

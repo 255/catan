@@ -107,7 +107,7 @@ public class Server {
         final IUserFacade userFacade = new UserFacade(userManager);
         final IJoinGameFacade joinGameFacade = new JoinGameFacade(gameManager, userManager);
         final IGameFacade gameFacade = new GameFacade(gameManager);
-        final IMovesFacade movesFacade = new MovesFacade();
+        final IMovesFacade movesFacade = new MovesFacade(gameManager);
         final IUtilityFacade utilityFacade = new UtilityFacade();
 
         // Create HTTPHandlers for each type of request
@@ -130,7 +130,7 @@ public class Server {
         });
 
         //
-        // games
+        // games (joining)
         //
 		server.createContext("/games/join", new JoinHandler(joinGameFacade));
 
@@ -146,12 +146,19 @@ public class Server {
         //
         server.createContext("/game/model", new GameModelHandler(gameFacade));
 
+        server.createContext("/game/listAI", new AbstractHandler<Void, String[], IGameFacade>(Void.class, gameFacade) {
+            @Override
+            protected String[] exchangeData(Void requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().listAI();
+            }
+        });
+
         //
         // moves
         //
 		server.createContext("/moves/sendChat", new AbstractMovesHandler<SendChatParams>(SendChatParams.class, movesFacade) {
             @Override
-            protected Game exchangeData(SendChatParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+            protected IGame exchangeData(SendChatParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().sendChat(requestData);
             }
         });

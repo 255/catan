@@ -29,6 +29,6 @@ public class SendChatCommand extends AbstractCommand {
      */
     public void performAction() {
 
-        getGame().getChatHistory().addMessage(getPlayer().getColor(), m_message);
+        getGame().getChatHistory().addMessage(getPlayer(), m_message);
     }
 }

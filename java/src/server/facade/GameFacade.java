@@ -86,7 +86,7 @@ public class GameFacade implements IGameFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game listAI() {
-        return null;
+    public String[] listAI() {
+        return new String[]{"Hal 9000", "The MCP", "GLaDOS"};
     }
 }

@@ -174,7 +174,7 @@ public class ModelInitializerTest {
 
         // Tests the GamePlay Log
         ILog testMoveLog = m_game.getGameplayLog();
-        List<LogEntry> testLogMessages = testMoveLog.getMessages();
+        List<LogEntry> testLogMessages = testMoveLog.getLogEntries();
 
         LogEntry testMessage = testLogMessages.get(0);
 
@@ -192,7 +192,7 @@ public class ModelInitializerTest {
         assertEquals("Incorrect number of Ore cards", 22, testResourceBank.getCount(ResourceType.ORE));
 
         // Tests that the game state has been correctly deserialized.
-        assertEquals("Game state was Rolling", GameState.ROLLING, m_game.getGameState());
+        assertEquals("Game state was Rolling", GameState.Rolling, m_game.getGameState());
         assertEquals("Index of current player is 0", 0, m_game.getCurrentPlayer().getIndex());
         assertEquals("No winnner. Should return null", null, m_game.getWinner());
     }

@@ -8,18 +8,18 @@ import java.util.Random;
  * Represents the cards in a players hand
  */
 public class DevCardHand implements IDevCardHand {
-    private int m_monopoly;
-    private int m_monument;
-    private int m_roadBuilding;
-    private int m_soldier;
-    private int m_yearOfPlenty;
+    private int monopoly;
+    private int monument;
+    private int roadBuilding;
+    private int soldier;
+    private int yearOfPlenty;
 
     public DevCardHand() {
-        m_monopoly = 0;
-        m_monument = 0;
-        m_roadBuilding = 0;
-        m_soldier = 0;
-        m_yearOfPlenty = 0;
+        monopoly = 0;
+        monument = 0;
+        roadBuilding = 0;
+        soldier = 0;
+        yearOfPlenty = 0;
     }
 
     public DevCardHand(int monopoly, int monument, int roadBuilding, int soldier, int yearOfPlenty) throws ModelException {
@@ -27,11 +27,11 @@ public class DevCardHand implements IDevCardHand {
             throw new ModelException("Cannot have a negative number of development cards.");
         }
 
-        m_monopoly = monopoly;
-        m_monument = monument;
-        m_roadBuilding = roadBuilding;
-        m_soldier = soldier;
-        m_yearOfPlenty = yearOfPlenty;
+        this.monopoly = monopoly;
+        this.monument = monument;
+        this.roadBuilding = roadBuilding;
+        this.soldier = soldier;
+        this.yearOfPlenty = yearOfPlenty;
     }
 
     /**
@@ -41,7 +41,7 @@ public class DevCardHand implements IDevCardHand {
      */
     @Override
     public int getCount() {
-        return m_monopoly + m_monument + m_roadBuilding + m_soldier + m_yearOfPlenty;
+        return monopoly + monument + roadBuilding + soldier + yearOfPlenty;
     }
 
     /**
@@ -53,11 +53,11 @@ public class DevCardHand implements IDevCardHand {
     @Override
     public int getCount(DevCardType devCardType) {
         switch (devCardType) {
-            case MONOPOLY: return m_monopoly;
-            case MONUMENT: return m_monument;
-            case ROAD_BUILD: return m_roadBuilding;
-            case SOLDIER: return m_soldier;
-            case YEAR_OF_PLENTY: return m_yearOfPlenty;
+            case MONOPOLY: return monopoly;
+            case MONUMENT: return monument;
+            case ROAD_BUILD: return roadBuilding;
+            case SOLDIER: return soldier;
+            case YEAR_OF_PLENTY: return yearOfPlenty;
             default:
                 assert false;
                 return -1;
@@ -75,11 +75,11 @@ public class DevCardHand implements IDevCardHand {
         DevCardHand o = (DevCardHand)other;
         try {
             return new DevCardHand(
-                    this.m_monopoly + o.m_monopoly,
-                    this.m_monument + o.m_monument,
-                    this.m_roadBuilding + o.m_roadBuilding,
-                    this.m_soldier + o.m_soldier,
-                    this.m_yearOfPlenty + o.m_yearOfPlenty
+                    this.monopoly + o.monopoly,
+                    this.monument + o.monument,
+                    this.roadBuilding + o.roadBuilding,
+                    this.soldier + o.soldier,
+                    this.yearOfPlenty + o.yearOfPlenty
             );
         } catch (ModelException e) {
             assert false : "Both DevCardHands should have positive numbers of cards!";
@@ -95,11 +95,11 @@ public class DevCardHand implements IDevCardHand {
     @Override
     public void add(DevCardType devCardType) {
         switch (devCardType) {
-            case MONOPOLY: m_monopoly++; break;
-            case MONUMENT: m_monument++; break;
-            case ROAD_BUILD: m_roadBuilding++; break;
-            case SOLDIER: m_soldier++; break;
-            case YEAR_OF_PLENTY: m_yearOfPlenty++; break;
+            case MONOPOLY: monopoly++; break;
+            case MONUMENT: monument++; break;
+            case ROAD_BUILD: roadBuilding++; break;
+            case SOLDIER: soldier++; break;
+            case YEAR_OF_PLENTY: yearOfPlenty++; break;
             default:
                 assert false;
         }
@@ -117,11 +117,11 @@ public class DevCardHand implements IDevCardHand {
         }
 
         switch (devCardType) {
-            case MONOPOLY: m_monopoly--; break;
-            case MONUMENT: m_monument--; break;
-            case ROAD_BUILD: m_roadBuilding--; break;
-            case SOLDIER: m_soldier--; break;
-            case YEAR_OF_PLENTY: m_yearOfPlenty--; break;
+            case MONOPOLY: monopoly--; break;
+            case MONUMENT: monument--; break;
+            case ROAD_BUILD: roadBuilding--; break;
+            case SOLDIER: soldier--; break;
+            case YEAR_OF_PLENTY: yearOfPlenty--; break;
             default:
                 assert false;
         }

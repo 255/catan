@@ -16,6 +16,9 @@ public class UserManager implements IUserManager {
 
         // TODO: REMOVE THIS TEST CODE
         createUser("Sam", "sam");
+        createUser("Pete", "pete");
+        createUser("Mark", "mark");
+        createUser("You", "you");
     }
 
     @Override

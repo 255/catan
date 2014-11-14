@@ -337,7 +337,7 @@ public class ServerModelFacade implements IServerModelFacade {
     public void discardCards(IResourceBank discardedCards) throws ModelException {
         IPlayer p = GameModelFacade.instance().getLocalPlayer();
 
-        if (GameModelFacade.instance().getGame().getGameState() != GameState.DISCARDING
+        if (GameModelFacade.instance().getGame().getGameState() != GameState.Discarding
                 || p.getResources().getCount() <= 7
                 || !p.canAfford(discardedCards)) {
             throw new ModelException("Preconditions for action not met.");
@@ -366,7 +366,7 @@ public class ServerModelFacade implements IServerModelFacade {
         assert rolledNumber >= 2 && rolledNumber <= 12;
 
         IPlayer p = GameModelFacade.instance().getLocalPlayer();
-        if (GameModelFacade.instance().getGame().getGameState() != GameState.ROLLING || !p.equals(GameModelFacade.instance().getGame().getCurrentPlayer())) {
+        if (GameModelFacade.instance().getGame().getGameState() != GameState.Rolling || !p.equals(GameModelFacade.instance().getGame().getCurrentPlayer())) {
             throw new ModelException("Preconditions for action not met.");
         }
 

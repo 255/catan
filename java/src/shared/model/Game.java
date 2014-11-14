@@ -51,7 +51,7 @@ public class Game extends Observable implements IGame {
 
         // TODO:use for server-side game construction from GameManager
 
-        m_state = GameState.FIRST_ROUND;
+        m_state = GameState.FirstRound;
         m_currentPlayer = null;
         m_players = new ArrayList<>();
         m_resourceBank = ResourceBank.generateInitial();
@@ -162,6 +162,14 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
+    public IPlayer getPlayer(int index) throws ModelException {
+        if (index < 0 || index >= m_players.size()) {
+            throw new ModelException("Invalid player index: " + index);
+        }
+        return m_players.get(index);
+    }
+
+    @Override
     public void setPlayers(List<IPlayer> players) {
         assert players != null;
         m_players = players;
@@ -256,7 +264,7 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public int getVersion(int version) {
+    public int getVersion() {
         return m_version;
     }
 
@@ -295,28 +303,28 @@ public class Game extends Observable implements IGame {
      */
     @Override
     public boolean isPlaying(IPlayer player) {
-        return playerAndGameState(player, GameState.PLAYING);
+        return playerAndGameState(player, GameState.Playing);
     }
 
     @Override
     public boolean isDiscarding(IPlayer player) {
-        return (m_state == GameState.DISCARDING) && player.needsToDiscard();
+        return (m_state == GameState.Discarding) && player.needsToDiscard();
     }
 
     @Override
     public boolean isRolling(IPlayer player) {
-        return playerAndGameState(player, GameState.ROLLING);
+        return playerAndGameState(player, GameState.Rolling);
     }
 
     @Override
     public boolean isRobbing(IPlayer player) {
-        return playerAndGameState(player, GameState.ROBBING);
+        return playerAndGameState(player, GameState.Robbing);
     }
 
     @Override
     public boolean isPlacingInitialPieces(IPlayer player) {
         return gameHasStarted()
-               && (playerAndGameState(player, GameState.FIRST_ROUND) || playerAndGameState(player, GameState.SECOND_ROUND));
+               && (playerAndGameState(player, GameState.FirstRound) || playerAndGameState(player, GameState.SecondRound));
     }
 
     @Override
@@ -348,7 +356,7 @@ public class Game extends Observable implements IGame {
         }
 
         // if playing, check the map with normal rules
-        if (getGameState() == GameState.PLAYING) {
+        if (getGameState() == GameState.Playing) {
             return getMap().canPlaceRoad(player, edge);
         }
 
@@ -378,7 +386,7 @@ public class Game extends Observable implements IGame {
         }
 
         // check if a normal gameplay
-        if (getGameState() == GameState.PLAYING) {
+        if (getGameState() == GameState.Playing) {
             return player.canBuySettlement();
         }
 
@@ -401,7 +409,7 @@ public class Game extends Observable implements IGame {
     public boolean canBuildCity(IPlayer player, VertexLocation vertex) {
         assert vertex != null;
 
-        if (getGameState() != GameState.PLAYING) {
+        if (getGameState() != GameState.Playing) {
             return false;
         }
 
@@ -499,7 +507,7 @@ public class Game extends Observable implements IGame {
         }
 
         // these shouldn't matter, but testing anyway
-        if (getGameState() != GameState.PLAYING || !getCurrentPlayer().equals(m_tradeOffer.getSender())) {
+        if (getGameState() != GameState.Playing || !getCurrentPlayer().equals(m_tradeOffer.getSender())) {
             return false;
         }
 
@@ -607,7 +615,7 @@ public class Game extends Observable implements IGame {
     @Override
     public boolean isFreeRound() {
         GameState gs = getGameState();
-        return (gs == GameState.FIRST_ROUND || gs == GameState.SECOND_ROUND);
+        return (gs == GameState.FirstRound || gs == GameState.SecondRound);
     }
 
     /**

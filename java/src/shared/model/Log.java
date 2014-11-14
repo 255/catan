@@ -1,17 +1,17 @@
 package shared.model;
 
 import client.communication.LogEntry;
-import shared.definitions.CatanColor;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * The gameplay log or chat history.
  */
-public class Log implements ILog {
-    private List<LogEntry> m_log;
+public class Log implements ILog, Iterable<Log.LogMessage> {
+    private List<LogMessage> m_log;
 
     /**
      * Create a new empty log.
@@ -22,14 +22,13 @@ public class Log implements ILog {
 
     /**
      * Add a message to the log. The message is added as the last entry.
-     *
-     * @param playerColor  the color of the player who originated the message
+     *  @param player  the color of the player who originated the message
      * @param message the contents of the message
      */
     @Override
-    public void addMessage(CatanColor playerColor, String message) {
-        assert playerColor != null && message != null;
-        m_log.add(new LogEntry(playerColor, message));
+    public void addMessage(IPlayer player, String message) {
+        assert player != null && message != null;
+        m_log.add(new LogMessage(player, message));
     }
 
     /**
@@ -39,11 +38,27 @@ public class Log implements ILog {
      * @return an unmodifiable list of messages
      */
     @Override
-    public List<LogEntry> getMessages() {
-        return Collections.unmodifiableList(m_log);
+    public List<LogEntry> getLogEntries() {
+        List<LogEntry> logEntries = new ArrayList<>(m_log.size());
+
+        for (LogMessage message : m_log) {
+            logEntries.add(new LogEntry(message.getPlayer().getColor(), message.getMessage()));
+        }
+
+        return logEntries;
     }
 
-    public class LogMessage implements ILogMessage {
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<LogMessage> iterator() {
+        return Collections.unmodifiableCollection(m_log).iterator();
+    }
+
+    public class LogMessage implements ILog.ILogMessage {
         private IPlayer m_player;
         private String m_message;
 

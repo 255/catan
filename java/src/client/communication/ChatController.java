@@ -39,7 +39,7 @@ public class ChatController extends Controller implements IChatController {
 
     @Override
     public void update(Observable o, Object arg) {
-        getView().setEntries(GameModelFacade.instance().getGame().getChatHistory().getMessages());
+        getView().setEntries(GameModelFacade.instance().getGame().getChatHistory().getLogEntries());
     }
 }
 

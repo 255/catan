@@ -402,7 +402,7 @@ public class ModelInitializer implements IModelInitializer {
             }
             reader.endObject();
 
-            log.addMessage(source.getColor(), message);
+            log.addMessage(source, message);
         }
         reader.endArray();
         reader.endObject();

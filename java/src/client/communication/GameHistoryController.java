@@ -27,7 +27,7 @@ public class GameHistoryController extends Controller implements IGameHistoryCon
 	}
 	
 	private void initFromModel() {
-        getView().setEntries(GameModelFacade.instance().getMoveHistory().getMessages());
+        getView().setEntries(GameModelFacade.instance().getMoveHistory().getLogEntries());
 	}
 
     @Override

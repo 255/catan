@@ -28,20 +28,20 @@ public abstract class MapState implements IMapState {
         }
         else { // isLocalPlayersTurn()
             switch (GameModelFacade.instance().getGame().getGameState()) {
-                case PLAYING:
+                case Playing:
                     logger.finer("MapState is Playing.");
                     return new PlayingState();
-                case FIRST_ROUND:
+                case FirstRound:
                     logger.finer("MapState is FirstRound");
                     return new FirstRoundState();
-                case SECOND_ROUND:
+                case SecondRound:
                     logger.finer("MapState is SecondRound");
                     return new SecondRoundState();
-                case ROBBING:
+                case Robbing:
                     logger.finer("MapState is Robbing.");
                     return new RobbingState();
-                case ROLLING:
-                case DISCARDING:
+                case Rolling:
+                case Discarding:
                     logger.finer("MapState is NotPlaying.");
                     return new NotPlayingState();
                 default:

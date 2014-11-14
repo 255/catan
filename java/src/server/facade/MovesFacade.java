@@ -1,24 +1,35 @@
 package server.facade;
 
 import server.command.IllegalCommandException;
+import server.command.SendChatCommand;
 import shared.communication.*;
 import shared.model.Game;
+import shared.model.IGame;
+import shared.model.IGameManager;
+import shared.model.ModelException;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
 public class MovesFacade implements IMovesFacade {
+    IGameManager gameManager;
+
+    public MovesFacade(IGameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 
     /**
      * Sends a chat message
      * Swagger URL Equivalent: /moves/sendChat
      *
-     * @param sendChat JSON wrapper with parameters to send a chat message
+     * @param params JSON wrapper with parameters to send a chat message
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game sendChat(SendChatParams sendChat) throws IllegalCommandException {
-        return null;
+    public IGame sendChat(SendChatParams params) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(params.getGameId());
+        new SendChatCommand(game, game.getPlayer(params.playerIndex), params.content).execute();
+        return game;
     }
 
     /**

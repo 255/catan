@@ -5,21 +5,21 @@ package shared.model;
  * @author Wyatt
  */
 public enum GameState {
-    FIRST_ROUND,
-    SECOND_ROUND,
-    ROLLING,
-    ROBBING,
-    PLAYING,
-    DISCARDING;
+    FirstRound,
+    SecondRound,
+    Rolling,
+    Robbing,
+    Playing,
+    Discarding;
 
     public static GameState fromString(String str) {
         switch (str.toLowerCase()) {
-            case "rolling":     return ROLLING;
-            case "robbing":     return ROBBING;
-            case "playing":     return PLAYING;
-            case "discarding":  return DISCARDING;
-            case "firstround":  return FIRST_ROUND;
-            case "secondround": return SECOND_ROUND;
+            case "rolling":     return Rolling;
+            case "robbing":     return Robbing;
+            case "playing":     return Playing;
+            case "discarding":  return Discarding;
+            case "firstround":  return FirstRound;
+            case "secondround": return SecondRound;
             default:
                 throw new IllegalArgumentException("Invalid argument: \"" + str + "\" is not a valid game state.");
         }

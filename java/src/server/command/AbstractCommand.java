@@ -58,7 +58,7 @@ public abstract class AbstractCommand implements ICommand {
     private void logAction() {
         if (m_action != null) {
             String message = m_player.getName() + " " + m_action;
-            getGame().getGameplayLog().addMessage(m_player.getColor(), message);
+            getGame().getGameplayLog().addMessage(m_player, message);
             logger.info(message);
         }
     }

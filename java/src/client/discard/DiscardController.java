@@ -85,8 +85,8 @@ public class DiscardController extends Controller implements IDiscardController 
     }
 
     private void initFromModel() {
-        // check that the state is set to DISCARDING
-        if(GameModelFacade.instance().getGame().getGameState() != GameState.DISCARDING) {
+        // check that the state is set to discarding
+        if(GameModelFacade.instance().getGame().getGameState() != GameState.Discarding) {
             // close all discarding modals
             if(getWaitView().isModalShowing()) getWaitView().closeThisModal();
             if(getDiscardView().isModalShowing()) getDiscardView().closeThisModal();

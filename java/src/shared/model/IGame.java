@@ -92,6 +92,13 @@ public interface IGame {
     public List<IPlayer> getPlayers();
 
     /**
+     * Get a player by turn index.
+     * @param index the turn index
+     * @return the player
+     */
+    public IPlayer getPlayer(int index) throws ModelException;
+
+    /**
      * Set the list of players for the game
      *
      * @param players the list of players in TURN ORDER
@@ -158,7 +165,7 @@ public interface IGame {
 
     public void setVersion(int version);
 
-    public int getVersion(int version);
+    public int getVersion();
 
     public void setWinner(IPlayer winner);
 

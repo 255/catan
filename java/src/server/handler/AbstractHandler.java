@@ -5,8 +5,6 @@ import java.net.HttpURLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.MalformedJsonException;
@@ -14,9 +12,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import server.command.IllegalCommandException;
-import shared.definitions.CatanColor;
 import shared.model.ModelException;
-import shared.model.serialization.CatanColorAdapter;
 import shared.model.serialization.Serializer;
 
 /**

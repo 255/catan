@@ -6,32 +6,39 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.google.gson.stream.MalformedJsonException;
-import shared.definitions.CatanColor;
 
 import java.io.IOException;
 
 /**
- * Convert between CatanColor objects and JSON.
+ * Created by Wyatt on 11/13/2014.
  */
-public class CatanColorAdapter extends TypeAdapter<CatanColor> {
-    @Override
-    public void write(JsonWriter jsonWriter, CatanColor catanColor) throws IOException {
-        jsonWriter.value(catanColor.toString().toLowerCase());
+public class EnumAdapter<T extends Enum> extends TypeAdapter<T> {
+    Class<T> clazz;
+
+    public EnumAdapter(Class<T> clazz) {
+        super();
+        this.clazz = clazz;
     }
 
     @Override
-    public CatanColor read(JsonReader reader) throws IOException {
+    public void write(JsonWriter writer, T value) throws IOException {
+        writer.value(value.toString().toLowerCase());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public T read(JsonReader reader) throws IOException {
         try {
             if (reader.peek() == JsonToken.NULL) {
                 reader.nextNull();
                 return null;
             }
             else {
-                return CatanColor.valueOf(reader.nextString().toUpperCase());
+                return (T)T.valueOf(clazz, reader.nextString().toUpperCase());
             }
         }
         catch (IllegalArgumentException | JsonSyntaxException | MalformedJsonException e) {
-            throw new MalformedJsonException("Unrecognized CatanColor.", e);
+            throw new MalformedJsonException("Unrecognized enumerated type.", e);
         }
     }
 }

@@ -10,11 +10,11 @@ import java.util.Random;
 public class ResourceBank implements IResourceBank {
     public static final int NUM_RESOURCES = 5;
 
-    private int m_wood;
-    private int m_brick;
-    private int m_sheep;
-    private int m_wheat;
-    private int m_ore;
+    private int wood;
+    private int brick;
+    private int sheep;
+    private int wheat;
+    private int ore;
 
     public ResourceBank() {
         setWood(0);
@@ -44,57 +44,57 @@ public class ResourceBank implements IResourceBank {
 
     @Override
     public int getWood() {
-        return m_wood;
+        return wood;
     }
 
     public void setWood(int wood) {
-        this.m_wood = wood;
+        this.wood = wood;
     }
 
     @Override
     public int getBrick() {
-        return m_brick;
+        return brick;
     }
 
     public void setBrick(int brick) {
-        this.m_brick = brick;
+        this.brick = brick;
     }
 
     @Override
     public int getSheep() {
-        return m_sheep;
+        return sheep;
     }
 
     public void setSheep(int sheep) {
-        this.m_sheep = sheep;
+        this.sheep = sheep;
     }
 
     @Override
     public int getWheat() {
-        return m_wheat;
+        return wheat;
     }
 
     public void setWheat(int wheat) {
-        this.m_wheat = wheat;
+        this.wheat = wheat;
     }
 
     @Override
     public int getOre() {
-        return m_ore;
+        return ore;
     }
 
     public void setOre(int ore) {
-        this.m_ore = ore;
+        this.ore = ore;
     }
 
     @Override
     public int getCount(ResourceType resourceType) {
         switch (resourceType) {
-            case WOOD:  return m_wood;
-            case BRICK: return m_brick;
-            case SHEEP: return m_sheep;
-            case WHEAT: return m_wheat;
-            case ORE:   return m_ore;
+            case WOOD:  return wood;
+            case BRICK: return brick;
+            case SHEEP: return sheep;
+            case WHEAT: return wheat;
+            case ORE:   return ore;
         }
         return 0;
     }
@@ -102,11 +102,11 @@ public class ResourceBank implements IResourceBank {
     @Override
     public void setCount(ResourceType resourceType, int amount) {
         switch (resourceType) {
-            case WOOD:  m_wood  = amount; break;
-            case BRICK: m_brick = amount; break;
-            case SHEEP: m_sheep = amount; break;
-            case WHEAT: m_wheat = amount; break;
-            case ORE:   m_ore   = amount; break;
+            case WOOD:  wood = amount; break;
+            case BRICK: brick = amount; break;
+            case SHEEP: sheep = amount; break;
+            case WHEAT: wheat = amount; break;
+            case ORE:   ore = amount; break;
         }
     }
 
@@ -117,16 +117,16 @@ public class ResourceBank implements IResourceBank {
      */
     @Override
     public int getCount() {
-        return m_wood + m_brick + m_sheep + m_wheat + m_ore;
+        return wood + brick + sheep + wheat + ore;
     }
 
     @Override
     public void add(IResourceBank resources) {
-        setWood(m_wood + resources.getWood());
-        setBrick(m_brick + resources.getBrick());
-        setSheep(m_sheep + resources.getSheep());
-        setWheat(m_wheat + resources.getWheat());
-        setOre(m_ore + resources.getOre());
+        setWood(wood + resources.getWood());
+        setBrick(brick + resources.getBrick());
+        setSheep(sheep + resources.getSheep());
+        setWheat(wheat + resources.getWheat());
+        setOre(ore + resources.getOre());
     }
 
     @Override
@@ -139,38 +139,38 @@ public class ResourceBank implements IResourceBank {
         IResourceBank bundle = new ResourceBank(resources.getWood(), resources.getBrick(), resources.getSheep(),
                 resources.getWheat(), resources.getOre());
 
-        if (m_wood >= resources.getWood()) {
-            setWood(m_wood - resources.getWood());
+        if (wood >= resources.getWood()) {
+            setWood(wood - resources.getWood());
         } else {
-            bundle.setWood(m_wood);
+            bundle.setWood(wood);
             setWood(0);
         }
 
-        if (m_brick >= resources.getBrick()) {
-            setBrick(m_brick - resources.getBrick());
+        if (brick >= resources.getBrick()) {
+            setBrick(brick - resources.getBrick());
         } else {
-            bundle.setBrick(m_brick);
+            bundle.setBrick(brick);
             setBrick(0);
         }
 
-        if (m_sheep >= resources.getSheep()) {
-            setSheep(m_sheep - resources.getSheep());
+        if (sheep >= resources.getSheep()) {
+            setSheep(sheep - resources.getSheep());
         } else {
-            bundle.setSheep(m_sheep);
+            bundle.setSheep(sheep);
             setSheep(0);
         }
 
-        if (m_wheat >= resources.getWheat()) {
-            setWheat(m_wheat - resources.getWheat());
+        if (wheat >= resources.getWheat()) {
+            setWheat(wheat - resources.getWheat());
         } else {
-            bundle.setWheat(m_wheat);
+            bundle.setWheat(wheat);
             setWheat(0);
         }
 
-        if (m_ore >= resources.getOre()) {
-            setOre(m_ore - resources.getOre());
+        if (ore >= resources.getOre()) {
+            setOre(ore - resources.getOre());
         } else {
-            bundle.setOre(m_ore);
+            bundle.setOre(ore);
             setOre(0);
         }
         return bundle;
@@ -191,11 +191,11 @@ public class ResourceBank implements IResourceBank {
     @Override
     public void increment(ResourceType resource) {
         switch (resource) {
-            case WOOD:  m_wood++; break;
-            case BRICK: m_brick++; break;
-            case SHEEP: m_sheep++; break;
-            case WHEAT: m_wheat++; break;
-            case ORE:   m_ore++; break;
+            case WOOD:  wood++; break;
+            case BRICK: brick++; break;
+            case SHEEP: sheep++; break;
+            case WHEAT: wheat++; break;
+            case ORE:   ore++; break;
         }
     }
 
@@ -207,18 +207,18 @@ public class ResourceBank implements IResourceBank {
     @Override
     public void decrement(ResourceType resource) {
         switch (resource) {
-            case WOOD:  m_wood--; break;
-            case BRICK: m_brick--; break;
-            case SHEEP: m_sheep--; break;
-            case WHEAT: m_wheat--; break;
-            case ORE:   m_ore--; break;
+            case WOOD:  wood--; break;
+            case BRICK: brick--; break;
+            case SHEEP: sheep--; break;
+            case WHEAT: wheat--; break;
+            case ORE:   ore--; break;
         }
     }
 
     @Override
     public boolean canAfford(IResourceBank purchase) {
-        if (m_wood >= purchase.getWood() && m_brick >= purchase.getBrick() && m_sheep >= purchase.getSheep()
-                && m_wheat >= purchase.getWheat() && m_ore >= purchase.getOre()) {
+        if (wood >= purchase.getWood() && brick >= purchase.getBrick() && sheep >= purchase.getSheep()
+                && wheat >= purchase.getWheat() && ore >= purchase.getOre()) {
             return true;
         } else {
             return false;
@@ -244,11 +244,11 @@ public class ResourceBank implements IResourceBank {
     @Override
     public IResourceBank negate() {
         return new ResourceBank(
-                -m_wood,
-                -m_brick,
-                -m_sheep,
-                -m_wheat,
-                -m_ore
+                -wood,
+                -brick,
+                -sheep,
+                -wheat,
+                -ore
         );
     }
 

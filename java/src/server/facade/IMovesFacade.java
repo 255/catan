@@ -3,6 +3,8 @@ package server.facade;
 import server.command.IllegalCommandException;
 import shared.communication.*;
 import shared.model.Game;
+import shared.model.IGame;
+import shared.model.ModelException;
 
 /**
  * A facade to support /moves operations.
@@ -17,7 +19,7 @@ public interface IMovesFacade {
      * @param sendChat JSON wrapper with parameters to send a chat message
      * @return Game object containing a pointer to the model
      */
-    public Game sendChat(SendChatParams sendChat) throws IllegalCommandException;
+    public IGame sendChat(SendChatParams sendChat) throws IllegalCommandException, ModelException;
 
     /**
      * Used to roll a number at the beginning of a turn
