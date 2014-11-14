@@ -583,6 +583,11 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
+    public void rollNumber(int number) {
+        m_map.distributeResources(number);
+    }
+
+    @Override
     public boolean joinGame(IUser user, CatanColor playerColor) {
         // checks if player is already in game, if so exits method
         for(IPlayer player : m_players) {

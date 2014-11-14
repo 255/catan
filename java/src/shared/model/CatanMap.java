@@ -757,4 +757,23 @@ public class CatanMap implements ICatanMap {
         // didn't find any of the locs...
         return false;
     }
+
+    @Override
+    public void distributeResources(int number) {
+        Iterator it = m_tiles.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            ITile tile = (ITile)pairs.getValue();
+            if(tile.numberToken() == number && !tile.hasRobber()) {
+                giveResourcesToAdjacentTowns(tile);
+            }
+        }
+    }
+
+    private void giveResourcesToAdjacentTowns(ITile tile) {
+
+        ITown town = new City(null, null);
+
+        town.getOwner().addResources();
+    }
 }

@@ -204,6 +204,8 @@ public interface IGame {
     // this method is just for determining from the GameState if it is a free round
     boolean isFreeRound();
 
+    public void rollNumber(int number);
+
     /**
      * The ModelInitializer needs to tell the Game object when it is done updating.
      */
