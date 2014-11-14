@@ -33,8 +33,8 @@ public class City extends Town {
     }
 
     @Override
-    public IResourceBank getResources() {
-        return null;
+    public int getResourceCount() {
+        return 2;
     }
 
     @Override

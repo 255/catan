@@ -45,7 +45,7 @@ public interface ITown {
      *
      * @return bundle of resources
      */
-    public IResourceBank getResources();
+    public int getResourceCount();
 
     /**
      * Returns what type of piece this town is.

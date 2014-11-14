@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
 import shared.definitions.CatanColor;
 import shared.definitions.ResourceType;
+import shared.locations.VertexLocation;
 import shared.model.CatanMap;
 import shared.model.Game;
 import shared.model.Log;
@@ -33,6 +34,7 @@ public class Serializer {
         gsonBuilder.registerTypeAdapter(Log.class, new LogAdapter());
         gsonBuilder.registerTypeAdapter(CatanMap.class, new MapAdapter());
         gsonBuilder.registerTypeAdapter(Player.class, new PlayerAdapter());
+        gsonBuilder.registerTypeAdapter(VertexLocation.class, new VertexLocationAdapter());
 
         gson = gsonBuilder.create();
     }

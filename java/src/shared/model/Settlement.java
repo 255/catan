@@ -33,8 +33,8 @@ public class Settlement extends Town {
     }
 
     @Override
-    public IResourceBank getResources() {
-        return null;
+    public int getResourceCount() {
+        return 1;
     }
 
     @Override

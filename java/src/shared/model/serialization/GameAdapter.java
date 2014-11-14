@@ -20,9 +20,6 @@ public class GameAdapter extends TypeAdapter<Game> {
      */
     @Override
     public void write(JsonWriter jsonWriter, Game game) throws IOException {
-
-        // TODO: ADD TRADE OFFER SERIALIZATION!!!!!!!!!!!!!!!!!!!!!!!!!!
-
         jsonWriter.beginObject();
 
         jsonWriter.name("deck");
@@ -42,6 +39,8 @@ public class GameAdapter extends TypeAdapter<Game> {
         jsonWriter.name("bank");
         Serializer.instance().toJson(game.getResourceBank(), jsonWriter);
 
+        writeTradeOffer(jsonWriter, game);
+
         writeTurnTracker(jsonWriter, game);
 
         jsonWriter.name("winner");
@@ -51,6 +50,20 @@ public class GameAdapter extends TypeAdapter<Game> {
         jsonWriter.value(game.getVersion());
 
         jsonWriter.endObject();
+    }
+
+    private void writeTradeOffer(JsonWriter jsonWriter, Game game) throws IOException {
+        if (game.getTradeOffer() != null) {
+            jsonWriter.name("tradeOffer");
+
+            jsonWriter.beginObject();
+            jsonWriter.name("sender").value(game.getTradeOffer().getSender().getIndex());
+
+            jsonWriter.name("offer");
+            Serializer.instance().toJson(game.getTradeOffer().getOffer(), jsonWriter);
+
+            jsonWriter.name("receiver").value(game.getTradeOffer().getReceiver().getIndex());
+        }
     }
 
     private void writeTurnTracker(JsonWriter jsonWriter, Game game) throws IOException {
