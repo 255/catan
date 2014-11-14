@@ -134,4 +134,18 @@ public class PieceBank implements IPieceBank {
     public int availableSettlements() {
         return m_numSettlements;
     }
+
+    public static PieceBank generateInitial() {
+        try {
+            return new PieceBank(
+                    CatanConstants.MAX_ROADS,
+                    CatanConstants.MAX_SETTLEMENTS,
+                    CatanConstants.MAX_CITIES
+            );
+        } catch (ModelException e) {
+            assert false : "CatanConstants are messed up!";
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

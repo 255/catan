@@ -1,12 +1,24 @@
 package server.handler;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 /**
- * Created by Wyatt on 11/13/2014.
+ * A class representing a cookie.
  */
 public class Cookie {
     private String name;
     private String value;
 
+    public Cookie(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
+    /**
+     * Create a cookie.
+     * @param cookie a string in the format name="value"
+     */
     public Cookie(String cookie) {
         int equalsIndex = cookie.indexOf('=');
 
@@ -23,6 +35,12 @@ public class Cookie {
         }
     }
 
+    /**
+     * Check if the name of the cookie matches the specified string.
+     * This is case insensitive.
+     * @param name the name to compare against
+     * @return true if the names match (ignoring case)
+     */
     public boolean nameIs(String name) {
         return this.name.equalsIgnoreCase(name);
     }
@@ -33,5 +51,14 @@ public class Cookie {
 
     public String getValue() {
         return value;
+    }
+
+    /**
+     * Print the cookie in standard name="value" format
+     * @return the cookie
+     */
+    @Override
+    public String toString() {
+        return name + '=' + value;
     }
 }

@@ -18,7 +18,12 @@ public class GameManager implements IGameManager{
         m_games = new HashMap<>();
 
         // TODO: remove this debugging code
-        createGame("Deep Blue vs. Garry Kasparov", false, false, false);
+        try {
+            createGame("Deep Blue vs. Garry Kasparov", false, false, false);
+        } catch (ModelException e) {
+            assert false;
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -32,7 +37,7 @@ public class GameManager implements IGameManager{
     }
 
     @Override
-    public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) {
+    public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
         IGame newGame = new Game(gameName, randomPorts, randomTiles, randomNumbers);
         m_games.put(m_nextGameId, newGame);
         m_nextGameId++;

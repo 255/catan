@@ -162,4 +162,20 @@ public class DevCardHand implements IDevCardHand {
     public void transferAllCardsToHand(IDevCardHand devCardHand) {
         // TODO: not needed for client
     }
+
+    public static DevCardHand generateInitial() {
+        try {
+            return new DevCardHand(
+                    CatanConstants.TOTAL_MONOPOLY_CARDS,
+                    CatanConstants.TOTAL_MONUMENT_CARDS,
+                    CatanConstants.TOTAL_ROAD_BUILDING_CARDS,
+                    CatanConstants.TOTAL_SOLDIER_CARDS,
+                    CatanConstants.TOTAL_YEAR_OF_PLENTY_CARDS
+            );
+        } catch (ModelException e) {
+            assert false : "The CatanConstants are messed up!";
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -1,16 +1,24 @@
 package server.handler;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 
 /**
  * A list of parsed cookies.
  */
 public class CookieJar implements Iterable<Cookie> {
+    private static final URLDecoder decoder = new URLDecoder();
+    private static final String ENCODING = "UTF-8";
+
     private Collection<Cookie> m_cookies;
 
-    public CookieJar(Collection<String> listOfCookies) {
+    public CookieJar() {
         m_cookies = new ArrayList<>();
+    }
 
+    public CookieJar(Collection<String> listOfCookies) {
+        this();
         addCookies(listOfCookies);
     }
 
@@ -21,8 +29,14 @@ public class CookieJar implements Iterable<Cookie> {
      */
     public void addCookies(Collection<String> cookieList) {
         for (String listOfCookies : cookieList) {
-            for (String cookie : listOfCookies.split(";")) {
-                addCookie(cookie.trim());
+            try {
+                for (String cookie : decoder.decode(listOfCookies, ENCODING).split(";")) {
+                    addCookie(cookie.trim());
+                }
+            }
+            catch (UnsupportedEncodingException e) {
+                assert false : "Bad encoding.";
+                e.printStackTrace();
             }
         }
     }
@@ -36,6 +50,15 @@ public class CookieJar implements Iterable<Cookie> {
     }
 
     /**
+     * Add a single cookie with separate names and values
+     * @param name the name of the cookie to add
+     * @param value the value of the cookie to add
+     */
+    public void addCookie(String name, String value) {
+        m_cookies.add(new Cookie(name, value));
+    }
+
+    /**
      * Returns an iterator over elements of type {@code T}.
      *
      * @return an Iterator.
@@ -43,5 +66,21 @@ public class CookieJar implements Iterable<Cookie> {
     @Override
     public Iterator<Cookie> iterator() {
         return Collections.unmodifiableCollection(m_cookies).iterator();
+    }
+
+    /**
+     * Convert the cookies to a ; separated list
+     * @return the list of cookies
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (Cookie cookie : m_cookies) {
+            sb.append(cookie.toString());
+            sb.append(';');
+        }
+
+        return sb.toString();
     }
 }

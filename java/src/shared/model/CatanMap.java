@@ -19,10 +19,6 @@ public class CatanMap implements ICatanMap {
     private Map<EdgeLocation, PortType> m_ports;
     private HexLocation m_robber;
 
-    public CatanMap(boolean randomPorts, boolean randomTiles, boolean randomNumbers) {
-        // TODO: implement
-    }
-
     /** Construct a new, blank Catan Map */
     public CatanMap(Map<HexLocation, ITile> tiles, Map<EdgeLocation, PortType> ports) {
         m_tiles = tiles;
@@ -67,8 +63,10 @@ public class CatanMap implements ICatanMap {
         }
 */
 
-        // Set robber flag in tile
-        m_tiles.get(robber).placeRobber();
+        // Set robber flag in tile if it is not already set
+        if (!m_tiles.get(robber).hasRobber()) {
+            m_tiles.get(robber).placeRobber();
+        }
     }
 
     /**
@@ -693,6 +691,20 @@ public class CatanMap implements ICatanMap {
 
         return towns;
     }
+
+    private Collection<ITown> getAdjacentTowns(HexLocation hexLoc) {
+        Collection<ITown> towns = new ArrayList<>();
+
+        for (VertexDirection dir : VertexDirection.values()) {
+            VertexLocation loc = new VertexLocation(hexLoc, dir).getNormalizedLocation();
+            if (m_towns.containsKey(loc)) {
+                towns.add(m_towns.get(loc));
+            }
+        }
+
+        return towns;
+    }
+
 
     /**
      * Get the towns adjacent/connected to the specified vertex.

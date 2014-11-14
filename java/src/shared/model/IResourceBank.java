@@ -158,4 +158,12 @@ public interface IResourceBank {
      * @return a new, negated bank
      */
     public IResourceBank negate();
+
+    /**
+     * Draws a random card from the ResourceBank
+     *
+     * @return the type of resource card that was drawn
+     */
+    public ResourceType drawRandom();
+
 }

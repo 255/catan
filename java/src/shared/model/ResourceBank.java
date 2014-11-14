@@ -2,6 +2,8 @@ package shared.model;
 
 import shared.definitions.ResourceType;
 
+import java.util.Random;
+
 /**
  * Created by jeffreybacon on 9/25/14.
  */
@@ -28,6 +30,16 @@ public class ResourceBank implements IResourceBank {
         setSheep(sheep);
         setWheat(wheat);
         setOre(ore);
+    }
+
+    public static ResourceBank generateInitial() {
+        return new ResourceBank(
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE,
+                CatanConstants.TOTAL_CARDS_PER_RESOURCE
+        );
     }
 
     @Override
@@ -239,4 +251,30 @@ public class ResourceBank implements IResourceBank {
                 -m_ore
         );
     }
+
+    /**
+     * Draws a random card from the ResourceBank
+     *
+     * @return the type of resource card that was drawn
+     */
+    @Override
+    public ResourceType drawRandom() {
+
+        ResourceType drawnCard = null;
+
+        Random rand = new Random();
+
+        boolean foundCard = false;
+
+        while (!foundCard) {
+            drawnCard = ResourceType.randomResourceType();
+            if (this.getCount(drawnCard) > 0) {
+                foundCard = true;
+                this.subtract(1, drawnCard);
+            }
+        }
+
+        return drawnCard;
+    }
+
 }

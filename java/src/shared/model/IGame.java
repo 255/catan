@@ -31,78 +31,91 @@ public interface IGame {
     /**
      * Get whether the game has been initialized yet.
      * This must be called before initializing from the model.
+     *
      * @return true if the game is ready-to-go, false if not
      */
     public boolean isNotInitialized();
 
     /**
      * Get the dev card hand for the game.
+     *
      * @return the game's dev cards
      */
     public IDevCardHand getDevCards();
 
     /**
      * Set the dev card bank for the game.
+     *
      * @param m_devCards the new dev cards
      */
     public void setDevCards(IDevCardHand m_devCards);
 
     /**
      * Return the current game state of an ongoing game.
+     *
      * @return the current game state
      */
     public GameState getGameState();
 
     /**
      * Set the game state value.
+     *
      * @param state the new state
      */
     public void setGameState(GameState state);
 
     /**
      * Return a reference to the player whose turn it is.
+     *
      * @return the current player
      */
     public IPlayer getCurrentPlayer();
 
     /**
      * Set the current player (whose turn it is)
+     *
      * @param currentPlayer the new current player
      */
     public void setCurrentPlayer(IPlayer currentPlayer);
 
     /**
      * Get the list of players in turn order.
+     *
      * @return the list of players in turn order
      */
     public List<IPlayer> getPlayers();
 
     /**
      * Set the list of players for the game
+     *
      * @param players the list of players in TURN ORDER
      */
     public void setPlayers(List<IPlayer> players);
 
     /**
      * Get the available resources.
+     *
      * @return the available resources
      */
     public IResourceBank getResourceBank();
 
     /**
      * Set the bank object for the game
+     *
      * @param bank the bank
      */
     public void setResourceBank(IResourceBank bank);
 
     /**
      * Get a reference to the map.
+     *
      * @return the map
      */
     public ICatanMap getMap();
 
     /**
      * Point to the new Catan map
+     *
      * @param map the new map
      */
     public void setMap(ICatanMap map);
@@ -121,6 +134,7 @@ public interface IGame {
 
     /**
      * Get the history of gameplay messages.
+     *
      * @return the list of gameplay log entries in order from oldest to newest
      */
     public ILog getGameplayLog();
@@ -129,6 +143,7 @@ public interface IGame {
 
     /**
      * Get the history of chat messages.
+     *
      * @return the list of chat entries in order from oldest to newest
      */
     public ILog getChatHistory();
@@ -151,13 +166,18 @@ public interface IGame {
 
     /**
      * Get whether it is the player's turn and game state is playing, so the player can play cards, etc.
-     * @return true / false
+     *
      * @param player
+     * @return true / false
      */
     public boolean isPlaying(IPlayer player);
+
     public boolean isDiscarding(IPlayer player);
+
     public boolean isRolling(IPlayer player);
+
     public boolean isRobbing(IPlayer player);
+
     public boolean isPlacingInitialPieces(IPlayer player);
 
 
@@ -214,4 +234,6 @@ public interface IGame {
     public void addObserver(Observer o);
 
     public boolean joinGame(IUser user, CatanColor playerColor);
+
+    public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation);
 }
