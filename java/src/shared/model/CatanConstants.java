@@ -34,5 +34,8 @@ public class CatanConstants {
     public static final int TOTAL_ROAD_BUILDING_CARDS  = 2;
     public static final int TOTAL_SOLDIER_CARDS        = 14;
     public static final int TOTAL_YEAR_OF_PLENTY_CARDS = 2;
+
+    /** How many land tiles are on the map */
+    public static final int NUM_LAND_TILES = 19;
 }
 
