@@ -690,4 +690,25 @@ public class Game extends Observable implements IGame {
         // change state to the Rolling state for the next player to begin their turn
         setGameState(GameState.Rolling);
     }
+
+    @Override
+    public void checkForVictory() {
+        for(IPlayer p : m_players) {
+            if(p.getVictoryPoints() >= CatanConstants.VICTORY_POINTS_TO_WIN) {
+
+            }
+        }
+    }
+
+    @Override
+    public void giveVictoryPoints(IPlayer player) {
+
+    }
+
+    @Override
+    public void removeVictoryPoints(IPlayer player) {
+
+    }
+
+
 }

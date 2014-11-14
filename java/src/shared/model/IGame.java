@@ -251,4 +251,10 @@ public interface IGame {
     public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation);
 
     public void finishTurn(IPlayer player);
+
+    public void checkForVictory();
+
+    public void giveVictoryPoints(IPlayer player);
+
+    public void removeVictoryPoints(IPlayer player);
 }
