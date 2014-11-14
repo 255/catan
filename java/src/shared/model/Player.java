@@ -225,6 +225,9 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public void incrementSoldiers() { ++m_soldiers; }
+
+    @Override
     public Collection<IRoad> getRoads() {
         return Collections.unmodifiableCollection(m_roads);
     }

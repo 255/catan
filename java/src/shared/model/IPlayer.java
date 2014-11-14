@@ -61,6 +61,8 @@ public interface IPlayer {
 
     public int getSoldiers();
 
+    public void incrementSoldiers();
+
     public Collection<IRoad> getRoads();
 
     public Collection<ITown> getTowns();

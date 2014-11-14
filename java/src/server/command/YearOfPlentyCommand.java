@@ -13,8 +13,6 @@ import java.util.logging.Logger;
  */
 public class YearOfPlentyCommand extends AbstractCommand {
 
-    private final static Logger logger = Logger.getLogger("catan");
-
     private ResourceType m_firstType;
     private ResourceType m_secondType;
 
