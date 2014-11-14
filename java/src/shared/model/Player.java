@@ -421,6 +421,11 @@ public class Player implements IPlayer {
     @Override
     public void setVictoryPoints(int num) { m_victoryPoints = num;}
 
+    @Override
+    public int calculateVictoryPoints() {
+        return 0;
+    }
+
     // booleans
     @Override
     public void setDiscarded(boolean actionCompleted) { m_discarded = actionCompleted; }

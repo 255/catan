@@ -31,6 +31,8 @@ public interface IPlayer {
      */
     public int getVictoryPoints();
 
+    public int calculateVictoryPoints();
+
     public void addVictoryPoints(int amount);
 
     // other
