@@ -1,9 +1,7 @@
 package server.command;
 
 import shared.definitions.ResourceType;
-import shared.model.Game;
-import shared.model.IPlayer;
-import shared.model.ResourceBank;
+import shared.model.*;
 
 /**
  * Class that represents the OfferTrade request
@@ -26,7 +24,12 @@ public class OfferTradeCommand extends AbstractCommand {
         this.receiver = receiver;
 
         // is the trade offer null?
-        // TODO what else can be broken on the trade offer
+        if(getGame().getTradeOffer() == null) {
+            throw new IllegalCommandException(
+                    "The trade being offered is null." +
+                    "Perhaps a trade offer hasn't been posted."
+            );
+        }
     }
 
     /**
@@ -35,6 +38,10 @@ public class OfferTradeCommand extends AbstractCommand {
      * to be given.
      */
     public void performAction() {
+        // create a new trade offer with the parameters
+        ITradeOffer trade = new TradeOffer(getPlayer(), receiver, offer);
 
+        // set the game object to point at the trade offer
+        getGame().setTradeOffer(trade);
     }
 }

@@ -9,7 +9,6 @@ import shared.model.ModelException;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 
 /**
@@ -27,9 +26,11 @@ public class JoinHandler extends AbstractHandler<JoinGameRequestParams, Integer,
     @Override
     protected void generateResponse(HttpExchange exch, Integer responseData) throws IOException {
         if (responseData != null) {
-            HttpCookie gameCookie = new HttpCookie("catan.game", responseData.toString());
+            CookieJar cookies = new CookieJar();
+            cookies.addCookie("catan.game", responseData.toString());
+            cookies.addCookie("path", "/");
 
-            exch.getResponseHeaders().add("Set-cookie", gameCookie.toString() + ";path=/;");
+            exch.getResponseHeaders().add("Set-cookie", cookies.toString());
             exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
         }
         else {
