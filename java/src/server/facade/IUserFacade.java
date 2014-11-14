@@ -24,7 +24,7 @@ public interface IUserFacade {
      * Swagger URL Equivalent: /user/register
      *
      * @param creds is the set of credentials to be used for registering/logging in
-     * @return boolean containing true or false depending on if the login was successful
+     * @return boolean containing true or false depending on if the register was successful
      */
     public IUser register(CredentialsParams creds);
 }

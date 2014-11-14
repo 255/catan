@@ -31,10 +31,10 @@ public class UserFacade implements IUserFacade{
      * Swagger URL Equivalent: /user/register
      *
      * @param creds is the set of credentials to be used for registering/logging in
-     * @return boolean containing true or false depending on if the login was successful
+     * @return boolean containing true or false depending on if the register was successful
      */
     @Override
     public IUser register(CredentialsParams creds) {
-        return null;
+        return m_userManager.createUser(creds.username, creds.password);
     }
 }

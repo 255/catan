@@ -14,7 +14,7 @@ public interface IUserManager {
      * @param password password of the new user
      * @return bool indicating that the operation was successful
      */
-    public boolean createUser(String username, String password);
+    public IUser createUser(String username, String password);
 
     /**
      * Checks that a user exists on the server
