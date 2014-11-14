@@ -677,6 +677,9 @@ public class Game extends Observable implements IGame {
 
     @Override
     public void finishTurn(IPlayer player) {
+        // check for victory
+        checkForVictory();
+
         // move old dev cards to new
         player.getNewDevCards().transferAllCardsToHand(player.getPlayableDevCards());
 
@@ -695,20 +698,8 @@ public class Game extends Observable implements IGame {
     public void checkForVictory() {
         for(IPlayer p : m_players) {
             if(p.getVictoryPoints() >= CatanConstants.VICTORY_POINTS_TO_WIN) {
-
+                setWinner(p);
             }
         }
     }
-
-    @Override
-    public void giveVictoryPoints(IPlayer player) {
-
-    }
-
-    @Override
-    public void removeVictoryPoints(IPlayer player) {
-
-    }
-
-
 }
