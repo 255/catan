@@ -423,7 +423,14 @@ public class Player implements IPlayer {
 
     @Override
     public int calculateVictoryPoints() {
-        return 0;
+        m_victoryPoints = 0;
+        for (ITown town : m_towns) {
+            m_victoryPoints += town.getVictoryPoints();
+        }
+
+        m_victoryPoints += m_monuments;
+
+        return m_victoryPoints;
     }
 
     // booleans
