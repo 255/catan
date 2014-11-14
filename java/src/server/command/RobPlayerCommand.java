@@ -38,16 +38,6 @@ public class RobPlayerCommand extends AbstractCommand {
      */
     public void performAction() {
 
-        // Move the robber to the specified hex location
-        getGame().getMap().moveRobber(m_hexLocation);
-
-        // Choose a random card from the victim's hand
-        ResourceType resource = getGame().getResourceBank().drawRandom();
-
-        // Remove that random card from the victim's hand
-        m_victim.getResources().subtract(1, resource);
-
-        // Add that random card to the player's hand
-        getPlayer().getResources().add(1, resource);
+        getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
     }
 }

@@ -12,12 +12,12 @@ public class SoldierCommand extends AbstractCommand {
 
     public SoldierCommand(IGame game, IPlayer player) {
         super(game, player, "played a soldier card");
+
+//        if (getGame().canPlaySocanPlayS)
     }
 
     /**
-     * Moves the robber to the selected location. Lets the
-     * player choose which player to rob from if multiple
-     * players are on that tile location.
+     * Player plays a Soldier DevCard.
      */
     public void performAction() {
         //TODO: implement

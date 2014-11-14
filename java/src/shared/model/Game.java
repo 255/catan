@@ -626,4 +626,20 @@ public class Game extends Observable implements IGame {
             return false;
         }
     }
+
+    @Override
+    public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation) {
+
+        // Move the robber to the specified hex location
+        m_map.moveRobber(hexLocation);
+
+        // Choose a random card from the victim's hand
+        ResourceType resource = m_resourceBank.drawRandom();
+
+        // Remove that random card from the victim's hand
+        victim.getResources().subtract(1, resource);
+
+        // Add that random card to the player's hand
+        player.getResources().add(1, resource);
+    }
 }
