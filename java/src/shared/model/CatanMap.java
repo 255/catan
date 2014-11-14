@@ -692,6 +692,20 @@ public class CatanMap implements ICatanMap {
         return towns;
     }
 
+    private Collection<ITown> getAdjacentTowns(HexLocation hexLoc) {
+        Collection<ITown> towns = new ArrayList<>();
+
+        for (VertexDirection dir : VertexDirection.values()) {
+            VertexLocation loc = new VertexLocation(hexLoc, dir).getNormalizedLocation();
+            if (m_towns.containsKey(loc)) {
+                towns.add(m_towns.get(loc));
+            }
+        }
+
+        return towns;
+    }
+
+
     /**
      * Get the towns adjacent/connected to the specified vertex.
      * @param vertex the vertex around which to get towns
