@@ -1,5 +1,6 @@
 package shared.model;
 
+import shared.definitions.PieceType;
 import shared.definitions.PortType;
 import shared.locations.*;
 
@@ -783,9 +784,14 @@ public class CatanMap implements ICatanMap {
     }
 
     private void giveResourcesToAdjacentTowns(ITile tile) {
-
-        ITown town = new City(null, null);
-
-        town.getOwner().addResources();
+        Collection<ITown> towns = getAdjacentTowns(tile.location());
+        for(ITown town : towns) {
+            IResourceBank bank = new ResourceBank();
+            bank.increment(tile.resource());
+            if(town.getPieceType() == PieceType.CITY) {
+                bank.increment(tile.resource());
+            }
+            town.getOwner().addResources(bank);
+        }
     }
 }

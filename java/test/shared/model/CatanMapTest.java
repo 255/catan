@@ -6,7 +6,9 @@ import org.junit.Test;
 import shared.definitions.CatanColor;
 import shared.definitions.HexType;
 import shared.definitions.PortType;
+import shared.definitions.ResourceType;
 import shared.locations.*;
+import shared.model.ITile;
 
 import java.util.*;
 
@@ -382,5 +384,40 @@ public class CatanMapTest {
         assertFalse("Should be not be able to place the same two roads.", map.canPlaceTwoRoads(player1, next1, next1));
 
         assertFalse("Opponent should not be able to connect roads.", map.canPlaceTwoRoads(player2, next1, next2));
+    }
+
+    @Test
+    public void testDistributeResources() throws Exception {
+        map.placeSettlement(new Settlement(player1), new VertexLocation(0, 0, VertexDirection.NorthWest));
+        map.placeSettlement(new Settlement(player2), new VertexLocation(0, 0, VertexDirection.SouthEast));
+        map.placeCity(new City(player2), new VertexLocation(0, 0, VertexDirection.SouthEast));
+
+        // Tile Location, Number, ResourceType
+        // (-1, 0), 2, BRICK
+        // (0, -1), 2, BRICK
+        // (0, 0), 4, WOOD
+        // (0, 1), 6, WHEAT
+        // (1, 0), 6, WHEAT
+
+//        Used to get tile info:
+//        Collection<ITile> tiles = map.getTiles();
+//        for(ITile tile : tiles) {
+//            HexLocation location = new HexLocation(1, 0);
+//            if(tile.location().equals(location)) {
+//                System.out.println(tile.resource());
+//                System.out.println(tile.numberToken());
+//            }
+//        }
+
+        assertTrue("Player1 should have no resources", player1.getResources().getCount() == 0);
+        map.distributeResources(3);
+        assertTrue("Player1 should still have no resources", player1.getResources().getCount() == 0);
+        map.distributeResources(4);
+        assertTrue("Player1 should have 1 wood", player1.getResources().getCount() == 1 && player1.getResources().getCount(ResourceType.WOOD) == 1);
+        assertTrue("Player2 should have 2 wood", player2.getResources().getCount() == 2 && player2.getResources().getCount(ResourceType.WOOD) == 2);
+        map.distributeResources(2);
+        assertTrue("Player1 should have 1 wood and 2 brick", player1.getResources().getCount() == 3 && player1.getResources().getCount(ResourceType.BRICK) == 2);
+        map.distributeResources(6);
+        assertTrue("Player2 should have 2 wood and 4 wheat", player2.getResources().getCount() == 6 && player2.getResources().getCount(ResourceType.WHEAT) == 4);
     }
 }
