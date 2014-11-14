@@ -52,5 +52,6 @@ public class SoldierCommand extends AbstractCommand {
         // Performs the robbing of the player
         getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
 
+        getGame().checkForVictory();
     }
 }

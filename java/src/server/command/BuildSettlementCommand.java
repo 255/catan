@@ -31,5 +31,6 @@ public class BuildSettlementCommand extends AbstractCommand {
      */
     public void performAction() {
         getGame().getMap().placeSettlement(getPlayer().buildSettlement(m_free), m_location);
+        getGame().checkForVictory();
     }
 }
