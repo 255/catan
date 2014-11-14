@@ -1,5 +1,6 @@
 package server.command;
 
+import shared.definitions.ResourceType;
 import shared.locations.HexLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;
@@ -11,9 +12,24 @@ import shared.model.IPlayer;
  */
 public class RobPlayerCommand extends AbstractCommand {
 
-    public RobPlayerCommand(IGame game, IPlayer player, IPlayer victim, HexLocation location) {
+    private IPlayer m_victim;
+    private HexLocation m_hexLocation;
+
+
+    public RobPlayerCommand(IGame game, IPlayer player, IPlayer victim, HexLocation location) throws IllegalCommandException {
         super(game, player, "robbed " + victim.getName());
-        // TODO: implement
+
+        if (getGame().getMap().canPlaceRobber(location)) {
+            throw new IllegalCommandException(("Player " + player.getName() + "tried to place the robber " +
+                    "                           on hex location " + location.toString() + " but the robber is already there"));
+        }
+
+        if (victim.getResources().getCount() == 0) {
+            throw new IllegalCommandException("Player " + player.getName() + " tried to rob from " + victim.getName() + " but they had no cards");
+        }
+
+        m_victim = victim;
+        m_hexLocation = location;
     }
 
     /**
@@ -21,7 +37,7 @@ public class RobPlayerCommand extends AbstractCommand {
      * and moves that card to the robbing player's hand.
      */
     public void performAction() {
-        // TODO: implement
 
+        getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
     }
 }
