@@ -669,6 +669,17 @@ public class Game extends Observable implements IGame {
 
     @Override
     public void finishTurn(IPlayer player) {
-        // doing a diff of the model json from demo server to see what changed
+        // move old dev cards to new
+        player.getNewDevCards().transferAllCardsToHand(player.getPlayableDevCards());
+
+        // advance the turn to the next player
+            // ideally to advance the index,
+            // I take the given player index,
+            // add 1 and mod by the number of players
+        IPlayer nextPlayer = getPlayers().get((player.getIndex() + 1) % getPlayers().size());
+        setCurrentPlayer(nextPlayer);
+
+        // change state to the Rolling state for the next player to begin their turn
+        setGameState(GameState.ROLLING);
     }
 }
