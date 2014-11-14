@@ -28,6 +28,6 @@ public class RollNumberCommand extends AbstractCommand {
      * adds those resources to the player's hands.
      */
     public void performAction() {
-
+        getGame().rollNumber(m_number);
     }
 }

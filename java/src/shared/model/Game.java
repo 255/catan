@@ -628,6 +628,11 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
+    public void rollNumber(int number) {
+        m_map.distributeResources(number);
+    }
+
+    @Override
     public boolean joinGame(IUser user, CatanColor playerColor) {
         // checks if player is already in game, if so exits method
         for(IPlayer player : m_players) {
@@ -668,5 +673,21 @@ public class Game extends Observable implements IGame {
 
         // Add that random card to the player's hand
         player.getResources().add(1, resource);
+    }
+
+    @Override
+    public void finishTurn(IPlayer player) {
+        // move old dev cards to new
+        player.getNewDevCards().transferAllCardsToHand(player.getPlayableDevCards());
+
+        // advance the turn to the next player
+            // ideally to advance the index,
+            // I take the given player index,
+            // add 1 and mod by the number of players
+        IPlayer nextPlayer = getPlayers().get((player.getIndex() + 1) % getPlayers().size());
+        setCurrentPlayer(nextPlayer);
+
+        // change state to the Rolling state for the next player to begin their turn
+        setGameState(GameState.ROLLING);
     }
 }

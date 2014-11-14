@@ -12,7 +12,6 @@ public class FinishTurnCommand extends AbstractCommand {
 
     public FinishTurnCommand(IGame game, IPlayer player) {
         super(game, player, "ended their turn");
-        // TODO: implement
     }
 
     /**
@@ -20,6 +19,7 @@ public class FinishTurnCommand extends AbstractCommand {
      * specified game.
      */
     public void performAction() {
-        // TODO: implement
+        // call finish turn on the game model
+        getGame().finishTurn(getPlayer());
     }
 }

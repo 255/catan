@@ -1,5 +1,6 @@
 package shared.model;
 
+import shared.definitions.PieceType;
 import shared.definitions.PortType;
 import shared.locations.*;
 
@@ -768,5 +769,29 @@ public class CatanMap implements ICatanMap {
 
         // didn't find any of the locs...
         return false;
+    }
+
+    @Override
+    public void distributeResources(int number) {
+        Iterator it = m_tiles.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            ITile tile = (ITile)pairs.getValue();
+            if(tile.numberToken() == number && !tile.hasRobber()) {
+                giveResourcesToAdjacentTowns(tile);
+            }
+        }
+    }
+
+    private void giveResourcesToAdjacentTowns(ITile tile) {
+        Collection<ITown> towns = getAdjacentTowns(tile.location());
+        for(ITown town : towns) {
+            IResourceBank bank = new ResourceBank();
+            bank.increment(tile.resource());
+            if(town.getPieceType() == PieceType.CITY) {
+                bank.increment(tile.resource());
+            }
+            town.getOwner().addResources(bank);
+        }
     }
 }

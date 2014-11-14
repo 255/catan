@@ -22,10 +22,11 @@ public class UserManager implements IUserManager {
     }
 
     @Override
-    public boolean createUser(String username, String password) {
-        m_users.put(m_nextUserId, new User(username, password, m_nextUserId));
+    public IUser createUser(String username, String password) {
+        User newUser = new User(username, password, m_nextUserId);
+        m_users.put(m_nextUserId, newUser);
         m_nextUserId++;
-        return true;
+        return newUser;
     }
 
     @Override

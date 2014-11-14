@@ -177,4 +177,10 @@ public interface ICatanMap {
      * @return the player with the longest road, or null if no player qualifies (length is < 5)
      */
     public IPlayer getLongestRoad();
+
+    /**
+     * Distributes resources to players based on number rolled
+     * @param number that is rolled
+     */
+    public void distributeResources(int number);
 }
