@@ -23,9 +23,12 @@ public class UserManager implements IUserManager {
 
     @Override
     public IUser createUser(String username, String password) {
-        User newUser = new User(username, password, m_nextUserId);
-        m_users.put(m_nextUserId, newUser);
-        m_nextUserId++;
+        User newUser = null;
+        if(!doesUserExist(username)) {
+            newUser = new User(username, password, m_nextUserId);
+            m_users.put(m_nextUserId, newUser);
+            m_nextUserId++;
+        }
         return newUser;
     }
 
