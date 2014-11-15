@@ -195,8 +195,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame buildCity(BuildCityParams buildCity) throws IllegalCommandException {
-        return null;
+    public IGame buildCity(BuildCityParams buildCity) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(buildCity.getGameId());
+        new BuildCityCommand(game, game.getPlayer(buildCity.playerIndex), buildCity.vertexLocation);
+        return game;
     }
 
     /**
@@ -207,8 +209,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException {
-        return null;
+    public IGame offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(offerTrade.getGameId());
+        new OfferTradeCommand(game, game.getPlayer(offerTrade.playerIndex), game.getPlayer(offerTrade.receiver), offerTrade.offer);
+        return game;
     }
 
     /**
@@ -219,8 +223,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException {
-        return null;
+    public IGame acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(acceptTrade.getGameId());
+        new AcceptTradeCommand(game, game.getPlayer(acceptTrade.playerIndex), acceptTrade.willAccept);
+        return game;
     }
 
     /**
@@ -231,8 +237,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException {
-        return null;
+    public IGame maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(maritimeTrade.getGameId());
+        new MaritimeTradeCommand(game, game.getPlayer(maritimeTrade.playerIndex), maritimeTrade.inputResource, maritimeTrade.outputResource, maritimeTrade.ratio);
+        return game;
     }
 
     /**
@@ -243,7 +251,9 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame discardCards(DiscardCardParams discardCards) throws IllegalCommandException {
-        return null;
+    public IGame discardCards(DiscardCardParams discardCards) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(discardCards.getGameId());
+        new DiscardCardsCommand(game, game.getPlayer(discardCards.playerIndex), discardCards.discardedCards);
+        return game;
     }
 }

@@ -1,7 +1,7 @@
 package server.command;
 
 import shared.definitions.ResourceType;
-import shared.model.Game;
+import shared.model.IGame;
 import shared.model.IPlayer;
 
 /**
@@ -16,13 +16,7 @@ public class MaritimeTradeCommand extends AbstractCommand {
     private ResourceType inputResource;
     private ResourceType outputResource;
 
-    MaritimeTradeCommand (
-            //int playerIndex,
-            IPlayer player,
-            int ratio,
-            ResourceType inputResource,
-            ResourceType outputResource,
-            Game theGame) throws IllegalCommandException {
+    public MaritimeTradeCommand (IGame theGame, IPlayer player, ResourceType inputResource, ResourceType outputResource, int ratio) throws IllegalCommandException {
 
         super(theGame, player, "performed a maritime trade");
         this.ratio = ratio;

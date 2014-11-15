@@ -13,10 +13,7 @@ public class AcceptTradeCommand extends AbstractCommand {
     //private int playerIndex;
     private boolean willAccept;
 
-    public AcceptTradeCommand(
-            IPlayer player,
-            boolean willAccept,
-            IGame game) throws IllegalCommandException {
+    public AcceptTradeCommand(IGame game, IPlayer player, boolean willAccept) throws IllegalCommandException {
         super(game, player, (willAccept ? "accepted the trade" : "rejected the trade"));
         //this.playerIndex = playerIndex;
         this.willAccept = willAccept;

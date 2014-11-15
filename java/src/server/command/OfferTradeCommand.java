@@ -12,11 +12,7 @@ public class OfferTradeCommand extends AbstractCommand {
     private ResourceBank offer;
     private IPlayer receiver;
 
-    OfferTradeCommand(
-            IPlayer player,
-            ResourceBank offer,
-            IPlayer receiver,
-            Game theGame) throws IllegalCommandException {
+    public OfferTradeCommand(IGame theGame, IPlayer player, IPlayer receiver, ResourceBank offer) throws IllegalCommandException {
 
         super(theGame, player, "offered a trade to " + receiver.getName());
         this.offer = offer;

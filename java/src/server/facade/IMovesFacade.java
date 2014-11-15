@@ -131,7 +131,7 @@ public interface IMovesFacade {
      * @param buildCity JSON wrapper with parameters to build a city
      * @return Game object containing a pointer to the model
      */
-    public IGame buildCity(BuildCityParams buildCity) throws IllegalCommandException;
+    public IGame buildCity(BuildCityParams buildCity) throws IllegalCommandException, ModelException;
 
     /**
      * Offers a trade to another player
@@ -140,7 +140,7 @@ public interface IMovesFacade {
      * @param offerTrade JSON wrapper with parameters to offer a trade
      * @return Game object containing a pointer to the model
      */
-    public IGame offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException;
+    public IGame offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException, ModelException;
 
     /**
      * Accept or reject a trade offered to you
@@ -149,7 +149,7 @@ public interface IMovesFacade {
      * @param acceptTrade JSON wrapper with parameters to accept a trade
      * @return Game object containing a pointer to the model
      */
-    public IGame acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException;
+    public IGame acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException, ModelException;
 
     /**
      * Execute a maritime trade operation
@@ -158,7 +158,7 @@ public interface IMovesFacade {
      * @param maritimeTrade JSON wrapper with parameters to do a maritime trade
      * @return Game object containing a pointer to the model
      */
-    public IGame maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException;
+    public IGame maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException, ModelException;
 
     /**
      * Discards selected cards because of a rolled 7
@@ -167,5 +167,5 @@ public interface IMovesFacade {
      * @param discardCards JSON wrapper with parameters to discard card from the player hand
      * @return Game object containing a pointer to the model
      */
-    public IGame discardCards(DiscardCardParams discardCards) throws IllegalCommandException;
+    public IGame discardCards(DiscardCardParams discardCards) throws IllegalCommandException, ModelException;
 }

@@ -1,6 +1,6 @@
 package server.command;
 
-import shared.model.Game;
+import shared.model.IGame;
 import shared.model.IPlayer;
 import shared.model.ResourceBank;
 
@@ -13,11 +13,7 @@ public class DiscardCardsCommand extends AbstractCommand {
 
     private ResourceBank discardedCards;
 
-    DiscardCardsCommand(
-            //int playerIndex,
-            IPlayer player,
-            ResourceBank discardedCards,
-            Game theGame) throws IllegalCommandException {
+    public DiscardCardsCommand(IGame theGame, IPlayer player, ResourceBank discardedCards) throws IllegalCommandException {
         super(theGame, player);
         this.discardedCards = discardedCards;
 
