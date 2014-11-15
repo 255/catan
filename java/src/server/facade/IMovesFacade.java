@@ -111,7 +111,7 @@ public interface IMovesFacade {
      * @param buildRoad JSON wrapper with parameters to build a road
      * @return Game object containing a pointer to the model
      */
-    public Game buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException;
+    public IGame buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException, ModelException;
 
     /**
      * Builds a settlement for a player at a specified spot;
@@ -121,7 +121,7 @@ public interface IMovesFacade {
      * @param buildSettlement JSON wrapper with parameters to build a settlement
      * @return Game object containing a pointer to the model
      */
-    public Game buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException;
+    public IGame buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException, ModelException;
 
     /**
      * Builds a city for a player at a specified spot;
