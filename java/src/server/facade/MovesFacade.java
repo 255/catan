@@ -1,7 +1,6 @@
 package server.facade;
 
-import server.command.IllegalCommandException;
-import server.command.SendChatCommand;
+import server.command.*;
 import shared.communication.*;
 import shared.model.Game;
 import shared.model.IGame;
@@ -40,8 +39,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game rollNumber(RollNumberParams rollNumber) throws IllegalCommandException {
-        return null;
+    public IGame rollNumber(RollNumberParams rollNumber) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(rollNumber.getGameId());
+        new RollNumberCommand(game, game.getPlayer(rollNumber.playerIndex), rollNumber.number);
+        return game;
     }
 
     /**
@@ -52,8 +53,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game robPlayer(RobbingParams robbing) throws IllegalCommandException{
-        return null;
+    public IGame robPlayer(RobbingParams robbing) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(robbing.getGameId());
+        new RobPlayerCommand(game, game.getPlayer(robbing.playerIndex), game.getPlayer(robbing.victimIndex), robbing.location);
+        return game;
     }
 
     /**
@@ -64,7 +67,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException {
+    public IGame finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException {
         return null;
     }
 
@@ -76,8 +79,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buyDevCard(PlayerIndexParam playerIndex) throws IllegalCommandException {
-        return null;
+    public IGame buyDevCard(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(playerIndex.getGameId());
+        new BuyDevCardCommand(game, game.getPlayer(playerIndex.playerIndex));
+        return game;
     }
 
     /**
@@ -88,8 +93,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game yearOfPlenty(YearOfPlentyParams yearOfPlenty) throws IllegalCommandException {
-        return null;
+    public IGame yearOfPlenty(YearOfPlentyParams yearOfPlenty) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(yearOfPlenty.getGameId());
+        new YearOfPlentyCommand(game, game.getPlayer(yearOfPlenty.playerIndex), yearOfPlenty.resource1, yearOfPlenty.resource2);
+        return game;
     }
 
     /**
@@ -100,8 +107,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game roadBuilding(RoadBuildingParams roadBuilding) throws IllegalCommandException {
-        return null;
+    public IGame roadBuilding(RoadBuildingParams roadBuilding) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(roadBuilding.getGameId());
+        new RoadBuildingCommand(game, game.getPlayer(roadBuilding.playerIndex), roadBuilding.spot1, roadBuilding.spot2);
+        return game;
     }
 
     /**
@@ -112,8 +121,11 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game soldier(RobbingParams robbing) throws IllegalCommandException {
-        return null;
+    public IGame soldier(RobbingParams robbing) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(robbing.getGameId());
+        //TODO: IMPLEMENT SOLDIERCOMMAND THEN UNCOMMENT LINE BELOW
+//        new SoldierCommand(game, game.getPlayer(robbing.playerIndex), game.getPlayer(robbing.victimIndex), robbing.location);
+        return game;
     }
 
     /**
@@ -124,8 +136,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game monopoly(MonopolyParams monopoly) throws IllegalCommandException {
-        return null;
+    public IGame monopoly(MonopolyParams monopoly) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(monopoly.getGameId());
+        new MonopolyCommand(game, game.getPlayer(monopoly.playerIndex), monopoly.resource);
+        return game;
     }
 
     /**
@@ -136,8 +150,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game monument(PlayerIndexParam playerIndex) throws IllegalCommandException {
-        return null;
+    public IGame monument(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(playerIndex.getGameId());
+        new MonumentCommand(game, game.getPlayer(playerIndex.playerIndex));
+        return game;
     }
 
     /**
@@ -149,7 +165,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException {
+    public IGame buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException {
         return null;
     }
 
@@ -162,7 +178,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException {
+    public IGame buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException {
         return null;
     }
 
@@ -175,7 +191,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game buildCity(BuildCityParams buildCity) throws IllegalCommandException {
+    public IGame buildCity(BuildCityParams buildCity) throws IllegalCommandException {
         return null;
     }
 
@@ -187,7 +203,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException {
+    public IGame offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException {
         return null;
     }
 
@@ -199,7 +215,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException {
+    public IGame acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException {
         return null;
     }
 
@@ -211,7 +227,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException {
+    public IGame maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException {
         return null;
     }
 
@@ -223,7 +239,7 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public Game discardCards(DiscardCardParams discardCards) throws IllegalCommandException {
+    public IGame discardCards(DiscardCardParams discardCards) throws IllegalCommandException {
         return null;
     }
 }

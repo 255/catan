@@ -28,7 +28,7 @@ public interface IMovesFacade {
      * @param rollNumber JSON wrapper with parameters to roll a number
      * @return Game object containing a pointer to the model
      */
-    public Game rollNumber(RollNumberParams rollNumber) throws IllegalCommandException;
+    public IGame rollNumber(RollNumberParams rollNumber) throws IllegalCommandException, ModelException;
 
     /**
      * Moves the robber to a new location and selects a player to rob
@@ -37,7 +37,7 @@ public interface IMovesFacade {
      * @param robbing JSON wrapper with parameters to rob a player
      * @return Game object containing a pointer to the model
      */
-    public Game robPlayer(RobbingParams robbing) throws IllegalCommandException;
+    public IGame robPlayer(RobbingParams robbing) throws IllegalCommandException, ModelException;
 
     /**
      * Used to finish a turn
@@ -46,7 +46,7 @@ public interface IMovesFacade {
      * @param playerIndex JSON wrapper with parameters to finish a turn
      * @return Game object containing a pointer to the model
      */
-    public Game finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException;
+    public IGame finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException;
 
     /**
      * Buys a development card for yourself
@@ -55,7 +55,7 @@ public interface IMovesFacade {
      * @param playerIndex JSON wrapper with parameters to buy a dev card
      * @return Game object containing a pointer to the model
      */
-    public Game buyDevCard(PlayerIndexParam playerIndex) throws IllegalCommandException;
+    public IGame buyDevCard(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException;
 
     /**
      * Plays a Year of Plenty card and its effects
@@ -64,7 +64,7 @@ public interface IMovesFacade {
      * @param yearOfPlenty JSON wrapper with parameters to play a year of plenty card
      * @return Game object containing a pointer to the model
      */
-    public Game yearOfPlenty(YearOfPlentyParams yearOfPlenty) throws IllegalCommandException;
+    public IGame yearOfPlenty(YearOfPlentyParams yearOfPlenty) throws IllegalCommandException, ModelException;
 
     /**
      * Plays a Road Building card and its effects
@@ -73,7 +73,7 @@ public interface IMovesFacade {
      * @param roadBuilding JSON wrapper with parameters to play a road building card
      * @return Game object containing a pointer to the model
      */
-    public Game roadBuilding(RoadBuildingParams roadBuilding) throws IllegalCommandException;
+    public IGame roadBuilding(RoadBuildingParams roadBuilding) throws IllegalCommandException, ModelException;
 
     /**
      * Plays a Soldier card and its effects
@@ -82,7 +82,7 @@ public interface IMovesFacade {
      * @param robbing JSON wrapper with parameters to play a soldier card
      * @return Game object containing a pointer to the model
      */
-    public Game soldier(RobbingParams robbing) throws IllegalCommandException;
+    public IGame soldier(RobbingParams robbing) throws IllegalCommandException, ModelException;
 
     /**
      * Plays a Monopoly card and its effects
@@ -91,7 +91,7 @@ public interface IMovesFacade {
      * @param monopoly JSON wrapper with parameters to play a monopoly card
      * @return Game object containing a pointer to the model
      */
-    public Game monopoly(MonopolyParams monopoly) throws IllegalCommandException;
+    public IGame monopoly(MonopolyParams monopoly) throws IllegalCommandException, ModelException;
 
     /**
      * Plays a Monument card and its effects
@@ -101,7 +101,7 @@ public interface IMovesFacade {
      * @param playerIndex JSON wrapper with parameters to play a monument card
      *  @return Game object containing a pointer to the model
      */
-    public Game monument(PlayerIndexParam playerIndex) throws IllegalCommandException;
+    public IGame monument(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException;
 
     /**
      * Builds a road for a player at a specified spot;
@@ -111,7 +111,7 @@ public interface IMovesFacade {
      * @param buildRoad JSON wrapper with parameters to build a road
      * @return Game object containing a pointer to the model
      */
-    public Game buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException;
+    public IGame buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException;
 
     /**
      * Builds a settlement for a player at a specified spot;
@@ -121,7 +121,7 @@ public interface IMovesFacade {
      * @param buildSettlement JSON wrapper with parameters to build a settlement
      * @return Game object containing a pointer to the model
      */
-    public Game buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException;
+    public IGame buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException;
 
     /**
      * Builds a city for a player at a specified spot;
@@ -131,7 +131,7 @@ public interface IMovesFacade {
      * @param buildCity JSON wrapper with parameters to build a city
      * @return Game object containing a pointer to the model
      */
-    public Game buildCity(BuildCityParams buildCity) throws IllegalCommandException;
+    public IGame buildCity(BuildCityParams buildCity) throws IllegalCommandException;
 
     /**
      * Offers a trade to another player
@@ -140,7 +140,7 @@ public interface IMovesFacade {
      * @param offerTrade JSON wrapper with parameters to offer a trade
      * @return Game object containing a pointer to the model
      */
-    public Game offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException;
+    public IGame offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException;
 
     /**
      * Accept or reject a trade offered to you
@@ -149,7 +149,7 @@ public interface IMovesFacade {
      * @param acceptTrade JSON wrapper with parameters to accept a trade
      * @return Game object containing a pointer to the model
      */
-    public Game acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException;
+    public IGame acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException;
 
     /**
      * Execute a maritime trade operation
@@ -158,7 +158,7 @@ public interface IMovesFacade {
      * @param maritimeTrade JSON wrapper with parameters to do a maritime trade
      * @return Game object containing a pointer to the model
      */
-    public Game maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException;
+    public IGame maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException;
 
     /**
      * Discards selected cards because of a rolled 7
@@ -167,5 +167,5 @@ public interface IMovesFacade {
      * @param discardCards JSON wrapper with parameters to discard card from the player hand
      * @return Game object containing a pointer to the model
      */
-    public Game discardCards(DiscardCardParams discardCards) throws IllegalCommandException;
+    public IGame discardCards(DiscardCardParams discardCards) throws IllegalCommandException;
 }
