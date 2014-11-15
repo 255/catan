@@ -41,7 +41,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame rollNumber(RollNumberParams rollNumber) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(rollNumber.getGameId());
-        new RollNumberCommand(game, game.getPlayer(rollNumber.playerIndex), rollNumber.number);
+        new RollNumberCommand(game, game.getPlayer(rollNumber.playerIndex), rollNumber.number).execute();
         return game;
     }
 
@@ -55,7 +55,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame robPlayer(RobbingParams robbing) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(robbing.getGameId());
-        new RobPlayerCommand(game, game.getPlayer(robbing.playerIndex), game.getPlayer(robbing.victimIndex), robbing.location);
+        new RobPlayerCommand(game, game.getPlayer(robbing.playerIndex), game.getPlayer(robbing.victimIndex), robbing.location).execute();
         return game;
     }
 
@@ -67,7 +67,9 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException {
+    public IGame finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(playerIndex.getGameId());
+        new FinishTurnCommand(game, game.getPlayer(playerIndex.playerIndex)).execute();
         return null;
     }
 
@@ -81,7 +83,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame buyDevCard(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(playerIndex.getGameId());
-        new BuyDevCardCommand(game, game.getPlayer(playerIndex.playerIndex));
+        new BuyDevCardCommand(game, game.getPlayer(playerIndex.playerIndex)).execute();
         return game;
     }
 
@@ -95,7 +97,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame yearOfPlenty(YearOfPlentyParams yearOfPlenty) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(yearOfPlenty.getGameId());
-        new YearOfPlentyCommand(game, game.getPlayer(yearOfPlenty.playerIndex), yearOfPlenty.resource1, yearOfPlenty.resource2);
+        new YearOfPlentyCommand(game, game.getPlayer(yearOfPlenty.playerIndex), yearOfPlenty.resource1, yearOfPlenty.resource2).execute();
         return game;
     }
 
@@ -109,7 +111,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame roadBuilding(RoadBuildingParams roadBuilding) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(roadBuilding.getGameId());
-        new RoadBuildingCommand(game, game.getPlayer(roadBuilding.playerIndex), roadBuilding.spot1, roadBuilding.spot2);
+        new RoadBuildingCommand(game, game.getPlayer(roadBuilding.playerIndex), roadBuilding.spot1, roadBuilding.spot2).execute();
         return game;
     }
 
@@ -123,8 +125,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame soldier(RobbingParams robbing) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(robbing.getGameId());
-        //TODO: IMPLEMENT SOLDIERCOMMAND THEN UNCOMMENT LINE BELOW
-//        new SoldierCommand(game, game.getPlayer(robbing.playerIndex), game.getPlayer(robbing.victimIndex), robbing.location);
+        new SoldierCommand(game, game.getPlayer(robbing.playerIndex), game.getPlayer(robbing.victimIndex), robbing.location).execute();
         return game;
     }
 
@@ -138,7 +139,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame monopoly(MonopolyParams monopoly) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(monopoly.getGameId());
-        new MonopolyCommand(game, game.getPlayer(monopoly.playerIndex), monopoly.resource);
+        new MonopolyCommand(game, game.getPlayer(monopoly.playerIndex), monopoly.resource).execute();
         return game;
     }
 
@@ -152,7 +153,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame monument(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(playerIndex.getGameId());
-        new MonumentCommand(game, game.getPlayer(playerIndex.playerIndex));
+        new MonumentCommand(game, game.getPlayer(playerIndex.playerIndex)).execute();
         return game;
     }
 
@@ -197,7 +198,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame buildCity(BuildCityParams buildCity) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(buildCity.getGameId());
-        new BuildCityCommand(game, game.getPlayer(buildCity.playerIndex), buildCity.vertexLocation);
+        new BuildCityCommand(game, game.getPlayer(buildCity.playerIndex), buildCity.vertexLocation).execute();
         return game;
     }
 
@@ -211,7 +212,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame offerTrade(OfferTradeParams offerTrade) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(offerTrade.getGameId());
-        new OfferTradeCommand(game, game.getPlayer(offerTrade.playerIndex), game.getPlayer(offerTrade.receiver), offerTrade.offer);
+        new OfferTradeCommand(game, game.getPlayer(offerTrade.playerIndex), game.getPlayer(offerTrade.receiver), offerTrade.offer).execute();
         return game;
     }
 
@@ -225,7 +226,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame acceptTrade(AcceptTradeParams acceptTrade) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(acceptTrade.getGameId());
-        new AcceptTradeCommand(game, game.getPlayer(acceptTrade.playerIndex), acceptTrade.willAccept);
+        new AcceptTradeCommand(game, game.getPlayer(acceptTrade.playerIndex), acceptTrade.willAccept).execute();
         return game;
     }
 
@@ -239,7 +240,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame maritimeTrade(MaritimeTradeParams maritimeTrade) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(maritimeTrade.getGameId());
-        new MaritimeTradeCommand(game, game.getPlayer(maritimeTrade.playerIndex), maritimeTrade.inputResource, maritimeTrade.outputResource, maritimeTrade.ratio);
+        new MaritimeTradeCommand(game, game.getPlayer(maritimeTrade.playerIndex), maritimeTrade.inputResource, maritimeTrade.outputResource, maritimeTrade.ratio).execute();
         return game;
     }
 
@@ -253,7 +254,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame discardCards(DiscardCardParams discardCards) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(discardCards.getGameId());
-        new DiscardCardsCommand(game, game.getPlayer(discardCards.playerIndex), discardCards.discardedCards);
+        new DiscardCardsCommand(game, game.getPlayer(discardCards.playerIndex), discardCards.discardedCards).execute();
         return game;
     }
 }
