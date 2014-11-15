@@ -15,6 +15,11 @@ public class CatanConstants {
 
     /** The minimum number of roads needed to qualify for the longest road */
     public static final int MIN_ROADS_FOR_LONGEST_ROAD = 5;
+    public static final int POINTS_FOR_LONGEST_ROAD = 2;
+
+    /** The minimum number of soldiers needed to qualify for the largest army */
+    public static final int MIN_SOLDIERS_FOR_LARGEST_ARMY = 3;
+    public static final int POINTS_FOR_LARGEST_ARMY = 2;
 
     /** Number of roads a player starts with, and the max that they can place on the board */
     public static final int MAX_ROADS = 15;

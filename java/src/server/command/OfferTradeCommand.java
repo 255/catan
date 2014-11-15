@@ -19,11 +19,8 @@ public class OfferTradeCommand extends AbstractCommand {
         this.receiver = receiver;
 
         // is the trade offer null?
-        if(getGame().getTradeOffer() == null) {
-            throw new IllegalCommandException(
-                    "The trade being offered is null." +
-                    "Perhaps a trade offer hasn't been posted."
-            );
+        if(getGame().getTradeOffer() != null) {
+            throw new IllegalCommandException("There is already a trade being offered!");
         }
     }
 

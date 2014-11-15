@@ -613,10 +613,44 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public void checkForVictory() {
+    public void calculateVictoryPoints() {
+        // update the longest/largest pointers
+        calculateLargestArmy();
+        calculateLongestRoad();
+
         for(IPlayer p : m_players) {
+            p.calculateVictoryPoints();
+
+            if (hasLongestRoad(p)) p.giveVictoryPoints(CatanConstants.POINTS_FOR_LONGEST_ROAD);
+            if (hasLargestArmy(p)) p.giveVictoryPoints(CatanConstants.POINTS_FOR_LARGEST_ARMY);
+
             if(p.getVictoryPoints() >= CatanConstants.VICTORY_POINTS_TO_WIN) {
                 setWinner(p);
+                break;
+            }
+        }
+    }
+
+    private void calculateLongestRoad() {
+        int longestRoad = m_map.getPlayersLongestRoad(m_longestRoad);
+
+        for (IPlayer player : m_players) {
+            int playerLongestRoad = m_map.getPlayersLongestRoad(player);
+
+            if (playerLongestRoad > longestRoad && playerLongestRoad >= CatanConstants.MIN_ROADS_FOR_LONGEST_ROAD) {
+                longestRoad = playerLongestRoad;
+                m_longestRoad = player;
+            }
+        }
+    }
+
+    private void calculateLargestArmy() {
+        int largestArmy = m_largestArmy != null ? m_largestArmy.getSoldiers() : 0; // could set to min soldiers - 1 instead of 0
+
+        for (IPlayer player : m_players) {
+            if (player.getSoldiers() > largestArmy && player.getSoldiers() >= CatanConstants.MIN_SOLDIERS_FOR_LARGEST_ARMY) {
+                largestArmy = player.getSoldiers();
+                m_largestArmy = player;
             }
         }
     }

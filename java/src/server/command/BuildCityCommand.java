@@ -30,6 +30,6 @@ public class BuildCityCommand extends AbstractCommand {
     public void performAction() {
         getGame().getMap().placeCity(getPlayer().buildCity(), m_location);
 
-        getGame().checkForVictory();
+        getGame().calculateVictoryPoints();
     }
 }

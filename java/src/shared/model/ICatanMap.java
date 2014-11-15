@@ -1,6 +1,5 @@
 package shared.model;
 
-import shared.definitions.HexType;
 import shared.definitions.PortType;
 import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
@@ -173,14 +172,20 @@ public interface ICatanMap {
     public boolean canPlaceRobber(HexLocation location);
 
     /**
-     * Find the player with the longest road.
-     * @return the player with the longest road, or null if no player qualifies (length is < 5)
+     * Find the player's longest road.
+     * @return the length
      */
-    public IPlayer getLongestRoad();
+    public int getPlayersLongestRoad(IPlayer player);
 
     /**
      * Distributes resources to players based on number rolled
      * @param number that is rolled
      */
     public void distributeResources(int number);
+
+    /**
+     * Distributes initial resources to players based on the provided town
+     * @param town the second town placed gets one of each resource
+     */
+    public void distributeInitialResources(ITown town);
 }

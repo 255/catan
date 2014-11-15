@@ -34,6 +34,6 @@ public class BuildRoadCommand extends AbstractCommand {
     public void performAction() {
         getGame().getMap().placeRoad(getPlayer().buildRoad(m_free), m_location);
 
-        getGame().checkForVictory();
+        getGame().calculateVictoryPoints();
     }
 }

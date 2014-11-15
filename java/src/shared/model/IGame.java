@@ -252,7 +252,7 @@ public interface IGame {
 
     public void finishTurn();
 
-    public void checkForVictory();
+    public void calculateVictoryPoints();
 
     public void discardCards(IPlayer player, ResourceBank cards);
 }

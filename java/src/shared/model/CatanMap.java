@@ -70,20 +70,11 @@ public class CatanMap implements ICatanMap {
         }
     }
 
-    /**
-     * Get all of the towns placed on the map.
-     * @return the towns placed on the map
-     */
     @Override
     public Collection<ITown> getTowns() {
         return m_towns.values();
     }
 
-    /**
-     * Get all of the cities on the map.
-     *
-     * @return a collection of cities (no settlements)
-     */
     @Override
     public Collection<ITown> getCities() {
         Collection<ITown> cities = new ArrayList<>();
@@ -96,11 +87,6 @@ public class CatanMap implements ICatanMap {
         return cities;
     }
 
-    /**
-     * Get all of the settlements on the map.
-     *
-     * @return a collection of cities (no settlements)
-     */
     @Override
     public Collection<ITown> getSettlements() {
         Collection<ITown> settlements = new ArrayList<>();
@@ -113,60 +99,31 @@ public class CatanMap implements ICatanMap {
         return settlements;
     }
 
-    /**
-     * Get all of the roads placed on the map.
-     * @return the roads placed on the map
-     */
     @Override
     public Collection<IRoad> getRoads() {
         return m_roads.values();
     }
 
-    /**
-     * Get all of the terrain tiles in the map
-     * @return the tiles in the map
-     */
     @Override
     public Collection<ITile> getTiles() {
         return m_tiles.values();
     }
 
-    /**
-     * Get all of the ports on the map by location.
-     * @return an unmodifiable map of ports mapping location to type
-     */
     @Override
     public Map<EdgeLocation, PortType> getPorts() {
         return Collections.unmodifiableMap(m_ports);
     }
 
-    /**
-     * Get a reference to the town that is placed at the specified location.
-     * If there is no town at vertexLoc, null is returned.
-     * @param vertexLoc the location of the town to get
-     * @return a reference to the town at vertexLoc or null of the vertex is empty
-     */
     @Override
     public ITown getTownAt(VertexLocation vertexLoc) {
         return m_towns.get(vertexLoc.getNormalizedLocation());
     }
 
-    /**
-     * Get the road placed on an edge.
-     * @param edge the edge from which to get the road
-     * @return the road placed on the specified edge, or null if there is none
-     */
     @Override
     public IRoad getRoad(EdgeLocation edge) {
         return m_roads.get(edge.getNormalizedLocation());
     }
 
-    /**
-     * Get the port types to which the specified player has access.
-     *
-     * @param player the player whose ports to get
-     * @return the ports belonging to the specified player
-     */
     @Override
     public Set<PortType> getPlayersPorts(IPlayer player) {
         Set<PortType> ports = new HashSet<>();
@@ -182,18 +139,6 @@ public class CatanMap implements ICatanMap {
         return Collections.unmodifiableSet(ports);
     }
 
-    /**
-     * Determine if a player can place a road at the specified location.
-     * To place a road, the player must have a city at an adjacent vertex or
-     * another road at an adjacent edge. The edge must also be unoccupied.
-     *
-     * The player must have enough resources to purchase a road. This function
-     * DOES NOT check the player's resources, however.
-     *
-     * @param player the player who is placing the road
-     * @param edge the location where the player wants to place a road
-     * @return a boolean value that reports if the player can place a road
-     */
     @Override
     public boolean canPlaceRoad(IPlayer player, EdgeLocation edge) {
         assert player != null && edge != null;
@@ -229,20 +174,6 @@ public class CatanMap implements ICatanMap {
         return false;
     }
 
-    /**
-     * Determine if a player can place a road during the game initialization rounds.
-     * This function differs from canPlaceRoad in that roads do not have to be connected to anything.
-     *
-     * During the two initialization rounds, roads cannot be placed next to any settlements,
-     * because the player must place a settlement next to the road.
-     *
-     * According to the spec, the roads are placed first, so there is no corresponding
-     * "can place initial settlement" function (and place settlement does not enforce rules).
-     *
-     * @param player the player to look at
-     * @param edge   the location where the player wants to place a road
-     * @return a boolean value that reports if the player can place a road
-     */
     @Override
     public boolean canPlaceInitialRoad(IPlayer player, EdgeLocation edge) {
         assert edge != null && player != null;
@@ -264,15 +195,6 @@ public class CatanMap implements ICatanMap {
         return false;
     }
 
-    /**
-     * Check if a player can legally place two roads.
-     * The validity of the second placement factors in the first placement.
-     * This only checks physical placement, not the ability of the player to buy a road.
-     * @param player the player who wants to place roads
-     * @param firstEdge the location of the first road the player will place
-     * @param secondEdge the second road location to place
-     * @return true if the roads work, false if not
-     */
     @Override
     public boolean canPlaceTwoRoads(IPlayer player, EdgeLocation firstEdge, EdgeLocation secondEdge) {
         assert player != null && firstEdge != null && secondEdge != null;
@@ -309,12 +231,6 @@ public class CatanMap implements ICatanMap {
         return town == null || player.equals(town.getOwner());
     }
 
-    /**
-     * Determine if a player can place a road at the specified location.
-     * @param player the player to look at
-     * @param vertex the location where the player wants to place a settlement
-     * @return a boolean value that reports if the player can place a settlement
-     */
     @Override
     public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex) {
         vertex = vertex.getNormalizedLocation();
@@ -355,12 +271,6 @@ public class CatanMap implements ICatanMap {
         return true;
     }
 
-    /**
-     * Determine if a player can place a city at the specified location.
-     * @param player the player to look at
-     * @param vertex the location where the player wants to place a city
-     * @return a boolean value that reports if the player can place a city
-     */
     @Override
     public boolean canPlaceCity(IPlayer player, VertexLocation vertex) {
         assert player != null && vertex != null;
@@ -370,12 +280,6 @@ public class CatanMap implements ICatanMap {
         return town != null && town instanceof Settlement && player.equals(town.getOwner());
     }
 
-    /**
-     * Place a road object at the specified edge.
-     * The road is placed in the map's data structure AND the road's location is set to edge.
-     * @param road the road that is being placed
-     * @param edge the edge on which to place the road.
-     */
     @Override
     public void placeRoad(IRoad road, EdgeLocation edge) {
         assert road != null && edge != null;
@@ -390,15 +294,6 @@ public class CatanMap implements ICatanMap {
         road.setLocation(edge);
     }
 
-    /**
-     * Place a settlement object at the specified vertex.
-     * The settlement is placed in the map's data structure AND the settlement's location is set to edge.
-     *
-     * This does NOT check whether a player has enough resources, etc. or enforce any rules.
-     *
-     * @param settlement the settlement that is being placed
-     * @param vertex     the vertex on which to place the settlement.
-     */
     @Override
     public void placeSettlement(Settlement settlement, VertexLocation vertex) {
         vertex = vertex.getNormalizedLocation();
@@ -410,15 +305,6 @@ public class CatanMap implements ICatanMap {
         settlement.setLocation(vertex);
     }
 
-    /**
-     * Place a city object at the specified vertex.
-     * The city is placed in the map's data structure AND the city's location is set to edge.
-     *
-     * No error checking is done here.
-     *
-     * @param city   the city that is being placed
-     * @param vertex the vertex on which to place the city.
-     */
     @Override
     public void placeCity(City city, VertexLocation vertex) {
         vertex = vertex.getNormalizedLocation();
@@ -431,19 +317,11 @@ public class CatanMap implements ICatanMap {
         city.setLocation(vertex);
     }
 
-    /**
-     * Get the location of the robber.
-     * @return the location of the robber
-     */
     @Override
     public HexLocation getRobber() {
         return m_robber;
     }
 
-    /**
-     * Change the location of the robber.
-     * @param location the new hex location of the robber
-     */
     @Override
     public void moveRobber(HexLocation location) {
         assert m_tiles.containsKey(location);
@@ -454,25 +332,11 @@ public class CatanMap implements ICatanMap {
         m_tiles.get(location).placeRobber();
     }
 
-    /**
-     * Determine whether the specified location is a valid place for the robber.
-     * The robber must always move and must stay on the map.
-     *
-     * @param location the new location for the robber
-     * @return true if the location is valid
-     */
     @Override
     public boolean canPlaceRobber(HexLocation location) {
         return !location.equals(m_robber) && isOnMap(location);
     }
 
-    /**
-     * Get the players who have towns around this tile and have resources to rob.
-     *
-     * @param tile the tile
-     * @param exclude the player to exclude from the robbing
-     * @return the players that can be robbed
-     */
     @Override
     public Set<IPlayer> getRobbablePlayersOnTile(HexLocation tile, IPlayer exclude) {
         Set<IPlayer> players = new HashSet<>();
@@ -491,41 +355,19 @@ public class CatanMap implements ICatanMap {
         return players;
     }
 
-
-    /**
-     * Find the player with the longest road.
-     * @return the player with the longest road, or null if no player qualifies (length is < 5)
-     */
     @Override
-    public IPlayer getLongestRoad() {
-        IPlayer longestRoadPlayer = null;
-        int longestRoad = 0;
-
-        // TODO: maybe better form to pass in the list of players?
-        for (IPlayer player : GameModelFacade.instance().getGame().getPlayers()) {
-            int playerLongestRoad = getPlayersLongestRoad(player);
-
-            if (playerLongestRoad > longestRoad && playerLongestRoad >= CatanConstants.MIN_ROADS_FOR_LONGEST_ROAD) {
-                longestRoad = playerLongestRoad;
-                longestRoadPlayer = player;
-            }
+    public int getPlayersLongestRoad(IPlayer player) {
+        if (player == null) {
+            return 0; // if no longest road, just return 0
         }
 
-        return longestRoadPlayer;
-    }
-
-    /**
-     * Find the player's longest road.
-     * @param player the player whose longest road to calculate
-     */
-    public int getPlayersLongestRoad(IPlayer player) {
         int longestSoFar = 0;
 
         // could optimize by only checking starting from roads at intersections or ends... but this is fast enough
         for (IRoad road : player.getRoads()) {
             // road length starts at 1
             Set<EdgeLocation> pathEdges = new HashSet<>();
-            pathEdges.add(road.getLocation());
+            pathEdges.add(road.getLocation().getNormalizedLocation());
 
             int pathLength = longestRoad(player, road, pathEdges, longestSoFar);
             if (pathLength > longestSoFar) {
@@ -545,7 +387,7 @@ public class CatanMap implements ICatanMap {
      * @return the longest road seen so far
      */
     private int longestRoad(IPlayer player, IRoad startRoad, Set<EdgeLocation> pathEdges, int longestSoFar) {
-        assert pathEdges.contains(startRoad) : "The start road should be added to the path before calling this function.";
+        assert pathEdges.contains(startRoad.getLocation()) : "The start road should be added to the path before calling this function.";
 
         // find the roads that can legally be added to the path
         Collection<IRoad> candidateRoads = getCandidateRoads(player, startRoad, pathEdges);
@@ -616,11 +458,6 @@ public class CatanMap implements ICatanMap {
         return roads;
     }
 
-    /**
-     * Get the tiles adjacent to the specified edge.
-     * @param edge the edge around which to check for tiles
-     * @return the tiles around the edge
-     */
     private Collection<ITile> getAdjacentTiles(EdgeLocation edge) {
         assert edge != null;
         edge = edge.getNormalizedLocation();
@@ -643,6 +480,21 @@ public class CatanMap implements ICatanMap {
         return tiles;
     }
 
+    private Collection<ITile> getAdjacentTiles(VertexLocation location) {
+        location = location.getNormalizedLocation();
+
+        Set<ITile> tiles = new HashSet<>();
+
+        // This is inefficient, but it works and doesn't involve writing new code
+        for (EdgeLocation edge : location.getAdjacentEdges()) {
+            tiles.addAll(getAdjacentTiles(edge));
+        }
+
+        assert tiles.size() <= 3;
+
+        return tiles;
+    }
+
     /**
      * Get the roads that connect to the specified edge, excluding the road on the edge,
      * if there is one.
@@ -660,11 +512,6 @@ public class CatanMap implements ICatanMap {
         return roads;
     }
 
-    /**
-     * Get the roads adjacent/connected to the specified vertex.
-     * @param vertex the vertex around which to get adjacent roads
-     * @return the roads connecting to the vertex, if any
-     */
     private Collection<IRoad> getAdjacentRoads(VertexLocation vertex) {
         Collection<IRoad> roads = new ArrayList<>();
         for (EdgeLocation neighbor : vertex.getAdjacentEdges()) {
@@ -676,11 +523,6 @@ public class CatanMap implements ICatanMap {
         return roads;
     }
 
-    /**
-     * Get the towns adjacent/connected to the specified edge.
-     * @param edge edge around which to get towns
-     * @return the towns the road leads to, if any
-     */
     private Collection<ITown> getAdjacentTowns(EdgeLocation edge) {
         Collection<ITown> towns = new ArrayList<>();
 
@@ -706,12 +548,6 @@ public class CatanMap implements ICatanMap {
         return towns;
     }
 
-
-    /**
-     * Get the towns adjacent/connected to the specified vertex.
-     * @param vertex the vertex around which to get towns
-     * @return the towns adjacent to the vertex, if any
-     */
     private Collection<ITown> getAdjacentTowns(VertexLocation vertex) {
         Collection<ITown> towns = new ArrayList<>();
 
@@ -724,12 +560,6 @@ public class CatanMap implements ICatanMap {
         return towns;
     }
 
-    /**
-     * Get the town between the specified edges, if there is one.
-     * @param edge1 an edge
-     * @param edge2 the other edge
-     * @return the town between the two edges, or null if there is none
-     */
     private ITown getTownBetweenEdges(EdgeLocation edge1, EdgeLocation edge2) {
         return m_towns.get(EdgeLocation.getVertexBetweenEdges(edge1, edge2));
     }
@@ -794,4 +624,17 @@ public class CatanMap implements ICatanMap {
             town.getOwner().addResources(bank);
         }
     }
+
+    @Override
+    public void distributeInitialResources(ITown town) {
+        IResourceBank resources = new ResourceBank();
+        for (ITile tile : getAdjacentTiles(town.getLocation())) {
+            resources.add(1, tile.resource());
+        }
+
+        assert resources.getCount() <= 3;
+
+        town.getOwner().addResources(resources);
+    }
+
 }
