@@ -16,6 +16,8 @@ public class BuildRoadCommand extends AbstractCommand {
     public BuildRoadCommand(IGame game, IPlayer player, EdgeLocation location, boolean free) throws IllegalCommandException {
         super(game, player, "built a road");
 
+        assert location != null;
+
         if (!getGame().canPlaceRoad(player, location)) {
             throw new IllegalCommandException("Player " + player.getName() + " cannot build a road at " + location);
         }
@@ -31,5 +33,7 @@ public class BuildRoadCommand extends AbstractCommand {
      */
     public void performAction() {
         getGame().getMap().placeRoad(getPlayer().buildRoad(m_free), m_location);
+
+        getGame().checkForVictory();
     }
 }

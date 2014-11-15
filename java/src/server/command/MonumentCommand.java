@@ -44,5 +44,7 @@ public class MonumentCommand extends AbstractCommand {
 
         // Increment player's Victory Points
         getPlayer().addVictoryPoints(1);
+
+        getGame().checkForVictory();
     }
 }

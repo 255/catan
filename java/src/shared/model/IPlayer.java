@@ -31,6 +31,8 @@ public interface IPlayer {
      */
     public int getVictoryPoints();
 
+    public int calculateVictoryPoints();
+
     public void addVictoryPoints(int amount);
 
     // other
@@ -60,6 +62,8 @@ public interface IPlayer {
     public void incrementMonuments();
 
     public int getSoldiers();
+
+    public void incrementSoldiers();
 
     public Collection<IRoad> getRoads();
 

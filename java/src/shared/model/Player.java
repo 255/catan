@@ -225,6 +225,9 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public void incrementSoldiers() { ++m_soldiers; }
+
+    @Override
     public Collection<IRoad> getRoads() {
         return Collections.unmodifiableCollection(m_roads);
     }
@@ -417,6 +420,18 @@ public class Player implements IPlayer {
     public void setSoldiers(int num) { m_soldiers = num;}
     @Override
     public void setVictoryPoints(int num) { m_victoryPoints = num;}
+
+    @Override
+    public int calculateVictoryPoints() {
+        m_victoryPoints = 0;
+        for (ITown town : m_towns) {
+            m_victoryPoints += town.getVictoryPoints();
+        }
+
+        m_victoryPoints += m_monuments;
+
+        return m_victoryPoints;
+    }
 
     // booleans
     @Override

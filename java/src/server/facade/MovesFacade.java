@@ -165,8 +165,10 @@ public class MovesFacade implements IMovesFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException {
-        return null;
+    public IGame buildRoad(BuildRoadParams buildRoad) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(buildRoad.getGameId());
+        new BuildRoadCommand(game, game.getPlayer(buildRoad.playerIndex), buildRoad.roadLocation, buildRoad.free).execute();
+        return game;
     }
 
     /**
@@ -174,12 +176,14 @@ public class MovesFacade implements IMovesFacade {
      * Set free to true if it is the setup stage
      * Swagger URL Equivalent: /moves/buildSettlement
      *
-     * @param buildSettlement JSON wrapper with parameters to build a settlement
+     * @param params JSON wrapper with parameters to build a settlement
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame buildSettlement(BuildSettlementParams buildSettlement) throws IllegalCommandException {
-        return null;
+    public IGame buildSettlement(BuildSettlementParams params) throws IllegalCommandException, ModelException {
+        IGame game = gameManager.getGame(params.getGameId());
+        new BuildSettlementCommand(game, game.getPlayer(params.playerIndex),  params.vertexLocation, params.free);
+        return game;
     }
 
     /**

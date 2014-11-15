@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -13,13 +14,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import server.command.FinishTurnCommand;
 import server.command.IllegalCommandException;
+import server.command.RobPlayerCommand;
 import server.debug.SwaggerHandler;
 import server.facade.*;
 import server.handler.*;
 import shared.communication.*;
 
 import com.sun.net.httpserver.HttpServer;
+import shared.definitions.DevCardType;
 import shared.model.*;
 
 /**
@@ -182,6 +186,111 @@ public class Server {
             @Override
             protected Game exchangeData(RollNumberParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().rollNumber(requestData);
+            }
+        });
+
+	    server.createContext("/moves/robPlayer", new AbstractMovesHandler<RobbingParams>(RobbingParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(RobbingParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().robPlayer(requestData);
+            }
+        });
+
+	    server.createContext("/moves/finishTurn", new AbstractMovesHandler<PlayerIndexParam>(PlayerIndexParam.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(PlayerIndexParam requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().finishTurn(requestData);
+            }
+        });
+
+	    server.createContext("/moves/buyDevCard", new AbstractMovesHandler<PlayerIndexParam>(PlayerIndexParam.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(PlayerIndexParam requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().finishTurn(requestData);
+            }
+        });
+
+	    server.createContext("/moves/Year_of_Plenty", new AbstractMovesHandler<YearOfPlentyParams>(YearOfPlentyParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(YearOfPlentyParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().yearOfPlenty(requestData);
+            }
+        });
+
+	    server.createContext("/moves/Road_Building", new AbstractMovesHandler<RoadBuildingParams>(RoadBuildingParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(RoadBuildingParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().roadBuilding(requestData);
+            }
+        });
+
+	    server.createContext("/moves/Soldier", new AbstractMovesHandler<RobbingParams>(RobbingParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(RobbingParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().soldier(requestData);
+            }
+        });
+
+	    server.createContext("/moves/Monopoly", new AbstractMovesHandler<MonopolyParams>(MonopolyParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(MonopolyParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().monopoly(requestData);
+            }
+        });
+
+	    server.createContext("/moves/Monument", new AbstractMovesHandler<PlayerIndexParam>(PlayerIndexParam.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(PlayerIndexParam requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().monument(requestData);
+            }
+        });
+
+	    server.createContext("/moves/buildRoad", new AbstractMovesHandler<BuildRoadParams>(BuildRoadParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(BuildRoadParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().buildRoad(requestData);
+            }
+        });
+
+	    server.createContext("/moves/buildSettlement", new AbstractMovesHandler<BuildSettlementParams>(BuildSettlementParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(BuildSettlementParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().buildSettlement(requestData);
+            }
+        });
+
+	    server.createContext("/moves/buildCity", new AbstractMovesHandler<BuildCityParams>(BuildCityParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(BuildCityParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().buildCity(requestData);
+            }
+        });
+
+	    server.createContext("/moves/offerTrade", new AbstractMovesHandler<OfferTradeParams>(OfferTradeParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(OfferTradeParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().offerTrade(requestData);
+            }
+        });
+
+	    server.createContext("/moves/acceptTrade", new AbstractMovesHandler<AcceptTradeParams>(AcceptTradeParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(AcceptTradeParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().acceptTrade(requestData);
+            }
+        });
+
+	    server.createContext("/moves/maritimeTrade", new AbstractMovesHandler<MaritimeTradeParams>(MaritimeTradeParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(MaritimeTradeParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().maritimeTrade(requestData);
+            }
+        });
+
+	    server.createContext("/moves/discardCards", new AbstractMovesHandler<DiscardCardParams>(DiscardCardParams.class, movesFacade) {
+            @Override
+            protected IGame exchangeData(DiscardCardParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+                return getFacade().discardCards(requestData);
             }
         });
 
