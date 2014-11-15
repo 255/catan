@@ -6,7 +6,6 @@ import shared.model.IGame;
 import shared.model.IPlayer;
 import shared.model.ModelException;
 
-import java.nio.channels.IllegalChannelGroupException;
 import java.util.logging.Logger;
 
 /**

@@ -3,17 +3,17 @@ package shared.model.serialization;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import shared.locations.VertexDirection;
-import shared.locations.VertexLocation;
+import shared.locations.EdgeDirection;
+import shared.locations.EdgeLocation;
 
 import java.io.IOException;
 
 /**
  * Output a VertexLocation
  */
-public class VertexLocationAdapter extends TypeAdapter<VertexLocation> {
+public class EdgeLocationAdapter extends TypeAdapter<EdgeLocation> {
     @Override
-    public void write(JsonWriter writer, VertexLocation location) throws IOException {
+    public void write(JsonWriter writer, EdgeLocation location) throws IOException {
         writer.beginObject();
         writer.name("direction").value(location.getDir().toAbbreviation());
         writer.name("x").value(location.getHexLoc().getX());
@@ -22,8 +22,8 @@ public class VertexLocationAdapter extends TypeAdapter<VertexLocation> {
     }
 
     @Override
-    public VertexLocation read(JsonReader reader) throws IOException {
-        VertexDirection direction = null;
+    public EdgeLocation read(JsonReader reader) throws IOException {
+        EdgeDirection direction = null;
         Integer x = null;
         Integer y = null;
 
@@ -40,7 +40,7 @@ public class VertexLocationAdapter extends TypeAdapter<VertexLocation> {
                     y = reader.nextInt();
                     break;
                 case "direction":
-                    direction = VertexDirection.fromAbbreviation(reader.nextString());
+                    direction = EdgeDirection.fromAbbreviation(reader.nextString());
                     break;
                 default:
                     throw new IOException("Unrecognized token \"" + name + "\"");
@@ -50,9 +50,9 @@ public class VertexLocationAdapter extends TypeAdapter<VertexLocation> {
         reader.endObject();
 
         if (x == null || y == null || direction == null) {
-            throw new IOException("Incomplete VertexLocation JSON.");
+            throw new IOException("Incomplete EdgeLocation JSON.");
         }
 
-        return new VertexLocation(x, y, direction);
+        return new EdgeLocation(x, y, direction);
     }
 }

@@ -184,7 +184,7 @@ public class Server {
 
 	    server.createContext("/moves/rollNumber", new AbstractMovesHandler<RollNumberParams>(RollNumberParams.class, movesFacade) {
             @Override
-            protected Game exchangeData(RollNumberParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
+            protected IGame exchangeData(RollNumberParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().rollNumber(requestData);
             }
         });

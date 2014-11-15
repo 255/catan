@@ -5,12 +5,11 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import shared.definitions.HexType;
 import shared.definitions.PortType;
-import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
-import shared.model.CatanMap;
-import shared.model.ITile;
+import shared.model.*;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -31,6 +30,21 @@ public class MapAdapter extends TypeAdapter<CatanMap> {
         }
         jsonWriter.endArray();
 
+        jsonWriter.name("roads");
+        jsonWriter.beginArray();
+        for (IRoad road : map.getRoads()) {
+            writeRoad(jsonWriter, road);
+        }
+        jsonWriter.endArray();
+
+        jsonWriter.name("cities");
+        writeTowns(jsonWriter, map.getCities());
+
+        jsonWriter.name("settlements");
+        writeTowns(jsonWriter, map.getSettlements());
+
+        jsonWriter.name("radius").value(3); // TODO: this is the map radius
+
         jsonWriter.name("ports");
         jsonWriter.beginArray();
         for (Map.Entry<EdgeLocation, PortType> port : map.getPorts().entrySet()) {
@@ -42,6 +56,34 @@ public class MapAdapter extends TypeAdapter<CatanMap> {
         Serializer.instance().toJson(map.getRobber(), jsonWriter);
 
         jsonWriter.endObject();
+    }
+
+    private void writeTowns(JsonWriter jsonWriter, Collection<ITown> towns) throws IOException {
+        jsonWriter.beginArray();
+
+        for (ITown town : towns) {
+            jsonWriter.beginObject();
+
+            jsonWriter.name("owner").value(town.getOwner().getIndex());
+
+            jsonWriter.name("location");
+            Serializer.instance().toJson(town.getLocation(), jsonWriter);
+
+            jsonWriter.endObject();
+        }
+
+        jsonWriter.endArray();
+    }
+
+    private void writeRoad(JsonWriter writer, IRoad road) throws IOException {
+        writer.beginObject();
+
+        writer.name("owner").value(road.getOwner().getIndex());
+
+        writer.name("location");
+        Serializer.instance().toJson(road.getLocation(), writer);
+
+        writer.endObject();
     }
 
     private void writePort(JsonWriter jsonWriter, EdgeLocation location, PortType type) throws IOException {

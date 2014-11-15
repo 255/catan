@@ -4,8 +4,6 @@ import shared.definitions.ResourceType;
 import shared.model.IGame;
 import shared.model.IPlayer;
 
-import java.util.logging.Logger;
-
 /**
  * Class that represents the YearOfPlenty request
  *

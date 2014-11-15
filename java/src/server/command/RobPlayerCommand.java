@@ -1,6 +1,5 @@
 package server.command;
 
-import shared.definitions.ResourceType;
 import shared.locations.HexLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;

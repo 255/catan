@@ -2,9 +2,11 @@ package shared.model.serialization;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import shared.definitions.CatanColor;
 import shared.definitions.ResourceType;
+import shared.locations.EdgeLocation;
 import shared.locations.VertexLocation;
 import shared.model.CatanMap;
 import shared.model.Game;
@@ -21,6 +23,7 @@ import java.lang.reflect.Type;
 public class Serializer {
     private static Serializer serializer = new Serializer();
     private Gson gson;
+    private Gson defaultGson;
 
     private Serializer() {
         initializeGson();
@@ -35,8 +38,12 @@ public class Serializer {
         gsonBuilder.registerTypeAdapter(CatanMap.class, new MapAdapter());
         gsonBuilder.registerTypeAdapter(Player.class, new PlayerAdapter());
         gsonBuilder.registerTypeAdapter(VertexLocation.class, new VertexLocationAdapter());
+        gsonBuilder.registerTypeAdapter(EdgeLocation.class, new EdgeLocationAdapter());
 
         gson = gsonBuilder.create();
+
+        defaultGson = new Gson();
+
     }
 
     public static Serializer instance() {
@@ -56,7 +63,14 @@ public class Serializer {
         return gson.fromJson(reader, destinationClass);
     }
 
+    public <T> T defaultFromJson(JsonReader reader, Class<T> destinationClass) {
+        return defaultGson.fromJson(reader, destinationClass);
+    }
     public void toJson(Object src, JsonWriter jsonWriter) {
         gson.toJson(src, src.getClass(), jsonWriter);
+    }
+
+    public void defaultToJson(Object src, JsonWriter jsonWriter) {
+        defaultGson.toJson(src, src.getClass(), jsonWriter);
     }
 }

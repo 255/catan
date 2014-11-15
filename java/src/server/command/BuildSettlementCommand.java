@@ -29,7 +29,7 @@ public class BuildSettlementCommand extends AbstractCommand {
      * this request. Reduces the price of a settlement from the
      * player's resources.
      */
-    public void performAction() {
+    protected void performAction() {
         getGame().getMap().placeSettlement(getPlayer().buildSettlement(m_free), m_location);
         getGame().checkForVictory();
     }
