@@ -48,8 +48,13 @@ public class GameManager implements IGameManager{
     }
 
     @Override
-    public IGame getGame(int gameIndex) {
-        return m_games.get(gameIndex);
+    public IGame getGame(int gameIndex) throws ModelException {
+        if (m_games.containsKey(gameIndex)) {
+            return m_games.get(gameIndex);
+        }
+        else {
+            throw new ModelException("Invalid game requested.");
+        }
     }
 
     @Override

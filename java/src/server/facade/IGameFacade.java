@@ -4,6 +4,7 @@ import shared.communication.AddAIRequestParams;
 import shared.communication.GameModelParam;
 import shared.model.Game;
 import shared.model.IGame;
+import shared.model.ModelException;
 
 /**
  * A facade to support /game operations
@@ -18,7 +19,7 @@ public interface IGameFacade {
      * @param theModel an integer with the id of the game to get the model of
      * @return Game object containing a pointer to the model
      */
-    public IGame model(GameModelParam theModel);
+    public IGame model(GameModelParam theModel) throws ModelException;
 
     /**
      * Resets the current game
@@ -55,7 +56,7 @@ public interface IGameFacade {
      * @param addAI JSON wrapper containing the parameters for adding an AI player
      * @return boolean true/false depending on if AI is added or not
      */
-    public boolean addAI(AddAIRequestParams addAI);
+    public boolean addAI(AddAIRequestParams addAI) throws ModelException;
 
     /**
      * Get a list of the AI Players

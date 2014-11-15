@@ -2,10 +2,7 @@ package server.facade;
 
 import shared.communication.AddAIRequestParams;
 import shared.communication.GameModelParam;
-import shared.model.Game;
-import shared.model.IGame;
-import shared.model.IGameManager;
-import shared.model.User;
+import shared.model.*;
 
 /**
  * A facade to support /game operations
@@ -26,7 +23,7 @@ public class GameFacade implements IGameFacade {
      * @return Game object containing a pointer to the model
      */
     @Override
-    public IGame model(GameModelParam param) {
+    public IGame model(GameModelParam param) throws ModelException {
         return m_gameManager.getGame(param.getGameId());
     }
 
@@ -75,7 +72,7 @@ public class GameFacade implements IGameFacade {
      * @return boolean true/false depending on if AI is added or not
      */
     @Override
-    public boolean addAI(AddAIRequestParams params) {
+    public boolean addAI(AddAIRequestParams params) throws ModelException {
         // TODO: this is temporary test code
         IGame game = m_gameManager.getGame(params.getGameId());
         game.joinGame(new User("Hal 9000", "", 9000), shared.definitions.CatanColor.RED);

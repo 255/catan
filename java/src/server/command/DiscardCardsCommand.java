@@ -37,6 +37,8 @@ public class DiscardCardsCommand extends AbstractCommand {
         //IPlayer p = getGame().getPlayers().get(playerIndex);
         getPlayer().getResources().subtract(discardedCards);
 
+        getPlayer().setDiscarded(true);
+
         // add the resources back to the bank
         getGame().getResourceBank().add(discardedCards);
     }

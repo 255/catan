@@ -2,6 +2,7 @@ package server.command;
 
 import shared.definitions.ResourceType;
 import shared.model.IGame;
+import shared.model.IGame;
 import shared.model.IPlayer;
 
 /**

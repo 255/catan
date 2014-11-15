@@ -46,7 +46,7 @@ public interface IMovesFacade {
      * @param playerIndex JSON wrapper with parameters to finish a turn
      * @return Game object containing a pointer to the model
      */
-    public IGame finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException;
+    public IGame finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException;
 
     /**
      * Buys a development card for yourself

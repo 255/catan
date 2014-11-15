@@ -14,6 +14,9 @@ out/
 logs/
 *.log
 
+# git merge conflict backups
+*.orig
+
 ############################
 # Generic .gitignore items #
 ############################

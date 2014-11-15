@@ -40,7 +40,7 @@ public interface IGameManager {
      * @param gameId id of the requested game
      * @return the requested game object
      */
-    public IGame getGame(int gameId);
+    public IGame getGame(int gameId) throws ModelException;
 
     /**
      * Removes the game with the specified index from the server
