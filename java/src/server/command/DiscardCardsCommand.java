@@ -1,8 +1,6 @@
 package server.command;
 
-import shared.model.IGame;
-import shared.model.IPlayer;
-import shared.model.ResourceBank;
+import shared.model.*;
 
 /**
  * Class that represents the DiscardCards request
@@ -18,13 +16,10 @@ public class DiscardCardsCommand extends AbstractCommand {
         this.discardedCards = discardedCards;
 
         // does the player have enough cards to merit a discard operation
-        final int DISCARD_THRESHOLD = 7;
-        //IPlayer p = getGame().getPlayers().get(playerIndex);
-        if(player.getResources().getCount() <= DISCARD_THRESHOLD) {
-            throw new IllegalCommandException(
-                    "The player has less than " + DISCARD_THRESHOLD +
-                    " resource cards and should not have to discard"
-            );
+        if (getGame().getGameState() != GameState.Discarding
+                || !player.needsToDiscard()
+                || !player.canAfford(discardedCards)) {
+            throw new IllegalCommandException("Invalid discard command.");
         }
     }
 
@@ -33,13 +28,6 @@ public class DiscardCardsCommand extends AbstractCommand {
      * of the player who has to discard cards.
      */
     public void performAction() {
-        // remove the discarded cards from the provided player index
-        //IPlayer p = getGame().getPlayers().get(playerIndex);
-        getPlayer().getResources().subtract(discardedCards);
-
-        getPlayer().setDiscarded(true);
-
-        // add the resources back to the bank
-        getGame().getResourceBank().add(discardedCards);
+        getGame().discardCards(getPlayer(), discardedCards);
     }
 }

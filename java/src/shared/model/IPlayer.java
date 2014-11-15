@@ -13,11 +13,13 @@ import java.util.Collection;
  */
 public interface IPlayer {
     // integers
-    public void setMonuments(int num);
+    public void giveMonument();
 
-    public void setSoldiers(int num);
+    public int giveSoldier();
 
-    public void setVictoryPoints(int num);
+    public int giveVictoryPoints(int num);
+
+    public int removeVictoryPoints(int num);
 
     // booleans
     public void setDiscarded(boolean actionCompleted);
@@ -35,18 +37,11 @@ public interface IPlayer {
 
     public void addVictoryPoints(int amount);
 
-    // other
-    public void setPieceBank(IPieceBank pb);
-
     public void setResources(IResourceBank rb);
 
     public void addResources(IResourceBank rb);
 
     public void removeResources(IResourceBank rb);
-
-    public void setNewDevCards(IDevCardHand newDevCards);
-
-    public void setPlayableDevCards(IDevCardHand playableCards);
 
     // getters
     public int getId();
@@ -71,6 +66,7 @@ public interface IPlayer {
 
     /**
      * Return true if needs to discard (assuming a 7 was rolled)
+     * Checks if the player has discarded and how many cards they have.
      * @return true if needs to discard
      */
     public boolean needsToDiscard();
@@ -135,6 +131,9 @@ public interface IPlayer {
 
     public IDevCardHand getPlayableDevCards();
 
+    /** Move the new dev cards to the old dev cards */
+    public void moveDevCards();
+
     /**
      * Get all of the dev cards, whether new or playable.
      * @return a dev card hand with the sum of the playable and new cards
@@ -197,4 +196,6 @@ public interface IPlayer {
      * @param m_color the new color
      */
     public void setColor(CatanColor m_color);
+
+    public void discardCards(IResourceBank cards);
 }

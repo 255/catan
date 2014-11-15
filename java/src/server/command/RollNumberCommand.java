@@ -20,6 +20,9 @@ public class RollNumberCommand extends AbstractCommand {
                     "It is not this player's turn: " + getPlayer().getName()
             );
         }
+        else if (number < 2 || number > 12) {
+            throw new IllegalCommandException("Illegal roll: " + number);
+        }
     }
 
     /**

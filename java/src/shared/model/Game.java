@@ -296,11 +296,6 @@ public class Game extends Observable implements IGame {
         return m_tradeOffer != null && player.equals(m_tradeOffer.getReceiver());
     }
 
-    /**
-     * Get whether it is the player's turn and game state is playing, so the player can play cards, etc.
-     * @return true / false
-     * @param player the player
-     */
     @Override
     public boolean isPlaying(IPlayer player) {
         return playerAndGameState(player, GameState.Playing);
@@ -336,14 +331,6 @@ public class Game extends Observable implements IGame {
         return player.equals(m_currentPlayer) && m_state == state;
     }
 
-    /**
-     * Takes an edge location and determines if a road can be placed on it
-     * This does NOT check if the player can afford the road.
-     *
-     * @param player the player
-     * @param edge the location of the side of a terrain hex
-     * @return a boolean value that reports if the user can place a road
-     */
     @Override
     public boolean canPlaceRoad(IPlayer player, EdgeLocation edge) {
         if (!isPlayersTurn(player)) {
@@ -363,14 +350,6 @@ public class Game extends Observable implements IGame {
         return false;
     }
 
-    /**
-     * Takes a vertex location and determines if a settlement can be placed on it
-     *
-     *
-     * @param player the player the player
-     * @param vertex the location of a corner/intersection of terrain hexes
-     * @return a boolean value that reports if the user can place a settlement
-     */
     @Override
     public boolean canPlaceSettlement(IPlayer player, VertexLocation vertex) {
         assert vertex != null;
@@ -397,14 +376,6 @@ public class Game extends Observable implements IGame {
         return isFreeRound();
     }
 
-    /**
-     * Takes a vertex location and determines if a city can be placed on it
-     *
-     *
-     * @param player the player
-     * @param vertex the location of a corner/intersection of terrain hexes
-     * @return a boolean value that reports if the user can place a city
-     */
     @Override
     public boolean canBuildCity(IPlayer player, VertexLocation vertex) {
         assert vertex != null;
@@ -420,24 +391,11 @@ public class Game extends Observable implements IGame {
         return mapOpen && (isFreeRound() || player.canBuyCity());
     }
 
-    /**
-     * Get a list of players around a hex that can be robbed (all with towns except local player)
-     *
-     * @param player the player
-     * @param location the location being robbed
-     * @return a collection of players (may be empty)
-     */
     @Override
     public Collection<IPlayer> getRobbablePlayers(IPlayer player, HexLocation location) {
         return getMap().getRobbablePlayersOnTile(location, player);
     }
 
-    /**
-     * Returns the ports the player has
-     *
-     * @return the ports that the player has
-     * @param player the player
-     */
     @Override
     public Set<PortType> getPlayerPorts(IPlayer player) {
         assert player != null;
@@ -448,57 +406,27 @@ public class Game extends Observable implements IGame {
         return ports;
     }
 
-    /**
-     * Have enough money to buy a city and have place to put it and a piece to use.
-     *
-     * @return true if can buy city, false if not
-     * @param player the player
-     */
     @Override
     public boolean canBuyCity(IPlayer player) {
         return isPlaying(player) && player.canBuyCity();
     }
 
-    /**
-     * Have enough money to buy a road and a piece to use.
-     *
-     * @return true if can buy road, false if not
-     * @param player the player
-     */
     @Override
     public boolean canBuyRoad(IPlayer player) {
         return isPlaying(player) && player.canBuyRoad();
     }
 
-    /**
-     * Have enough money to buy a settlement and a piece to use.
-     *
-     * @return true if can buy a settlement, false if not
-     * @param player the player
-     */
     @Override
     public boolean canBuySettlement(IPlayer player) {
         return isPlaying(player) && player.canBuySettlement();
     }
 
-    /**
-     * Have enough money to buy a dev card and a card is available to buy
-     *
-     * @return true if can buy
-     * @param player the player
-     */
     @Override
     public boolean canBuyDevCard(IPlayer player) {
         return isPlaying(player) && player.canAfford(Prices.DEV_CARD)
                 && getDevCards().getCount() > 0;
     }
 
-    /**
-     * Return true if the player has enough resources for a trade currently being offered to them.
-     *
-     * @return true if can accept trade, false if not enough resources (or no trade is offered currently)
-     * @param player the player
-     */
     @Override
     public boolean canAcceptTrade(IPlayer player) {
         // is there a trade offer?
@@ -516,34 +444,17 @@ public class Game extends Observable implements IGame {
                 && player.canAffordTrade(m_tradeOffer.getOffer());
     }
 
-    /**
-     * Whether the local player can play any dev cards.
-     *
-     * @return true if the user can play a dev card
-     * @param player the player
-     */
     @Override
     public boolean canPlayDevCard(IPlayer player) {
         return isPlaying(player) && player.canPlayDevCard();
     }
 
-    /**
-     * Get whether the player can play this specific dev card.
-     *
-     * @return true if the user can play this card
-     */
     @Override
     public boolean canPlayMonopoly(IPlayer player) {
         return isPlaying(player)
                 && player.canPlayDevCard(DevCardType.MONOPOLY);
     }
 
-    /**
-     * Get whether the local player can play this specific dev card.
-     * @param robberDestination new location of the robber
-     * @param player the player
-     * @return true if the user can play this card
-     */
     @Override
     public boolean canPlaySoldier(HexLocation robberDestination, IPlayer player) {
         return isPlaying(player)
@@ -551,15 +462,6 @@ public class Game extends Observable implements IGame {
                 && !robberDestination.equals(getMap().getRobber()); // moved robber
     }
 
-    /**
-     * Get whether the player can play this specific dev card.
-     * NOTE: The preconditions specified in the document seem wrong to me. You need BOTH resources to play the card?
-     *       What if there is only one kind of card left.
-     * @return true if the user can play this card
-     * @param player the player
-     * @param r1 resource
-     * @param r2 resource
-     */
     @Override
     public boolean canPlayYearOfPlenty(IPlayer player, ResourceType r1, ResourceType r2) {
 
@@ -567,26 +469,12 @@ public class Game extends Observable implements IGame {
                     && (r1.equals(r2) ? getResourceBank().getCount(r1) > 1 : getResourceBank().getCount(r1) > 0 && getResourceBank().getCount(r2) > 0);
     }
 
-    /**
-     * Get whether the player can play this specific dev card.
-     *
-     * @return true if the user can play this card
-     * @param player the player
-     */
     @Override
     public boolean canPlayMonument(IPlayer player) {
         return isPlaying(player)
                 && player.canPlayDevCard(DevCardType.MONUMENT);
     }
 
-    /**
-     * Get whether the player can play this specific dev card.
-     *
-     * @return true if the user can play this card
-     * @param player the player
-     * @param edge1 first road
-     * @param edge2 second road
-     */
     @Override
     public boolean canPlayRoadBuilding(IPlayer player, EdgeLocation edge1, EdgeLocation edge2) {
         assert edge1 != null && edge2 != null;
@@ -618,9 +506,6 @@ public class Game extends Observable implements IGame {
         return (gs == GameState.FirstRound || gs == GameState.SecondRound);
     }
 
-    /**
-     * The ModelInitializer needs to tell the Game object when it is done updating.
-     */
     @Override
     public void updateComplete() {
         assert !isNotInitialized();
@@ -629,7 +514,26 @@ public class Game extends Observable implements IGame {
 
     @Override
     public void rollNumber(int number) {
-        m_map.distributeResources(number);
+        if (number == 7) {
+            boolean needToDiscard = false;
+            for (IPlayer player : m_players) {
+                if (player.needsToDiscard()) {
+                    needToDiscard = true;
+                    break;
+                }
+            }
+
+            if (needToDiscard) {
+                m_state = GameState.Discarding;
+            }
+            else {
+                m_state = GameState.Playing;
+            }
+        }
+        else {
+            m_map.distributeResources(number);
+            m_state = GameState.Playing;
+        }
     }
 
     @Override
@@ -676,22 +580,36 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public void finishTurn(IPlayer player) {
-        // check for victory
-        checkForVictory();
-
+    public void finishTurn() {
         // move old dev cards to new
-        player.getNewDevCards().transferAllCardsToHand(player.getPlayableDevCards());
+        m_currentPlayer.moveDevCards();
 
         // advance the turn to the next player
             // ideally to advance the index,
             // I take the given player index,
             // add 1 and mod by the number of players
-        IPlayer nextPlayer = getPlayers().get((player.getIndex() + 1) % getPlayers().size());
+        IPlayer nextPlayer = getPlayers().get((m_currentPlayer.getIndex() + 1) % getPlayers().size());
         setCurrentPlayer(nextPlayer);
 
-        // change state to the Rolling state for the next player to begin their turn
-        setGameState(GameState.Rolling);
+        // we could do state pattern, but that would involve some refactoring...
+        switch (m_state) {
+            case FirstRound:
+                if (isNewRound()) {
+                    m_state = GameState.SecondRound;
+                }
+                break;
+            case SecondRound:
+                if (isNewRound()) {
+                    m_state = GameState.Rolling;
+                }
+                break;
+            case Playing:
+                // change state to the Rolling state for the next player to begin their turn
+                m_state = GameState.Rolling;
+                break;
+            default:
+                assert false : "Illegal time to finish turn!";
+        }
     }
 
     @Override
@@ -701,5 +619,33 @@ public class Game extends Observable implements IGame {
                 setWinner(p);
             }
         }
+    }
+
+    @Override
+    public void discardCards(IPlayer player, ResourceBank cards) {
+        player.discardCards(cards);
+
+        // if discarding is done, move to next phase and clear the discarding flags
+        if (!someoneNeedsToDiscard()) {
+            for (IPlayer p : m_players) {
+                p.setDiscarded(false);
+            }
+
+            m_state = GameState.Playing;
+        }
+    }
+
+    private boolean isNewRound() {
+        return m_currentPlayer.getIndex() == 0;
+    }
+
+    private boolean someoneNeedsToDiscard() {
+        for (IPlayer player : m_players) {
+            if (player.needsToDiscard()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -70,7 +70,7 @@ public class MovesFacade implements IMovesFacade {
     public IGame finishTurn(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(playerIndex.getGameId());
         new FinishTurnCommand(game, game.getPlayer(playerIndex.playerIndex)).execute();
-        return null;
+        return game;
     }
 
     /**

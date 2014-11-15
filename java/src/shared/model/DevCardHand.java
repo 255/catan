@@ -160,7 +160,20 @@ public class DevCardHand implements IDevCardHand {
      */
     @Override
     public void transferAllCardsToHand(IDevCardHand devCardHand) {
-        // TODO: not needed for client
+        ((DevCardHand)devCardHand).addHand(this);
+        monopoly     = 0;
+        monument     = 0;
+        roadBuilding = 0;
+        soldier      = 0;
+        yearOfPlenty = 0;
+    }
+
+    private void addHand(DevCardHand devCardHand) {
+        monopoly     += devCardHand.monopoly;
+        monument     += devCardHand.monument;
+        roadBuilding += devCardHand.roadBuilding;
+        soldier      += devCardHand.soldier;
+        yearOfPlenty += devCardHand.yearOfPlenty;
     }
 
     public static DevCardHand generateInitial() {

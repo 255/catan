@@ -250,7 +250,9 @@ public interface IGame {
 
     public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation);
 
-    public void finishTurn(IPlayer player);
+    public void finishTurn();
 
     public void checkForVictory();
+
+    public void discardCards(IPlayer player, ResourceBank cards);
 }

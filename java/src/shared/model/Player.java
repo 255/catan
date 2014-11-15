@@ -239,7 +239,7 @@ public class Player implements IPlayer {
 
     @Override
     public boolean needsToDiscard() {
-        return m_resources.getCount() > CatanConstants.MAX_SAFE_CARDS && !m_discarded;
+        return m_resources.getCount() > CatanConstants.MAX_SAFE_RESOURCES && !m_discarded;
     }
 
     @Override
@@ -295,6 +295,14 @@ public class Player implements IPlayer {
     @Override
     public IDevCardHand getPlayableDevCards() {
         return m_playableDevCards;
+    }
+
+    /**
+     * Move the new dev cards to the old dev cards
+     */
+    @Override
+    public void moveDevCards() {
+        m_newDevCards.transferAllCardsToHand(m_playableDevCards);
     }
 
     /**
@@ -415,11 +423,17 @@ public class Player implements IPlayer {
 
     // integers
     @Override
-    public void setMonuments(int num) { m_monuments = num; }
+    public void giveMonument() { m_monuments++; }
     @Override
-    public void setSoldiers(int num) { m_soldiers = num;}
+    public int giveSoldier() { return ++m_soldiers;}
     @Override
-    public void setVictoryPoints(int num) { m_victoryPoints = num;}
+    public int giveVictoryPoints(int num) { return m_victoryPoints += num;}
+
+    @Override
+    public int removeVictoryPoints(int num) {
+        assert num >= m_victoryPoints;
+        return m_victoryPoints -= num;
+    }
 
     @Override
     public int calculateVictoryPoints() {
@@ -439,18 +453,20 @@ public class Player implements IPlayer {
     @Override
     public void setPlayedDevCard(boolean actionCompleted) { m_playedDevCard = actionCompleted; }
 
-    // other
-    @Override
-    public void setPieceBank(IPieceBank pb) { m_pieceBank = pb; }
     @Override
     public void setResources(IResourceBank rb) { m_resources = rb; }
-    @Override
-    public void setNewDevCards(IDevCardHand newDevCards) { m_newDevCards = newDevCards; }
-    @Override
-    public void setPlayableDevCards(IDevCardHand playableCards) { m_playableDevCards = playableCards; }
 
     @Override
     public void setColor(CatanColor m_color) {
         this.m_color = m_color;
+    }
+
+    @Override
+    public void discardCards(IResourceBank cards) {
+        assert canAfford(cards) : "Player tried to discard more than they had.";
+        assert !m_discarded : "Player already discarded!";
+
+        m_resources.subtract(cards);
+        m_discarded = true;
     }
 }
