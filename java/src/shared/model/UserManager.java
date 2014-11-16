@@ -13,12 +13,6 @@ public class UserManager implements IUserManager {
     public UserManager() {
         m_nextUserId = 0;
         m_users = new HashMap<>();
-
-        // TODO: REMOVE THIS TEST CODE
-        createUser("Sam", "sam");
-        createUser("Pete", "pete");
-        createUser("Mark", "mark");
-        createUser("You", "you");
     }
 
     @Override

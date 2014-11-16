@@ -63,6 +63,7 @@ public class GameAdapter extends TypeAdapter<Game> {
             Serializer.instance().toJson(game.getTradeOffer().getOffer(), jsonWriter);
 
             jsonWriter.name("receiver").value(game.getTradeOffer().getReceiver().getIndex());
+            jsonWriter.endObject();
         }
     }
 

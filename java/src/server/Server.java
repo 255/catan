@@ -114,6 +114,25 @@ public class Server {
         final IMovesFacade movesFacade = new MovesFacade(gameManager);
         final IUtilityFacade utilityFacade = new UtilityFacade();
 
+        // TODO: this is test initialization code and may break at any time
+        try {
+            // TODO: remove this debugging code
+            gameManager.createGame("Deep Blue vs. Garry Kasparov", false, false, false);
+
+            userManager.createUser("Sam", "sam");
+            userManager.createUser("Pete", "pete");
+            userManager.createUser("Mark", "mark");
+            userManager.createUser("You", "you");
+
+            gameManager.joinGame(0, userManager.getUser(0), shared.definitions.CatanColor.RED);
+            gameManager.joinGame(0, userManager.getUser(1), shared.definitions.CatanColor.RED);
+            gameManager.joinGame(0, userManager.getUser(2), shared.definitions.CatanColor.RED);
+            gameManager.joinGame(0, userManager.getUser(3), shared.definitions.CatanColor.RED);
+        } catch (ModelException e) {
+            e.printStackTrace();
+            assert false : "Debug code is broken";
+        }
+
         // Create HTTPHandlers for each type of request
 
         //

@@ -19,8 +19,6 @@ public class MapAdapter extends TypeAdapter<CatanMap> {
 
     @Override
     public void write(JsonWriter jsonWriter, CatanMap map) throws IOException {
-        // TODO: radius(?!), roads, cities, settlements
-
         jsonWriter.beginObject();
 
         jsonWriter.name("hexes");

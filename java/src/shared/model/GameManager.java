@@ -19,14 +19,6 @@ public class GameManager implements IGameManager{
     public GameManager() {
         m_nextGameId = 0;
         m_games = new HashMap<>();
-
-        // TODO: remove this debugging code
-        try {
-            createGame("Deep Blue vs. Garry Kasparov", false, false, false);
-        } catch (ModelException e) {
-            assert false;
-            e.printStackTrace();
-        }
     }
 
     @Override

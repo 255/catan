@@ -32,17 +32,16 @@ public abstract class AbstractUserHandler extends AbstractHandler<CredentialsPar
             exch.getResponseHeaders().add("Set-cookie", cookies.toString());
 
             // write success message
-            exch.getResponseHeaders().add("Content-type", "text/plain");
             try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
+                exch.getResponseHeaders().add("Content-type", "text/plain");
                 responseBody.write("Welcome, " + responseData.getUsername() + ".");
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
             }
         }
         else {
-            exch.getResponseHeaders().add("Content-type", "text/plain");
-
             // write an error string
             try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
+                exch.getResponseHeaders().add("Content-type", "text/plain");
                 responseBody.write("Invalid user credentials were supplied.");
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
             }

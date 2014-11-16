@@ -118,7 +118,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
     public final void handle(HttpExchange exch) throws IOException {
         logger.entering("server.RequestHandler", "handle");
 
-        logger.finer("Received HTTP request for " + this.getFacade().getClass().getName()
+        logger.finer("Received HTTP request for " + this.getFacade().getClass().getSimpleName()
                 + " on " + this.getClass().getName() + " from " + exch.getRemoteAddress() + '.');
 
         try {
@@ -159,6 +159,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
      */
     private void sendErrorResponse(HttpExchange exch, int httpResponse, Throwable e) throws IOException {
         try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
+            exch.getResponseHeaders().add("Content-type", "text/plain");
             responseBody.write(e.getMessage());
             exch.sendResponseHeaders(httpResponse, 0);
         }
