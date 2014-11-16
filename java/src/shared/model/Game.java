@@ -584,32 +584,39 @@ public class Game extends Observable implements IGame {
         // move old dev cards to new
         m_currentPlayer.moveDevCards();
 
-        // advance the turn to the next player
-            // ideally to advance the index,
-            // I take the given player index,
-            // add 1 and mod by the number of players
-        IPlayer nextPlayer = getPlayers().get((m_currentPlayer.getIndex() + 1) % getPlayers().size());
-        setCurrentPlayer(nextPlayer);
-
         // we could do state pattern, but that would involve some refactoring...
         switch (m_state) {
             case FirstRound:
-                if (isNewRound()) {
+                if (isLastPlayersTurn()) {
                     m_state = GameState.SecondRound;
+                    // keep the same player (last player plays twice in a row in setup)
+                }
+                else {
+                    m_currentPlayer = nextPlayer();
                 }
                 break;
             case SecondRound:
-                if (isNewRound()) {
+                if (isFirstPlayersTurn()) {
                     m_state = GameState.Rolling;
+                }
+                else {
+                    assert m_currentPlayer.getIndex() != 0;
+                    m_currentPlayer = m_players.get(m_currentPlayer.getIndex() - 1);
                 }
                 break;
             case Playing:
+                // advance the turn to the next player
+                // ideally to advance the index,
+                // I take the given player index,
+                // add 1 and mod by the number of players
+                setCurrentPlayer(nextPlayer());
                 // change state to the Rolling state for the next player to begin their turn
                 m_state = GameState.Rolling;
                 break;
             default:
                 assert false : "Illegal time to finish turn!";
         }
+
     }
 
     @Override
@@ -669,8 +676,16 @@ public class Game extends Observable implements IGame {
         }
     }
 
-    private boolean isNewRound() {
+    private boolean isFirstPlayersTurn() {
         return m_currentPlayer.getIndex() == 0;
+    }
+
+    private boolean isLastPlayersTurn() {
+        return m_currentPlayer.getIndex() == CatanConstants.NUM_PLAYERS-1;
+    }
+
+    private IPlayer nextPlayer() {
+        return getPlayers().get((m_currentPlayer.getIndex() + 1) % getPlayers().size());
     }
 
     private boolean someoneNeedsToDiscard() {

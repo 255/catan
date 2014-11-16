@@ -118,8 +118,8 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
     public final void handle(HttpExchange exch) throws IOException {
         logger.entering("server.RequestHandler", "handle");
 
-        logger.info("Received HTTP request for " + this.getClass().getName()
-                + " from " + exch.getRemoteAddress() + '.');
+        logger.finer("Received HTTP request for " + this.getFacade().getClass().getName()
+                + " on " + this.getClass().getName() + " from " + exch.getRemoteAddress() + '.');
 
         try {
             ReqType reqData = getRequestParameters(exch);
@@ -133,7 +133,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 
             generateResponse(exch, respData);
 
-            logger.fine("Responding to request with: " + respData);
+            logger.finer("Responding to request with: " + respData);
         } catch (JsonSyntaxException | MalformedJsonException e) {
             logger.log(Level.INFO, "Received an improperly formatted request.", e);
             sendErrorResponse(exch, HttpURLConnection.HTTP_BAD_REQUEST, e);

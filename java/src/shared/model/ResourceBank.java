@@ -89,14 +89,19 @@ public class ResourceBank implements IResourceBank {
 
     @Override
     public int getCount(ResourceType resourceType) {
+        if (resourceType == null) { // water & desert have null resourceType
+            return 0;
+        }
         switch (resourceType) {
             case WOOD:  return wood;
             case BRICK: return brick;
             case SHEEP: return sheep;
             case WHEAT: return wheat;
             case ORE:   return ore;
+            default:
+                assert false : "Unknown resource type.";
+                return -1;
         }
-        return 0;
     }
 
     @Override
@@ -131,7 +136,9 @@ public class ResourceBank implements IResourceBank {
 
     @Override
     public void add(int amount, ResourceType rType) {
-        setCount(rType, getCount(rType) + amount);
+        if (rType != null) { // water and desert have a null resource type
+            setCount(rType, getCount(rType) + amount);
+        }
     }
 
     @Override
