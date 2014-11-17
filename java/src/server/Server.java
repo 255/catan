@@ -225,7 +225,7 @@ public class Server {
 	    server.createContext("/moves/buyDevCard", new AbstractMovesHandler<PlayerIndexParam>(PlayerIndexParam.class, movesFacade) {
             @Override
             protected IGame exchangeData(PlayerIndexParam requestData) throws MissingCookieException, IllegalCommandException, ModelException {
-                return getFacade().finishTurn(requestData);
+                return getFacade().buyDevCard(requestData);
             }
         });
 
