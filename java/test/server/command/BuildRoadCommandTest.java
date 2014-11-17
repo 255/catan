@@ -28,6 +28,7 @@ public class BuildRoadCommandTest {
     @After
     public void tearDown() throws Exception {
         game = null;
+        player = null;
     }
 
     @Test
