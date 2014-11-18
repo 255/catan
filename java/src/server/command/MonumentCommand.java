@@ -42,8 +42,7 @@ public class MonumentCommand extends AbstractCommand {
         // Increment player's Monuments
         getPlayer().incrementMonuments();
 
-        // Increment player's Victory Points
-        getPlayer().addVictoryPoints(1);
+        // playing a monument DOES NOT count as playing a dev card
 
         getGame().calculateVictoryPoints();
     }

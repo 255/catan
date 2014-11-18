@@ -266,6 +266,7 @@ public class ResourceBank implements IResourceBank {
      */
     @Override
     public ResourceType drawRandom() {
+        assert getCount() > 0 : "Tried to draw from an empty resource bank!";
 
         ResourceType drawnCard = null;
 

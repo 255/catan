@@ -2,6 +2,7 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
+import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 
 import java.util.Collection;
@@ -40,6 +41,8 @@ public interface IPlayer {
     public void setResources(IResourceBank rb);
 
     public void addResources(IResourceBank rb);
+
+    public void addResources(int count, ResourceType type);
 
     public void removeResources(IResourceBank rb);
 

@@ -30,9 +30,11 @@ public class RoadBuildingCommand extends AbstractCommand {
      * playing the RoadBuilding card.
      */
     public void performAction() {
-
         getGame().getMap().placeRoad(getPlayer().buildRoad(true), m_location1);
         getGame().getMap().placeRoad(getPlayer().buildRoad(true), m_location2);
+
+        getPlayer().setPlayedDevCard(true);
+
         getGame().calculateVictoryPoints();
     }
 }

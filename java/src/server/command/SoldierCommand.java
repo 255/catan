@@ -9,7 +9,7 @@ import shared.model.ModelException;
 import java.util.logging.Logger;
 
 /**
- * Class that represents the Soldier request
+ * Class that represents the playing a soldier dev card
  *
  * @author StevenBarnett
  */
@@ -50,6 +50,8 @@ public class SoldierCommand extends AbstractCommand {
 
         // Performs the robbing of the player
         getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
+
+        getPlayer().setPlayedDevCard(true);
 
         getGame().calculateVictoryPoints();
     }

@@ -2,6 +2,7 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
+import shared.definitions.ResourceType;
 
 import java.util.Collection;
 import java.util.ArrayList;
@@ -270,6 +271,11 @@ public class Player implements IPlayer {
     @Override
     public void addResources(IResourceBank rb) {
         m_resources.add(rb);
+    }
+
+    @Override
+    public void addResources(int count, ResourceType type) {
+        m_resources.add(count, type);
     }
 
     @Override

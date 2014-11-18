@@ -527,7 +527,7 @@ public class Game extends Observable implements IGame {
                 m_state = GameState.Discarding;
             }
             else {
-                m_state = GameState.Playing;
+                m_state = GameState.Robbing;
             }
         }
         else {
@@ -569,11 +569,8 @@ public class Game extends Observable implements IGame {
         // Move the robber to the specified hex location
         m_map.moveRobber(hexLocation);
 
-        // Choose a random card from the victim's hand
-        ResourceType resource = m_resourceBank.drawRandom();
-
-        // Remove that random card from the victim's hand
-        victim.getResources().subtract(1, resource);
+        // Choose and remove a random card from the victim's hand
+        ResourceType resource = victim.getResources().drawRandom();
 
         // Add that random card to the player's hand
         player.getResources().add(1, resource);
@@ -583,6 +580,7 @@ public class Game extends Observable implements IGame {
     public void finishTurn() {
         // move old dev cards to new
         m_currentPlayer.moveDevCards();
+        m_currentPlayer.setPlayedDevCard(false);
 
         // we could do state pattern, but that would involve some refactoring...
         switch (m_state) {
@@ -672,7 +670,7 @@ public class Game extends Observable implements IGame {
                 p.setDiscarded(false);
             }
 
-            m_state = GameState.Playing;
+            m_state = GameState.Robbing; // discarding always is followed by robbing
         }
     }
 
