@@ -20,7 +20,7 @@ public class RobPlayerCommand extends AbstractCommand {
 
         if (getGame().getMap().canPlaceRobber(location)) {
             throw new IllegalCommandException(("Player " + player.getName() + "tried to place the robber " +
-                    "                           on hex location " + location.toString() + " but the robber is already there"));
+                    "on hex location " + location.toString() + " but the robber is already there"));
         }
 
         if (victim.getResources().getCount() == 0) {
@@ -36,7 +36,6 @@ public class RobPlayerCommand extends AbstractCommand {
      * and moves that card to the robbing player's hand.
      */
     public void performAction() {
-
         getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
     }
 }

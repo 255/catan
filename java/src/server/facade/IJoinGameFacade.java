@@ -4,6 +4,9 @@ import shared.communication.*;
 import shared.model.Game;
 import shared.model.ModelException;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
  * A facade to support /games operations.
  * Created by Spencer Weight - 11/4/2014.
@@ -43,7 +46,7 @@ public interface IJoinGameFacade {
      * @param saveGame the JSON wrapper with the parameters for saving a game
      * @return boolean containing true or false depending on if the save was successful
      */
-    public boolean save(SaveGameRequestParams saveGame);
+    public void save(SaveGameRequestParams saveGame) throws IOException, ModelException;
 
     /**
      * Loads a game
@@ -52,5 +55,5 @@ public interface IJoinGameFacade {
      * @param loadGame the JSON wrapper with the parameters for loading a game
      * @return Game object containing a pointer to the loaded game
      */
-    public Game load(LoadGameRequestParams loadGame);
+    public void load(LoadGameRequestParams loadGame) throws IOException;
 }

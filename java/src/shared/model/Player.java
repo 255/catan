@@ -144,14 +144,17 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public City buildCity() {
+    public City buildCity(ITown settlement) {
+        assert settlement instanceof Settlement;
+        assert m_towns.contains(settlement);
         assert m_pieceBank.availableCities() > 0;
         assert canBuyCity();
 
         m_resources.subtract(Prices.CITY);
 
         City city = new City(this);
-        m_pieceBank.takeCity();
+        m_pieceBank.swapSettlementForCity();
+        m_towns.remove(settlement);
         m_towns.add(city);
 
         return city;

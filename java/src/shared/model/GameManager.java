@@ -63,4 +63,16 @@ public class GameManager implements IGameManager{
     public Collection<IGame> listGames() {
         return Collections.unmodifiableCollection(m_games.values());
     }
+
+    @Override
+    public void loadGame(IGame game) {
+        if (m_games.containsKey(game.getID())) {
+            // destroy the old game, just in case
+            m_games.get(game.getID()).reset();
+            // TODO: invaliates ALL game pointers to this game -- make sure this is OK
+            // we may need to update pointers in command objects if we end up serializing those
+        }
+
+        m_games.put(game.getID(), game);
+    }
 }

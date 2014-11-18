@@ -3,6 +3,8 @@ package shared.model;
 import shared.definitions.PieceType;
 import shared.locations.VertexLocation;
 
+import java.io.Serializable;
+
 /**
  * Interface that represents a town on the board.
  * A town is placed on a vertex, and provides resources and
@@ -10,7 +12,7 @@ import shared.locations.VertexLocation;
  *
  * @author StevenBarnett
  */
-public interface ITown {
+public interface ITown extends Serializable {
 
     /**
      * Returns the player that owns this town.

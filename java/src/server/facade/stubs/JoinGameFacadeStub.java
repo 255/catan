@@ -2,7 +2,6 @@ package server.facade.stubs;
 
 import server.facade.IJoinGameFacade;
 import shared.communication.*;
-import shared.model.Game;
 import shared.model.ModelException;
 
 /**
@@ -52,8 +51,7 @@ public class JoinGameFacadeStub implements IJoinGameFacade {
      * @return boolean containing true or false depending on if the save was successful
      */
     @Override
-    public boolean save(SaveGameRequestParams saveGame) {
-        return false;
+    public void save(SaveGameRequestParams saveGame) {
     }
 
     /**
@@ -64,7 +62,6 @@ public class JoinGameFacadeStub implements IJoinGameFacade {
      * @return Game object containing a pointer to the loaded game
      */
     @Override
-    public Game load(LoadGameRequestParams loadGame) {
-        return null;
+    public void load(LoadGameRequestParams loadGame) {
     }
 }

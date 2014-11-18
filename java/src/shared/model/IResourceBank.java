@@ -2,12 +2,14 @@ package shared.model;
 
 import shared.definitions.ResourceType;
 
+import java.io.Serializable;
+
 /**
  * A bank of resources. Resources can be added and subtracted as ResourceBanks.
  * This can represent, e.g., the resources a player is holding or the game's resource bank.
  * @author Wyatt
  */
-public interface IResourceBank {
+public interface IResourceBank extends Serializable {
     /**
      * Add the specified resources to the resource bank.
      * @param resources the bundle of resources to add to the bank

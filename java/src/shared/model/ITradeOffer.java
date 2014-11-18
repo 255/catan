@@ -1,9 +1,11 @@
 package shared.model;
 
+import java.io.Serializable;
+
 /**
  * Created by jeffreybacon on 9/27/14.
  */
-public interface ITradeOffer {
+public interface ITradeOffer extends Serializable {
     /**
      * Get the sender of the trade offer
      * @return the index of the sender

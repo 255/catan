@@ -5,6 +5,7 @@ import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.locations.EdgeLocation;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Collection;
  *
  * @author StevenBarnett
  */
-public interface IPlayer {
+public interface IPlayer extends Serializable {
     // integers
     public void giveMonument();
 
@@ -97,8 +98,9 @@ public interface IPlayer {
      * Build a city.
      * Cities always cost resources, so this amount is subtracted from the player's resource bank.
      * @return the new city
+     * @param settlement the settlemnt that the city is replacing
      */
-    public City buildCity();
+    public City buildCity(ITown settlement);
 
     /**
      * Build a new settlement.

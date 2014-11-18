@@ -15,8 +15,8 @@ import java.util.*;
  */
 public class Game extends Observable implements IGame {
     // only used server side
-    private transient String m_name;
-    private transient Integer m_id;
+    private String m_name;
+    private Integer m_id;
 
     private GameState m_state;
     private IPlayer m_currentPlayer;
@@ -163,7 +163,10 @@ public class Game extends Observable implements IGame {
 
     @Override
     public IPlayer getPlayer(int index) throws ModelException {
-        if (index < 0 || index >= m_players.size()) {
+        if (index == Player.NO_PLAYER) {
+            return null;
+        }
+        else if (index < 0 || index >= m_players.size()) {
             throw new ModelException("Invalid player index: " + index);
         }
         return m_players.get(index);
@@ -574,6 +577,8 @@ public class Game extends Observable implements IGame {
 
         // Add that random card to the player's hand
         player.getResources().add(1, resource);
+
+        m_state = GameState.Playing; // always goes to playing, whether after rolling 7 or playing card
     }
 
     @Override
@@ -631,7 +636,6 @@ public class Game extends Observable implements IGame {
 
             if(p.getVictoryPoints() >= CatanConstants.VICTORY_POINTS_TO_WIN) {
                 setWinner(p);
-                break;
             }
         }
     }

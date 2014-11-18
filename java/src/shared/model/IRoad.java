@@ -2,12 +2,14 @@ package shared.model;
 
 import shared.locations.EdgeLocation;
 
+import java.io.Serializable;
+
 /**
  * This is a placed road. Road objects are not created for roads in a player's piece bank.
  *
  * @author Wyatt
  */
-public interface IRoad {
+public interface IRoad extends Serializable {
     /**
      * Get the owner of this road.
      * @return the player that owns the road

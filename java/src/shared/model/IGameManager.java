@@ -54,4 +54,11 @@ public interface IGameManager {
      * @return a list of games
      */
     public Collection<IGame> listGames();
+
+    /**
+     * Replace the game with the provided one.
+     * If no game with the same ID exists, the game is created
+     * @param game the game being loaded
+     */
+    public void loadGame(IGame game);
 }

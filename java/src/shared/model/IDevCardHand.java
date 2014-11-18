@@ -2,12 +2,14 @@ package shared.model;
 
 import shared.definitions.DevCardType;
 
+import java.io.Serializable;
+
 /**
  * A collection of development cards.
  * The game's bank and each player have a hand of development cards.
  * @author Wyatt
  */
-public interface IDevCardHand {
+public interface IDevCardHand extends Serializable {
     /**
      * Get the count of how many development cards are in the hand.
      * @return the number of development cards in the hand
