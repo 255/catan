@@ -1,8 +1,5 @@
 package server.handler;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
 /**
  * A class representing a cookie.
  */

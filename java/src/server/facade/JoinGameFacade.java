@@ -1,7 +1,10 @@
 package server.facade;
 
 import shared.communication.*;
-import shared.model.*;
+import shared.model.Game;
+import shared.model.IGameManager;
+import shared.model.IUserManager;
+import shared.model.ModelException;
 
 /**
  * Created by Spencer Weight - 11/5/2014.

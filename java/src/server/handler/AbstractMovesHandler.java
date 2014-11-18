@@ -1,7 +1,6 @@
 package server.handler;
 
 import server.facade.IMovesFacade;
-import shared.communication.AbstractGameParams;
 import shared.communication.IGameParams;
 
 /**

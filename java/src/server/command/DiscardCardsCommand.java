@@ -1,6 +1,9 @@
 package server.command;
 
-import shared.model.*;
+import shared.model.GameState;
+import shared.model.IGame;
+import shared.model.IPlayer;
+import shared.model.ResourceBank;
 
 /**
  * Class that represents the DiscardCards request

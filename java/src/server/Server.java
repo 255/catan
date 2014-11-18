@@ -1,30 +1,20 @@
 package server;
 
+import com.sun.net.httpserver.HttpServer;
+import server.command.IllegalCommandException;
+import server.debug.SwaggerHandler;
+import server.facade.*;
+import server.handler.*;
+import shared.communication.*;
+import shared.model.*;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.Year;
 import java.util.Calendar;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
-import server.command.FinishTurnCommand;
-import server.command.IllegalCommandException;
-import server.command.RobPlayerCommand;
-import server.debug.SwaggerHandler;
-import server.facade.*;
-import server.handler.*;
-import shared.communication.*;
-
-import com.sun.net.httpserver.HttpServer;
-import shared.definitions.DevCardType;
-import shared.model.*;
+import java.util.logging.*;
 
 /**
  * The main class of the Settlers of Catan server.

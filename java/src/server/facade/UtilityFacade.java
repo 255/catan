@@ -1,7 +1,7 @@
 package server.facade;
 
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Spencer Weight - 11/5/2014.

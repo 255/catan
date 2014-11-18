@@ -2,7 +2,10 @@ package server.handler;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * A list of parsed cookies.

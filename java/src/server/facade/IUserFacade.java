@@ -1,6 +1,5 @@
 package server.facade;
 
-import server.command.IllegalCommandException;
 import shared.communication.CredentialsParams;
 import shared.model.IUser;
 

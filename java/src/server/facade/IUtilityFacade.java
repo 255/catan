@@ -1,7 +1,6 @@
 package server.facade;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A facade to support /util operations.

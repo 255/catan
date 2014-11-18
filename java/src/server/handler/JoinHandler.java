@@ -3,7 +3,6 @@ package server.handler;
 import com.sun.net.httpserver.HttpExchange;
 import server.command.IllegalCommandException;
 import server.facade.IJoinGameFacade;
-
 import shared.communication.JoinGameRequestParams;
 import shared.model.ModelException;
 

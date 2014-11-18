@@ -1,7 +1,5 @@
 package server.handler;
 
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
 import com.sun.net.httpserver.HttpExchange;
 import server.command.IllegalCommandException;
