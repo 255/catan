@@ -115,9 +115,9 @@ public class Server {
             userManager.createUser("You", "you");
 
             gameManager.joinGame(0, userManager.getUser(0), shared.definitions.CatanColor.RED);
-            gameManager.joinGame(0, userManager.getUser(1), shared.definitions.CatanColor.RED);
-            gameManager.joinGame(0, userManager.getUser(2), shared.definitions.CatanColor.RED);
-            gameManager.joinGame(0, userManager.getUser(3), shared.definitions.CatanColor.RED);
+            gameManager.joinGame(0, userManager.getUser(1), shared.definitions.CatanColor.BLUE);
+            gameManager.joinGame(0, userManager.getUser(2), shared.definitions.CatanColor.GREEN);
+            gameManager.joinGame(0, userManager.getUser(3), shared.definitions.CatanColor.PUCE);
         } catch (ModelException e) {
             e.printStackTrace();
             assert false : "Debug code is broken";

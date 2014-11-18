@@ -3,6 +3,7 @@ package server.command;
 import shared.locations.VertexLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.Prices;
 
 /**
  * Class that represents the BuildCity request
@@ -29,6 +30,7 @@ public class BuildCityCommand extends AbstractCommand {
      */
     public void performAction() {
         getGame().getMap().placeCity(getPlayer().buildCity(), m_location);
+        getGame().getResourceBank().add(Prices.CITY); // the player gave these resources to the bank
 
         getGame().calculateVictoryPoints();
     }

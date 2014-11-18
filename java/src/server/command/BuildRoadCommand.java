@@ -3,6 +3,7 @@ package server.command;
 import shared.locations.EdgeLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.Prices;
 
 /**
  * Class that represents the BuildRoad request
@@ -33,6 +34,8 @@ public class BuildRoadCommand extends AbstractCommand {
      */
     public void performAction() {
         getGame().getMap().placeRoad(getPlayer().buildRoad(m_free), m_location);
+
+        if (!m_free) getGame().getResourceBank().add(Prices.ROAD); // player gave resources to bank
 
         getGame().calculateVictoryPoints();
     }

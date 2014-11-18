@@ -1,10 +1,7 @@
 package server.command;
 
 import shared.locations.VertexLocation;
-import shared.model.GameState;
-import shared.model.IGame;
-import shared.model.IPlayer;
-import shared.model.Settlement;
+import shared.model.*;
 
 /**
  * Class that represents the BuildSettlement request
@@ -34,6 +31,9 @@ public class BuildSettlementCommand extends AbstractCommand {
     protected void performAction() {
         Settlement settlement = getPlayer().buildSettlement(m_free);
         getGame().getMap().placeSettlement(settlement, m_location);
+
+        if (!m_free) getGame().getResourceBank().add(Prices.SETTLEMENT); // player gave resources to bank
+
         getGame().calculateVictoryPoints();
 
         if (getGame().getGameState() == GameState.SecondRound) {
