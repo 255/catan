@@ -35,5 +35,7 @@ public class BuildCityCommand extends AbstractCommand {
         getGame().getResourceBank().add(Prices.CITY); // the player gave these resources to the bank
 
         getGame().calculateVictoryPoints();
+
+        assert (getGame().verifyResourceAmount());
     }
 }

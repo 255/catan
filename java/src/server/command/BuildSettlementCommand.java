@@ -38,7 +38,9 @@ public class BuildSettlementCommand extends AbstractCommand {
 
         if (getGame().getGameState() == GameState.SecondRound) {
             assert m_free : "SecondRound, so settlement should be free";
-            getGame().getMap().distributeInitialResources(settlement);
+            getGame().getMap().distributeInitialResources(settlement, getGame().getResourceBank());
         }
+
+        assert (getGame().verifyResourceAmount());
     }
 }

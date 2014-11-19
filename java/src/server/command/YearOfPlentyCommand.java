@@ -38,5 +38,7 @@ public class YearOfPlentyCommand extends AbstractCommand {
         // Add the resource cards to the player's hand
         getPlayer().addResources(1, m_firstType);
         getPlayer().addResources(1, m_secondType);
+
+        assert (getGame().verifyResourceAmount());
     }
 }

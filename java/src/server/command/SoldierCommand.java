@@ -42,5 +42,6 @@ public class SoldierCommand extends AbstractCommand {
         getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
 
         getGame().calculateVictoryPoints();
+        assert (getGame().verifyResourceAmount());
     }
 }

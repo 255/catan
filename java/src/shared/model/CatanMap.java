@@ -607,31 +607,33 @@ public class CatanMap implements ICatanMap {
     }
 
     @Override
-    public void distributeResources(int number) {
+    public void distributeResources(int number, IResourceBank gameResourceBank) {
         Iterator it = m_tiles.entrySet().iterator();
         while(it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
             ITile tile = (ITile)pairs.getValue();
             if(tile.numberToken() == number && !tile.hasRobber()) {
-                giveResourcesToAdjacentTowns(tile);
+                giveResourcesToAdjacentTowns(tile, gameResourceBank);
             }
         }
     }
 
-    private void giveResourcesToAdjacentTowns(ITile tile) {
+    private void giveResourcesToAdjacentTowns(ITile tile, IResourceBank gameResourceBank) {
         Collection<ITown> towns = getAdjacentTowns(tile.location());
         for(ITown town : towns) {
             IResourceBank bank = new ResourceBank();
             bank.increment(tile.resource());
+            gameResourceBank.decrement(tile.resource());
             if(town.getPieceType() == PieceType.CITY) {
                 bank.increment(tile.resource());
+                gameResourceBank.decrement(tile.resource());
             }
             town.getOwner().addResources(bank);
         }
     }
 
     @Override
-    public void distributeInitialResources(ITown town) {
+    public void distributeInitialResources(ITown town, IResourceBank gameResourceBank) {
         IResourceBank resources = new ResourceBank();
         for (ITile tile : getAdjacentTiles(town.getLocation())) {
             resources.add(1, tile.resource());
@@ -640,6 +642,7 @@ public class CatanMap implements ICatanMap {
         assert resources.getCount() <= 3;
 
         town.getOwner().addResources(resources);
+        gameResourceBank.subtract(resources);
     }
 
 }

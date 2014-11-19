@@ -37,5 +37,7 @@ public class RobPlayerCommand extends AbstractCommand {
      */
     public void performAction() {
         getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
+
+        assert (getGame().verifyResourceAmount());
     }
 }

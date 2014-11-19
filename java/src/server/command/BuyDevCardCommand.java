@@ -57,5 +57,7 @@ public class BuyDevCardCommand extends AbstractCommand {
 
         // Put removed resources in the Game ResourceBank
         getGame().getResourceBank().add(Prices.DEV_CARD);
+
+        assert (getGame().verifyResourceAmount());
     }
 }

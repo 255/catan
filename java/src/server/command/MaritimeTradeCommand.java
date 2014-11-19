@@ -69,5 +69,7 @@ public class MaritimeTradeCommand extends AbstractCommand {
 
         // remove output resources from the game bank
         getGame().getResourceBank().subtract(1, outputResource);
+
+        assert (getGame().verifyResourceAmount());
     }
 }

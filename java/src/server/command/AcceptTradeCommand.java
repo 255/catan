@@ -49,5 +49,7 @@ public class AcceptTradeCommand extends AbstractCommand {
 
         // clear the trade offer
         getGame().setTradeOffer(null);
+
+        assert (getGame().verifyResourceAmount());
     }
 }

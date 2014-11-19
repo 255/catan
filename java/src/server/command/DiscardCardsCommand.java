@@ -32,5 +32,7 @@ public class DiscardCardsCommand extends AbstractCommand {
      */
     public void performAction() {
         getGame().discardCards(getPlayer(), discardedCards);
+
+        assert (getGame().verifyResourceAmount());
     }
 }

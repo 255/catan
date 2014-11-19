@@ -4,8 +4,10 @@ import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.ModelException;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -59,5 +61,7 @@ public class MonopolyCommand extends AbstractCommand {
         getPlayer().getResources().add(resourceCount, m_resourceType);
 
         getPlayer().playDevCard(DevCardType.MONOPOLY);
+
+        assert (getGame().verifyResourceAmount());
     }
 }

@@ -182,11 +182,11 @@ public interface ICatanMap extends Serializable {
      * Distributes resources to players based on number rolled
      * @param number that is rolled
      */
-    public void distributeResources(int number);
+    public void distributeResources(int number, IResourceBank gameResourceBank);
 
     /**
      * Distributes initial resources to players based on the provided town
      * @param town the second town placed gets one of each resource
      */
-    public void distributeInitialResources(ITown town);
+    public void distributeInitialResources(ITown town, IResourceBank gameResourceBank);
 }

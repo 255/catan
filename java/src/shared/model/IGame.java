@@ -22,10 +22,14 @@ import java.util.Set;
  * @author Wyatt
  */
 public interface IGame extends Serializable {
-    /** Get the game's name */
+    /**
+     * Get the game's name
+     */
     public String getName();
 
-    /** Get the game's gameID */
+    /**
+     * Get the game's gameID
+     */
     public Integer getID();
 
     /**
@@ -94,6 +98,7 @@ public interface IGame extends Serializable {
 
     /**
      * Get a player by turn index.
+     *
      * @param index the turn index
      * @return the player
      */
@@ -256,4 +261,6 @@ public interface IGame extends Serializable {
     public void calculateVictoryPoints();
 
     public void discardCards(IPlayer player, ResourceBank cards);
+
+    public boolean verifyResourceAmount();
 }

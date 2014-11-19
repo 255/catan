@@ -1,5 +1,6 @@
 package shared.model;
 
+import client.main.Catan;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.PortType;
@@ -533,7 +534,7 @@ public class Game extends Observable implements IGame {
             }
         }
         else {
-            m_map.distributeResources(number);
+            m_map.distributeResources(number, m_resourceBank);
             m_state = GameState.Playing;
         }
     }
@@ -690,6 +691,18 @@ public class Game extends Observable implements IGame {
         }
     }
 
+    @Override
+    public boolean verifyResourceAmount() {
+        IResourceBank allResources = new ResourceBank();
+        allResources.add(m_resourceBank);
+        for (IPlayer player : m_players) {
+            allResources.add(player.getResources());
+        }
+
+        return allResources.getBrick() == CatanConstants.TOTAL_CARDS_PER_RESOURCE && allResources.getWood() == CatanConstants.TOTAL_CARDS_PER_RESOURCE && allResources.getSheep() == CatanConstants.TOTAL_CARDS_PER_RESOURCE
+            && allResources.getWheat() == CatanConstants.TOTAL_CARDS_PER_RESOURCE && allResources.getOre() == CatanConstants.TOTAL_CARDS_PER_RESOURCE;
+    }
+
     private boolean isFirstPlayersTurn() {
         return m_currentPlayer.getIndex() == 0;
     }
@@ -711,4 +724,6 @@ public class Game extends Observable implements IGame {
 
         return false;
     }
+
+
 }

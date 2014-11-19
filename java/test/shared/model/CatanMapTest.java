@@ -410,14 +410,14 @@ public class CatanMapTest {
 //        }
 
         assertTrue("Player1 should have no resources", player1.getResources().getCount() == 0);
-        map.distributeResources(3);
+        map.distributeResources(3, new ResourceBank(19, 19, 19, 19, 19));
         assertTrue("Player1 should still have no resources", player1.getResources().getCount() == 0);
-        map.distributeResources(4);
+        map.distributeResources(4, new ResourceBank(19, 19, 19, 19, 19));
         assertTrue("Player1 should have 1 wood", player1.getResources().getCount() == 1 && player1.getResources().getCount(ResourceType.WOOD) == 1);
         assertTrue("Player2 should have 2 wood", player2.getResources().getCount() == 2 && player2.getResources().getCount(ResourceType.WOOD) == 2);
-        map.distributeResources(2);
+        map.distributeResources(2, new ResourceBank(19, 19, 19, 19, 19));
         assertTrue("Player1 should have 1 wood and 2 brick", player1.getResources().getCount() == 3 && player1.getResources().getCount(ResourceType.BRICK) == 2);
-        map.distributeResources(6);
+        map.distributeResources(6, new ResourceBank(19, 19, 19, 19, 19));
         assertTrue("Player2 should have 2 wood and 4 wheat", player2.getResources().getCount() == 6 && player2.getResources().getCount(ResourceType.WHEAT) == 4);
     }
 }

@@ -38,5 +38,7 @@ public class BuildRoadCommand extends AbstractCommand {
         if (!m_free) getGame().getResourceBank().add(Prices.ROAD); // player gave resources to bank
 
         getGame().calculateVictoryPoints();
+
+        assert (getGame().verifyResourceAmount());
     }
 }
