@@ -559,7 +559,7 @@ public class Game extends Observable implements IGame {
         }
 
         // if player is not already in game they are added to the game
-        if (m_players.size() < 4) {
+        if (m_players.size() < CatanConstants.NUM_PLAYERS) {
             IPlayer player = Player.createNewPlayer(user.getUsername(), user.getId(), playerColor, m_players.size());
             m_players.add(player);
 
@@ -578,7 +578,6 @@ public class Game extends Observable implements IGame {
 
     @Override
     public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation) {
-
         // Move the robber to the specified hex location
         m_map.moveRobber(hexLocation);
 

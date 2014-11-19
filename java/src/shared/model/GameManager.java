@@ -27,7 +27,7 @@ public class GameManager implements IGameManager{
             return m_games.get(gameId).joinGame(user, playerColor);
         }
         else {
-            return false;
+            throw new ModelException("There is no game with id " + gameId + "!");
         }
     }
 

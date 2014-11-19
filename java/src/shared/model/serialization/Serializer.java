@@ -16,6 +16,7 @@ import shared.model.Player;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.util.logging.Level;
 
 /**
  * Created by Wyatt on 11/13/2014.
@@ -39,6 +40,7 @@ public class Serializer {
         gsonBuilder.registerTypeAdapter(Player.class, new PlayerAdapter());
         gsonBuilder.registerTypeAdapter(VertexLocation.class, new VertexLocationAdapter());
         gsonBuilder.registerTypeAdapter(EdgeLocation.class, new EdgeLocationAdapter());
+        gsonBuilder.registerTypeAdapter(Level.class, new LoggerLevelAdapter());
 
         gson = gsonBuilder.create();
 

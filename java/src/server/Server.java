@@ -1,7 +1,6 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import server.command.IllegalCommandException;
 import server.debug.SwaggerHandler;
 import server.facade.*;
@@ -35,14 +34,14 @@ public class Server {
 	 */
 	public static void initializeLog() {
 		try {
-			final Level logLevel = Level.FINEST;
+			final Level logLevel = Level.FINE;
 			
 			logger = Logger.getLogger("catanserver");
 			logger.setLevel(logLevel);
 			logger.setUseParentHandlers(false);
 			
 			Handler consoleHandler = new ConsoleHandler();
-			consoleHandler.setLevel(logLevel);
+			consoleHandler.setLevel(Level.FINEST); // the handlers display all messages: logger's level is what is changed
 			consoleHandler.setFormatter(new SimpleFormatter());
 			logger.addHandler(consoleHandler);
 
@@ -52,11 +51,11 @@ public class Server {
 				Files.createDirectory(Paths.get("logs"));
 			}
 			FileHandler fileHandler = new FileHandler("logs/log_" + startTime + ".txt", false);
-			fileHandler.setLevel(logLevel);
+			fileHandler.setLevel(Level.FINEST);
 			fileHandler.setFormatter(new SimpleFormatter());
 			logger.addHandler(fileHandler);
 			
-			logger.log(Level.FINEST, "Logging began at " + startTime + ".");
+			logger.info("Logging began at " + startTime + " at level " + logLevel.getName() + ".");
 		} catch (IOException e) {
 			System.err.println("There was a problem initializing the log: " + e.getMessage());
 		}
@@ -107,13 +106,13 @@ public class Server {
 
         // TODO: this is test initialization code and may break at any time
         try {
-            // TODO: remove this debugging code
             gameManager.createGame("Deep Blue vs. Garry Kasparov", false, false, false);
 
             userManager.createUser("Sam", "sam");
             userManager.createUser("Pete", "pete");
             userManager.createUser("Mark", "mark");
             userManager.createUser("You", "you");
+            userManager.createUser("Brooke", "brooke");
 
             gameManager.joinGame(0, userManager.getUser(0), shared.definitions.CatanColor.RED);
             gameManager.joinGame(0, userManager.getUser(1), shared.definitions.CatanColor.BLUE);
@@ -330,7 +329,6 @@ public class Server {
                 return "Logging level changed to " + requestData;
             }
         });
-        // TODO: fill out the rest of the handlers
 
         // Handlers for the Swagger UI
         server.createContext("/docs/api/data", new SwaggerHandler.JSONAppender(""));

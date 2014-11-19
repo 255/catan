@@ -30,15 +30,11 @@ public class JoinHandler extends AbstractHandler<JoinGameRequestParams, Integer,
             cookies.addCookie("path", "/");
 
             exch.getResponseHeaders().add("Set-cookie", cookies.toString());
-            exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, -1);
+
+            sendResponse(exch, HttpURLConnection.HTTP_OK, "You successfully joined game " + responseData + ".");
         }
         else {
-            // write an error string
-            try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
-                exch.getResponseHeaders().add("Content-type", "text/plain");
-                exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-                responseBody.write("Cannot join game.");
-            }
+            sendResponse(exch, HttpURLConnection.HTTP_BAD_REQUEST, "Cannot join game.");
         }
     }
 

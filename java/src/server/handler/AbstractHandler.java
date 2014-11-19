@@ -120,10 +120,10 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
      */
     @Override
     public final void handle(HttpExchange exch) throws IOException {
-        //logger.entering("server.RequestHandler", "handle");
+        logger.entering("server.RequestHandler", "handle");
 
-        //logger.finer("Received HTTP request for " + this.getFacade().getClass().getSimpleName()
-        //        + " on " + this.getClass().getName() + " from " + exch.getRemoteAddress() + '.');
+        logger.finer("Received HTTP request for " + this.getFacade().getClass().getSimpleName()
+                + " on " + this.getClass().getName() + " from " + exch.getRemoteAddress() + '.');
 
         try {
             ReqType reqData = getRequestParameters(exch);
@@ -145,16 +145,16 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
             logger.log(Level.INFO, "Client does not have the correct cookies set to perform the desired action.", e);
             sendErrorResponse(exch, HttpURLConnection.HTTP_UNAUTHORIZED, e);
         } catch (IllegalCommandException | ModelException e) {
-            logger.log(Level.WARNING, "Client attempted an illegal command.", e);
+            logger.log(Level.WARNING, "Client attempted an illegal action. (But don't worry, we stopped them!)", e);
             sendErrorResponse(exch, HttpURLConnection.HTTP_BAD_METHOD, e);
         } catch (IOException e) {
             logger.log(Level.SEVERE, "An I/O error occurred.", e);
             sendErrorResponse(exch, HttpURLConnection.HTTP_INTERNAL_ERROR, e);
             throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable e) {
+            logger.log(Level.SEVERE, "An exception occurred!", e);
         } finally {
-            //logger.exiting("server.RequestHandler", "handle");
+            logger.exiting("server.RequestHandler", "handle");
         }
     }
 
@@ -166,6 +166,17 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
             exch.getResponseHeaders().add("Content-type", "text/plain");
             exch.sendResponseHeaders(httpResponse, 0);
             responseBody.write(e.getMessage());
+        }
+    }
+
+    /**
+     * Send a text response to an HTTP request
+     */
+    protected void sendResponse(HttpExchange exch, int httpResponse, String message) throws IOException {
+        try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
+            exch.getResponseHeaders().add("Content-type", "text/plain");
+            exch.sendResponseHeaders(httpResponse, message.length());
+            responseBody.write(message);
         }
     }
 

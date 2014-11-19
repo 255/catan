@@ -20,5 +20,6 @@ public class UtilityFacade implements IUtilityFacade{
     @Override
     public void changeLogLevel(Level lvl) {
         logger.setLevel(lvl);
+        logger.fine("Now logging at " + logger.getLevel() + " annoyance level.");
     }
 }
