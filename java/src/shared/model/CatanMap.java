@@ -608,25 +608,65 @@ public class CatanMap implements ICatanMap {
 
     @Override
     public void distributeResources(int number, IResourceBank gameResourceBank) {
+        IResourceBank resourcesToGive = new ResourceBank();
         Iterator it = m_tiles.entrySet().iterator();
         while(it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next();
             ITile tile = (ITile)pairs.getValue();
             if(tile.numberToken() == number && !tile.hasRobber()) {
-                giveResourcesToAdjacentTowns(tile, gameResourceBank);
+                Collection<ITown> towns = getAdjacentTowns(tile.location());
+                for (ITown town : towns) {
+                    resourcesToGive.increment(tile.resource());
+                    if (town.getPieceType() == PieceType.CITY) {
+                        resourcesToGive.increment(tile.resource());
+                    }
+                }
             }
         }
+
+        if (gameResourceBank.getBrick() < resourcesToGive.getBrick()) {
+            resourcesToGive.setBrick(0);
+        }
+        if (gameResourceBank.getWood() < resourcesToGive.getWood()) {
+            resourcesToGive.setWood(0);
+        }
+        if (gameResourceBank.getSheep() < resourcesToGive.getSheep()) {
+            resourcesToGive.setSheep(0);
+        }
+        if (gameResourceBank.getWheat() < resourcesToGive.getWheat()) {
+            resourcesToGive.setBrick(0);
+        }
+        if (gameResourceBank.getOre() < resourcesToGive.getOre()) {
+            resourcesToGive.setOre(0);
+        }
+
+        gameResourceBank.subtract(resourcesToGive);
+
+        it = m_tiles.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            ITile tile = (ITile)pairs.getValue();
+            if(tile.numberToken() == number && !tile.hasRobber()) {
+                giveResourcesToAdjacentTowns(tile, resourcesToGive);
+            }
+        }
+
+        assert resourcesToGive.getCount() == 0;
     }
 
-    private void giveResourcesToAdjacentTowns(ITile tile, IResourceBank gameResourceBank) {
+    private void giveResourcesToAdjacentTowns(ITile tile, IResourceBank resourcesToGive) {
         Collection<ITown> towns = getAdjacentTowns(tile.location());
         for(ITown town : towns) {
             IResourceBank bank = new ResourceBank();
-            bank.increment(tile.resource());
-            gameResourceBank.decrement(tile.resource());
-            if(town.getPieceType() == PieceType.CITY) {
+            if (resourcesToGive.getCount(tile.resource()) > 0) {
+
                 bank.increment(tile.resource());
-                gameResourceBank.decrement(tile.resource());
+                resourcesToGive.decrement(tile.resource());
+
+                if (town.getPieceType() == PieceType.CITY) {
+                    bank.increment(tile.resource());
+                    resourcesToGive.decrement(tile.resource());
+                }
             }
             town.getOwner().addResources(bank);
         }

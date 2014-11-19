@@ -33,7 +33,6 @@ public class RollNumberCommand extends AbstractCommand {
     public void performAction() {
         getGame().rollNumber(m_number);
 
-        boolean correctAmount = getGame().verifyResourceAmount();
-        assert correctAmount != false;
+        assert getGame().verifyResourceAmount();
     }
 }
