@@ -81,7 +81,7 @@ public class GameAdapter extends TypeAdapter<Game> {
         jsonWriter.value(game.getLongestRoad() != null ? game.getLongestRoad().getIndex() : Player.NO_PLAYER);
 
         jsonWriter.name("largestArmy");
-        jsonWriter.value(game.getLongestRoad() != null ? game.getLongestRoad().getIndex() : Player.NO_PLAYER);
+        jsonWriter.value(game.getLargestArmy() != null ? game.getLargestArmy().getIndex() : Player.NO_PLAYER);
 
         jsonWriter.endObject();
     }
