@@ -141,6 +141,7 @@ public class ResourceBank implements IResourceBank {
         }
     }
 
+
     @Override
     public IResourceBank subtract(IResourceBank resources) {
         IResourceBank bundle = new ResourceBank(resources.getWood(), resources.getBrick(), resources.getSheep(),
@@ -272,15 +273,21 @@ public class ResourceBank implements IResourceBank {
 
         Random rand = new Random();
 
-        boolean foundCard = false;
+        int randomNumber = (rand.nextInt() % getCount());
 
-        while (!foundCard) {
-            drawnCard = ResourceType.randomResourceType();
-            if (this.getCount(drawnCard) > 0) {
-                foundCard = true;
-                this.subtract(1, drawnCard);
-            }
+        if (randomNumber < brick) {
+            drawnCard = ResourceType.BRICK;
+        } else if (randomNumber <  + brick + wood) {
+            drawnCard = ResourceType.WOOD;
+        } else if (randomNumber < brick + wood + ore) {
+            drawnCard = ResourceType.ORE;
+        } else if (randomNumber < brick + wood + ore + sheep) {
+            drawnCard = ResourceType.SHEEP;
+        } else if (randomNumber < brick + wood + ore + sheep + wheat) {
+            drawnCard = ResourceType.WHEAT;
         }
+
+        this.subtract(1, drawnCard);
 
         return drawnCard;
     }
