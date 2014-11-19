@@ -3,7 +3,6 @@ package server.command;
 import shared.definitions.DevCardType;
 import shared.model.IGame;
 import shared.model.IPlayer;
-import shared.model.ModelException;
 
 import java.util.logging.Logger;
 
@@ -32,12 +31,7 @@ public class MonumentCommand extends AbstractCommand {
     public void performAction() {
 
         // Remove dev card from player's hand
-        try {
-            getPlayer().getPlayableDevCards().remove(DevCardType.MONUMENT);
-        } catch (ModelException ex) {
-            logger.fine("Tried to remove a Monument DevCard from a player's hand after it was played in " +
-                    "MonumentCommand class. Exception message is as follows: " + ex.getMessage());
-        }
+        getPlayer().playDevCard(DevCardType.MONUMENT);
 
         // Increment player's Monuments
         getPlayer().incrementMonuments();

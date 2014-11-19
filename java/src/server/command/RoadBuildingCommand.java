@@ -1,5 +1,6 @@
 package server.command;
 
+import shared.definitions.DevCardType;
 import shared.locations.EdgeLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;
@@ -30,10 +31,10 @@ public class RoadBuildingCommand extends AbstractCommand {
      * playing the RoadBuilding card.
      */
     public void performAction() {
+        getPlayer().playDevCard(DevCardType.ROAD_BUILD);
+
         getGame().getMap().placeRoad(getPlayer().buildRoad(true), m_location1);
         getGame().getMap().placeRoad(getPlayer().buildRoad(true), m_location2);
-
-        getPlayer().setPlayedDevCard(true);
 
         getGame().calculateVictoryPoints();
     }

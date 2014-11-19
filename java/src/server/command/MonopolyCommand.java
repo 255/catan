@@ -4,10 +4,8 @@ import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.model.IGame;
 import shared.model.IPlayer;
-import shared.model.ModelException;
 
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -60,12 +58,6 @@ public class MonopolyCommand extends AbstractCommand {
 
         getPlayer().getResources().add(resourceCount, m_resourceType);
 
-        try {
-            getPlayer().getPlayableDevCards().remove(DevCardType.MONOPOLY);
-            getPlayer().setPlayedDevCard(true);
-        } catch (ModelException ex) {
-            logger.log(Level.SEVERE, "ModelException was thrown in the MonopolyCommand class when attempting to remove a Monopoly DevCard from " +
-                    "a player's hand after they played it.", ex);
-        }
+        getPlayer().playDevCard(DevCardType.MONOPOLY);
     }
 }

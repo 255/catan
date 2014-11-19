@@ -1,5 +1,6 @@
 package server.command;
 
+import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
 import shared.model.IGame;
 import shared.model.IPlayer;
@@ -28,6 +29,7 @@ public class YearOfPlentyCommand extends AbstractCommand {
      * of their choosing.
      */
     public void performAction() {
+        getPlayer().playDevCard(DevCardType.YEAR_OF_PLENTY);
 
         // Remove the resource cards from the game's resource bank
         getGame().getResourceBank().subtract(1, m_firstType);
@@ -36,7 +38,5 @@ public class YearOfPlentyCommand extends AbstractCommand {
         // Add the resource cards to the player's hand
         getPlayer().addResources(1, m_firstType);
         getPlayer().addResources(1, m_secondType);
-
-        getPlayer().setPlayedDevCard(true);
     }
 }

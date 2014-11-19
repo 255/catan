@@ -4,7 +4,6 @@ import shared.definitions.DevCardType;
 import shared.locations.HexLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;
-import shared.model.ModelException;
 
 import java.util.logging.Logger;
 
@@ -36,22 +35,11 @@ public class SoldierCommand extends AbstractCommand {
      * Player plays a Soldier DevCard.
      */
     public void performAction() {
-
-        //Remove Soldier DevCard from player's DevCardHand
-        try {
-            getPlayer().getPlayableDevCards().remove(DevCardType.SOLDIER);
-        } catch (ModelException ex) {
-            logger.fine("When " + getPlayer().getName() + " played a soldier development card, removing that card from the " +
-                    "player's hand caused an exception to be thrown");
-        }
-
         //Increments the player's soldier count
         getPlayer().incrementSoldiers();
 
         // Performs the robbing of the player
         getGame().robPlayer(getPlayer(), m_victim, m_hexLocation);
-
-        getPlayer().setPlayedDevCard(true);
 
         getGame().calculateVictoryPoints();
     }

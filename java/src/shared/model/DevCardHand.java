@@ -111,10 +111,8 @@ public class DevCardHand implements IDevCardHand {
      * @param devCardType the type of development card to remove (play) from the hand
      */
     @Override
-    public void remove(DevCardType devCardType) throws ModelException {
-        if (getCount(devCardType) <= 0) {
-            throw new ModelException("Attempted to remove card type with a count of 0.");
-        }
+    public void remove(DevCardType devCardType) {
+        assert getCount(devCardType) > 0 : "Attempted to remove card type with a count of 0.";
 
         switch (devCardType) {
             case MONOPOLY: monopoly--; break;
@@ -148,11 +146,7 @@ public class DevCardHand implements IDevCardHand {
             drawnCard = DevCardType.MONUMENT;
         }
 
-        try {
-            this.remove(drawnCard);
-        } catch (ModelException ex) {
-            assert false : "DevCardType should not be given if not removed if there is none in the hand";
-        }
+        this.remove(drawnCard);
 
         return drawnCard;
     }

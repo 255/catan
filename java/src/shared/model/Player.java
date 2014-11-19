@@ -12,7 +12,7 @@ import java.util.Collections;
  * This class represents a Player Object
  */
 public class Player implements IPlayer {
-    public static final int NO_PLAYER = -1;
+    public static final int NO_PLAYER = -1; // a player index that represents a null player
 
     private int m_id;
     private int m_index;
@@ -306,12 +306,21 @@ public class Player implements IPlayer {
         return m_playableDevCards;
     }
 
-    /**
-     * Move the new dev cards to the old dev cards
-     */
     @Override
     public void moveDevCards() {
         m_newDevCards.transferAllCardsToHand(m_playableDevCards);
+    }
+
+    @Override
+    public void playDevCard(DevCardType type) {
+        assert m_playableDevCards.getCount(type) > 0 : "There are no dev cards of type " + type + " to use!";
+        assert type == DevCardType.MONUMENT || !m_playedDevCard : "The player already has played a dev card!";
+
+        m_playableDevCards.remove(type);
+
+        if (type != DevCardType.MONUMENT) {
+            m_playedDevCard = true;
+        }
     }
 
     /**
