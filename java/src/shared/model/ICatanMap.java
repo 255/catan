@@ -5,6 +5,7 @@ import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +15,7 @@ import java.util.Set;
  *
  * @author StevenBarnett
  */
-public interface ICatanMap {
+public interface ICatanMap extends Serializable {
     /**
      * Get all of the towns placed on the map.
      * @return the towns placed on the map

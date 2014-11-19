@@ -4,6 +4,8 @@ import shared.definitions.HexType;
 import shared.definitions.ResourceType;
 import shared.locations.HexLocation;
 
+import java.io.Serializable;
+
 /**
  * Class representing a tile on the board.
  * A tile contains a certain type of resource, and
@@ -14,8 +16,8 @@ import shared.locations.HexLocation;
  *
  * @author StevenBarnett
  */
-public interface ITile {
-    /**
+public interface ITile extends Serializable {
+    /*
      * Returns the type of this tile
      *
      * @return hex type of this tile

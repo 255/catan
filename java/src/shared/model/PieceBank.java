@@ -74,8 +74,9 @@ public class PieceBank implements IPieceBank {
      * This will only be used server-side.
      */
     @Override
-    public void takeCity() {
+    public void swapSettlementForCity() {
         m_numCities--;
+        m_numSettlements++;
     }
 
     /**

@@ -2,6 +2,7 @@ package shared.model;
 
 import client.communication.LogEntry;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author StevenBarnett, Wyatt
  */
-public interface ILog {
+public interface ILog extends Serializable {
     /**
      * Add a message to the log. The message is added as the last entry.
      * @param player the player who originated the message
@@ -27,7 +28,7 @@ public interface ILog {
     /**
      * An individual message in a
      */
-    public interface ILogMessage {
+    public interface ILogMessage extends Serializable {
         /**
          * Get the player that this message is from.
          *

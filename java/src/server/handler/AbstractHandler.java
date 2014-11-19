@@ -59,7 +59,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
      * @throws MissingCookieException if there was an error
      *                                in which case handle() sends back an error (500) response
      */
-    protected abstract RespType exchangeData(ReqType requestData) throws MissingCookieException, IllegalCommandException, ModelException;
+    protected abstract RespType exchangeData(ReqType requestData) throws MissingCookieException, IllegalCommandException, ModelException, IOException;
 
     /**
      * Examine the cookies sent by the client and extract information as needed.
@@ -146,8 +146,8 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
             logger.log(Level.WARNING, "Client attempted an illegal command.", e);
             sendErrorResponse(exch, HttpURLConnection.HTTP_BAD_METHOD, e);
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "An HTTP error occurred.", e);
-            exch.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, -1);
+            logger.log(Level.SEVERE, "An I/O error occurred.", e);
+            sendErrorResponse(exch, HttpURLConnection.HTTP_INTERNAL_ERROR, e);
             throw e;
         } catch (Exception e) {
             e.printStackTrace();

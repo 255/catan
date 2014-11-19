@@ -1,10 +1,10 @@
 package server.facade;
 
+import com.google.gson.Gson;
 import shared.communication.*;
-import shared.model.Game;
-import shared.model.IGameManager;
-import shared.model.IUserManager;
-import shared.model.ModelException;
+import shared.model.*;
+
+import java.io.*;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
@@ -59,11 +59,14 @@ public class JoinGameFacade implements IJoinGameFacade{
      * Swagger URL Equivalent: /games/save
      *
      * @param saveGame the JSON wrapper with the parameters for saving a game
-     * @return boolean containing true or false depending on if the save was successful
      */
     @Override
-    public boolean save(SaveGameRequestParams saveGame) {
-        return false;
+    public void save(SaveGameRequestParams saveGame) throws IOException, ModelException {
+        IGame game = m_gameManager.getGame(saveGame.id);
+
+        try (ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(saveGame.name))) {
+            writer.writeObject(game);
+        }
     }
 
     /**
@@ -71,10 +74,13 @@ public class JoinGameFacade implements IJoinGameFacade{
      * Swagger URL Equivalent: /games/load
      *
      * @param loadGame the JSON wrapper with the parameters for loading a game
-     * @return Game object containing a pointer to the loaded game
      */
     @Override
-    public Game load(LoadGameRequestParams loadGame) {
-        return null;
+    public void load(LoadGameRequestParams loadGame) throws IOException {
+        try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(loadGame.name))) {
+            m_gameManager.loadGame((IGame)reader.readObject());
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Failed reading game from disk.", e);
+        }
     }
 }

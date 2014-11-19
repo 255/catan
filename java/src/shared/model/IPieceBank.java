@@ -1,10 +1,12 @@
 package shared.model;
 
+import java.io.Serializable;
+
 /**
  * A bank of pieces. Each player has a fixed number of pieces available to them.
  * @author Wyatt
  */
-public interface IPieceBank {
+public interface IPieceBank extends Serializable {
     /**
      * Take a road from the piece bank. The bank's road count variable is decremented,
      * and a new city object is returned.
@@ -33,7 +35,7 @@ public interface IPieceBank {
      *
      * This will only be used server-side.
      */
-    public void takeCity();
+    public void swapSettlementForCity();
 
     /**
      * Set the number of cities that will be available in the piece bank.

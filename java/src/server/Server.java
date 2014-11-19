@@ -1,6 +1,7 @@
 package server;
 
 import com.sun.net.httpserver.HttpServer;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import server.command.IllegalCommandException;
 import server.debug.SwaggerHandler;
 import server.facade.*;
@@ -158,6 +159,22 @@ public class Server {
             @Override
             protected GameInfo exchangeData(CreateGameRequestParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
                 return getFacade().create(requestData);
+            }
+        });
+
+        server.createContext("/games/save", new AbstractHandler<SaveGameRequestParams, String, IJoinGameFacade>(SaveGameRequestParams.class, joinGameFacade) {
+            @Override
+            protected String exchangeData(SaveGameRequestParams requestData) throws MissingCookieException, IllegalCommandException, ModelException, IOException {
+                getFacade().save(requestData);
+                return "Successfully saved game '" + requestData.name + "'";
+            }
+        });
+
+        server.createContext("/games/load", new AbstractHandler<LoadGameRequestParams, String, IJoinGameFacade>(LoadGameRequestParams.class, joinGameFacade) {
+            @Override
+            protected String exchangeData(LoadGameRequestParams requestData) throws MissingCookieException, IllegalCommandException, ModelException, IOException {
+                getFacade().load(requestData);
+                return "Successfully loaded game '" + requestData.name + "'";
             }
         });
 

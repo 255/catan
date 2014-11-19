@@ -7,6 +7,7 @@ import shared.locations.EdgeLocation;
 import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Observer;
@@ -20,7 +21,7 @@ import java.util.Set;
  * The game concrete class constructor will initialize its fields, so there are no setters.
  * @author Wyatt
  */
-public interface IGame {
+public interface IGame extends Serializable {
     /** Get the game's name */
     public String getName();
 
