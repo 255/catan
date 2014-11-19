@@ -410,33 +410,41 @@ public class CatanMapTest {
 //            }
 //        }
 
-        assertTrue("Player1 should have no resources", player1.getResources().getCount() == 0);
+        assertEquals("Player1 should have no resources", 0, player1.getResources().getCount());
+        assertEquals("Player2 should have no resources", 0, player2.getResources().getCount());
+        map.distributeResources(2, new ResourceBank(0, 0, 0, 0, 0));
+        map.distributeResources(4, new ResourceBank(0, 0, 0, 0, 0));
         map.distributeResources(6, new ResourceBank(0, 0, 0, 0, 0));
         assertEquals("Player1 should still have no resources", 0, player1.getResources().getCount());
-        map.distributeResources(3, new ResourceBank(19, 19, 19, 19, 19));
-        assertTrue("Player1 should still have no resources", player1.getResources().getCount() == 0);
+        assertEquals("Player2 should still have no resources", 0, player2.getResources().getCount());
         map.distributeResources(4, new ResourceBank(19, 19, 19, 19, 19));
-        assertTrue("Player1 should have 1 wood", player1.getResources().getCount() == 1 && player1.getResources().getCount(ResourceType.WOOD) == 1);
-        assertTrue("Player2 should have 2 wood", player2.getResources().getCount() == 2 && player2.getResources().getCount(ResourceType.WOOD) == 2);
+        assertEquals("Player1 should have 1 resource", 1, player1.getResources().getCount());
+        assertEquals("Player1 should have 1 wood", 1, player1.getResources().getCount(ResourceType.WOOD));
+        assertEquals("Player2 should have 2 wood", 2, player2.getResources().getCount(ResourceType.WOOD));
         map.distributeResources(2, new ResourceBank(19, 19, 19, 19, 19));
-        assertTrue("Player1 should have 1 wood and 2 brick", player1.getResources().getCount() == 3 && player1.getResources().getCount(ResourceType.BRICK) == 2);
+        assertEquals("Player1 should have 3 resources", 3, player1.getResources().getCount());
+        assertEquals("Player1 should have 1 wood and 2 brick", 1, player1.getResources().getCount(ResourceType.WOOD));
+        assertEquals("Player1 should have 1 wood and 2 brick", 2, player1.getResources().getCount(ResourceType.BRICK));
+        assertEquals("Player2 should have 2 wood", 2, player2.getResources().getCount());
         map.distributeResources(6, new ResourceBank(19, 19, 19, 19, 19));
-        assertTrue("Player2 should have 2 wood and 4 wheat", player2.getResources().getCount() == 6 && player2.getResources().getCount(ResourceType.WHEAT) == 4);
+        assertEquals("Player2 should have 2 wood and 4 wheat", 6, player2.getResources().getCount());
+        assertEquals("Player2 should have 2 wood and 4 wheat", 4, player2.getResources().getCount(ResourceType.WHEAT));
+        assertEquals("Player2 should have 2 wood and 4 wheat", 2, player2.getResources().getCount(ResourceType.WOOD));
         map.distributeResources(6, new ResourceBank(0, 0, 0, 0, 0));
         assertEquals("Player2 should still have 6 resources", 6, player2.getResources().getCount());
         assertEquals("Player2 should still have 2 wood", 2, player2.getResources().getCount(ResourceType.WOOD));
         assertEquals("Player2 should still have 4 wheat", 4, player2.getResources().getCount(ResourceType.WHEAT));
-        map.distributeResources(6, new ResourceBank(0, 0, 0, 1, 0));
-        assertEquals("Player2 should only have gotten 1 more wheat", 5, player2.getResources().getCount(ResourceType.WHEAT));
-        assertEquals("Player2 should only have gotten 1 more wheat", 7, player2.getResources().getCount());
-        map.distributeResources(6, new ResourceBank(0, 0, 0, 3, 0));
-        assertEquals("Player2 should only have gotten 3 more wheat", 8, player2.getResources().getCount(ResourceType.WHEAT));
-        assertEquals("Player2 should only have gotten 3 more wheat", 10, player2.getResources().getCount());
-        map.distributeResources(6, new ResourceBank(0, 0, 0, 4, 0));
-        assertEquals("Player2 should have gotten 4 more wheat", 12, player2.getResources().getCount(ResourceType.WHEAT));
-        assertEquals("Player2 should have gotten 4 more wheat", 14, player2.getResources().getCount());
-        map.distributeResources(6, new ResourceBank(0, 0, 0, 5, 0));
-        assertEquals("Player2 should have gotten 4 more wheat", 16, player2.getResources().getCount(ResourceType.WHEAT));
-        assertEquals("Player2 should have gotten 4 more wheat", 18, player2.getResources().getCount());
+        map.distributeResources(2, new ResourceBank(0, 1, 0, 1, 0));
+        assertEquals("Player2 should still have 6 resources", 6, player2.getResources().getCount());
+        assertEquals("Player1 should have gotten 0 more brick", 2, player1.getResources().getCount(ResourceType.BRICK));
+        map.distributeResources(6, new ResourceBank(0, 1, 0, 1, 0));
+        assertEquals("Player2 should have gotten 0 more wheat", 4, player2.getResources().getCount(ResourceType.WHEAT));
+        assertEquals("Player2 should still have 6 resources", 6, player2.getResources().getCount());
+
+        map.distributeResources(2, new ResourceBank(1, 1, 1, 3, 1));
+        map.distributeResources(6, new ResourceBank(1, 1, 1, 3, 1));
+        map.distributeResources(4, new ResourceBank(1, 1, 1, 3, 1));
+        assertEquals("Player1 should still have 3 resources", 3, player1.getResources().getCount());
+        assertEquals("Player2 should still have 6 resources", 6, player2.getResources().getCount());
     }
 }

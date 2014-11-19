@@ -607,27 +607,50 @@ public class CatanMap implements ICatanMap {
     }
 
     @Override
-    public void distributeResources(int rollNumber, IResourceBank gameResourceBank) {
+    public void distributeResources(int number, IResourceBank gameResourceBank) {
+        IResourceBank resourcesToGive = new ResourceBank();
+
         for (ITile tile : m_tiles.values()) {
-            if (tile.numberToken() == rollNumber && !tile.hasRobber()) {
-                giveResourcesToAdjacentTowns(tile, gameResourceBank);
+            if (tile.numberToken() == number && !tile.hasRobber()) {
+                for (ITown town : getAdjacentTowns(tile.location())) {
+                    resourcesToGive.add(town.getResourceCount(), tile.resource());
+                }
             }
         }
+
+        if (gameResourceBank.getBrick() < resourcesToGive.getBrick()) {
+            resourcesToGive.setBrick(0);
+        }
+        if (gameResourceBank.getWood() < resourcesToGive.getWood()) {
+            resourcesToGive.setWood(0);
+        }
+        if (gameResourceBank.getSheep() < resourcesToGive.getSheep()) {
+            resourcesToGive.setSheep(0);
+        }
+        if (gameResourceBank.getWheat() < resourcesToGive.getWheat()) {
+            resourcesToGive.setWheat(0);
+        }
+        if (gameResourceBank.getOre() < resourcesToGive.getOre()) {
+            resourcesToGive.setOre(0);
+        }
+
+        gameResourceBank.subtract(resourcesToGive);
+
+        for (ITile tile : m_tiles.values()) {
+            if (tile.numberToken() == number && !tile.hasRobber()) {
+                giveResourcesToAdjacentTowns(tile, resourcesToGive);
+            }
+        }
+
+        assert resourcesToGive.getCount() == 0 : "There are resources remaining that weren't distributed.";
     }
 
-    /**
-     * Either give the number of resources specified by the town type, or give the rest of the resources in the game
-     * if there is only one left (and a city wanted two resources)
-     */
-    private void giveResourcesToAdjacentTowns(ITile tile, IResourceBank gameResourceBank) {
+    private void giveResourcesToAdjacentTowns(ITile tile, IResourceBank resourcesToGive) {
         for (ITown town : getAdjacentTowns(tile.location())) {
-            int resourcesToGive = Math.min(town.getResourceCount(), gameResourceBank.getCount(tile.resource()));
-
-            if (resourcesToGive == 0) return;
-
-            // give them to the player, take them from the bank
-            town.getOwner().addResources(resourcesToGive, tile.resource());
-            gameResourceBank.subtract(resourcesToGive, tile.resource());
+            if (resourcesToGive.getCount(tile.resource()) > 0) {
+                resourcesToGive.subtract(town.getResourceCount(), tile.resource());
+                town.getOwner().addResources(town.getResourceCount(), tile.resource());
+            }
         }
     }
 
