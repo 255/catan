@@ -36,8 +36,8 @@ public class JoinHandler extends AbstractHandler<JoinGameRequestParams, Integer,
             // write an error string
             try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
                 exch.getResponseHeaders().add("Content-type", "text/plain");
-                responseBody.write("Cannot join game.");
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                responseBody.write("Cannot join game.");
             }
         }
     }

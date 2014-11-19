@@ -186,8 +186,8 @@ public class ResourceBank implements IResourceBank {
 
     @Override
     public void subtract(int amount, ResourceType rType) {
+        assert amount <= getCount(rType) : "Tried to subtract " + amount + " " + rType + " resources but only " + getCount(rType) + " are available";
         int netAmount = getCount(rType) - amount;
-        assert netAmount >= 0;
         setCount(rType, netAmount);
     }
 
@@ -269,24 +269,25 @@ public class ResourceBank implements IResourceBank {
     public ResourceType drawRandom() {
         assert getCount() > 0 : "Tried to draw from an empty resource bank!";
 
+        final Random rand = new Random();
+
         ResourceType drawnCard = null;
 
-        Random rand = new Random();
-
-        int randomNumber = (rand.nextInt() % getCount());
+        int randomNumber = rand.nextInt(getCount());
 
         if (randomNumber < brick) {
             drawnCard = ResourceType.BRICK;
-        } else if (randomNumber <  + brick + wood) {
+        } else if (randomNumber < brick + wood) {
             drawnCard = ResourceType.WOOD;
         } else if (randomNumber < brick + wood + ore) {
             drawnCard = ResourceType.ORE;
         } else if (randomNumber < brick + wood + ore + sheep) {
             drawnCard = ResourceType.SHEEP;
-        } else if (randomNumber < brick + wood + ore + sheep + wheat) {
+        } else { //if (randomNumber < brick + wood + ore + sheep + wheat) {
             drawnCard = ResourceType.WHEAT;
         }
 
+        assert getCount(drawnCard) > 0 : "Tried to draw " + drawnCard + " but there are " + getCount(drawnCard) + " of them!";
         this.subtract(1, drawnCard);
 
         return drawnCard;

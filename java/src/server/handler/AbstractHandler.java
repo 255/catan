@@ -103,8 +103,10 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
             // if a valid response was generated, send it back
             if (responseData != null) {
                 exch.getResponseHeaders().add("Content-Type", "application/json");
-                responseBody.write(Serializer.instance().toJson(responseData));
-                exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                String response = Serializer.instance().toJson(responseData);
+
+                exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.length());
+                responseBody.write(response);
             } else {
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, -1);
             }
@@ -135,7 +137,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 
             generateResponse(exch, respData);
 
-            logger.finer("Responding to request with: " + respData);
+            //logger.finer("Responding to request with: " + respData);
         } catch (JsonSyntaxException | MalformedJsonException e) {
             logger.log(Level.INFO, "Received an improperly formatted request.", e);
             sendErrorResponse(exch, HttpURLConnection.HTTP_BAD_REQUEST, e);
@@ -162,8 +164,8 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
     private void sendErrorResponse(HttpExchange exch, int httpResponse, Throwable e) throws IOException {
         try (OutputStreamWriter responseBody = new OutputStreamWriter(exch.getResponseBody())) {
             exch.getResponseHeaders().add("Content-type", "text/plain");
-            responseBody.write(e.getMessage());
             exch.sendResponseHeaders(httpResponse, 0);
+            responseBody.write(e.getMessage());
         }
     }
 
