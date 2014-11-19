@@ -134,18 +134,24 @@ public class DevCardHand implements IDevCardHand {
 
         Random rand = new Random();
 
-        boolean foundCard = false;
+        int randomNumber = (rand.nextInt() % getCount());
 
-        while (!foundCard) {
-            drawnCard = DevCardType.randomDevCardType();
-            if (this.getCount(drawnCard) > 0) {
-                foundCard = true;
-                try {
-                    this.remove(drawnCard);
-                } catch (ModelException ex) {
-                    assert false : "DevCardType should not be given if not removed if there is none in the hand";
-                }
-            }
+        if (randomNumber < soldier) {
+            drawnCard = DevCardType.SOLDIER;
+        } else if (randomNumber < soldier + yearOfPlenty) {
+            drawnCard = DevCardType.YEAR_OF_PLENTY;
+        } else if (randomNumber < soldier + yearOfPlenty + monopoly) {
+            drawnCard = DevCardType.MONOPOLY;
+        } else if (randomNumber < soldier + yearOfPlenty + monopoly + roadBuilding) {
+            drawnCard = DevCardType.ROAD_BUILD;
+        } else if (randomNumber < soldier + yearOfPlenty + monopoly + monument) {
+            drawnCard = DevCardType.MONUMENT;
+        }
+
+        try {
+            this.remove(drawnCard);
+        } catch (ModelException ex) {
+            assert false : "DevCardType should not be given if not removed if there is none in the hand";
         }
 
         return drawnCard;
