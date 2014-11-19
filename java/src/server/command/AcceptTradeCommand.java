@@ -20,7 +20,7 @@ public class AcceptTradeCommand extends AbstractCommand {
 
         // can the trade be accepted?
         //IPlayer p = getGame().getPlayers().get(playerIndex);
-        if(!player.canAcceptTrade(getGame().getTradeOffer().getOffer())) {
+        if(willAccept && !player.canAcceptTrade(getGame().getTradeOffer().getOffer())) {
             throw new IllegalCommandException(
                     "The player is unable to accept the current trade offer"
             );
