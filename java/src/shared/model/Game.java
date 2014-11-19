@@ -537,7 +537,16 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public boolean joinGame(IUser user, CatanColor playerColor) {
+    public boolean joinGame(IUser user, CatanColor playerColor) throws ModelException {
+        // checks if color is being used by another player
+        for(IPlayer player : m_players) {
+            if(player.getColor() == playerColor) {
+                if(player.getId() != user.getId()) {
+                    throw new ModelException("Color already in use by another player.");
+                }
+            }
+        }
+
         // checks if player is already in game, if so exits method
         for(IPlayer player : m_players) {
             if(player.getId() == user.getId()) {

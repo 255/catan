@@ -22,7 +22,7 @@ public class GameManager implements IGameManager{
     }
 
     @Override
-    public boolean joinGame(int gameId, IUser user, CatanColor playerColor) {
+    public boolean joinGame(int gameId, IUser user, CatanColor playerColor) throws ModelException {
         if (m_games.containsKey(gameId)) {
             return m_games.get(gameId).joinGame(user, playerColor);
         }

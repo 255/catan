@@ -246,7 +246,7 @@ public interface IGame {
 
     public void addObserver(Observer o);
 
-    public boolean joinGame(IUser user, CatanColor playerColor);
+    public boolean joinGame(IUser user, CatanColor playerColor) throws ModelException;
 
     public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation);
 

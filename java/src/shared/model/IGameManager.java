@@ -21,7 +21,7 @@ public interface IGameManager {
      * @param playerColor color that player wants to be in the game.
      * @return game object of the game that the player joined
      */
-    public boolean joinGame(int gameId, IUser user, CatanColor playerColor);
+    public boolean joinGame(int gameId, IUser user, CatanColor playerColor) throws ModelException;
 
     /**
      * Creates a new game on the server.
