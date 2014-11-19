@@ -45,7 +45,7 @@ public class GameManager implements IGameManager{
             return m_games.get(gameIndex);
         }
         else {
-            throw new ModelException("Invalid game requested.");
+            throw new ModelException("Invalid game " + gameIndex + " requested.");
         }
     }
 

@@ -1,6 +1,5 @@
 package server.facade;
 
-import com.google.gson.Gson;
 import shared.communication.*;
 import shared.model.*;
 

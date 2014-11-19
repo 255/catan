@@ -583,10 +583,12 @@ public class Game extends Observable implements IGame {
         m_map.moveRobber(hexLocation);
 
         // Choose and remove a random card from the victim's hand
-        ResourceType resource = victim.getResources().drawRandom();
+        if (victim != null) {
+            ResourceType resource = victim.getResources().drawRandom();
 
-        // Add that random card to the player's hand
-        player.getResources().add(1, resource);
+            // Add that random card to the player's hand
+            player.getResources().add(1, resource);
+        }
 
         m_state = GameState.Playing; // always goes to playing, whether after rolling 7 or playing card
     }

@@ -5,6 +5,7 @@ import shared.definitions.PortType;
 import shared.locations.*;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * The Catan map.
@@ -14,6 +15,8 @@ import java.util.*;
  * @author Wyatt
  */
 public class CatanMap implements ICatanMap {
+    private static Logger logger = Logger.getLogger("catanserver");
+
     private Map<HexLocation, ITile> m_tiles;
     private Map<VertexLocation, ITown> m_towns;
     private Map<EdgeLocation, IRoad> m_roads;
@@ -374,6 +377,8 @@ public class CatanMap implements ICatanMap {
                 longestSoFar = pathLength;
             }
         }
+
+        logger.finest("Player " + player.getName() + "'s longest road is " + longestSoFar);
 
         return longestSoFar;
     }
