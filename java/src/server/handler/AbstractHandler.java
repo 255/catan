@@ -103,7 +103,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
             // if a valid response was generated, send it back
             if (responseData != null) {
                 exch.getResponseHeaders().add("Content-Type", "application/json");
-                Serializer.instance().toJson(responseData, responseBody);
+                responseBody.write(Serializer.instance().toJson(responseData));
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
             } else {
                 exch.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, -1);
@@ -120,8 +120,8 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
     public final void handle(HttpExchange exch) throws IOException {
         logger.entering("server.RequestHandler", "handle");
 
-        logger.finer("Received HTTP request for " + this.getFacade().getClass().getSimpleName()
-                + " on " + this.getClass().getName() + " from " + exch.getRemoteAddress() + '.');
+        //logger.finer("Received HTTP request for " + this.getFacade().getClass().getSimpleName()
+        //        + " on " + this.getClass().getName() + " from " + exch.getRemoteAddress() + '.');
 
         try {
             ReqType reqData = getRequestParameters(exch);
