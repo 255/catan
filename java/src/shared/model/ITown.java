@@ -49,11 +49,5 @@ public interface ITown extends Serializable {
      */
     public int getResourceCount();
 
-    /**
-     * Returns what type of piece this town is.
-     *
-     * @return type of piece
-     */
-    public PieceType getPieceType();
 }
 

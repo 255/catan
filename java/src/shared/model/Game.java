@@ -515,8 +515,8 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public void rollNumber(int number) {
-        if (number == 7) {
+    public void rollNumber(int rollNumber) {
+        if (rollNumber == 7) {
             boolean needToDiscard = false;
             for (IPlayer player : m_players) {
                 if (player.needsToDiscard()) {
@@ -533,7 +533,7 @@ public class Game extends Observable implements IGame {
             }
         }
         else {
-            m_map.distributeResources(number, m_resourceBank);
+            m_map.distributeResources(rollNumber, m_resourceBank);
             m_state = GameState.Playing;
         }
     }

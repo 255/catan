@@ -1,6 +1,5 @@
 package shared.model;
 
-import shared.definitions.PieceType;
 import shared.locations.VertexLocation;
 
 /**
@@ -37,8 +36,4 @@ public class Settlement extends Town {
         return 1;
     }
 
-    @Override
-    public PieceType getPieceType() {
-        return PieceType.SETTLEMENT;
-    }
 }

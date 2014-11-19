@@ -36,9 +36,4 @@ public class City extends Town {
     public int getResourceCount() {
         return 2;
     }
-
-    @Override
-    public PieceType getPieceType() {
-        return PieceType.CITY;
-    }
 }

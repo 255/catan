@@ -37,7 +37,7 @@ public class BuildCityCommandTest {
         player.addResources(new ResourceBank(0, 0, 0, 2, 3));
         VertexLocation location = new VertexLocation(0, 0, VertexDirection.West);
         new BuildCityCommand(game, player, location).execute();
-        assertTrue("City should be placed", game.getMap().getTownAt(location).getPieceType() == PieceType.CITY);
+        assertTrue("City should be placed", game.getMap().getTownAt(location) instanceof City);
     }
 
     @Test(expected = IllegalCommandException.class)
