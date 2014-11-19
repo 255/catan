@@ -1,6 +1,5 @@
 package shared.model;
 
-import client.main.Catan;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.PortType;
@@ -654,7 +653,7 @@ public class Game extends Observable implements IGame {
     }
 
     private void calculateLongestRoad() {
-        int longestRoad = m_map.getPlayersLongestRoad(m_longestRoad);
+        int longestRoad = 0;
 
         for (IPlayer player : m_players) {
             int playerLongestRoad = m_map.getPlayersLongestRoad(player);
@@ -678,8 +677,9 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public void discardCards(IPlayer player, ResourceBank cards) {
+    public void discardCards(IPlayer player, IResourceBank cards) {
         player.discardCards(cards);
+        m_resourceBank.add(cards);
 
         // if discarding is done, move to next phase and clear the discarding flags
         if (!someoneNeedsToDiscard()) {
