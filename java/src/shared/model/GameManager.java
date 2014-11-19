@@ -2,8 +2,8 @@ package shared.model;
 
 import shared.definitions.CatanColor;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -50,18 +50,17 @@ public class GameManager implements IGameManager{
     }
 
     @Override
-    public void removeGame(int gameIndex) {
-        m_games.remove(gameIndex);
-    }
-
-    /**
-     * Get a list of games.
-     *
-     * @return a list of games
-     */
-    @Override
     public Collection<IGame> listGames() {
-        return Collections.unmodifiableCollection(m_games.values());
+        Collection<IGame> ongoingGames = new ArrayList<>();
+
+        for (IGame game : m_games.values()) {
+            // only list games with no winner yet
+            if (game.getWinner() == null) {
+                ongoingGames.add(game);
+            }
+        }
+
+        return ongoingGames;
     }
 
     @Override
@@ -69,8 +68,8 @@ public class GameManager implements IGameManager{
         if (m_games.containsKey(game.getID())) {
             // destroy the old game, just in case
             m_games.get(game.getID()).reset();
-            // TODO: invaliates ALL game pointers to this game -- make sure this is OK
-            // we may need to update pointers in command objects if we end up serializing those
+            // TODO: we may need to update pointers in command objects if we end up serializing those
+            // or just store IDs instead
         }
 
         m_games.put(game.getID(), game);

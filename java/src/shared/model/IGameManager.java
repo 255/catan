@@ -43,14 +43,8 @@ public interface IGameManager {
     public IGame getGame(int gameId) throws ModelException;
 
     /**
-     * Removes the game with the specified index from the server
-     *
-     * @param gameIndex index of game to remove
-     */
-    public void removeGame(int gameIndex);
-
-    /**
-     * Get a list of games.
+     * Get a list of ongoing games.
+     * Finished games are not included in this list.
      * @return a list of games
      */
     public Collection<IGame> listGames();
