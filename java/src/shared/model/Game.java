@@ -652,7 +652,7 @@ public class Game extends Observable implements IGame {
     }
 
     private void calculateLongestRoad() {
-        int longestRoad = 0;
+        int longestRoad = m_map.getPlayersLongestRoad(m_currentPlayer);
 
         for (IPlayer player : m_players) {
             int playerLongestRoad = m_map.getPlayersLongestRoad(player);
