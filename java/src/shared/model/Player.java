@@ -81,8 +81,8 @@ public class Player implements IPlayer {
         m_resources = new ResourceBank();
         m_newDevCards = new DevCardHand();
         m_playableDevCards = new DevCardHand();
-        m_roads = new ArrayList<IRoad>();
-        m_towns = new ArrayList<ITown>();
+        m_roads = new ArrayList<>();
+        m_towns = new ArrayList<>();
     }
 
     /**

@@ -120,7 +120,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
      */
     @Override
     public final void handle(HttpExchange exch) throws IOException {
-        logger.entering("server.RequestHandler", "handle");
+        //logger.entering("server.RequestHandler", "handle");
 
         //logger.finer("Received HTTP request for " + this.getFacade().getClass().getSimpleName()
         //        + " on " + this.getClass().getName() + " from " + exch.getRemoteAddress() + '.');
@@ -154,7 +154,7 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            logger.exiting("server.RequestHandler", "handle");
+            //logger.exiting("server.RequestHandler", "handle");
         }
     }
 

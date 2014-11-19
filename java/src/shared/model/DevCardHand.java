@@ -130,9 +130,9 @@ public class DevCardHand implements IDevCardHand {
 
         DevCardType drawnCard = null;
 
-        Random rand = new Random();
+        final Random rand = new Random();
 
-        int randomNumber = (rand.nextInt() % getCount());
+        int randomNumber = rand.nextInt(getCount());
 
         if (randomNumber < soldier) {
             drawnCard = DevCardType.SOLDIER;
@@ -142,7 +142,7 @@ public class DevCardHand implements IDevCardHand {
             drawnCard = DevCardType.MONOPOLY;
         } else if (randomNumber < soldier + yearOfPlenty + monopoly + roadBuilding) {
             drawnCard = DevCardType.ROAD_BUILD;
-        } else if (randomNumber < soldier + yearOfPlenty + monopoly + monument) {
+        } else { // if (randomNumber < soldier + yearOfPlenty + monopoly + roadBuilding + monument) {
             drawnCard = DevCardType.MONUMENT;
         }
 

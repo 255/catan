@@ -139,7 +139,8 @@ public interface IPlayer extends Serializable {
     /** Move the new dev cards to the old dev cards */
     public void moveDevCards();
 
-    /** Remove a dev card from the player's playable dev cards (play it)
+    /**
+     * Remove a dev card from the player's playable dev cards (play it)
      * Set the player's hasPlayedDevCard flag as appropriate
      * This does NOT perform any logic related to the card itself -- it only removes it from the player's hand
      * and sets their has played flag.

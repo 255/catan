@@ -260,7 +260,7 @@ public interface IGame extends Serializable {
 
     public void calculateVictoryPoints();
 
-    public void discardCards(IPlayer player, ResourceBank cards);
+    public void discardCards(IPlayer player, IResourceBank cards);
 
     public boolean verifyResourceAmount();
 }
