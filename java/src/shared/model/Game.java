@@ -237,7 +237,6 @@ public class Game extends Observable implements IGame {
 
     @Override
     public void setTradeOffer(ITradeOffer tradeOffer) {
-        assert tradeOffer != null;
         m_tradeOffer = tradeOffer;
         setChanged();
     }
@@ -554,6 +553,7 @@ public class Game extends Observable implements IGame {
         for(IPlayer player : m_players) {
             if(player.getId() == user.getId()) {
                 player.setColor(playerColor);
+                setChanged();
                 return true;
             }
         }
@@ -568,6 +568,7 @@ public class Game extends Observable implements IGame {
                 m_currentPlayer = m_players.get(0);
             }
 
+            setChanged();
             return true;
         }
         else {
