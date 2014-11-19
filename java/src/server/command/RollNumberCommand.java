@@ -1,5 +1,6 @@
 package server.command;
 
+import shared.model.GameState;
 import shared.model.IGame;
 import shared.model.IPlayer;
 
@@ -15,10 +16,8 @@ public class RollNumberCommand extends AbstractCommand {
         super(game, player, "rolled a " + number);
         m_number = number;
 
-        if(!getGame().isPlayersTurn(player)) {
-            throw new IllegalCommandException(
-                    "It is not this player's turn: " + getPlayer().getName()
-            );
+        if(!getGame().isPlayersTurn(player) || getGame().getGameState() != GameState.Rolling) {
+            throw new IllegalCommandException("Player " + getPlayer().getName() + " cannot roll right now.");
         }
         else if (number < 2 || number > 12) {
             throw new IllegalCommandException("Illegal roll: " + number);
