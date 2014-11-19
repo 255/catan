@@ -37,6 +37,7 @@ public class MonopolyCommand extends AbstractCommand {
      * and adds them to the playing player's hand.
      */
     public void performAction() {
+        getPlayer().playDevCard(DevCardType.MONOPOLY);
 
         // Get all the players in the game
         List<IPlayer> players = getGame().getPlayers();
@@ -59,8 +60,6 @@ public class MonopolyCommand extends AbstractCommand {
         }
 
         getPlayer().getResources().add(resourceCount, m_resourceType);
-
-        getPlayer().playDevCard(DevCardType.MONOPOLY);
 
         assert (getGame().verifyResourceAmount());
     }

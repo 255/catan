@@ -29,7 +29,6 @@ public class MonumentCommand extends AbstractCommand {
      * Adds a victory point to the player's total.
      */
     public void performAction() {
-
         // Remove dev card from player's hand
         getPlayer().playDevCard(DevCardType.MONUMENT);
 

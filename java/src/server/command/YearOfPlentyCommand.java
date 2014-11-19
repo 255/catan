@@ -22,6 +22,9 @@ public class YearOfPlentyCommand extends AbstractCommand {
             throw new IllegalCommandException("Player" + player.getName() + " attempted to play YearOfPlenty DevCard, requesting " + firstType.name() + " and "
                     + secondType.name() + " but that move is not allowed");
         }
+
+        m_firstType = firstType;
+        m_secondType = secondType;
     }
 
     /**
