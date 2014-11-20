@@ -7,7 +7,7 @@ import shared.model.IUserManager;
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
-public class UserFacade implements IUserFacade{
+public class UserFacade implements IUserFacade {
     private IUserManager m_userManager;
 
     public UserFacade(IUserManager userManager) {

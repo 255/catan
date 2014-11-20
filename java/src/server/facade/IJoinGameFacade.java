@@ -1,10 +1,8 @@
 package server.facade;
 
 import shared.communication.*;
-import shared.model.Game;
 import shared.model.ModelException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**

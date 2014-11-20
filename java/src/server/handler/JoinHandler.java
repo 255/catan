@@ -7,7 +7,6 @@ import shared.communication.JoinGameRequestParams;
 import shared.model.ModelException;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
 /**

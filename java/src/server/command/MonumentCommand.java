@@ -23,6 +23,7 @@ public class MonumentCommand extends AbstractCommand {
             throw new IllegalCommandException("Player " + player.getName() + " attempted to play monument card, but cannot do that");
         }
     }
+
     /**
      * Request representing a player playing a Monument
      * dev card. Moves the dev card from the old dev cards hand.

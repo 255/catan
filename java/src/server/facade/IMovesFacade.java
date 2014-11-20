@@ -96,9 +96,8 @@ public interface IMovesFacade {
      * Plays a Monument card and its effects
      * Swagger URL Equivalent: /moves/Monument
      *
-     *
      * @param playerIndex JSON wrapper with parameters to play a monument card
-     *  @return Game object containing a pointer to the model
+     * @return Game object containing a pointer to the model
      */
     public IGame monument(PlayerIndexParam playerIndex) throws IllegalCommandException, ModelException;
 

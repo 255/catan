@@ -29,6 +29,7 @@ public abstract class AbstractCommand implements ICommand {
 
     /**
      * A constructor for a command that does not produce a log message.
+     *
      * @param game
      * @param player
      */
@@ -43,6 +44,7 @@ public abstract class AbstractCommand implements ICommand {
     @Override
     public final void execute() {
         logger.entering(this.getClass().getCanonicalName(), "execute");
+        getGame().incrementVersion();
         logAction();
         performAction();
         logger.exiting(this.getClass().getCanonicalName(), "execute");

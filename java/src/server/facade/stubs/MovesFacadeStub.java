@@ -9,7 +9,7 @@ import shared.model.ModelException;
 /**
  * Created by Spencer Weight - 11/17/2014.
  */
-public class MovesFacadeStub implements IMovesFacade{
+public class MovesFacadeStub implements IMovesFacade {
     /**
      * Sends a chat message
      * Swagger URL Equivalent: /moves/sendChat

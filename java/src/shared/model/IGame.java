@@ -173,6 +173,8 @@ public interface IGame extends Serializable {
 
     public int getVersion();
 
+    public void incrementVersion();
+
     public void setWinner(IPlayer winner);
 
     public IPlayer getWinner();

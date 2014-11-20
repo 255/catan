@@ -1,14 +1,17 @@
 package server.facade;
 
 import shared.communication.*;
-import shared.model.*;
+import shared.model.IGame;
+import shared.model.IGameManager;
+import shared.model.IUserManager;
+import shared.model.ModelException;
 
 import java.io.*;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
-public class JoinGameFacade implements IJoinGameFacade{
+public class JoinGameFacade implements IJoinGameFacade {
     private IGameManager m_gameManager;
     private IUserManager m_userManager;
 
@@ -77,7 +80,7 @@ public class JoinGameFacade implements IJoinGameFacade{
     @Override
     public void load(LoadGameRequestParams loadGame) throws IOException {
         try (ObjectInputStream reader = new ObjectInputStream(new FileInputStream(loadGame.name))) {
-            m_gameManager.loadGame((IGame)reader.readObject());
+            m_gameManager.loadGame((IGame) reader.readObject());
         } catch (ClassNotFoundException e) {
             throw new IOException("Failed reading game from disk.", e);
         }

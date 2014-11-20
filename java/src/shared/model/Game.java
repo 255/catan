@@ -277,6 +277,11 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
+    public void incrementVersion() {
+        m_version++;
+    }
+
+    @Override
     public IPlayer getWinner() {
         return m_winner;
     }

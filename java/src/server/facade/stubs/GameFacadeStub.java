@@ -10,7 +10,7 @@ import shared.model.ModelException;
 /**
  * Created by Spencer Weight - 11/17/2014.
  */
-public class GameFacadeStub implements IGameFacade{
+public class GameFacadeStub implements IGameFacade {
     /**
      * Fetch the model
      * Swagger URL Equivalent: /game/model (get request)

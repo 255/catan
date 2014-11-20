@@ -19,7 +19,7 @@ public class OfferTradeCommand extends AbstractCommand {
         this.receiver = receiver;
 
         // is the trade offer null?
-        if(getGame().getTradeOffer() != null) {
+        if (getGame().getTradeOffer() != null) {
             throw new IllegalCommandException("There is already a trade being offered!");
         }
     }

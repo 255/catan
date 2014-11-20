@@ -182,7 +182,7 @@ public class MovesFacade implements IMovesFacade {
     @Override
     public IGame buildSettlement(BuildSettlementParams params) throws IllegalCommandException, ModelException {
         IGame game = gameManager.getGame(params.getGameId());
-        new BuildSettlementCommand(game, game.getPlayer(params.playerIndex),  params.vertexLocation, params.free).execute();
+        new BuildSettlementCommand(game, game.getPlayer(params.playerIndex), params.vertexLocation, params.free).execute();
         return game;
     }
 
