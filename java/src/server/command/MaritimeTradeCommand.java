@@ -11,7 +11,6 @@ import shared.model.IPlayer;
  */
 public class MaritimeTradeCommand extends AbstractCommand {
 
-    //private int playerIndex;
     private int ratio;
     private ResourceType inputResource;
     private ResourceType outputResource;
@@ -23,28 +22,10 @@ public class MaritimeTradeCommand extends AbstractCommand {
         this.inputResource = inputResource;
         this.outputResource = outputResource;
 
-        // get the player object from the player index
-        //IPlayer p = getGame().getPlayers().get(playerIndex);
-
         // check to see if the command is valid
-        // is it the player's turn?
-        if(!getGame().isPlayersTurn(player)) {
+        if(!getGame().canMaritimeTrade(player, inputResource, outputResource, ratio)) {
             throw new IllegalCommandException(
-                    "It is not this player's turn: " + player.getName()
-            );
-        }
-
-        // does the player have enough resources?
-        if(!player.getResources().canAfford(ratio, inputResource)) {
-            throw new IllegalCommandException(
-                    "Player " + player.getName() + " does not have enough " + inputResource.name()
-            );
-        }
-
-        // does the game bank have enough to meet the request
-        if(!getGame().getResourceBank().canAfford(1, outputResource)) {
-            throw new IllegalCommandException(
-                    "The bank is unable to give 1 " + outputResource.name() + " to the player"
+                    String.format("%s cannot trade %d %s for 1 %s.", player.getName(), ratio, inputResource.toString().toLowerCase(), outputResource.toString().toLowerCase())
             );
         }
     }

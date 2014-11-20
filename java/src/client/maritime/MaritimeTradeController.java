@@ -82,7 +82,7 @@ public class MaritimeTradeController extends Controller implements IMaritimeTrad
 	public void setGetResource(ResourceType resource) {
         m_gettingResource = resource;
         getTradeOverlay().selectGetOption(resource, 1);
-        getTradeOverlay().setTradeEnabled(true);
+        getTradeOverlay().setTradeEnabled(GameModelFacade.instance().getGame().getResourceBank().canAfford(1, resource));
 	}
 
 	@Override

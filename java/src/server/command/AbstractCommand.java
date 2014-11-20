@@ -17,7 +17,11 @@ public abstract class AbstractCommand implements ICommand {
     private IGame m_game;
     private String m_action;
 
-    public AbstractCommand(IGame game, IPlayer player, String actionDescription) {
+    public AbstractCommand(IGame game, IPlayer player, String actionDescription) throws IllegalCommandException {
+        if (player == null) {
+            throw new IllegalCommandException("No player was specified.");
+        }
+
         m_game = game;
         m_player = player;
         m_action = actionDescription;
@@ -28,10 +32,8 @@ public abstract class AbstractCommand implements ICommand {
      * @param game
      * @param player
      */
-    public AbstractCommand(IGame game, IPlayer player) {
-        m_game = game;
-        m_player = player;
-        m_action = null;
+    public AbstractCommand(IGame game, IPlayer player) throws IllegalCommandException {
+        this(game, player, null);
     }
 
     /**

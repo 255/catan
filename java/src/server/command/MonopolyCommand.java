@@ -16,13 +16,11 @@ import java.util.logging.Logger;
  * @author StevenBarnett
  */
 public class MonopolyCommand extends AbstractCommand {
-
     private final static Logger logger = Logger.getLogger("catan");
 
     private ResourceType m_resourceType;
 
     public MonopolyCommand(IGame game, IPlayer player, ResourceType resourceType) throws IllegalCommandException {
-
         super(game, player, "played a monopoly card");
 
         m_resourceType = resourceType;
@@ -31,6 +29,7 @@ public class MonopolyCommand extends AbstractCommand {
             throw new IllegalCommandException("Player " + player.getName() + " cannot play the Monopoly DevCard");
         }
     }
+
     /**
      * Performs a monopoly request. Takes the resource that
      * the player requested from all other player's hands

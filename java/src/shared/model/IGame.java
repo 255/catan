@@ -234,6 +234,8 @@ public interface IGame extends Serializable {
 
     boolean canPlayRoadBuilding(IPlayer player, EdgeLocation edge1, EdgeLocation edge2);
 
+    boolean canMaritimeTrade(IPlayer player, ResourceType give, ResourceType receive, int ratio);
+
     boolean hasLongestRoad(IPlayer player);
 
     boolean hasLargestArmy(IPlayer player);

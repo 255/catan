@@ -18,7 +18,7 @@ public class SendChatCommand extends AbstractCommand {
      * @param game
      * @param player
      */
-    public SendChatCommand(IGame game, IPlayer player, String message) {
+    public SendChatCommand(IGame game, IPlayer player, String message) throws IllegalCommandException {
         super(game, player);
 
         m_message = message;

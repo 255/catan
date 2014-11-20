@@ -487,6 +487,38 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
+    public boolean canMaritimeTrade(IPlayer player, ResourceType give, ResourceType receive, int ratio) {
+        if (ratio < 2 || ratio > 4) {
+            return false;
+        }
+
+        // does the player have the right port?
+        if (ratio == 2 && !m_map.getPlayersPorts(player).contains(PortType.fromResourceType(receive))) {
+            return false;
+        }
+        else if (ratio == 3 && !m_map.getPlayersPorts(player).contains(PortType.THREE)) {
+            return false;
+        }
+
+        // is it the player's turn?
+        if(!isPlayersTurn(player)) {
+            return false;
+        }
+
+        // does the player have enough resources?
+        if(!player.getResources().canAfford(ratio, give)) {
+            return false;
+        }
+
+        // does the game bank have enough to meet the request?
+        if(!getResourceBank().canAfford(1, receive)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean hasLongestRoad(IPlayer player) {
         return player.equals(getLongestRoad());
     }

@@ -13,21 +13,10 @@ import shared.model.Prices;
 public class BuyDevCardCommand extends AbstractCommand {
 
     public BuyDevCardCommand(IGame game, IPlayer player) throws IllegalCommandException {
-
         super(game, player, "bought a development card");
 
         if (!getGame().canBuyDevCard(getPlayer())) {
-            throw new IllegalCommandException("Player " + player.getName() + " tried to buy DevCard illegally!");
-        }
-
-        // Check that player has enough resources
-        if (!getPlayer().canAfford(Prices.DEV_CARD)) {
-            throw new IllegalCommandException("Player " + player.getName() + " tried to buy DevCard, but player does not have the resources to buy one");
-        }
-
-        // Check that the game has enough dev cards in the bank
-        if (getGame().getDevCards().getCount() == 0) {
-            throw new IllegalCommandException("Player " + player.getName() + " tried to buy DevCard, but game does not have any DevCards");
+            throw new IllegalCommandException("Player " + player.getName() + " tried to buy a DevCard illegally!");
         }
     }
 
@@ -40,7 +29,6 @@ public class BuyDevCardCommand extends AbstractCommand {
      * player's resources.
      */
     public void performAction() {
-
         // Randomly pick a dev card from the dev card hand
         DevCardType devCard = getGame().getDevCards().drawCard();
 
