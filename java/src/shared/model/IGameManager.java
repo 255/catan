@@ -55,4 +55,9 @@ public interface IGameManager {
      * @param game the game being loaded
      */
     public void loadGame(IGame game);
+
+    /**
+     * Resets the next game id variable to 0
+     */
+    public void resetNextGameId();
 }

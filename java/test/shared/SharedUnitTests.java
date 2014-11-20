@@ -18,7 +18,8 @@ public class SharedUnitTests {
         Result result = JUnitCore.runClasses(
                 shared.model.CatanMapTest.class,
                 shared.model.GameModelFacadeTest.class,
-                shared.model.ModelInitializer.class
+                shared.model.GameManagerTest.class,
+                shared.model.ModelInitializerTest.class
         );
         for (Failure failure : result.getFailures()) {
             System.out.println(failure.toString());

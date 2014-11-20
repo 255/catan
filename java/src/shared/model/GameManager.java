@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
- * Created by jeffreybacon on 11/11/14.
+ * Created by jeffreybacon - 11/11/14.
  */
 public class GameManager implements IGameManager{
     private static Logger logger = Logger.getLogger("catanserver");
@@ -73,5 +73,13 @@ public class GameManager implements IGameManager{
         }
 
         m_games.put(game.getID(), game);
+    }
+
+    /**
+     * Resets the next game id variable to 0
+     */
+    @Override
+    public void resetNextGameId() {
+        m_nextGameId = 0;
     }
 }
