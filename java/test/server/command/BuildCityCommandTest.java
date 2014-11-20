@@ -34,7 +34,8 @@ public class BuildCityCommandTest {
         game.getMap().placeRoad(player.buildRoad(true), new EdgeLocation(0, 0, EdgeDirection.NorthWest));
         game.getMap().placeSettlement(player.buildSettlement(true), new VertexLocation(0, 0, VertexDirection.West));
         game.setGameState(GameState.Playing);
-        player.addResources(new ResourceBank(0, 0, 0, 2, 3));
+        game.getResourceBank().subtract(Prices.CITY);
+        player.addResources(Prices.CITY);
         VertexLocation location = new VertexLocation(0, 0, VertexDirection.West);
         new BuildCityCommand(game, player, location).execute();
         assertTrue("City should be placed", game.getMap().getTownAt(location) instanceof City);

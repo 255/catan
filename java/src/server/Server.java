@@ -111,7 +111,7 @@ public class Server {
             userManager.createUser("Sam", "sam");
             userManager.createUser("Pete", "pete");
             userManager.createUser("Mark", "mark");
-            userManager.createUser("You", "you");
+            userManager.createUser("Bob", "bob");
             userManager.createUser("Brooke", "brooke");
 
             gameManager.joinGame(0, userManager.getUser(0), shared.definitions.CatanColor.RED);

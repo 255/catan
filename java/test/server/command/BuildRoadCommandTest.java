@@ -34,7 +34,8 @@ public class BuildRoadCommandTest {
     @Test
     public void testPlaceRoad() throws Exception {
         game.setGameState(GameState.Playing);
-        player.addResources(new ResourceBank(1, 1, 0, 0, 0));
+        game.getResourceBank().subtract(Prices.ROAD);
+        player.addResources(Prices.ROAD);
         game.getMap().placeSettlement(player.buildSettlement(true), new VertexLocation(0, 0, VertexDirection.NorthEast));
         EdgeLocation location = new EdgeLocation(0, 0, EdgeDirection.North);
         boolean free = false;

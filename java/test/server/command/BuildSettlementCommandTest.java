@@ -32,7 +32,8 @@ public class BuildSettlementCommandTest {
     public void testPlaceSettlement() throws Exception {
         game.getMap().placeRoad(player.buildRoad(true), new EdgeLocation(0, 0, EdgeDirection.NorthWest));
         game.setGameState(GameState.Playing);
-        player.addResources(new ResourceBank(1, 1, 1, 1, 0));
+        game.getResourceBank().subtract(Prices.SETTLEMENT);
+        player.addResources(Prices.SETTLEMENT);
         VertexLocation location = new VertexLocation(0, 0, VertexDirection.West);
         boolean free = false;
         new BuildSettlementCommand(game, player, location, free).execute();
