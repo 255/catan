@@ -168,4 +168,11 @@ public interface IResourceBank extends Serializable {
      */
     public ResourceType drawRandom();
 
+    /**
+     * Check if a resource bank includes both positive and negative values for resources.
+     * This checks if a trade offer is valid (trader both sends and receives -- no giveaways)
+     * @return true if at least one resource is positive and at least one is negative
+     */
+    public boolean isValidTradeOffer();
+
 }

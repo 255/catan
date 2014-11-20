@@ -14,8 +14,6 @@ import java.util.logging.Logger;
  * @author StevenBarnett
  */
 public class MonopolyCommand extends AbstractCommand {
-    private final static Logger logger = Logger.getLogger("catan");
-
     private ResourceType m_resourceType;
 
     public MonopolyCommand(IGame game, IPlayer player, ResourceType resourceType) throws IllegalCommandException {

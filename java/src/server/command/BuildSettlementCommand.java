@@ -16,7 +16,13 @@ public class BuildSettlementCommand extends AbstractCommand {
         super(game, player, "built a settlement");
 
         if (!getGame().canPlaceSettlement(player, location)) {
-            throw new IllegalCommandException("Player " + player.getName() + " cannot build a settlement at " + location);
+            throw new IllegalCommandException(player.getName() + " cannot build a settlement at " + location);
+        }
+        else if (free && !getGame().isFreeRound()) {
+            throw new IllegalCommandException(player.getName() + " tried build a settlement without paying for it! (Cheater!)");
+        }
+        else if (!free && !getPlayer().canBuySettlement()) {
+            throw new IllegalCommandException(player.getName() + " can't buy a settlement.");
         }
 
         m_location = location;

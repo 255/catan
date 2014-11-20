@@ -20,7 +20,13 @@ public class BuildRoadCommand extends AbstractCommand {
         assert location != null;
 
         if (!getGame().canPlaceRoad(player, location)) {
-            throw new IllegalCommandException("Player " + player.getName() + " cannot build a road at " + location);
+            throw new IllegalCommandException(player.getName() + " cannot build a road at " + location);
+        }
+        else if (free && !getGame().isFreeRound()) {
+            throw new IllegalCommandException(player.getName() + " tried build a road without paying for it. (Cheater!)");
+        }
+        else if (!free && !getPlayer().canBuyRoad()) {
+            throw new IllegalCommandException(player.getName() + " can't buy a road.");
         }
 
         m_location = location;

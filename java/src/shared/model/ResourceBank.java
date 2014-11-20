@@ -293,4 +293,10 @@ public class ResourceBank implements IResourceBank {
         return drawnCard;
     }
 
+    @Override
+    public boolean isValidTradeOffer() {
+        boolean giving = (wood > 0 || brick > 0 || sheep > 0 || wheat > 0 || ore > 0);
+
+        return giving && (wood < 0 || brick < 0 || sheep < 0 || wheat < 0 || ore < 0);
+    }
 }

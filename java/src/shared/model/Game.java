@@ -14,6 +14,8 @@ import java.util.*;
  * Created by jeffreybacon on 9/25/14.
  */
 public class Game extends Observable implements IGame {
+    static final long serialVersionUID = 0xDEADBEEF15C001L;
+
     // only used server side
     private String m_name;
     private Integer m_id;

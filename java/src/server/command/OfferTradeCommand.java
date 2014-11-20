@@ -9,18 +9,21 @@ import shared.model.*;
  */
 public class OfferTradeCommand extends AbstractCommand {
 
-    private ResourceBank offer;
+    private IResourceBank offer;
     private IPlayer receiver;
 
-    public OfferTradeCommand(IGame theGame, IPlayer player, IPlayer receiver, ResourceBank offer) throws IllegalCommandException {
+    public OfferTradeCommand(IGame theGame, IPlayer player, IPlayer receiver, IResourceBank offer) throws IllegalCommandException {
 
-        super(theGame, player, "offered a trade to " + receiver.getName());
+        super(theGame, player, "offered a trade to " + (receiver != null ? receiver.getName() : ""));
         this.offer = offer;
         this.receiver = receiver;
 
         // is the trade offer null?
         if (getGame().getTradeOffer() != null) {
             throw new IllegalCommandException("There is already a trade being offered!");
+        }
+        else if (!player.canAfford(offer) || !offer.isValidTradeOffer() || receiver == null || player.equals(receiver)) {
+            throw new IllegalCommandException("Invalid trade offer.");
         }
     }
 

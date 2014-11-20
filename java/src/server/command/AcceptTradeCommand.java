@@ -17,8 +17,8 @@ public class AcceptTradeCommand extends AbstractCommand {
         this.willAccept = willAccept;
 
         // can the trade be accepted?
-        if (willAccept && !getGame().canAcceptTrade(getPlayer())) {
-            throw new IllegalCommandException("The player is unable to accept the current trade offer.");
+        if (willAccept && !getGame().canAcceptTrade(getPlayer()) || !getGame().isBeingOfferedTrade(getPlayer())) {
+            throw new IllegalCommandException(getPlayer().getName() + " is unable to accept the current trade offer.");
         }
     }
 
