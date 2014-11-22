@@ -3,15 +3,18 @@ package server.command;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import shared.definitions.ResourceType;
-import shared.model.*;
+import shared.model.IGame;
+import shared.model.IPlayer;
+import shared.model.ModelInitializer;
+import shared.model.GameState;
+import shared.model.GameModelFacade;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jeffreybacon on 11/22/14.
  */
-public class MonopolyCommandTest {
+public class MonumentCommandTest {
     IGame game;
     IPlayer player;
 
@@ -29,20 +32,16 @@ public class MonopolyCommandTest {
     }
 
     @Test
-    public void testPlayMonopoly() throws Exception {
-        game.setResourceBank(new ResourceBank());
-        game.getPlayer(0).removeResources(new ResourceBank(1, 1, 1, 1, 1));
-        new MonopolyCommand(game, player, ResourceType.BRICK).execute();
-        assertTrue("Player1 should have 19 brick", game.getPlayer(0).getResources().getCount(ResourceType.BRICK) == 19);
-        assertTrue("Player2 should have no brick", game.getPlayer(1).getResources().getCount(ResourceType.BRICK) == 0);
-        assertTrue("Player3 should have no brick", game.getPlayer(2).getResources().getCount(ResourceType.BRICK) == 0);
-        assertTrue("Player4 should have no brick", game.getPlayer(3).getResources().getCount(ResourceType.BRICK) == 0);
+    public void testPlayMonument() throws Exception {
+        assertTrue("Player1 should have 0 victory points", game.getPlayer(0).calculateVictoryPoints() == 0);
+        new MonumentCommand(game, player).execute();
+        assertTrue("Player1 should have 1 victory point", game.getPlayer(0).calculateVictoryPoints() == 1);
     }
 
     @Test(expected = IllegalCommandException.class)
-    public void testPlayInvalidMonopoly() throws Exception {
+    public void testPlayInvalidMonument() throws Exception {
         game.setGameState(GameState.Rolling);
-        new MonopolyCommand(game, player, ResourceType.BRICK);
+        new MonumentCommand(game, player);
     }
 
     private IGame initAGame(String jsonTestFile) throws Exception {
