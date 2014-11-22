@@ -500,7 +500,7 @@ public class Game extends Observable implements IGame {
         }
 
         // does the player have the right port?
-        if (ratio == 2 && !m_map.getPlayersPorts(player).contains(PortType.fromResourceType(receive))) {
+        if (ratio == 2 && !m_map.getPlayersPorts(player).contains(PortType.fromResourceType(give))) {
             return false;
         }
         else if (ratio == 3 && !m_map.getPlayersPorts(player).contains(PortType.THREE)) {
