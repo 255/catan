@@ -42,7 +42,7 @@ public class MonopolyCommandTest {
     @Test(expected = IllegalCommandException.class)
     public void testPlayInvalidMonopoly() throws Exception {
         game.setGameState(GameState.Rolling);
-        new MonopolyCommand(game, player, ResourceType.BRICK);
+        new MonopolyCommand(game, player, ResourceType.BRICK).execute();
     }
 
     private IGame initAGame(String jsonTestFile) throws Exception {

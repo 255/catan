@@ -3,18 +3,15 @@ package server.command;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import shared.model.IGame;
-import shared.model.IPlayer;
-import shared.model.ModelInitializer;
-import shared.model.GameState;
-import shared.model.GameModelFacade;
+import shared.definitions.ResourceType;
+import shared.model.*;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jeffreybacon on 11/22/14.
  */
-public class MonumentCommandTest {
+public class YearOfPlentyCommandTest {
     IGame game;
     IPlayer player;
 
@@ -32,16 +29,18 @@ public class MonumentCommandTest {
     }
 
     @Test
-    public void testPlayMonument() throws Exception {
-        assertTrue("Player1 should have 0 victory points", game.getPlayer(0).calculateVictoryPoints() == 0);
-        new MonumentCommand(game, player).execute();
-        assertTrue("Player1 should have 1 victory point", game.getPlayer(0).calculateVictoryPoints() == 1);
+    public void testPlayYearOfPlenty() throws Exception {
+        game.setResourceBank(new ResourceBank(4, 4, 4, 4, 4));
+        game.getPlayer(0).removeResources(new ResourceBank(5, 5, 5, 5, 5));
+        new YearOfPlentyCommand(game, player, ResourceType.WOOD, ResourceType.BRICK).execute();
+        assertTrue("Player1 should have 1 wood", game.getPlayer(0).getResources().getCount(ResourceType.WOOD) == 1);
+        assertTrue("Player1 should have 1 brick", game.getPlayer(0).getResources().getCount(ResourceType.BRICK) == 1);
     }
 
     @Test(expected = IllegalCommandException.class)
-    public void testPlayInvalidMonument() throws Exception {
+    public void testPlayInvalidYearOfPlenty() throws Exception {
         game.setGameState(GameState.Rolling);
-        new MonumentCommand(game, player).execute();
+        new YearOfPlentyCommand(game, player, ResourceType.WOOD, ResourceType.BRICK).execute();
     }
 
     private IGame initAGame(String jsonTestFile) throws Exception {
