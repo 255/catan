@@ -1,10 +1,8 @@
 package server.facade;
 
-import client.network.GameAdministrator;
-import client.network.IGameAdministrator;
-import client.network.NetworkException;
+import client.network.*;
+import com.sun.net.httpserver.HttpServer;
 import org.junit.*;
-import server.Server;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,59 +12,44 @@ import static org.junit.Assert.assertTrue;
  */
 public class UserFacadeTest {
 
-    private static IGameAdministrator m_gameAdmin;
-    private static String m_user;
-    private static String m_user2;
-    private static String m_pass;
-    private static String m_pass2;
+    private IGameAdministrator m_gameAdmin;
+    private HttpServer m_server;
 
-
-    @BeforeClass
-    public static void setUp() {
-        m_gameAdmin = GameAdministrator.getInstance();
-        m_user = "testUser";
-        m_user2 = "user2";
-        m_pass = "abc123";
-        m_pass2 = "123abc";
-
-        String[] args = {};
-        Server.main(args);
+    @After
+    public void tearDown() {
+        m_gameAdmin = null;
+        m_server.stop(0);
     }
 
-    @AfterClass
-    public static void tearDown() {
-        m_gameAdmin = null;
-        m_user = null;
-        m_user2 = null;
-        m_pass = null;
-        m_pass2 = null;
+    @Before
+    public void setUp() {
+        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+        m_gameAdmin = GameAdministrator.getInstance();
     }
 
     @Test
     public void testRegister() {
-
-        boolean successfulRegister = createAUser(m_user, m_pass);
+        String user = "testUser";
+        String pass = "abc123";
+        boolean successfulRegister = createAUser(user, pass);
 
         assertTrue("Register did not succeed", successfulRegister);
 
-        boolean userDoesNotExist = createAUser(m_user, m_pass);
+        boolean userDoesNotExist = createAUser(user, pass);
 
         assertFalse("There is already an existing user with that name", userDoesNotExist);
     }
 
     @Test
-    public void testLogin() {
-        boolean login = loginAttempt(m_user, m_pass);
-
+    public void testLogin() throws Exception {
+        String user2 = "user2";
+        String pass2 = "123abc";
         assertFalse("The user has not been registered and the login " +
                 "of the user returned true when it should have been false",
-                login);
+                m_gameAdmin.login(user2, pass2));
 
-        boolean userCreated = createAUser(m_user, m_pass);
-        login = loginAttempt(m_user, m_pass);
-
-        assertTrue("The user was not created", userCreated);
-        assertTrue("The user was unable to login after successfully being registered", login);
+        assertTrue("The user was not created", createAUser(user2, pass2));
+        assertTrue("The user was unable to login after successfully being registered", loginAttempt(user2, pass2));
     }
 
     //************************//
@@ -74,20 +57,20 @@ public class UserFacadeTest {
     //************************//
 
     private boolean createAUser(String u, String p) {
-        boolean userDoesNotExist = false;
+        boolean successfulRegister = false;
         try {
-            userDoesNotExist = m_gameAdmin.register(u, p);
+            successfulRegister = m_gameAdmin.register(u, p);
         } catch (NetworkException e) {
             System.out.println(e.getMessage() + " : User failed to register");
         }
 
-        return userDoesNotExist;
+        return successfulRegister;
     }
 
     private boolean loginAttempt(String u, String p) {
         boolean successfulLogin = false;
         try {
-            successfulLogin = m_gameAdmin.login(m_user, m_pass);
+            successfulLogin = m_gameAdmin.login(u, p);
         } catch (NetworkException e) {
             System.out.println(e.getMessage());
         }

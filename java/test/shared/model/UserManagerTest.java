@@ -1,8 +1,8 @@
 package shared.model;
 
+import com.sun.net.httpserver.HttpServer;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
-import server.Server;
 
 import java.lang.reflect.Field;
 
@@ -19,14 +19,16 @@ public class UserManagerTest {
     IUser user1, user2;
     IUser returnedUser1, returnedUser2;
 
+    private HttpServer m_server;
+
     @BeforeClass
     public static void initializeTests() throws Exception{
-        String[] args = {};
-        Server.main(args);
     }
 
     @Before
     public void setUp() throws Exception {
+        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+
         userManager = new UserManager();
 
         name = "This is a test.";
@@ -43,6 +45,8 @@ public class UserManagerTest {
 
     @After
     public void tearDown() throws Exception {
+        m_server.stop(0);
+
         userManager = null;
 
         name = null;

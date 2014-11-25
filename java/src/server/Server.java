@@ -23,6 +23,7 @@ import java.util.logging.*;
 public class Server {
 	private static Logger logger;
 	private static int MAX_WAITING_CONNECTIONS = 0; // take the default value
+    public static int DEFAULT_PORT = 8081;
 	
 	// Initialize the logger for the server
 	static {
@@ -64,10 +65,9 @@ public class Server {
 	// The server
 	private HttpServer server;
 	
-	/** No public constructor */
-	private Server() {}
-	
-	private void run(int portNumber) {
+	public Server() {}
+
+	public HttpServer run(int portNumber) {
 		logger.entering("server.Server", "run");
 		
 		try {
@@ -78,7 +78,7 @@ public class Server {
 			logger.log(Level.SEVERE, e.getMessage(), e);
 			logger.severe("The server cannot intialize. Terminating.");
 			logger.exiting("server.Server", "run");
-			return;
+			return null;
 		}
 
         setupHandlers(server);
@@ -87,6 +87,8 @@ public class Server {
 		server.start();
 		
 		logger.exiting("server.Server", "run");
+
+        return server;
 	}
 
     /**
@@ -347,19 +349,18 @@ public class Server {
 		}
 		
 		try {
-			int portNumber;
+			int portNumber = DEFAULT_PORT;
 			
 			if (args.length == 0) {
-				portNumber = 8081;
-				System.out.println("No port number provided, using default (" + portNumber + ").");
-			}
-            else {
-				portNumber = Integer.parseInt(args[0]);
-				if (portNumber < 1024 || portNumber > 65535)
-					throw new NumberFormatException();
-			}
-			
-			new Server().run(portNumber);
+                System.out.println("No port number provided, using default (" + portNumber + ").");
+            }
+            else  {
+                portNumber = Integer.parseInt(args[0]);
+                if (portNumber < 1024 || portNumber > 65535)
+                    throw new NumberFormatException();
+            }
+
+            new Server().run(portNumber);
 		}
         catch (NumberFormatException e) {
 			System.err.println("\"" + args[0] + "\" is not a valid port number.");

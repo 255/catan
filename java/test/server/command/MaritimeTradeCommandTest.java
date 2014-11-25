@@ -5,6 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.ResourceType;
 import shared.model.*;
+import shared.model.GameModelFacade;
+import shared.model.IGame;
+import shared.model.ModelInitializer;
 
 import static org.junit.Assert.*;
 

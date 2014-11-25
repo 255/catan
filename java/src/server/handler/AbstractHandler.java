@@ -63,9 +63,10 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
 
     /**
      * Examine the cookies sent by the client and extract information as needed.
+     * This method is always called, whether the client provided cookies or not.
      * By default, this method does nothing.
      *
-     * @param cookies     the list of cookies the client has set
+     * @param cookies     the list of cookies the client has set, which may be empty but not null
      * @param requestData the request sent by the client (in case cookie info should be attached to it)
      * @throws IOException
      */
@@ -128,10 +129,8 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
         try {
             ReqType reqData = getRequestParameters(exch);
 
-            if (exch.getRequestHeaders().containsKey("Cookie")) {
-                CookieJar cookies = new CookieJar(exch.getRequestHeaders().get("Cookie"));
-                processRequestCookies(cookies, reqData);
-            }
+            // read the cookies, if there are any
+            processRequestCookies(new CookieJar(exch.getRequestHeaders().get("Cookie")), reqData);
 
             RespType respData = exchangeData(reqData);
 

@@ -3,8 +3,8 @@ package shared.model;
 import client.data.GameInfo;
 import client.network.GameAdministrator;
 import client.network.IGameAdministrator;
+import com.sun.net.httpserver.HttpServer;
 import org.junit.*;
-import server.Server;
 import shared.definitions.CatanColor;
 
 import static org.junit.Assert.assertTrue;
@@ -20,11 +20,10 @@ public class GameManagerTest {
     private static String m_username;
     private static String m_pwd;
 
+    private HttpServer m_server;
+
     @BeforeClass
     public static void beforeRunningTests() throws Exception{
-        String[] args = {};
-        Server.main(args);
-
         m_username = "Spencer";
         m_pwd = "spencer";
     }
@@ -37,6 +36,8 @@ public class GameManagerTest {
 
     @Before
     public void setUp() throws Exception {
+        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+
         m_gameAdmin = GameAdministrator.getInstance();
         m_gameName = "testGame";
         m_newGameIndex = -1;
@@ -46,6 +47,8 @@ public class GameManagerTest {
 
     @After
     public void tearDown() throws Exception {
+        m_server.stop(0);
+
         m_gameAdmin = null;
         m_gameName = null;
         m_newGameIndex = -1;
