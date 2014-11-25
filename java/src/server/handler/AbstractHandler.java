@@ -42,6 +42,13 @@ public abstract class AbstractHandler<ReqType, RespType, FacadeType> implements 
     }
 
     /**
+     * Set the facade that this handler should call methods on.
+     */
+    protected final FacadeType setFacade(FacadeType facade) {
+        return m_facade = facade;
+    }
+
+    /**
      * Setup a new Request Handler.
      */
     public AbstractHandler(Class<ReqType> reqClass, FacadeType facade) {

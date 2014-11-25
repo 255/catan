@@ -159,11 +159,11 @@
 		</target>
 
 <!-- JUnit 4 Tests -->
-  <target name="compile-tests" depends="compile" description="compiles the JUnit tests">
-    <javac srcdir="${java.test}" destdir="${java.build}" debug="true" includeantruntime="true">
-			<classpath refid="java.lib.classpath" />
-		</javac>
-  </target>
+    <target name="compile-tests" depends="compile" description="compiles the JUnit tests">
+        <javac srcdir="${java.test}" destdir="${java.build}" debug="true" includeantruntime="true">
+            <classpath refid="java.lib.classpath" />
+        </javac>
+    </target>
 
     <target name="test" depends="compile-tests" description="runs all tests">
         <echo>Make sure there are NO instances of the Catan server running!</echo>
