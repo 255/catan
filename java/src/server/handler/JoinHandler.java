@@ -37,14 +37,6 @@ public class JoinHandler extends AbstractHandler<JoinGameRequestParams, Integer,
         }
     }
 
-    /**
-     * Extract the data from the request and return the result.
-     *
-     * @param requestData the data from the HTTP request
-     * @return the data to return to the requester
-     * @throws MissingCookieException if there was an error
-     *                                in which case handle() sends back an empty error (500) response
-     */
     @Override
     protected Integer exchangeData(JoinGameRequestParams requestData) throws MissingCookieException, IllegalCommandException, ModelException {
         return getFacade().join(requestData);

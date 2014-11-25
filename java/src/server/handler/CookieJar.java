@@ -20,9 +20,16 @@ public class CookieJar implements Iterable<Cookie> {
         m_cookies = new ArrayList<>();
     }
 
+    /**
+     * Initialize a cookie jar with a list of cookies
+     * @param listOfCookies a list of cookies to add, which may be null (in which case no cookies are added)
+     */
     public CookieJar(Collection<String> listOfCookies) {
         this();
-        addCookies(listOfCookies);
+
+        if (listOfCookies != null) {
+            addCookies(listOfCookies);
+        }
     }
 
     /**
