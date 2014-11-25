@@ -2,15 +2,10 @@ package shared.model;
 
 import client.data.GameInfo;
 import client.network.GameAdministrator;
-import client.network.HttpCommunicator;
 import client.network.IGameAdministrator;
-import client.network.IHttpCommunicator;
 import org.junit.*;
 import server.Server;
 import shared.definitions.CatanColor;
-
-import java.rmi.server.ExportException;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 

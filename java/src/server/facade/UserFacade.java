@@ -19,7 +19,7 @@ public class UserFacade implements IUserFacade {
      * Swagger URL Equivalent: /user/login
      *
      * @param creds is the set of credentials to be used for logging in
-     * @return boolean containing true or false depending on if the login was successful
+     * @return IUser - the user who logged in
      */
     @Override
     public IUser login(CredentialsParams creds) {
@@ -31,7 +31,7 @@ public class UserFacade implements IUserFacade {
      * Swagger URL Equivalent: /user/register
      *
      * @param creds is the set of credentials to be used for registering/logging in
-     * @return boolean containing true or false depending on if the register was successful
+     * @return IUser - the user who was registered
      */
     @Override
     public IUser register(CredentialsParams creds) {
