@@ -16,17 +16,13 @@ public class MaritimeTradeCommandTest {
 
     }
 
-    // Test 4:1 trade.
-        // Test when you don't have enough resources to do it.
-        // Test trying to trade 4 for 1 of the same resource
-        //
-
-    // Test Port trades
-        // Test when they don't have a 3:1 port
-        // Test when they don't have a 2:1 port
-        // Test when
-
-    // Try to do maritime trade when it's not a player's turn
-
+    // Test trying to trade when it is not your turn.
+    // Test 4:1 trade when you don't have enough resources to do it.
+    // Test trading 4:1 of the same resource.
+    // Test 3:1 when you don't have a 3:1 port.
+    // Test 3:1 when you don't have enough resources.
+    // Test 2:1 when you don't have a 2:1 port.
+    // Test 2:1 when you don't have enough resources.
+    // Test
 
 }
