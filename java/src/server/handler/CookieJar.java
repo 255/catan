@@ -2,10 +2,7 @@ package server.handler;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * A list of parsed cookies.
@@ -30,6 +27,10 @@ public class CookieJar implements Iterable<Cookie> {
         if (listOfCookies != null) {
             addCookies(listOfCookies);
         }
+    }
+
+    public CookieJar(String[] cookies) {
+        this(Arrays.asList(cookies));
     }
 
     /**

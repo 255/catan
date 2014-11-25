@@ -2,6 +2,7 @@ package server.command;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import shared.model.GameModelFacade;
 import shared.model.IGame;
 import shared.model.ModelInitializer;
@@ -17,6 +18,11 @@ public class MaritimeTradeCommandTest {
     @After
     public void tearDown() throws Exception {
 
+    }
+
+    @Test
+    public void testMaritimeTrade() {
+        assertNull(null); // TODO: this is a stub
     }
 
     // Test trying to trade when it is not your turn.

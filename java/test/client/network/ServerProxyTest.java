@@ -1,9 +1,6 @@
 package client.network;
 
-import client.network.HttpCommunicator;
-import client.network.IHttpCommunicator;
-import client.network.IServerProxy;
-import client.network.ServerProxy;
+import com.sun.net.httpserver.HttpServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,23 +9,32 @@ import shared.definitions.ResourceType;
 import shared.locations.*;
 import shared.model.ResourceBank;
 
-import java.util.List;
-
 import static org.junit.Assert.*;
 
 public class ServerProxyTest {
-
+    private HttpServer m_server;
     private IHttpCommunicator m_httpCommunicator;
     private IServerProxy m_serverProxy;
     private IGameAdminServerProxy m_gameAdminProxy;
 
     @Before
     public void setUp() throws Exception {
+        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+
         m_httpCommunicator = new HttpCommunicator();
         m_serverProxy = new ServerProxy(m_httpCommunicator);
         m_gameAdminProxy = new GameAdminServerProxy((m_httpCommunicator));
         m_gameAdminProxy.login("Sam", "sam");
         m_gameAdminProxy.joinGame(0, CatanColor.ORANGE);
+    }
+
+    @After
+    public void takeDown() throws Exception {
+        m_server.stop(0);
+
+        m_httpCommunicator = null;
+        m_serverProxy = null;
+        m_gameAdminProxy = null;
     }
 
     @Test
