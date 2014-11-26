@@ -102,11 +102,30 @@ public class MaritimeTradeCommandTest {
     }
 
     @Test
-    public void testMaritimeTrade() {
+    public void testMaritimeTrade() throws Exception {
 
         // Test that the correct resource have been taken and given in a 4:1
+        game.setCurrentPlayer(game.getPlayer(1));
+        new MaritimeTradeCommand(game, game.getPlayer(1), ResourceType.WOOD, ResourceType.SHEEP, 4).execute();
+        assertEquals(game.getPlayer(1).getResources().getWood(), 0);
+        assertEquals(game.getPlayer(1).getResources().getSheep(), 5);
+        assertEquals(game.getResourceBank().getWood(), 7);
+        assertEquals(game.getResourceBank().getSheep(), 7);
+
+        // Test that the correct resource have been taken and given in a 3:1
+        new MaritimeTradeCommand(game, game.getPlayer(1), ResourceType.BRICK, ResourceType.ORE, 3).execute();
+        assertEquals(game.getPlayer(1).getResources().getBrick(), 1);
+        assertEquals(game.getPlayer(1).getResources().getOre(), 5);
+        assertEquals(game.getResourceBank().getBrick(), 6);
+        assertEquals(game.getResourceBank().getOre(), 2);
+
         // Test that the correct resource have been taken and given in a 2:1
-        // Test that the correct resource have been taken and given in a 2:1
+        game.setCurrentPlayer(game.getPlayer(0));
+        new MaritimeTradeCommand(game, game.getPlayer(0), ResourceType.WOOD, ResourceType.ORE, 2).execute();
+        assertEquals(game.getPlayer(0).getResources().getWood(), 2);
+        assertEquals(game.getPlayer(0).getResources().getOre(), 5);
+        assertEquals(game.getResourceBank().getWood(), 9);
+        assertEquals(game.getResourceBank().getOre(), 1);
     }
 
     @After
