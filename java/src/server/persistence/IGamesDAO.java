@@ -5,7 +5,17 @@ package server.persistence;
  */
 public interface IGamesDAO {
 
+    /**
+     * Saves a game to the data persistence implementation
+     *
+     * @param json the json representation of the game model
+     */
     public void saveGame(String json);
 
+    /**
+     * Saves a command to the data persistence implementation
+     *
+     * @param json the json representation of the game model
+     */
     public void saveCommand(String json);
 }

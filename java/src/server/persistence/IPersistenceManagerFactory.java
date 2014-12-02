@@ -5,5 +5,8 @@ package server.persistence;
  */
 public interface IPersistenceManagerFactory {
 
+    /**
+     * Handles the command line options that are passed in
+     */
     public void parseCommandLineOption();
 }
