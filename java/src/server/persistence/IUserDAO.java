@@ -15,7 +15,7 @@ public interface IUserDAO {
     public void add(IUser newUser);
 
     /**
-     * Load a user manager from the data persistence implementation
+     * Load all of the users stored in the data persistence implementation
      *
      * @return the UserManager object that contains all the users
      */

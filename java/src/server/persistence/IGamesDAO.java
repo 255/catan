@@ -9,21 +9,16 @@ import shared.model.IGameManager;
  */
 public interface IGamesDAO {
     /**
-     * Saves a game to the data persistence implementation
+     * Save a game to the data persistence implementation.
+     * This is called for new games.
      *
      * @param game the game model to save
      */
     public void saveGame(IGame game);
 
     /**
-     * Saves a command to the data persistence implementation
-     *
-     * @param command the command to save
-     */
-    public void saveCommand(ICommand command);
-
-    /**
-     * Restore the games that are stored on disk. If no games are on disk, an empty GameManager is returned.
+     * Restore the games that are stored on disk.
+     * If there are no games on disk, an empty GameManager is returned.
      * This is called when the server is started.
      * @return a GameManager object with the games in it
      */
