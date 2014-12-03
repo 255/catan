@@ -18,10 +18,10 @@ public interface IPersistenceManager {
     /**
      * Creates the Database Access Object that will handle user information
      */
-    public void createUserDAO();
+    public IUserDAO createUserDAO();
 
     /**
      * Creates the Database Access Object that will handle game information
      */
-    public void createGamesDAO();
+    public IGamesDAO createGamesDAO();
 }
