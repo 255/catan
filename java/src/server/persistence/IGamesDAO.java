@@ -1,5 +1,8 @@
 package server.persistence;
 
+import shared.model.IGame;
+import server.command.ICommand;
+
 /**
  * Created by Spencer Weight - 12/1/2014.
  */
@@ -8,14 +11,14 @@ public interface IGamesDAO {
     /**
      * Saves a game to the data persistence implementation
      *
-     * @param json the json representation of the game model
+     * @param game the game model to save
      */
-    public void saveGame(String json);
+    public void saveGame(IGame game);
 
     /**
      * Saves a command to the data persistence implementation
      *
-     * @param json the json representation of the game model
+     * @param command the command to save
      */
-    public void saveCommand(String json);
+    public void saveCommand(ICommand command);
 }

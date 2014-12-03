@@ -7,6 +7,8 @@ public interface IPersistenceManagerFactory {
 
     /**
      * Handles the command line options that are passed in
+     *
+     * @param option the command line option to parse
      */
-    public void parseCommandLineOption();
+    public void parseCommandLineOption(String option);
 }
