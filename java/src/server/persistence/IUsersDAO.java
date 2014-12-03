@@ -6,7 +6,7 @@ import shared.model.IUserManager;
 /**
  * Created by Spencer Weight - 12/1/2014.
  */
-public interface IUserDAO {
+public interface IUsersDAO {
     /**
      * Adds a user to the user table of the data persistence implementation
      *

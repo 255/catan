@@ -6,22 +6,30 @@ package server.persistence;
 public interface IPersistenceManager {
 
     /**
-     * Opens a connection to the persistence layer
+     * Begins a transaction with the persistence layer.
      */
     public void startTransaction();
 
     /**
-     * Closes the connection to the persistence layer
+     * Ends a transaction with the persistence layer.
      */
     public void endTransaction();
 
     /**
-     * Creates the Database Access Object that will handle user information
+     * Creates the Database Access Object that will handle users.
+     * @return a users DAO
      */
-    public IUserDAO createUserDAO();
+    public IUsersDAO createUsersDAO();
 
     /**
-     * Creates the Database Access Object that will handle game information
+     * Creates the Database Access Object that will handle games.
+     * @return a games DAO
      */
     public IGamesDAO createGamesDAO();
+
+    /**
+     * Creates the Database Access Object that will handle commands.
+     * @return a commands DAO
+     */
+    public ICommandsDAO createGamesDAO();
 }

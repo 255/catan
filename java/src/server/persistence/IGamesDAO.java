@@ -5,12 +5,12 @@ import server.command.ICommand;
 import shared.model.IGameManager;
 
 /**
- * Created by Spencer Weight - 12/1/2014.
+ * The Database Access Object for storing and loading games.
  */
 public interface IGamesDAO {
     /**
      * Save a game to the data persistence implementation.
-     * This is called for new games.
+     * This is called by the facade for new games.
      *
      * @param game the game model to save
      */

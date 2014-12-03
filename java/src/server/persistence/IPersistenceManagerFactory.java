@@ -1,14 +1,15 @@
 package server.persistence;
 
 /**
- * Created by Spencer Weight - 12/1/2014.
+ * Abstract factory for persistence managers.
  */
 public interface IPersistenceManagerFactory {
-
     /**
-     * Handles the command line options that are passed in
+     * Construct and return a peristence manager.
+     * Chooses the persistence plugin based on what is provided on the command line.
      *
-     * @param option the command line option to parse
+     * @param option the name of the persistence plugin, as provided on the command line
+     * @return the appropriate persistence manager
      */
-    public void parseCommandLineOption(String option);
+    public IPersistenceManager createPersistenceManager(String option);
 }
