@@ -1,7 +1,8 @@
 package server.persistence;
 
 /**
- * Created by Spencer Weight - 12/1/2014.
+ * The persistence manager handles transactions with the persistence layer.
+ * It also serves as an abstract factory for the database access objects.
  */
 public interface IPersistenceManager {
 
@@ -14,6 +15,11 @@ public interface IPersistenceManager {
      * Ends a transaction with the persistence layer.
      */
     public void endTransaction();
+
+    /**
+     * Delete any stored data on disk.
+     */
+    public void clear();
 
     /**
      * Creates the Database Access Object that will handle users.
@@ -31,5 +37,5 @@ public interface IPersistenceManager {
      * Creates the Database Access Object that will handle commands.
      * @return a commands DAO
      */
-    public ICommandsDAO createGamesDAO();
+    public ICommandsDAO createCommandsDAO();
 }
