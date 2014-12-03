@@ -48,7 +48,6 @@ public class JoinGameFacadeStub implements IJoinGameFacade {
      * Swagger URL Equivalent: /games/save
      *
      * @param saveGame the JSON wrapper with the parameters for saving a game
-     * @return boolean containing true or false depending on if the save was successful
      */
     @Override
     public void save(SaveGameRequestParams saveGame) {
@@ -59,7 +58,6 @@ public class JoinGameFacadeStub implements IJoinGameFacade {
      * Swagger URL Equivalent: /games/load
      *
      * @param loadGame the JSON wrapper with the parameters for loading a game
-     * @return Game object containing a pointer to the loaded game
      */
     @Override
     public void load(LoadGameRequestParams loadGame) {

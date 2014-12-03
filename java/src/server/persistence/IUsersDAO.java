@@ -4,7 +4,7 @@ import shared.model.IUser;
 import shared.model.IUserManager;
 
 /**
- * Created by Spencer Weight - 12/1/2014.
+ * The Database Access Object for storing and loading user accounts.
  */
 public interface IUsersDAO {
     /**

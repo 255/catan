@@ -42,7 +42,6 @@ public interface IJoinGameFacade {
      * Swagger URL Equivalent: /games/save
      *
      * @param saveGame the JSON wrapper with the parameters for saving a game
-     * @return boolean containing true or false depending on if the save was successful
      */
     public void save(SaveGameRequestParams saveGame) throws IOException, ModelException;
 
@@ -51,7 +50,6 @@ public interface IJoinGameFacade {
      * Swagger URL Equivalent: /games/load
      *
      * @param loadGame the JSON wrapper with the parameters for loading a game
-     * @return Game object containing a pointer to the loaded game
      */
     public void load(LoadGameRequestParams loadGame) throws IOException;
 }

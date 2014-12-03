@@ -1,7 +1,7 @@
 package server.persistence;
 
 /**
- * Created by Spencer Weight - 12/1/2014.
+ * Handle interactions with the folder persistence implementation.
  */
 public abstract class AbstractFolderDAO {
 }

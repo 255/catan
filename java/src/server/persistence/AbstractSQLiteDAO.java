@@ -1,7 +1,7 @@
 package server.persistence;
 
 /**
- * Created by Spencer Weight - 12/1/2014.
+ * Handle interacting with a SQLite database.
  */
 public abstract class AbstractSQLiteDAO {
 }
