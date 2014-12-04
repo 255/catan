@@ -22,16 +22,6 @@ public class GameManager implements IGameManager{
     }
 
     @Override
-    public boolean joinGame(int gameId, IUser user, CatanColor playerColor) throws ModelException {
-        if (m_games.containsKey(gameId)) {
-            return m_games.get(gameId).joinGame(user, playerColor);
-        }
-        else {
-            throw new ModelException("There is no game with id " + gameId + "!");
-        }
-    }
-
-    @Override
     public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
         IGame newGame = new Game(gameName, m_nextGameId, randomPorts, randomTiles, randomNumbers);
         m_games.put(m_nextGameId, newGame);

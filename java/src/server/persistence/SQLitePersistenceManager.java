@@ -9,21 +9,21 @@ public class SQLitePersistenceManager implements IPersistenceManager {
      * Begins a transaction with the persistence layer.
      */
     public void startTransaction() {
-      // TODO: implement
+        // TODO: implement
     }
 
     /**
      * Ends a transaction with the persistence layer.
      */
     public void endTransaction() {
-      // TODO: implement
+        // TODO: implement
     }
 
     /**
      * Delete any stored data on disk.
      */
     public void clear() {
-      // TODO: implement
+        // TODO: implement
     }
 
     /**
@@ -31,7 +31,8 @@ public class SQLitePersistenceManager implements IPersistenceManager {
      * @return a users DAO
      */
     public IUsersDAO createUsersDAO() {
-      // TODO: implement
+        // TODO: implement
+        return null;
     }
 
     /**
@@ -39,7 +40,8 @@ public class SQLitePersistenceManager implements IPersistenceManager {
      * @return a games DAO
      */
     public IGamesDAO createGamesDAO() {
-      // TODO: implement
+        // TODO: implement
+        return null;
     }
 
     /**
@@ -47,6 +49,7 @@ public class SQLitePersistenceManager implements IPersistenceManager {
      * @return a commands DAO
      */
     public ICommandsDAO createCommandsDAO() {
-      // TODO: implement
+        // TODO: implement
+        return null;
     }
 }

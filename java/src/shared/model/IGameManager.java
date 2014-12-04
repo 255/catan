@@ -13,17 +13,6 @@ import java.util.Collection;
 public interface IGameManager {
 
     /**
-     * Adds the specified user to the
-     * specified game.
-     *
-     * @param gameId id of the game the user wants to join
-     * @param user the user who wants to join the game
-     * @param playerColor color that player wants to be in the game.
-     * @return game object of the game that the player joined
-     */
-    public boolean joinGame(int gameId, IUser user, CatanColor playerColor) throws ModelException;
-
-    /**
      * Creates a new game on the server.
      *
      * @param gameName name to give the new game

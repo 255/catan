@@ -256,7 +256,9 @@ public interface IGame extends Serializable {
 
     public void addObserver(Observer o);
 
-    public boolean joinGame(IUser user, CatanColor playerColor) throws ModelException;
+    public void joinGame(IUser user, CatanColor playerColor);
+
+    public boolean canJoinGame(IUser user, CatanColor playerColor);
 
     public void robPlayer(IPlayer player, IPlayer victim, HexLocation hexLocation);
 

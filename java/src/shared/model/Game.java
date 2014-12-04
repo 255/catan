@@ -578,41 +578,52 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public boolean joinGame(IUser user, CatanColor playerColor) throws ModelException {
-        // checks if color is being used by another player
-        for(IPlayer player : m_players) {
-            if(player.getColor() == playerColor) {
-                if(player.getId() != user.getId()) {
-                    throw new ModelException("Color already in use by another player.");
-                }
+    public void joinGame(IUser user, CatanColor playerColor) {
+        assert canJoinGame(user, playerColor);
+
+        setChanged();
+
+        // checks if player is already in game, if so sets color and exits method
+        for (IPlayer player : m_players) {
+            if (player.getId() == user.getId()) {
+                player.setColor(playerColor);
+                return;
             }
         }
 
-        // checks if player is already in game, if so exits method
-        for(IPlayer player : m_players) {
-            if(player.getId() == user.getId()) {
-                player.setColor(playerColor);
-                setChanged();
-                return true;
-            }
-        }
+        assert m_players.size() < CatanConstants.NUM_PLAYERS : "Trying to join a full game!";
 
         // if player is not already in game they are added to the game
-        if (m_players.size() < CatanConstants.NUM_PLAYERS) {
-            IPlayer player = Player.createNewPlayer(user.getUsername(), user.getId(), playerColor, m_players.size());
-            m_players.add(player);
+        IPlayer player = Player.createNewPlayer(user.getUsername(), user.getId(), playerColor, m_players.size());
+        m_players.add(player);
 
-            // if this is the first player added, make it their turn
-            if (m_players.size() == 1) {
-                m_currentPlayer = m_players.get(0);
+        // if this is the first player added, make it their turn
+        if (m_players.size() == 1) {
+            m_currentPlayer = m_players.get(0);
+        }
+    }
+
+    @Override
+    public boolean canJoinGame(IUser user, CatanColor playerColor) {
+        boolean playerIsInGame = false;
+
+        // checks if color is being used by another player
+        for (IPlayer player : m_players) {
+            // check if this the user's player
+            if (player.getId() != user.getId()) {
+                // make sure no one else is using their requested color
+                if (player.getColor() == playerColor) {
+                    return false;
+                }
             }
+            else {
+                assert !playerIsInGame : "Player is in the game multiple times!";
+                playerIsInGame = true;
+            }
+        }
 
-            setChanged();
-            return true;
-        }
-        else {
-            return false;
-        }
+        // can join if there is still room, or the player has already joined
+        return m_players.size() < CatanConstants.NUM_PLAYERS || playerIsInGame;
     }
 
     @Override

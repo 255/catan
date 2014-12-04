@@ -1,5 +1,6 @@
 package server.facade;
 
+import server.command.IllegalCommandException;
 import shared.communication.*;
 import shared.model.ModelException;
 
@@ -35,7 +36,7 @@ public interface IJoinGameFacade {
      * @param joinGame the JSON wrapper with the parameters for joining a game
      * @return boolean containing true or false depending on if the join was successful
      */
-    public Integer join(JoinGameRequestParams joinGame) throws ModelException;
+    public Integer join(JoinGameRequestParams joinGame) throws ModelException, IllegalCommandException;
 
     /**
      * Saves a game

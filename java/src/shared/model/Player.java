@@ -96,6 +96,8 @@ public class Player implements IPlayer {
         return player;
     }
 
+    public final static Player NULL_PLAYER = new Player("No player", NO_PLAYER, CatanColor.RED, NO_PLAYER);
+
     /**
      * Calculates how many victory points this player has
      *

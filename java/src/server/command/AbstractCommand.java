@@ -22,6 +22,7 @@ public abstract class AbstractCommand implements ICommand {
             throw new IllegalCommandException("No player was specified.");
         }
 
+        assert game != null;
         m_game = game;
         m_player = player;
         m_action = actionDescription;

@@ -1,5 +1,7 @@
 package server.facade;
 
+import server.command.IllegalCommandException;
+import server.command.JoinGameCommand;
 import shared.communication.*;
 import shared.model.IGame;
 import shared.model.IGameManager;
@@ -48,12 +50,12 @@ public class JoinGameFacade implements IJoinGameFacade {
      * Swagger URL Equivalent: /games/join
      *
      * @param params the JSON wrapper with the parameters for joining a game
-     * @return boolean containing true or false depending on if the join was successful
+     * @return integer indicated the game that was joined
      */
     @Override
-    public Integer join(JoinGameRequestParams params) throws ModelException {
-        boolean joined = m_gameManager.joinGame(params.id, m_userManager.getUser(params.getUserId()), params.color);
-        return (joined ? params.id : null);
+    public Integer join(JoinGameRequestParams params) throws ModelException, IllegalCommandException {
+        new JoinGameCommand(m_gameManager.getGame(params.id), m_userManager.getUser(params.getUserId()), params.color).execute();
+        return params.id;
     }
 
     /**
