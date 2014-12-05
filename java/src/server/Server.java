@@ -5,6 +5,7 @@ import server.command.IllegalCommandException;
 import server.debug.SwaggerHandler;
 import server.facade.*;
 import server.handler.*;
+import server.persistence.*;
 import shared.communication.*;
 import shared.model.*;
 
@@ -24,7 +25,8 @@ public class Server {
 	private static Logger logger;
 	private static int MAX_WAITING_CONNECTIONS = 0; // take the default value
     public static int DEFAULT_PORT = 8081;
-	
+    public static int DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS = 10;
+
 	// Initialize the logger for the server
 	static {
 		initializeLog();
@@ -67,7 +69,11 @@ public class Server {
 	
 	public Server() {}
 
-	public HttpServer run(int portNumber) {
+    public HttpServer run(int portNumber) throws InvalidPluginException {
+        return run(portNumber, null);
+    }
+
+	public HttpServer run(int portNumber, String persistenceOption) throws InvalidPluginException {
 		logger.entering("server.Server", "run");
 		
 		try {
@@ -81,7 +87,10 @@ public class Server {
 			return null;
 		}
 
-        setupHandlers(server);
+        IPersistenceManagerLoader persistenceLoader = new PersistenceManagerLoader();
+        persistenceLoader.loadPersistencePlugin(persistenceOption);
+
+        setupHandlers(server, persistenceLoader.createPersistenceManager());
 
 		logger.info("Starting server on port " + portNumber + ".");
 		server.start();
@@ -95,7 +104,7 @@ public class Server {
      * Create and add the handlers for HTTP requests.
      * @param server the server object
      */
-    private void setupHandlers(HttpServer server) {
+    private void setupHandlers(HttpServer server, IPersistenceManager persistenceManager) {
         // define the facades
         IGameManager gameManager = new GameManager();
         IUserManager userManager = new UserManager();
@@ -342,31 +351,47 @@ public class Server {
 	 * @param args provide the port number for the server to run on
 	 */
 	public static void main(String[] args) {
-		// Check if there are extra arguments
-		if (args.length > 1) {
-			System.err.println("Usage:\njava Server PORT_NUMBER");
-			System.exit(1);
-		}
-		
-		try {
-			int portNumber = DEFAULT_PORT;
-			
-			if (args.length == 0) {
+        // Check if there are extra arguments
+        if (args.length > 3) {
+            System.err.println("Usage:\njava Server PORT_NUMBER [PERSISTENCE_MANAGER] [COMMANDS_BETWEEN_CHECKPOINTS]");
+            System.exit(1);
+        }
+
+        String persistenceOption = args.length > 1 ? args[1] : null;
+        try {
+            int portNumber = DEFAULT_PORT;
+            int commandsBetweenCheckpoints = DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS;
+
+            if (args.length == 0) {
                 System.out.println("No port number provided, using default (" + portNumber + ").");
             }
-            else  {
+            else {
                 portNumber = Integer.parseInt(args[0]);
                 if (portNumber < 1024 || portNumber > 65535)
-                    throw new NumberFormatException();
+                    throw new IllegalArgumentException();
+
+                if (args.length == 3) {
+                    commandsBetweenCheckpoints = Integer.parseInt(args[2]);
+                    if (commandsBetweenCheckpoints < 0) {
+                        throw new IllegalArgumentException();
+                    }
+                }
             }
 
-            new Server().run(portNumber);
-		}
+            new Server().run(portNumber, persistenceOption);
+        }
         catch (NumberFormatException e) {
-			System.err.println("\"" + args[0] + "\" is not a valid port number.");
-			System.err.println("The port number must be an integer greater than 1023 and "
-				+ "less than 65536.");
-			System.err.println("Usage:\n\tjava Server PORT_NUMBER");
-		}
-	}
+            System.err.println("Invalid number format: " + e.getMessage());
+        }
+        catch (IllegalArgumentException e) {
+            System.err.println("" + args[0] + " is not a valid port number.");
+            System.err.println("The port number must be an integer greater than 1023 and "
+                    + "less than 65536.");
+            System.err.println("Usage:\n\tjava Server PORT_NUMBER");
+        }
+        catch (InvalidPluginException e) {
+            System.err.println("Cannot load persistence plugin " + persistenceOption);
+            e.printStackTrace();
+        }
+    }
 }

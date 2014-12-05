@@ -33,7 +33,7 @@ public class GameFacadeTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         m_server = new server.Server().run(server.Server.DEFAULT_PORT);
     }
 

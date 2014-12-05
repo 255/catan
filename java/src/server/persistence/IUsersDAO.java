@@ -19,5 +19,5 @@ public interface IUsersDAO {
      *
      * @return the UserManager object that contains all the users
      */
-    public IUserManager load();
+    public IUserManager loadUsers();
 }

@@ -4,6 +4,10 @@ package server.persistence;
  * A persistence manager that stores data in folders on disk.
  */
 public class FolderPersistenceManager implements IPersistenceManager {
+    @Override
+    public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints) {
+        // TODO: implement
+    }
 
     /**
      * Begins a transaction with the persistence layer.

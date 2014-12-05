@@ -5,6 +5,11 @@ package server.persistence;
  * It also serves as an abstract factory for the database access objects.
  */
 public interface IPersistenceManager {
+    /**
+     * Set how many commands to go before updating the game's saved checkpoint.
+     * @param commandsBetweenCheckpoints the number, which needs to be non-negative
+     */
+    public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints);
 
     /**
      * Begins a transaction with the persistence layer.

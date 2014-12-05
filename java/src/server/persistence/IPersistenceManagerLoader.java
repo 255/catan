@@ -13,7 +13,7 @@ public interface IPersistenceManagerLoader {
      *
      * @param option the name of the persistence plugin, as provided on the command line
      */
-    public void loadPersistencePlugin(String option);
+    public void loadPersistencePlugin(String option) throws InvalidPluginException;
 
     /**
      * Construct and return a persistence manager.
@@ -21,5 +21,5 @@ public interface IPersistenceManagerLoader {
      *
      * @return an instance of the persistence manager class
      */
-    public IPersistenceManager createPersistenceManager();
+    public IPersistenceManager createPersistenceManager() throws InvalidPluginException;
 }
