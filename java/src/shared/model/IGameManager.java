@@ -1,7 +1,5 @@
 package shared.model;
 
-import shared.definitions.CatanColor;
-
 import java.util.Collection;
 
 /**

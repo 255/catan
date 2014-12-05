@@ -1,6 +1,5 @@
 package server.persistence;
 
-import server.persistence.IGamesDAO;
 import shared.model.GameManager;
 import shared.model.IGame;
 import shared.model.IGameManager;

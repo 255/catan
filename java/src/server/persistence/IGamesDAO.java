@@ -1,7 +1,6 @@
 package server.persistence;
 
 import shared.model.IGame;
-import server.command.ICommand;
 import shared.model.IGameManager;
 
 /**

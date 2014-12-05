@@ -1,10 +1,12 @@
 package shared.model.serialization;
 
-import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import shared.model.*;
+import shared.model.CatanConstants;
+import shared.model.Game;
+import shared.model.IPlayer;
+import shared.model.Player;
 
 import java.io.IOException;
 

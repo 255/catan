@@ -1,6 +1,5 @@
 package shared.model;
 
-import shared.definitions.PieceType;
 import shared.locations.VertexLocation;
 
 /**

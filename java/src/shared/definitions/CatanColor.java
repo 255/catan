@@ -1,6 +1,6 @@
 package shared.definitions;
 
-import java.awt.Color;
+import java.awt.*;
 
 public enum CatanColor
 {

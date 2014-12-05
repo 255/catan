@@ -5,7 +5,10 @@ import server.command.IllegalCommandException;
 import server.debug.SwaggerHandler;
 import server.facade.*;
 import server.handler.*;
-import server.persistence.*;
+import server.persistence.IPersistenceManager;
+import server.persistence.IPersistenceManagerLoader;
+import server.persistence.InvalidPluginException;
+import server.persistence.PersistenceManagerLoader;
 import shared.communication.*;
 import shared.model.*;
 

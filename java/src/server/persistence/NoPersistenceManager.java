@@ -1,10 +1,5 @@
 package server.persistence;
 
-import server.persistence.ICommandsDAO;
-import server.persistence.IGamesDAO;
-import server.persistence.IPersistenceManager;
-import server.persistence.IUsersDAO;
-
 /**
  * A persistence manager that does nothing.
  */

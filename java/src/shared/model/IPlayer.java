@@ -3,7 +3,6 @@ package shared.model;
 import shared.definitions.CatanColor;
 import shared.definitions.DevCardType;
 import shared.definitions.ResourceType;
-import shared.locations.EdgeLocation;
 
 import java.io.Serializable;
 import java.util.Collection;
