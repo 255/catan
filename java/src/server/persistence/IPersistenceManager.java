@@ -30,7 +30,7 @@ public interface IPersistenceManager {
      * Creates the Database Access Object that will handle users.
      * @return a users DAO
      */
-    public IUsersDAO createUsersDAO();
+    public IUsersDAO createUsersDAO() throws PersistenceException;
 
     /**
      * Creates the Database Access Object that will handle games.
@@ -42,5 +42,5 @@ public interface IPersistenceManager {
      * Creates the Database Access Object that will handle commands.
      * @return a commands DAO
      */
-    public ICommandsDAO createCommandsDAO();
+    public ICommandsDAO createCommandsDAO() throws PersistenceException;
 }

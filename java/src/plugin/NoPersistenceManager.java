@@ -6,7 +6,7 @@ import server.persistence.*;
  * A persistence manager that does nothing.
  */
 public class NoPersistenceManager extends AbstractPersistenceManager {
-    public NoPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+     NoPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         super(commandsBetweenCheckpoints);
     }
 
@@ -15,7 +15,7 @@ public class NoPersistenceManager extends AbstractPersistenceManager {
     }
 
     @Override
-    public void endTransaction() {
+    public void endTransaction(boolean commit) {
     }
 
     @Override
