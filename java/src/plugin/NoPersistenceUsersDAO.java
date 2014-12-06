@@ -10,7 +10,7 @@ import shared.model.UserManager;
  */
 public class NoPersistenceUsersDAO implements IUsersDAO {
     @Override
-    public void add(IUser newUser) {
+    public void addUsers(IUser newUser) {
     }
 
     @Override
