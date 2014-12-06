@@ -16,7 +16,7 @@ public class DAOTests {
 
         try {
             FolderPersistenceManager pm = new FolderPersistenceManager(10);
-            IUsersDAO folderUser = new FolderUserDAO(pm);
+            IUsersDAO folderUser = new FolderUsersDAO(pm);
 
             IUser myBuddy = new User("myBuddy", "abc123", 12);
             folderUser.addUser(myBuddy);
