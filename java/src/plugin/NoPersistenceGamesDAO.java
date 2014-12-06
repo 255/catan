@@ -1,5 +1,6 @@
-package server.persistence;
+package plugin;
 
+import server.persistence.IGamesDAO;
 import shared.model.GameManager;
 import shared.model.IGame;
 import shared.model.IGameManager;

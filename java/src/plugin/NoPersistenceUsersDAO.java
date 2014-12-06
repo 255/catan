@@ -1,5 +1,6 @@
-package server.persistence;
+package plugin;
 
+import server.persistence.IUsersDAO;
 import shared.model.IUser;
 import shared.model.IUserManager;
 import shared.model.UserManager;
@@ -9,7 +10,7 @@ import shared.model.UserManager;
  */
 public class NoPersistenceUsersDAO implements IUsersDAO {
     @Override
-    public void add(IUser newUser) {
+    public void addUsers(IUser newUser) {
     }
 
     @Override

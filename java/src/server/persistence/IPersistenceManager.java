@@ -7,9 +7,9 @@ package server.persistence;
 public interface IPersistenceManager {
     /**
      * Set how many commands to go before updating the game's saved checkpoint.
-     * @param commandsBetweenCheckpoints the number, which needs to be non-negative
+     * @return commandsBetweenCheckpoints the number, which needs to be non-negative
      */
-    public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints);
+    public int getCommandsBetweenCheckpoints();
 
     /**
      * Begins a transaction with the persistence layer.
@@ -36,7 +36,7 @@ public interface IPersistenceManager {
      * Creates the Database Access Object that will handle games.
      * @return a games DAO
      */
-    public IGamesDAO createGamesDAO();
+    public IGamesDAO createGamesDAO() throws PersistenceException;
 
     /**
      * Creates the Database Access Object that will handle commands.

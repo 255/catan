@@ -12,7 +12,7 @@ public interface IUsersDAO {
      *
      * @param newUser the User to add to the data persistence
      */
-    public void add(IUser newUser);
+    public void addUsers(IUser newUser);
 
     /**
      * Load all of the users stored in the data persistence implementation

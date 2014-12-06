@@ -1,12 +1,16 @@
 package server.persistence;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * A persistence manager that stores data in folders on disk.
  */
-public class FolderPersistenceManager implements IPersistenceManager {
-    @Override
-    public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints) {
-        // TODO: implement
+public class FolderPersistenceManager extends AbstractPersistenceManager {
+    protected FolderPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+        super(commandsBetweenCheckpoints);
     }
 
     /**
@@ -43,9 +47,8 @@ public class FolderPersistenceManager implements IPersistenceManager {
      * Creates the Database Access Object that will handle games.
      * @return a games DAO
      */
-    public IGamesDAO createGamesDAO() {
-        // TODO: implement
-        return null;
+    public IGamesDAO createGamesDAO() throws PersistenceException {
+        return new FolderGamesDAO(this);
     }
 
     /**
@@ -56,4 +59,5 @@ public class FolderPersistenceManager implements IPersistenceManager {
         // TODO: implement
         return null;
     }
+
 }

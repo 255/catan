@@ -1,5 +1,9 @@
 package server.persistence;
 
+import plugin.NoPersistenceManager;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -47,14 +51,18 @@ public class PersistenceManagerLoader implements IPersistenceManagerLoader {
     }
 
     @Override
-    public IPersistenceManager createPersistenceManager() throws InvalidPluginException {
+    public IPersistenceManager createPersistenceManager(int commandsBetweenCheckpoints) throws InvalidPluginException {
         assert m_persistenceManagerClass != null;
 
         try {
-            return m_persistenceManagerClass.newInstance();
+            Constructor ctor = m_persistenceManagerClass.getDeclaredConstructor(Integer.TYPE);
+            return (IPersistenceManager) ctor.newInstance(commandsBetweenCheckpoints);
         }
-        catch (InstantiationException | IllegalAccessException e) {
+        catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new InvalidPluginException("Failed to instantiate the persistence manager.", e);
+        }
+        catch (NoSuchMethodException e) {
+            throw new InvalidPluginException("Plugin does not provide the correct constructor.", e);
         }
     }
 }

@@ -13,7 +13,7 @@ public interface IGamesDAO {
      *
      * @param game the game model to save
      */
-    public void saveGame(IGame game);
+    public void saveGame(IGame game) throws PersistenceException;
 
     /**
      * Restore the games that are stored on disk.
@@ -21,5 +21,5 @@ public interface IGamesDAO {
      * This is called when the server is started.
      * @return a GameManager object with the games in it
      */
-    public IGameManager loadGames();
+    public IGameManager loadGames() throws PersistenceException;
 }

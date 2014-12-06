@@ -1,11 +1,13 @@
-package server.persistence;
+package plugin;
+
+import server.persistence.*;
 
 /**
  * A persistence manager that does nothing.
  */
-public class NoPersistenceManager implements IPersistenceManager {
-    @Override
-    public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints) {
+public class NoPersistenceManager extends AbstractPersistenceManager {
+    protected NoPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+        super(commandsBetweenCheckpoints);
     }
 
     @Override

@@ -20,6 +20,7 @@ public interface IPersistenceManagerLoader {
      * If a persistence manager plugin has not been loaded, then a stub manager that does nothing is returned.
      *
      * @return an instance of the persistence manager class
+     * @param commandsBetweenCheckpoints
      */
-    public IPersistenceManager createPersistenceManager() throws InvalidPluginException;
+    public IPersistenceManager createPersistenceManager(int commandsBetweenCheckpoints) throws InvalidPluginException;
 }

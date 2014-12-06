@@ -10,21 +10,14 @@ import java.sql.ResultSet;
 /**
  * A persistence manager that uses a SQLite database.
  */
-public class SQLitePersistenceManager implements IPersistenceManager {
+public class SQLitePersistenceManager extends AbstractPersistenceManager {
     private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
 
     private static String dbName = "database" + File.separator + "catandb.sqlite";
     private static String connectionURL = "jdbc:sqlite:" + dbName;
 
-    private int commandsBetweenCheckpoints;
-
-    public SQLitePersistenceManager() {
-        this.commandsBetweenCheckpoints = 0;
-    }
-
-    @Override
-    public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints) {
-        this.commandsBetweenCheckpoints = commandsBetweenCheckpoints;
+    protected SQLitePersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+        super(commandsBetweenCheckpoints);
     }
 
     /**
