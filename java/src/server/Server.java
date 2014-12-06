@@ -73,10 +73,10 @@ public class Server {
 	public Server() {}
 
     public HttpServer run(int portNumber) throws InvalidPluginException {
-        return run(portNumber, null);
+        return run(portNumber, null, DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS);
     }
 
-	public HttpServer run(int portNumber, String persistenceOption) throws InvalidPluginException {
+	public HttpServer run(int portNumber, String persistenceOption, int commandsBetweenCheckpoints) throws InvalidPluginException {
 		logger.entering("server.Server", "run");
 		
 		try {
@@ -93,7 +93,7 @@ public class Server {
         IPersistenceManagerLoader persistenceLoader = new PersistenceManagerLoader();
         persistenceLoader.loadPersistencePlugin(persistenceOption);
 
-        setupHandlers(server, persistenceLoader.createPersistenceManager());
+        setupHandlers(server, persistenceLoader.createPersistenceManager(commandsBetweenCheckpoints));
 
 		logger.info("Starting server on port " + portNumber + ".");
 		server.start();
@@ -381,7 +381,7 @@ public class Server {
                 }
             }
 
-            new Server().run(portNumber, persistenceOption);
+            new Server().run(portNumber, persistenceOption, commandsBetweenCheckpoints);
         }
         catch (NumberFormatException e) {
             System.err.println("Invalid number format: " + e.getMessage());

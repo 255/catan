@@ -7,6 +7,10 @@ import shared.model.IUserManager;
  * Created by Spencer Weight - 12/5/2014.
  */
 public class FolderUserDAO extends AbstractFolderDAO<IUser> implements IUsersDAO {
+    protected FolderUserDAO(FolderPersistenceManager manager) throws PersistenceException {
+        super(manager, "users");
+    }
+
     /**
      * Adds a user to the user table of the data persistence implementation
      *

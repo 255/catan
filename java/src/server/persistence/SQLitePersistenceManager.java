@@ -3,10 +3,9 @@ package server.persistence;
 /**
  * A persistence manager that uses a SQLite database.
  */
-public class SQLitePersistenceManager implements IPersistenceManager {
-    @Override
-    public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints) {
-        // TODO: implement
+public class SQLitePersistenceManager extends AbstractPersistenceManager {
+    protected SQLitePersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+        super(commandsBetweenCheckpoints);
     }
 
     /**
