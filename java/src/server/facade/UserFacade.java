@@ -48,7 +48,7 @@ public class UserFacade implements IUserFacade {
 
         try {
             m_persistenceManager.startTransaction();
-            m_persistenceManager.createUsersDAO().addUsers(user);
+            m_persistenceManager.createUsersDAO().addUser(user);
             m_persistenceManager.endTransaction(true);
         }
         catch (PersistenceException e) {

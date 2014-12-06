@@ -2,6 +2,9 @@ package server.persistence;
 
 import shared.model.IUser;
 import shared.model.IUserManager;
+import shared.model.UserManager;
+
+import java.io.File;
 import java.util.logging.Logger;
 
 /**
@@ -31,10 +34,20 @@ public class FolderUsersDAO extends AbstractFolderDAO implements IUsersDAO {
      */
     @Override
     public IUserManager loadUsers() throws PersistenceException {
-        // load all the users files from the directory
-        // add the users to a user manager
-        // return the user manager
+        // create an empty user manager
+        IUserManager um = new UserManager();
 
-        return null;
+        // get user files from the directory
+        File folder = new File(getDirectory().toString());
+        File[] userFiles = folder.listFiles();
+
+        // iterate through the user files and add them to the user manager
+        for(File f : userFiles) {
+            IUser u = readFile(f.toPath());
+            um.createUser(u.getUsername(), u.getPassword());
+        }
+
+        // return the user manager
+        return um;
     }
 }
