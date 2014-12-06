@@ -3,6 +3,7 @@ package server.persistence;
 import server.command.ICommand;
 import shared.model.IGame;
 
+import javax.jnlp.PersistenceService;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public interface ICommandsDAO {
      *
      * @param command the command to save
      */
-    public void saveCommand(ICommand command);
+    public void saveCommand(ICommand command) throws PersistenceException;
 
     /**
      * Load the commands associated with a game.
@@ -23,5 +24,5 @@ public interface ICommandsDAO {
      * @param game the game object for which the commands should be loaded
      * @return a list of commands in the order they should be executed
      */
-    public List<ICommand> loadCommands(IGame game);
+    public List<ICommand> loadCommands(IGame game) throws PersistenceException;
 }
