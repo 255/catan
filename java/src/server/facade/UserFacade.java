@@ -1,17 +1,26 @@
 package server.facade;
 
+import server.persistence.IPersistenceManager;
+import server.persistence.PersistenceException;
 import shared.communication.CredentialsParams;
 import shared.model.IUser;
 import shared.model.IUserManager;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Spencer Weight - 11/5/2014.
  */
 public class UserFacade implements IUserFacade {
-    private IUserManager m_userManager;
+    private static Logger logger = Logger.getLogger("catanserver");
 
-    public UserFacade(IUserManager userManager) {
+    private IUserManager m_userManager;
+    private IPersistenceManager m_persistenceManager;
+
+    public UserFacade(IUserManager userManager, IPersistenceManager persistenceManager) {
         m_userManager = userManager;
+        m_persistenceManager = persistenceManager;
     }
 
     /**
@@ -35,6 +44,18 @@ public class UserFacade implements IUserFacade {
      */
     @Override
     public IUser register(CredentialsParams creds) {
-        return m_userManager.createUser(creds.username, creds.password);
+        IUser user = m_userManager.createUser(creds.username, creds.password);
+
+        try {
+            m_persistenceManager.startTransaction();
+            m_persistenceManager.createUsersDAO().addUsers(user);
+            m_persistenceManager.endTransaction(true);
+        }
+        catch (PersistenceException e) {
+            m_persistenceManager.endTransaction(false);
+            logger.log(Level.WARNING, "Failed to store newly registered user.", e);
+        }
+
+        return user;
     }
 }

@@ -28,9 +28,11 @@ public class FolderGamesDAO extends AbstractFolderDAO implements IGamesDAO {
 
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory())) {
             for (Path path : directoryStream) {
-                gameManager.loadGame(AbstractFolderDAO.<IGame>readFile(path));
+                IGame game = readFile(path);
+                gameManager.loadGame(game);
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new PersistenceException(e);
         }
 
