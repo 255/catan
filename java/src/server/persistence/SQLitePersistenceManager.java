@@ -1,33 +1,111 @@
 package server.persistence;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+
 /**
  * A persistence manager that uses a SQLite database.
  */
 public class SQLitePersistenceManager implements IPersistenceManager {
+    private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
+
+    private static String dbName = "database" + File.separator + "catandb.sqlite";
+    private static String connectionURL = "jdbc:sqlite:" + dbName;
+
+    private int commandsBetweenCheckpoints;
+
+    public SQLitePersistenceManager() {
+        this.commandsBetweenCheckpoints = 0;
+    }
+
     @Override
     public void setCommandsBetweenCheckpoints(int commandsBetweenCheckpoints) {
-        // TODO: implement
+        this.commandsBetweenCheckpoints = commandsBetweenCheckpoints;
     }
 
     /**
      * Begins a transaction with the persistence layer.
      */
-    public void startTransaction() {
-        // TODO: implement
+    public void startTransaction() throws PersistenceException {
+        try {
+            connection.set(DriverManager.getConnection(connectionURL));
+            connection.get().setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new PersistenceException();
+        }
     }
 
     /**
      * Ends a transaction with the persistence layer.
      */
-    public void endTransaction() {
-        // TODO: implement
+    public void endTransaction(boolean commit) throws PersistenceException {
+        try {
+            if (commit) {
+                connection.get().commit();
+            } else {
+                connection.get().rollback();
+            }
+        } catch (SQLException e) {
+            throw new PersistenceException();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.get().close();
+                } catch (SQLException e) {
+                    throw new PersistenceException();
+                }
+            }
+        }
+
+        connection.set(null);
+    }
+
+    public Connection getConnection() {
+        return connection.get();
     }
 
     /**
      * Delete any stored data on disk.
      */
-    public void clear() {
-        // TODO: implement
+    public void clear() throws PersistenceException {
+        startTransaction();
+
+        String sql;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            sql = "delete from Users";
+            stmt = getConnection().prepareStatement(sql);
+            rs = stmt.executeQuery();
+
+            sql = "delete from Groups";
+            stmt = getConnection().prepareStatement(sql);
+            rs = stmt.executeQuery();
+
+            sql = "delete from Commands";
+            stmt = getConnection().prepareStatement(sql);
+            rs = stmt.executeQuery();
+
+        } catch (SQLException e) {
+            throw new PersistenceException();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                throw new PersistenceException();
+            }
+        }
+
+        endTransaction(true);
     }
 
     /**

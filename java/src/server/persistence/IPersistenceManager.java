@@ -14,17 +14,17 @@ public interface IPersistenceManager {
     /**
      * Begins a transaction with the persistence layer.
      */
-    public void startTransaction();
+    public void startTransaction() throws PersistenceException;
 
     /**
      * Ends a transaction with the persistence layer.
      */
-    public void endTransaction();
+    public void endTransaction(boolean commit) throws PersistenceException;
 
     /**
      * Delete any stored data on disk.
      */
-    public void clear();
+    public void clear() throws PersistenceException;
 
     /**
      * Creates the Database Access Object that will handle users.
