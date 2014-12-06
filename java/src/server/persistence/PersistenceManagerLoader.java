@@ -1,5 +1,7 @@
 package server.persistence;
 
+import plugin.NoPersistenceManager;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;

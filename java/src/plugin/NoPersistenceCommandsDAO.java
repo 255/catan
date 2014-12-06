@@ -1,6 +1,7 @@
-package server.persistence;
+package plugin;
 
 import server.command.ICommand;
+import server.persistence.ICommandsDAO;
 import shared.model.IGame;
 
 import java.util.ArrayList;

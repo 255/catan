@@ -1,5 +1,6 @@
-package server.persistence;
+package plugin;
 
+import server.persistence.IUsersDAO;
 import shared.model.IUser;
 import shared.model.IUserManager;
 import shared.model.UserManager;
