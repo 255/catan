@@ -1,11 +1,13 @@
 package shared.model;
 
+import java.io.Serializable;
+
 /**
  * Interface that represents a user that is registered on the server
  *
  * @author StevenBarnett
  */
-public interface IUser {
+public interface IUser extends Serializable {
 
     /**
      * Gets the username of the user

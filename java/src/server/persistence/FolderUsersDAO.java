@@ -2,11 +2,14 @@ package server.persistence;
 
 import shared.model.IUser;
 import shared.model.IUserManager;
+import java.util.logging.Logger;
 
 /**
  * Created by Spencer Weight - 12/5/2014.
  */
 public class FolderUsersDAO extends AbstractFolderDAO implements IUsersDAO {
+    private static Logger logger = Logger.getLogger("catanserver");
+    
     protected FolderUsersDAO(FolderPersistenceManager manager) throws PersistenceException {
         super(manager, "users");
     }
@@ -17,12 +20,8 @@ public class FolderUsersDAO extends AbstractFolderDAO implements IUsersDAO {
      * @param newUser the User to add to the data persistence
      */
     @Override
-    public void addUsers(IUser newUser) {
-        // write a file with the serialized data for ONE user to the disk
-        // the working directory is ./Catan/Java/dist
-        // the users folder will be in the WorkingDir/Persistence/FolderStorage
-
-        // look at the Blob interface
+    public void addUser(IUser newUser) throws PersistenceException {
+        writeFile(newUser, getDirectory().resolve(newUser.getUsername() + ".dat"));
     }
 
     /**
@@ -31,7 +30,7 @@ public class FolderUsersDAO extends AbstractFolderDAO implements IUsersDAO {
      * @return the UserManager object that contains all the users
      */
     @Override
-    public IUserManager loadUsers() {
+    public IUserManager loadUsers() throws PersistenceException {
         // load all the users files from the directory
         // add the users to a user manager
         // return the user manager
