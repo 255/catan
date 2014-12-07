@@ -6,6 +6,7 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.nio.file.Paths;
 
 /**
  * A persistence manager that uses a SQLite database.
@@ -13,11 +14,13 @@ import java.sql.ResultSet;
 public class SQLitePersistenceManager extends AbstractPersistenceManager {
     private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
 
-    private static String dbName = "database" + File.separator + "catandb.sqlite";
-    private static String connectionURL = "jdbc:sqlite:" + dbName;
+    private static String dbName;
+    private static String connectionURL;
 
     protected SQLitePersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         super(commandsBetweenCheckpoints);
+        dbName = Paths.get("data") + File.separator + "catandb.sqlite";
+        connectionURL = "jdbc:sqlite:" + dbName;
     }
 
     /**
