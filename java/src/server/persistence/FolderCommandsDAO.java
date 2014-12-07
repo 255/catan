@@ -6,7 +6,7 @@ import shared.model.IGame;
 import java.util.List;
 
 /**
- * Created by Wyatt on 12/6/2014.
+ * Created by Wyatt - 12/6/2014.
  */
 public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO {
     public FolderCommandsDAO(FolderPersistenceManager folderPersistenceManager) throws PersistenceException {
@@ -14,12 +14,12 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
     }
 
     @Override
-    public void saveCommand(ICommand command) {
+    public void saveCommand(ICommand command) throws PersistenceException {
         // TODO
     }
 
     @Override
-    public List<ICommand> loadCommands(IGame game) {
+    public List<ICommand> loadCommands(IGame game) throws PersistenceException {
         // TODO
         return null;
     }

@@ -19,7 +19,7 @@ public interface IPersistenceManager {
     /**
      * Ends a transaction with the persistence layer.
      */
-    public void endTransaction(boolean commit) throws PersistenceException;
+    public void endTransaction(boolean commit);
 
     /**
      * Delete any stored data on disk.

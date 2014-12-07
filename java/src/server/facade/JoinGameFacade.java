@@ -2,6 +2,7 @@ package server.facade;
 
 import server.command.IllegalCommandException;
 import server.command.JoinGameCommand;
+import server.persistence.IPersistenceManager;
 import shared.communication.*;
 import shared.model.IGame;
 import shared.model.IGameManager;
@@ -14,12 +15,14 @@ import java.io.*;
  * Created by Spencer Weight - 11/5/2014.
  */
 public class JoinGameFacade implements IJoinGameFacade {
+    private IPersistenceManager m_persistenceManager;
     private IGameManager m_gameManager;
     private IUserManager m_userManager;
 
-    public JoinGameFacade(IGameManager gameManager, IUserManager userManager) {
+    public JoinGameFacade(IGameManager gameManager, IUserManager userManager, IPersistenceManager persistenceManager) {
         m_gameManager = gameManager;
         m_userManager = userManager;
+        m_persistenceManager = persistenceManager;
     }
 
     /**

@@ -7,11 +7,15 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A persistence manager that uses a SQLite database.
  */
 public class SQLitePersistenceManager extends AbstractPersistenceManager {
+    private static Logger logger = Logger.getLogger("catanserver");
+
     private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
 
     private static String dbName;
@@ -38,7 +42,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
     /**
      * Ends a transaction with the persistence layer.
      */
-    public void endTransaction(boolean commit) throws PersistenceException {
+    public void endTransaction(boolean commit) {
         try {
             if (commit) {
                 connection.get().commit();
@@ -46,13 +50,13 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
                 connection.get().rollback();
             }
         } catch (SQLException e) {
-            throw new PersistenceException();
+            logger.log(Level.WARNING, "Failed to end transaction.", e);
         } finally {
-            if (connection != null) {
+            if (connection.get() != null) {
                 try {
                     connection.get().close();
                 } catch (SQLException e) {
-                    throw new PersistenceException();
+                    logger.log(Level.WARNING, "Failed to close connection.", e);
                 }
             }
         }

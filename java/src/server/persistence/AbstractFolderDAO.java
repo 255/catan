@@ -50,6 +50,12 @@ public abstract class AbstractFolderDAO {
         }
     }
 
+    /**
+     * Serialize an object to a file.
+     * @param object the object to serialize
+     * @param file the file where it should be put
+     * @throws PersistenceException if writing the object fails
+     */
     protected static void writeFile(Object object, Path file) throws PersistenceException {
         try (ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(file))) {
             writer.writeObject(object);
@@ -59,11 +65,19 @@ public abstract class AbstractFolderDAO {
         }
     }
 
+    /**
+     * Read a serialized object from a file.
+     * @param file the file to read
+     * @param <T> the type of the object to cast (usually inferred)
+     * @return the object cast into the correct type
+     * @throws PersistenceException
+     */
     @SuppressWarnings("unchecked")
     protected static <T> T readFile(Path file) throws PersistenceException {
         try (ObjectInputStream reader = new ObjectInputStream(Files.newInputStream(file))) {
             return (T) reader.readObject();
-        } catch (ClassNotFoundException | IOException e) {
+        }
+        catch (ClassNotFoundException | IOException e) {
             throw new PersistenceException("Failed reading game from disk.", e);
         }
     }

@@ -1,6 +1,7 @@
 package server.facade;
 
 import server.command.*;
+import server.persistence.IPersistenceManager;
 import shared.communication.*;
 import shared.model.IGame;
 import shared.model.IGameManager;
@@ -10,10 +11,12 @@ import shared.model.ModelException;
  * Created by Spencer Weight - 11/5/2014.
  */
 public class MovesFacade implements IMovesFacade {
-    IGameManager gameManager;
+    private IPersistenceManager m_persistenceManager;
+    private IGameManager gameManager;
 
-    public MovesFacade(IGameManager gameManager) {
+    public MovesFacade(IGameManager gameManager, IPersistenceManager persistenceManager) {
         this.gameManager = gameManager;
+        m_persistenceManager = persistenceManager;
     }
 
     /**

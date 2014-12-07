@@ -85,7 +85,7 @@ public class Server {
 		}
         catch (IOException e) {
 			logger.log(Level.SEVERE, e.getMessage(), e);
-			logger.severe("The server cannot intialize. Terminating.");
+			logger.severe("The server cannot initialize. Terminating.");
 			logger.exiting("server.Server", "run");
 			return null;
 		}
@@ -112,10 +112,10 @@ public class Server {
         IGameManager gameManager = new GameManager();
         IUserManager userManager = new UserManager();
 
-        final IUserFacade userFacade = new UserFacade(userManager);
-        final IJoinGameFacade joinGameFacade = new JoinGameFacade(gameManager, userManager);
+        final IUserFacade userFacade = new UserFacade(userManager, persistenceManager);
+        final IJoinGameFacade joinGameFacade = new JoinGameFacade(gameManager, userManager, persistenceManager);
         final IGameFacade gameFacade = new GameFacade(gameManager);
-        final IMovesFacade movesFacade = new MovesFacade(gameManager);
+        final IMovesFacade movesFacade = new MovesFacade(gameManager, persistenceManager);
         final IUtilityFacade utilityFacade = new UtilityFacade();
 
         // TODO: this is test initialization code and may break at any time
