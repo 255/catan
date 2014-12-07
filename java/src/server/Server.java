@@ -5,10 +5,7 @@ import server.command.IllegalCommandException;
 import server.debug.SwaggerHandler;
 import server.facade.*;
 import server.handler.*;
-import server.persistence.IPersistenceManager;
-import server.persistence.IPersistenceManagerLoader;
-import server.persistence.InvalidPluginException;
-import server.persistence.PersistenceManagerLoader;
+import server.persistence.*;
 import shared.communication.*;
 import shared.model.*;
 
@@ -76,6 +73,14 @@ public class Server {
         return run(portNumber, null, DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS);
     }
 
+    /**
+     * Start the server.
+     * @param portNumber the port number to use
+     * @param persistenceOption the name of the persistence plugin to user
+     * @param commandsBetweenCheckpoints the number of commands to put save between checkpoints
+     * @return the HttpServer object that is running
+     * @throws InvalidPluginException if the persistenceOption specified is invalid
+     */
 	public HttpServer run(int portNumber, String persistenceOption, int commandsBetweenCheckpoints) throws InvalidPluginException {
 		logger.entering("server.Server", "run");
 		
@@ -108,34 +113,28 @@ public class Server {
      * @param server the server object
      */
     private void setupHandlers(HttpServer server, IPersistenceManager persistenceManager) {
+
         // define the facades
-        IGameManager gameManager = new GameManager();
-        IUserManager userManager = new UserManager();
+        IGameManager gameManager;
+        IUserManager userManager;
+
+        try {
+            persistenceManager.startTransaction();
+            userManager = persistenceManager.createUsersDAO().loadUsers();
+            gameManager = persistenceManager.createGamesDAO().loadGames();
+            persistenceManager.endTransaction(true);
+        }
+        catch (PersistenceException e) {
+            logger.log(Level.WARNING, "Failed to load persistence data from disk.", e);
+            userManager = new UserManager();
+            gameManager = new GameManager();
+        }
 
         final IUserFacade userFacade = new UserFacade(userManager, persistenceManager);
         final IJoinGameFacade joinGameFacade = new JoinGameFacade(gameManager, userManager, persistenceManager);
         final IGameFacade gameFacade = new GameFacade(gameManager);
         final IMovesFacade movesFacade = new MovesFacade(gameManager, persistenceManager);
         final IUtilityFacade utilityFacade = new UtilityFacade();
-
-        // TODO: this is test initialization code and may break at any time
-        try {
-            gameManager.createGame("Deep Blue vs. Garry Kasparov", false, false, false);
-
-            userManager.createUser("Sam", "sam");
-            userManager.createUser("Pete", "pete");
-            userManager.createUser("Mark", "mark");
-            userManager.createUser("Bob", "bob");
-            userManager.createUser("Brooke", "brooke");
-
-            gameManager.getGame(0).joinGame(userManager.getUser(0), shared.definitions.CatanColor.RED);
-            gameManager.getGame(0).joinGame(userManager.getUser(1), shared.definitions.CatanColor.BLUE);
-            gameManager.getGame(0).joinGame(userManager.getUser(2), shared.definitions.CatanColor.GREEN);
-            gameManager.getGame(0).joinGame(userManager.getUser(3), shared.definitions.CatanColor.PUCE);
-        } catch (ModelException e) {
-            e.printStackTrace();
-            assert false : "Debug code is broken";
-        }
 
         // Create HTTPHandlers for each type of request
 

@@ -1,5 +1,8 @@
-package server.persistence;
+package plugin;
 
+import server.persistence.AbstractFolderDAO;
+import server.persistence.IGamesDAO;
+import server.persistence.PersistenceException;
 import shared.model.GameManager;
 import shared.model.IGame;
 import shared.model.IGameManager;
@@ -19,11 +22,12 @@ public class FolderGamesDAO extends AbstractFolderDAO implements IGamesDAO {
 
     @Override
     public void saveGame(IGame game) throws PersistenceException {
-        writeFile(game, getDirectory().resolve(Integer.toString(game.getID())));
+        writeFile(game, Integer.toString(game.getID()));
     }
 
     @Override
     public IGameManager loadGames() throws PersistenceException {
+        // TODO: need to load commands for each game!
         IGameManager gameManager = new GameManager();
 
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory())) {

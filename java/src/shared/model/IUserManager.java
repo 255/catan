@@ -42,4 +42,12 @@ public interface IUserManager {
      * @return the user
      */
     public IUser getUser(int id) throws ModelException;
+
+    /**
+     * Add a complete user object that was loaded from disk.
+     * Also updates the next ID of the user manager to a valid value.
+     * @param user the user object to add to the UserManager
+     * @exception ModelException if the user is a duplicate
+     */
+    public void loadUser(IUser user) throws ModelException;
 }

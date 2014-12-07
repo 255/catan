@@ -1,5 +1,7 @@
 package server.persistence;
 
+import plugin.FolderPersistenceManager;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -51,10 +53,21 @@ public abstract class AbstractFolderDAO {
     }
 
     /**
+     * Serialize an object to a file in the DAO's working directory.
+     * @param object the object to serialize
+     * @param fileName the name of the file to write to this directory
+     * @throws PersistenceException if writing the object fails
+     */
+    protected void writeFile(Object object, String fileName) throws PersistenceException {
+        Path file = getDirectory().resolve(fileName);
+        writeFile(object, file);
+    }
+
+    /**
      * Serialize an object to a file.
      * @param object the object to serialize
      * @param file the file where it should be put
-     * @throws PersistenceException if writing the object fails
+     * @throws PersistenceException if writing the object failes
      */
     protected static void writeFile(Object object, Path file) throws PersistenceException {
         try (ObjectOutputStream writer = new ObjectOutputStream(Files.newOutputStream(file))) {

@@ -5,7 +5,7 @@ package shared.model;
  */
 public class User implements IUser {
     private String name;
-    private transient String m_password;
+    private String m_password;
     private int playerID;
 
     public User(String username, String password, int id) {

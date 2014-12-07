@@ -1,10 +1,12 @@
-package server.persistence;
+package plugin;
+
+import server.persistence.*;
 
 /**
  * A persistence manager that stores data in folders on disk.
  */
 public class FolderPersistenceManager extends AbstractPersistenceManager {
-    protected FolderPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+    public FolderPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         super(commandsBetweenCheckpoints);
     }
 

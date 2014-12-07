@@ -3,7 +3,6 @@ package server.persistence;
 import server.command.ICommand;
 import shared.model.IGame;
 
-import javax.jnlp.PersistenceService;
 import java.util.List;
 
 /**

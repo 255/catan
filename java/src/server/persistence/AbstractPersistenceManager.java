@@ -31,7 +31,7 @@ public abstract class AbstractPersistenceManager implements IPersistenceManager 
      * @return the root directory Path
      * @throws PersistenceException if the root directory does not exist and cannot be created
      */
-    Path getRootDirectory() {
+    public Path getRootDirectory() {
         return ROOT_DIR;
     }
 

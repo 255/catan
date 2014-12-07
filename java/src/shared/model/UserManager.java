@@ -62,4 +62,20 @@ public class UserManager implements IUserManager {
             throw new ModelException("No user with ID " + id + " exists.");
         }
     }
+
+    @Override
+    public void loadUser(IUser user) throws ModelException {
+        if (!m_users.containsKey(user.getId())) {
+            m_users.put(user.getId(), user);
+
+            // always set the next user ID to be 1 greater than the last largest ID
+            if (user.getId() > m_nextUserId-1) {
+                m_nextUserId = user.getId() + 1;
+            }
+            assert !m_users.containsKey(m_nextUserId) : "Messed up setting nextUserId -- " + m_nextUserId + " is already used!";
+        }
+        else {
+            throw new ModelException("Loaded multiple users with the same ID: " + user.getId());
+        }
+    }
 }

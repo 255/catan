@@ -8,13 +8,13 @@ public class PersistenceException extends Exception {
 	/**
 	 * Construct an exception with no specified message.
 	 */
-	PersistenceException() {}
+    public PersistenceException() {}
 
 	/**
 	 * Construct an exception with a specified message.
 	 * @param message a message containing details about the problem
 	 */
-	PersistenceException(String message) {
+    public PersistenceException(String message) {
 		super(message);
 	}
 
@@ -22,7 +22,7 @@ public class PersistenceException extends Exception {
 	 * Construct an with another exception as its cause.
 	 * @param cause the exception that triggered this exception
 	 */
-	PersistenceException(Throwable cause) {
+    public PersistenceException(Throwable cause) {
 		super(cause);
 	}
 
@@ -32,7 +32,7 @@ public class PersistenceException extends Exception {
 	 * @param message a message to add to the exception
 	 * @param cause the exception that triggered this exception
 	 */
-	PersistenceException(String message, Throwable cause) {
+    public PersistenceException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }

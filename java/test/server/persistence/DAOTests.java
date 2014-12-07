@@ -1,6 +1,8 @@
 package server.persistence;
 
 import org.junit.Test;
+import plugin.FolderPersistenceManager;
+import plugin.FolderUsersDAO;
 import shared.model.IUser;
 import shared.model.IUserManager;
 import shared.model.User;
