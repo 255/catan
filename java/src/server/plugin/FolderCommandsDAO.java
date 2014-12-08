@@ -47,7 +47,6 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
         }
 
         // execute commands on the game in order
-        // TODO: the commands will be executed here
         try {
             for (ICommand command : orderedCommands.values()) {
                 command.setGameAndPlayers(game);
