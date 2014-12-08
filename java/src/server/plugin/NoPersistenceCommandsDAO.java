@@ -16,7 +16,7 @@ public class NoPersistenceCommandsDAO implements ICommandsDAO {
     }
 
     @Override
-    public List<ICommand> loadCommands(IGame game) {
-        return new ArrayList<>();
+    public void loadCommands(IGame game) {
+
     }
 }

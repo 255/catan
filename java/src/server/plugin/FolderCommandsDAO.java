@@ -33,9 +33,8 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
     }
 
     @Override
-    public List<ICommand> loadCommands(IGame game) throws PersistenceException {
+    public void loadCommands(IGame game) throws PersistenceException {
         SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
-        // TODO
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory().resolve(Integer.toString(game.getID())))) {
             // read in all of the commands
             for (Path path : directoryStream) {
@@ -48,7 +47,7 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
         }
 
         // execute commands on the game in order
-        // TODO: should commands be executed here or in the calling function?
+        // TODO: the commands will be executed here
         try {
             for (ICommand command : orderedCommands.values()) {
                 command.setGameAndPlayers(game);
@@ -58,8 +57,5 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
         catch (ModelException e) {
             throw new PersistenceException("Failed executing command.", e);
         }
-
-        // TODO: if commands are executed here, nothing should be returned
-        return new ArrayList<>(orderedCommands.values());
     }
 }
