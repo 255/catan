@@ -20,7 +20,7 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
     }
 
     @Override
-    public List<ICommand> loadCommands(IGame game) throws PersistenceException {
-        return null;
+    public void loadCommands(IGame game) throws PersistenceException {
+
     }
 }

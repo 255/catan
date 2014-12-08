@@ -23,5 +23,5 @@ public interface ICommandsDAO {
      * @param game the game object for which the commands should be loaded
      * @return a list of commands in the order they should be executed
      */
-    public List<ICommand> loadCommands(IGame game) throws PersistenceException;
+    public void loadCommands(IGame game) throws PersistenceException;
 }
