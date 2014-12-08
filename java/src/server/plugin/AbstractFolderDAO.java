@@ -38,19 +38,28 @@ public abstract class AbstractFolderDAO {
      * Delete all of the data controlled by this DAO.
      */
     public void clear() throws PersistenceException {
-        // TODO: support subdirectories in commands DAO
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory())) {
+        deleteDirectoryContents(getDirectory());
+    }
+        
+    /**
+     * Delete all of the files in a directory.
+     * @param directory the directory to clear
+     */
+    public static void deleteDirectoyContents(Path directory) throws PersistenceException {
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
             for (Path path : directoryStream) {
                 // delete everything, ignoring subfolders
-                if (Files.isRegularFile(path)) {
-                    Files.delete(path);
+                if (Files.isDirectory(path) {
+                    deleteDirectoryContents(path);
                 }
+                Files.delete(path);
             }
         }
         catch (IOException e) {
             throw new PersistenceException("Failed to delete persistence data.", e);
         }
     }
+
 
     /**
      * Serialize an object to a file in the DAO's working directory.
