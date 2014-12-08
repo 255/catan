@@ -1,5 +1,6 @@
 package server.plugin;
 
+import server.persistence.AbstractPersistenceManager;
 import server.persistence.PersistenceException;
 import server.plugin.FolderPersistenceManager;
 
@@ -25,19 +26,8 @@ public abstract class AbstractFolderDAO {
     }
 
     protected Path getDirectory() throws PersistenceException {
-        ensureDirectoryExists(m_dataDir);
+        AbstractPersistenceManager.ensureDirectoryExists(m_dataDir);
         return m_dataDir;
-    }
-
-    protected static void ensureDirectoryExists(Path directory) throws PersistenceException {
-        if (!Files.isDirectory(directory)) {
-            try {
-                Files.createDirectory(directory);
-            }
-            catch (IOException e) {
-                throw new PersistenceException("Failed to create persistence subdirectory: " + directory, e);
-            }
-        }
     }
 
     protected FolderPersistenceManager getPersistenceManager() {

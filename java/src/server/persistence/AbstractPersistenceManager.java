@@ -16,12 +16,21 @@ public abstract class AbstractPersistenceManager implements IPersistenceManager 
     protected AbstractPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         m_commandsBetweenCheckpoints = commandsBetweenCheckpoints;
 
-        if (!Files.isDirectory(ROOT_DIR)) {
+        ensureDirectoryExists(ROOT_DIR);
+    }
+
+    /**
+     * Check if a directory exists. If it does not, create it.
+     * @param directory the directory to check
+     * @throws PersistenceException if the directory does not exist and cannot be created
+     */
+    public static void ensureDirectoryExists(Path directory) throws PersistenceException {
+        if (!Files.isDirectory(directory)) {
             try {
-                Files.createDirectory(ROOT_DIR);
+                Files.createDirectory(directory);
             }
             catch (IOException e) {
-                throw new PersistenceException("Failed to create the root directory for persistence.", e);
+                throw new PersistenceException("Failed to create persistence subdirectory: " + directory, e);
             }
         }
     }

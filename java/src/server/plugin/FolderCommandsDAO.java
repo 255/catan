@@ -1,6 +1,7 @@
 package server.plugin;
 
 import server.command.ICommand;
+import server.persistence.AbstractPersistenceManager;
 import server.persistence.ICommandsDAO;
 import server.persistence.PersistenceException;
 import shared.model.IGame;
@@ -27,30 +28,37 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
     public void saveCommand(ICommand command) throws PersistenceException {
         // TODO: implement checkpoint thingy
         String gameFolder = Integer.toString(command.getGame().getID());
-        ensureDirectoryExists(getDirectory().resolve(gameFolder));
+        AbstractPersistenceManager.ensureDirectoryExists(getDirectory().resolve(gameFolder));
         writeFile(command, gameFolder, Integer.toString(command.getGame().getModelVersion()));
     }
 
     @Override
     public List<ICommand> loadCommands(IGame game) throws PersistenceException {
-        SortedMap<Integer, ICommand> orderedCommands = new TreeMap<Integer, ICommand>();
+        SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
         // TODO
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory().resolve(Integer.toString(game.getID())))) {
+            // read in all of the commands
             for (Path path : directoryStream) {
                 ICommand command = readFile(path);
                 orderedCommands.put(Integer.parseInt(path.getFileName().toString()), command);
             }
+        }
+        catch (IOException e) {
+            throw new PersistenceException("Failed reading command.", e);
+        }
 
-            // execute commands on the game in order
-            // TODO: should commands be executed here or in the calling function?
+        // execute commands on the game in order
+        // TODO: should commands be executed here or in the calling function?
+        try {
             for (ICommand command : orderedCommands.values()) {
                 command.setGameAndPlayers(game);
                 command.execute();
             }
         }
-        catch (IOException | ModelException e) {
-            throw new PersistenceException(e);
+        catch (ModelException e) {
+            throw new PersistenceException("Failed executing command.", e);
         }
+
         // TODO: if commands are executed here, nothing should be returned
         return new ArrayList<>(orderedCommands.values());
     }
