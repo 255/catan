@@ -85,21 +85,19 @@ public class Game extends Observable implements IGame {
         m_winner = null;
     }
 
-
-    /**
-     * Get the game's name
-     */
     @Override
     public String getName() {
         return m_name;
     }
 
-    /**
-     * Get the game's gameID
-     */
     @Override
     public Integer getID() {
         return m_id;
+    }
+
+    @Override
+    public int getModelVersion() {
+        return m_version;
     }
 
     /**
@@ -164,7 +162,7 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
-    public IPlayer getPlayer(int index) throws ModelException {
+    public IPlayer getPlayerByIndex(int index) throws ModelException {
         if (index == Player.NO_PLAYER) {
             return null;
         }
@@ -175,17 +173,25 @@ public class Game extends Observable implements IGame {
     }
 
     @Override
+    public IPlayer getPlayerByID(int id) throws ModelException {
+        if (id != Player.NO_PLAYER) {
+            for (IPlayer player : getPlayers()) {
+                if (player.getId() == id) {
+                    return player;
+                }
+            }
+        }
+
+        throw new ModelException("Invalid player ID " + id + " requested.");
+    }
+
+    @Override
     public void setPlayers(List<IPlayer> players) {
         assert players != null;
         m_players = players;
         setChanged();
     }
 
-    /**
-     * Get the available resources.
-     *
-     * @return the available resources
-     */
     @Override
     public IResourceBank getResourceBank() {
         return m_resourceBank;
@@ -638,6 +644,7 @@ public class Game extends Observable implements IGame {
             // Add that random card to the player's hand
             player.getResources().add(1, resource);
         }
+        assert verifyResourceAmount();
 
         m_state = GameState.Playing; // always goes to playing, whether after rolling 7 or playing card
     }

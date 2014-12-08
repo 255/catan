@@ -1,7 +1,7 @@
 package server.persistence;
 
 /**
- * An exception thrown when something goes wrong while trying to load a plugin.
+ * An exception thrown when something goes wrong while trying to load a server.plugin.
  */
 @SuppressWarnings("serial")
 public class PersistenceException extends Exception {

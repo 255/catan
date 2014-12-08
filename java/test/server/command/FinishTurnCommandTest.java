@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import shared.definitions.DevCardType;
-import shared.definitions.ResourceType;
 import shared.model.*;
 
 import static org.junit.Assert.assertTrue;
@@ -19,7 +18,7 @@ public class FinishTurnCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/state_playing.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 

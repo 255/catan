@@ -17,7 +17,7 @@ public class OfferTradeCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/state_playing.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 
@@ -29,7 +29,7 @@ public class OfferTradeCommandTest {
 
     @Test
     public void testOfferTrade() throws Exception {
-        IPlayer player2 = game.getPlayer(1);
+        IPlayer player2 = game.getPlayerByIndex(1);
         IResourceBank offer = new ResourceBank(1, -1, 0, 0, 0);
         new OfferTradeCommand(game, player, player2, offer).execute();
         assertTrue("Trade offer should be set", game.getTradeOffer().getOffer().equals(offer));

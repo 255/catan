@@ -16,7 +16,7 @@ public class DiscardCardsCommandTest {
     public void setUp() throws Exception {
 
         game = initAGame("sample/discards_command_test.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
     }
 
     @Test

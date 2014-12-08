@@ -76,7 +76,7 @@ public class Server {
     /**
      * Start the server.
      * @param portNumber the port number to use
-     * @param persistenceOption the name of the persistence plugin to user
+     * @param persistenceOption the name of the persistence server.plugin to user
      * @param commandsBetweenCheckpoints the number of commands to put save between checkpoints
      * @return the HttpServer object that is running
      * @throws InvalidPluginException if the persistenceOption specified is invalid
@@ -114,7 +114,7 @@ public class Server {
      */
     private void setupHandlers(HttpServer server, IPersistenceManager persistenceManager) {
 
-        // define the facades
+        // load the persistent data
         IGameManager gameManager;
         IUserManager userManager;
 
@@ -130,6 +130,7 @@ public class Server {
             gameManager = new GameManager();
         }
 
+        // setup the facades
         final IUserFacade userFacade = new UserFacade(userManager, persistenceManager);
         final IJoinGameFacade joinGameFacade = new JoinGameFacade(gameManager, userManager, persistenceManager);
         final IGameFacade gameFacade = new GameFacade(gameManager);
@@ -392,7 +393,7 @@ public class Server {
             System.err.println("Usage:\n\tjava Server PORT_NUMBER");
         }
         catch (InvalidPluginException e) {
-            System.err.println("Cannot load persistence plugin " + persistenceOption);
+            System.err.println("Cannot load persistence server.plugin " + persistenceOption);
             e.printStackTrace();
         }
     }

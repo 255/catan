@@ -1,4 +1,4 @@
-package plugin;
+package server.plugin;
 
 import server.command.ICommand;
 import server.persistence.ICommandsDAO;

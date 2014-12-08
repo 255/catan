@@ -33,6 +33,12 @@ public interface IGame extends Serializable {
     public Integer getID();
 
     /**
+     * Get the game's model number.
+     * @return the number of the game
+     */
+    public int getModelVersion();
+
+    /**
      * Reset the game.
      * Set all of its members to null.
      * This is used before re-initializing the game.
@@ -102,7 +108,15 @@ public interface IGame extends Serializable {
      * @param index the turn index
      * @return the player
      */
-    public IPlayer getPlayer(int index) throws ModelException;
+    public IPlayer getPlayerByIndex(int index) throws ModelException;
+
+     /**
+       * Get a player by turn index.
+       *
+       * @param id the user ID of the user who is using this player
+       * @return the player
+       */
+    public IPlayer getPlayerByID(int id) throws ModelException;
 
     /**
      * Set the list of players for the game

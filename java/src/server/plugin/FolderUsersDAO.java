@@ -1,6 +1,5 @@
-package plugin;
+package server.plugin;
 
-import server.persistence.AbstractFolderDAO;
 import server.persistence.IUsersDAO;
 import server.persistence.PersistenceException;
 import shared.model.IUser;
@@ -28,6 +27,7 @@ public class FolderUsersDAO extends AbstractFolderDAO implements IUsersDAO {
      */
     @Override
     public void addUser(IUser newUser) throws PersistenceException {
+        assert newUser != null;
         writeFile(newUser, newUser.getUsername() + ".dat");
     }
 

@@ -18,7 +18,7 @@ public class MonopolyCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/dev_cards.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 
@@ -31,12 +31,12 @@ public class MonopolyCommandTest {
     @Test
     public void testPlayMonopoly() throws Exception {
         game.setResourceBank(new ResourceBank());
-        game.getPlayer(0).removeResources(new ResourceBank(1, 1, 1, 1, 1));
+        game.getPlayerByIndex(0).removeResources(new ResourceBank(1, 1, 1, 1, 1));
         new MonopolyCommand(game, player, ResourceType.BRICK).execute();
-        assertTrue("Player1 should have 19 brick", game.getPlayer(0).getResources().getCount(ResourceType.BRICK) == 19);
-        assertTrue("Player2 should have no brick", game.getPlayer(1).getResources().getCount(ResourceType.BRICK) == 0);
-        assertTrue("Player3 should have no brick", game.getPlayer(2).getResources().getCount(ResourceType.BRICK) == 0);
-        assertTrue("Player4 should have no brick", game.getPlayer(3).getResources().getCount(ResourceType.BRICK) == 0);
+        assertTrue("Player1 should have 19 brick", game.getPlayerByIndex(0).getResources().getCount(ResourceType.BRICK) == 19);
+        assertTrue("Player2 should have no brick", game.getPlayerByIndex(1).getResources().getCount(ResourceType.BRICK) == 0);
+        assertTrue("Player3 should have no brick", game.getPlayerByIndex(2).getResources().getCount(ResourceType.BRICK) == 0);
+        assertTrue("Player4 should have no brick", game.getPlayerByIndex(3).getResources().getCount(ResourceType.BRICK) == 0);
     }
 
     @Test(expected = IllegalCommandException.class)

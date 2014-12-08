@@ -19,7 +19,7 @@ public class RoadBuildingCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/state_playing.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 

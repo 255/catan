@@ -28,7 +28,7 @@ public class MaritimeTradeCommandTest {
         game.setGameState(GameState.Playing);
         boolean isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(0), ResourceType.BRICK, ResourceType.ORE, 4);
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(0), ResourceType.BRICK, ResourceType.ORE, 4);
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
@@ -36,7 +36,7 @@ public class MaritimeTradeCommandTest {
 
         isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(2), ResourceType.BRICK, ResourceType.ORE, 4).execute();
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(2), ResourceType.BRICK, ResourceType.ORE, 4).execute();
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
@@ -45,7 +45,7 @@ public class MaritimeTradeCommandTest {
         // Test 4:1 trade when you don't have enough resources to do it.
         isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(2), ResourceType.BRICK, ResourceType.ORE, 4);
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(2), ResourceType.BRICK, ResourceType.ORE, 4);
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
@@ -54,27 +54,27 @@ public class MaritimeTradeCommandTest {
         // Test trading 4:1 of the same resource.
         isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(2), ResourceType.ORE, ResourceType.WOOD, 4).execute();
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(2), ResourceType.ORE, ResourceType.WOOD, 4).execute();
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
         assertFalse(isExceptionThrown);
 
         // Test 3:1 when you don't have a 3:1 port.
-        game.setCurrentPlayer(game.getPlayer(0));
+        game.setCurrentPlayer(game.getPlayerByIndex(0));
         isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(0), ResourceType.WHEAT, ResourceType.WOOD, 3);
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(0), ResourceType.WHEAT, ResourceType.WOOD, 3);
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
         assertTrue(isExceptionThrown);
 
         // Test 3:1 when you don't have enough resources.
-        game.setCurrentPlayer(game.getPlayer(3));
+        game.setCurrentPlayer(game.getPlayerByIndex(3));
         isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(3), ResourceType.SHEEP, ResourceType.WOOD, 3);
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(3), ResourceType.SHEEP, ResourceType.WOOD, 3);
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
@@ -83,17 +83,17 @@ public class MaritimeTradeCommandTest {
         // Test 2:1 when you don't have a 2:1 port.
         isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(3), ResourceType.ORE, ResourceType.WOOD, 2);
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(3), ResourceType.ORE, ResourceType.WOOD, 2);
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
         assertTrue(isExceptionThrown);
 
         // Test 2:1 when you don't have enough resources.
-        game.setCurrentPlayer(game.getPlayer(2));
+        game.setCurrentPlayer(game.getPlayerByIndex(2));
         isExceptionThrown = false;
         try {
-            new MaritimeTradeCommand(game, game.getPlayer(2), ResourceType.SHEEP, ResourceType.WOOD, 2);
+            new MaritimeTradeCommand(game, game.getPlayerByIndex(2), ResourceType.SHEEP, ResourceType.WOOD, 2);
         } catch (IllegalCommandException ex) {
             isExceptionThrown = true;
         }
@@ -105,25 +105,25 @@ public class MaritimeTradeCommandTest {
     public void testMaritimeTrade() throws Exception {
 
         // Test that the correct resource have been taken and given in a 4:1
-        game.setCurrentPlayer(game.getPlayer(1));
-        new MaritimeTradeCommand(game, game.getPlayer(1), ResourceType.WOOD, ResourceType.SHEEP, 4).execute();
-        assertEquals(game.getPlayer(1).getResources().getWood(), 0);
-        assertEquals(game.getPlayer(1).getResources().getSheep(), 5);
+        game.setCurrentPlayer(game.getPlayerByIndex(1));
+        new MaritimeTradeCommand(game, game.getPlayerByIndex(1), ResourceType.WOOD, ResourceType.SHEEP, 4).execute();
+        assertEquals(game.getPlayerByIndex(1).getResources().getWood(), 0);
+        assertEquals(game.getPlayerByIndex(1).getResources().getSheep(), 5);
         assertEquals(game.getResourceBank().getWood(), 7);
         assertEquals(game.getResourceBank().getSheep(), 7);
 
         // Test that the correct resource have been taken and given in a 3:1
-        new MaritimeTradeCommand(game, game.getPlayer(1), ResourceType.BRICK, ResourceType.ORE, 3).execute();
-        assertEquals(game.getPlayer(1).getResources().getBrick(), 1);
-        assertEquals(game.getPlayer(1).getResources().getOre(), 5);
+        new MaritimeTradeCommand(game, game.getPlayerByIndex(1), ResourceType.BRICK, ResourceType.ORE, 3).execute();
+        assertEquals(game.getPlayerByIndex(1).getResources().getBrick(), 1);
+        assertEquals(game.getPlayerByIndex(1).getResources().getOre(), 5);
         assertEquals(game.getResourceBank().getBrick(), 6);
         assertEquals(game.getResourceBank().getOre(), 2);
 
         // Test that the correct resource have been taken and given in a 2:1
-        game.setCurrentPlayer(game.getPlayer(0));
-        new MaritimeTradeCommand(game, game.getPlayer(0), ResourceType.WOOD, ResourceType.ORE, 2).execute();
-        assertEquals(game.getPlayer(0).getResources().getWood(), 2);
-        assertEquals(game.getPlayer(0).getResources().getOre(), 5);
+        game.setCurrentPlayer(game.getPlayerByIndex(0));
+        new MaritimeTradeCommand(game, game.getPlayerByIndex(0), ResourceType.WOOD, ResourceType.ORE, 2).execute();
+        assertEquals(game.getPlayerByIndex(0).getResources().getWood(), 2);
+        assertEquals(game.getPlayerByIndex(0).getResources().getOre(), 5);
         assertEquals(game.getResourceBank().getWood(), 9);
         assertEquals(game.getResourceBank().getOre(), 1);
     }

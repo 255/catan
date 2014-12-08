@@ -1,6 +1,7 @@
-package server.persistence;
+package server.plugin;
 
-import plugin.FolderPersistenceManager;
+import server.persistence.PersistenceException;
+import server.plugin.FolderPersistenceManager;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Handle interactions with the folder persistence implementation.
@@ -23,22 +25,30 @@ public abstract class AbstractFolderDAO {
     }
 
     protected Path getDirectory() throws PersistenceException {
-        if (!Files.isDirectory(m_dataDir)) {
+        ensureDirectoryExists(m_dataDir);
+        return m_dataDir;
+    }
+
+    protected static void ensureDirectoryExists(Path directory) throws PersistenceException {
+        if (!Files.isDirectory(directory)) {
             try {
-                Files.createDirectory(m_dataDir);
+                Files.createDirectory(directory);
             }
             catch (IOException e) {
-                throw new PersistenceException("Cannot create persistence subfolder.", e);
+                throw new PersistenceException("Failed to create persistence subdirectory: " + directory, e);
             }
         }
+    }
 
-        return m_dataDir;
+    protected FolderPersistenceManager getPersistenceManager() {
+        return m_persistenceManager;
     }
 
     /**
      * Delete all of the data controlled by this DAO.
      */
     public void clear() throws PersistenceException {
+        // TODO: support subdirectories in commands DAO
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory())) {
             for (Path path : directoryStream) {
                 // delete everything, ignoring subfolders
@@ -55,11 +65,12 @@ public abstract class AbstractFolderDAO {
     /**
      * Serialize an object to a file in the DAO's working directory.
      * @param object the object to serialize
-     * @param fileName the name of the file to write to this directory
+     * @param fileOrSubdirectroyName the file name or subdirectory of the file
+     * @param fileOrSubdirectoryNames additional (optional) subdirectories -- the last arg must be the file name
      * @throws PersistenceException if writing the object fails
      */
-    protected void writeFile(Object object, String fileName) throws PersistenceException {
-        Path file = getDirectory().resolve(fileName);
+    protected void writeFile(Object object, String fileOrSubdirectroyName, String... fileOrSubdirectoryNames) throws PersistenceException {
+        Path file = getDirectory().resolve(Paths.get(fileOrSubdirectroyName, fileOrSubdirectoryNames));
         writeFile(object, file);
     }
 
@@ -91,7 +102,7 @@ public abstract class AbstractFolderDAO {
             return (T) reader.readObject();
         }
         catch (ClassNotFoundException | IOException e) {
-            throw new PersistenceException("Failed reading game from disk.", e);
+            throw new PersistenceException("Failed reading the file " + file + " from disk.", e);
         }
     }
 }

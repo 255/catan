@@ -4,6 +4,8 @@ import shared.definitions.DevCardType;
 import shared.locations.HexLocation;
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.ModelException;
+import shared.model.Player;
 
 import java.util.logging.Logger;
 
@@ -45,5 +47,14 @@ public class SoldierCommand extends AbstractCommand {
 
         getGame().calculateVictoryPoints();
         assert (getGame().verifyResourceAmount());
+    }
+
+    @Override
+    public void setGameAndPlayers(IGame game) throws ModelException {
+        super.setGameAndPlayers(game);
+
+        if (m_victim != null && m_victim.getId() != Player.NO_PLAYER) {
+            m_victim = getGame().getPlayerByIndex(m_victim.getIndex());
+        }
     }
 }

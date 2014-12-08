@@ -1,6 +1,6 @@
 package server.persistence;
 
-import plugin.NoPersistenceManager;
+import server.plugin.NoPersistenceManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -38,12 +38,12 @@ public class PersistenceManagerLoader implements IPersistenceManagerLoader {
             }
 
             ClassLoader loader = URLClassLoader.newInstance(new URL[]{jarFile.toUri().toURL()}, getClass().getClassLoader());
-            m_persistenceManagerClass = (Class<? extends IPersistenceManager>) loader.loadClass("plugin." + option);
+            m_persistenceManagerClass = (Class<? extends IPersistenceManager>) loader.loadClass("server.plugin." + option);
 
             logger.fine("Using the " + option + " plugin for data persistence.");
         }
         catch (ClassNotFoundException | MalformedURLException e) {
-            throw new InvalidPluginException("Error loading the persistence plugin \"" + option + "\".", e);
+            throw new InvalidPluginException("Error loading the persistence server.plugin \"" + option + "\".", e);
         }
         finally {
             logger.exiting("server.persistence.PersistenceManagerLoader", "loadPersistencePlugin");

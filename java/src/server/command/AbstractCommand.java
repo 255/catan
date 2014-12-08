@@ -2,6 +2,8 @@ package server.command;
 
 import shared.model.IGame;
 import shared.model.IPlayer;
+import shared.model.ModelException;
+import shared.model.Player;
 
 import java.util.logging.Logger;
 
@@ -14,7 +16,7 @@ public abstract class AbstractCommand implements ICommand {
     private static Logger logger = Logger.getLogger("catanserver");
 
     private IPlayer m_player;
-    private IGame m_game;
+    private transient IGame m_game;
     private String m_action;
 
     public AbstractCommand(IGame game, IPlayer player, String actionDescription) throws IllegalCommandException {
@@ -68,11 +70,24 @@ public abstract class AbstractCommand implements ICommand {
         }
     }
 
-    protected IPlayer getPlayer() {
+    protected final IPlayer getPlayer() {
         return m_player;
     }
 
-    protected IGame getGame() {
+    @Override
+    public void setGameAndPlayers(IGame game) throws ModelException {
+        assert m_game == null;
+        m_game = game;
+
+        // check if this is a command with no player (i.e. a join game command)
+        if (m_player.getIndex() != Player.NO_PLAYER) {
+            m_player = m_game.getPlayerByIndex(m_player.getIndex());
+        }
+    }
+
+    @Override
+    public final IGame getGame() {
+        assert m_game != null : "Game has not been set!";
         return m_game;
     }
 }

@@ -1,5 +1,6 @@
 package server.facade;
 
+import server.command.ICommand;
 import server.command.IllegalCommandException;
 import shared.communication.*;
 import shared.model.IGame;

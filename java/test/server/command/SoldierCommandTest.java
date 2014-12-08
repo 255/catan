@@ -3,7 +3,6 @@ package server.command;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import shared.definitions.ResourceType;
 import shared.locations.HexLocation;
 import shared.model.*;
 
@@ -19,7 +18,7 @@ public class SoldierCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/state_playing.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 
@@ -32,14 +31,14 @@ public class SoldierCommandTest {
     @Test
     public void testPlaySoldier() throws Exception {
         game.setResourceBank(new ResourceBank(12, 13, 11, 13, 12));
-        assertTrue("Player1 should have no soldiers", game.getPlayer(0).getSoldiers() == 0);
-        new SoldierCommand(game, player, game.getPlayer(1), new HexLocation(-1, -1)).execute();
-        assertTrue("Player1 should have 1 soldier", game.getPlayer(0).getSoldiers() == 1);
+        assertTrue("Player1 should have no soldiers", game.getPlayerByIndex(0).getSoldiers() == 0);
+        new SoldierCommand(game, player, game.getPlayerByIndex(1), new HexLocation(-1, -1)).execute();
+        assertTrue("Player1 should have 1 soldier", game.getPlayerByIndex(0).getSoldiers() == 1);
     }
 
     @Test(expected = IllegalCommandException.class)
     public void testPlayInvalidSoldier() throws Exception {
-        new SoldierCommand(game, player, game.getPlayer(1), new HexLocation(0, -2)).execute();
+        new SoldierCommand(game, player, game.getPlayerByIndex(1), new HexLocation(0, -2)).execute();
     }
 
     private IGame initAGame(String jsonTestFile) throws Exception {

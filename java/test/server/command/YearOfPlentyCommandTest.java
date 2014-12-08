@@ -18,7 +18,7 @@ public class YearOfPlentyCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/dev_cards.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 
@@ -31,10 +31,10 @@ public class YearOfPlentyCommandTest {
     @Test
     public void testPlayYearOfPlenty() throws Exception {
         game.setResourceBank(new ResourceBank(4, 4, 4, 4, 4));
-        game.getPlayer(0).removeResources(new ResourceBank(5, 5, 5, 5, 5));
+        game.getPlayerByIndex(0).removeResources(new ResourceBank(5, 5, 5, 5, 5));
         new YearOfPlentyCommand(game, player, ResourceType.WOOD, ResourceType.BRICK).execute();
-        assertTrue("Player1 should have 1 wood", game.getPlayer(0).getResources().getCount(ResourceType.WOOD) == 1);
-        assertTrue("Player1 should have 1 brick", game.getPlayer(0).getResources().getCount(ResourceType.BRICK) == 1);
+        assertTrue("Player1 should have 1 wood", game.getPlayerByIndex(0).getResources().getCount(ResourceType.WOOD) == 1);
+        assertTrue("Player1 should have 1 brick", game.getPlayerByIndex(0).getResources().getCount(ResourceType.BRICK) == 1);
     }
 
     @Test(expected = IllegalCommandException.class)

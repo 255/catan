@@ -18,7 +18,7 @@ public class BuildSettlementCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/empty_board.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 

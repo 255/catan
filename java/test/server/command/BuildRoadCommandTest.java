@@ -21,7 +21,7 @@ public class BuildRoadCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/empty_board.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 
@@ -97,7 +97,7 @@ public class BuildRoadCommandTest {
         new BuildRoadCommand(game, player, location, free).execute();
         assertTrue("Player victory points should be 0.", player.getVictoryPoints() == 0);
 
-        IPlayer player2 = game.getPlayer(1);
+        IPlayer player2 = game.getPlayerByIndex(1);
         game.setCurrentPlayer(player2);
         location = new EdgeLocation(-1, -1, EdgeDirection.North);
         new BuildRoadCommand(game, player2, location, free).execute();

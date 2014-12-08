@@ -21,7 +21,7 @@ public class MonumentCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/dev_cards.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 
@@ -33,9 +33,9 @@ public class MonumentCommandTest {
 
     @Test
     public void testPlayMonument() throws Exception {
-        assertTrue("Player1 should have 0 victory points", game.getPlayer(0).calculateVictoryPoints() == 0);
+        assertTrue("Player1 should have 0 victory points", game.getPlayerByIndex(0).calculateVictoryPoints() == 0);
         new MonumentCommand(game, player).execute();
-        assertTrue("Player1 should have 1 victory point", game.getPlayer(0).calculateVictoryPoints() == 1);
+        assertTrue("Player1 should have 1 victory point", game.getPlayerByIndex(0).calculateVictoryPoints() == 1);
     }
 
     @Test(expected = IllegalCommandException.class)

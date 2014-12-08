@@ -1,6 +1,5 @@
 package server.command;
 
-import shared.definitions.PieceType;
 import shared.locations.*;
 import shared.model.*;
 import org.junit.Before;
@@ -19,7 +18,7 @@ public class BuildCityCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/empty_board.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 

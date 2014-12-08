@@ -1,6 +1,5 @@
-package plugin;
+package server.plugin;
 
-import server.persistence.AbstractFolderDAO;
 import server.persistence.IGamesDAO;
 import server.persistence.PersistenceException;
 import shared.model.GameManager;
@@ -33,6 +32,7 @@ public class FolderGamesDAO extends AbstractFolderDAO implements IGamesDAO {
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory())) {
             for (Path path : directoryStream) {
                 IGame game = readFile(path);
+                getPersistenceManager().createCommandsDAO().loadCommands(game);
                 gameManager.loadGame(game);
             }
         }

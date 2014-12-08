@@ -39,4 +39,10 @@ public class OfferTradeCommand extends AbstractCommand {
         // set the game object to point at the trade offer
         getGame().setTradeOffer(trade);
     }
+
+    @Override
+    public void setGameAndPlayers(IGame game) throws ModelException {
+        super.setGameAndPlayers(game);
+        receiver = getGame().getPlayerByIndex(receiver.getIndex());
+    }
 }

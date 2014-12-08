@@ -8,16 +8,16 @@ package server.persistence;
  */
 public interface IPersistenceManagerLoader {
     /**
-     * Load the specified persistence manager plugin.
-     * Chooses the persistence plugin based on what is provided on the command line.
+     * Load the specified persistence manager server.plugin.
+     * Chooses the persistence server.plugin based on what is provided on the command line.
      *
-     * @param option the name of the persistence plugin, as provided on the command line
+     * @param option the name of the persistence server.plugin, as provided on the command line
      */
     public void loadPersistencePlugin(String option) throws InvalidPluginException;
 
     /**
      * Construct and return a persistence manager.
-     * If a persistence manager plugin has not been loaded, then a stub manager that does nothing is returned.
+     * If a persistence manager server.plugin has not been loaded, then a stub manager that does nothing is returned.
      *
      * @return an instance of the persistence manager class
      * @param commandsBetweenCheckpoints

@@ -17,7 +17,7 @@ public class BuyDevCardCommandTest {
     @Before
     public void setUp() throws Exception {
         game = initAGame("sample/dev_cards.json");
-        player = game.getPlayer(0);
+        player = game.getPlayerByIndex(0);
         game.setCurrentPlayer(player);
     }
 
@@ -30,10 +30,10 @@ public class BuyDevCardCommandTest {
     @Test
     public void testBuyDevCard() throws Exception {
         game.setResourceBank(new ResourceBank());
-        game.getPlayer(0).removeResources(new ResourceBank(1, 1, 1, 1, 1));
-        assertTrue("Player1 should have 15 dev cards", game.getPlayer(0).getAllDevCards().getCount() == 15);
+        game.getPlayerByIndex(0).removeResources(new ResourceBank(1, 1, 1, 1, 1));
+        assertTrue("Player1 should have 15 dev cards", game.getPlayerByIndex(0).getAllDevCards().getCount() == 15);
         new BuyDevCardCommand(game, player).execute();
-        assertTrue("Player1 should have 16 dev cards", game.getPlayer(0).getAllDevCards().getCount() == 16);
+        assertTrue("Player1 should have 16 dev cards", game.getPlayerByIndex(0).getAllDevCards().getCount() == 16);
     }
 
     @Test(expected = IllegalCommandException.class)

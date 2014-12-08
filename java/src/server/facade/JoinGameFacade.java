@@ -1,8 +1,10 @@
 package server.facade;
 
+import server.command.ICommand;
 import server.command.IllegalCommandException;
 import server.command.JoinGameCommand;
 import server.persistence.IPersistenceManager;
+import server.persistence.PersistenceException;
 import shared.communication.*;
 import shared.model.IGame;
 import shared.model.IGameManager;
@@ -45,7 +47,18 @@ public class JoinGameFacade implements IJoinGameFacade {
      */
     @Override
     public GameInfo create(CreateGameRequestParams params) throws ModelException {
-        return new GameInfo(m_gameManager.createGame(params.name, params.randomPorts, params.randomTiles, params.randomNumbers));
+        IGame game = m_gameManager.createGame(params.name, params.randomPorts, params.randomTiles, params.randomNumbers);
+
+        try {
+            m_persistenceManager.startTransaction();
+            m_persistenceManager.createGamesDAO().saveGame(game);
+            m_persistenceManager.endTransaction(true);
+        }
+        catch (PersistenceException e) {
+            m_persistenceManager.endTransaction(false);
+        }
+
+        return new GameInfo(game);
     }
 
     /**
@@ -57,7 +70,9 @@ public class JoinGameFacade implements IJoinGameFacade {
      */
     @Override
     public Integer join(JoinGameRequestParams params) throws ModelException, IllegalCommandException {
-        new JoinGameCommand(m_gameManager.getGame(params.id), m_userManager.getUser(params.getUserId()), params.color).execute();
+        ICommand command = new JoinGameCommand(m_gameManager.getGame(params.id), m_userManager.getUser(params.getUserId()), params.color);
+        MovesFacade.serializeCommand(m_persistenceManager, command);
+        command.execute();
         return params.id;
     }
 

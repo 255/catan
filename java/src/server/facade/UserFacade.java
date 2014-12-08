@@ -46,14 +46,16 @@ public class UserFacade implements IUserFacade {
     public IUser register(CredentialsParams creds) {
         IUser user = m_userManager.createUser(creds.username, creds.password);
 
-        try {
-            m_persistenceManager.startTransaction();
-            m_persistenceManager.createUsersDAO().addUser(user);
-            m_persistenceManager.endTransaction(true);
-        }
-        catch (PersistenceException e) {
-            m_persistenceManager.endTransaction(false);
-            logger.log(Level.WARNING, "Failed to store newly registered user.", e);
+        if (user != null) {
+            try {
+                m_persistenceManager.startTransaction();
+                m_persistenceManager.createUsersDAO().addUser(user);
+                m_persistenceManager.endTransaction(true);
+            }
+            catch (PersistenceException e) {
+                m_persistenceManager.endTransaction(false);
+                logger.log(Level.WARNING, "Failed to store newly registered user.", e);
+            }
         }
 
         return user;

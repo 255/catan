@@ -21,6 +21,7 @@ public class GameManager implements IGameManager{
 
     @Override
     public IGame createGame(String gameName, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
+        assert !m_games.containsKey(m_nextGameId) : "A game is about to be clobbered! m_nextGameId (" + m_nextGameId + ") is already in use.";
         IGame newGame = new Game(gameName, m_nextGameId, randomPorts, randomTiles, randomNumbers);
         m_games.put(m_nextGameId, newGame);
         m_nextGameId++;
@@ -53,21 +54,20 @@ public class GameManager implements IGameManager{
 
     @Override
     public void loadGame(IGame game) {
+        // TODO: decide what to do about reused game IDs -- allow for /games/load, I think
         if (m_games.containsKey(game.getID())) {
             // destroy the old game, just in case
             m_games.get(game.getID()).reset();
-            // TODO: we may need to update pointers in command objects if we end up serializing those
+            // TODO: we may need to update pointers in command objects if we end up serializing those?
             // or just store IDs instead
         }
 
         m_games.put(game.getID(), game);
-    }
 
-    /**
-     * Resets the next game id variable to 0
-     */
-    @Override
-    public void resetNextGameId() {
-        m_nextGameId = 0;
+        // always set the next user ID to be 1 greater than the last largest ID
+        if (game.getID() > m_nextGameId-1) {
+            m_nextGameId = game.getID() + 1;
+        }
+        assert !m_games.containsKey(m_nextGameId) : "Messed up setting nextGameId -- " + m_nextGameId + " is already used!";
     }
 }
