@@ -113,7 +113,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
      * @return a users DAO
      */
     public IUsersDAO createUsersDAO() {
-        return new SQLiteUsersDAO();
+        return new SQLiteUsersDAO(this);
     }
 
     /**
@@ -121,7 +121,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
      * @return a games DAO
      */
     public IGamesDAO createGamesDAO() {
-        return new SQLiteGamesDAO();
+        return new SQLiteGamesDAO(this);
     }
 
     /**
@@ -129,6 +129,6 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
      * @return a commands DAO
      */
     public ICommandsDAO createCommandsDAO() {
-        return new SQLiteCommandsDAO();
+        return new SQLiteCommandsDAO(this);
     }
 }

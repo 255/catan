@@ -8,8 +8,8 @@ import shared.model.IUserManager;
  */
 public class SQLiteUsersDAO extends AbstractSQLiteDAO implements IUsersDAO {
 
-    protected SQLiteUsersDAO() {
-
+    protected SQLiteUsersDAO(SQLitePersistenceManager manager) {
+        super(manager);
     }
 
     @Override

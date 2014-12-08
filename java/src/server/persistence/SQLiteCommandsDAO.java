@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO {
 
-    protected SQLiteCommandsDAO() {
-
+    protected SQLiteCommandsDAO(SQLitePersistenceManager manager) {
+        super(manager);
     }
 
     @Override
