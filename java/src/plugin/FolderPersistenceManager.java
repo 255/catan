@@ -14,14 +14,14 @@ public class FolderPersistenceManager extends AbstractPersistenceManager {
      * Begins a transaction with the persistence layer.
      */
     public void startTransaction() {
-        // no transcations for folder stuff
+        // no transactions for folder stuff
     }
 
     /**
      * Ends a transaction with the persistence layer.
      */
     public void endTransaction(boolean commit) {
-        // no transcations for folder stuff
+        // no transactions for folder stuff
     }
 
     /**

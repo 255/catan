@@ -6,6 +6,7 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,11 +18,13 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
 
     private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
 
-    private static String dbName = "database" + File.separator + "catandb.sqlite";
-    private static String connectionURL = "jdbc:sqlite:" + dbName;
+    private static String dbName;
+    private static String connectionURL;
 
     protected SQLitePersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         super(commandsBetweenCheckpoints);
+        dbName = Paths.get("data") + File.separator + "catandb.sqlite";
+        connectionURL = "jdbc:sqlite:" + dbName;
     }
 
     /**
@@ -110,8 +113,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
      * @return a users DAO
      */
     public IUsersDAO createUsersDAO() {
-        // TODO: implement
-        return null;
+        return new SQLiteUsersDAO();
     }
 
     /**
@@ -119,8 +121,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
      * @return a games DAO
      */
     public IGamesDAO createGamesDAO() {
-        // TODO: implement
-        return null;
+        return new SQLiteGamesDAO();
     }
 
     /**
@@ -128,7 +129,6 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
      * @return a commands DAO
      */
     public ICommandsDAO createCommandsDAO() {
-        // TODO: implement
-        return null;
+        return new SQLiteCommandsDAO();
     }
 }
