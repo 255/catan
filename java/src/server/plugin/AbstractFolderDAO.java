@@ -45,11 +45,11 @@ public abstract class AbstractFolderDAO {
      * Delete all of the files in a directory.
      * @param directory the directory to clear
      */
-    public static void deleteDirectoyContents(Path directory) throws PersistenceException {
+    public static void deleteDirectoryContents(Path directory) throws PersistenceException {
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
             for (Path path : directoryStream) {
                 // delete everything, ignoring subfolders
-                if (Files.isDirectory(path) {
+                if (Files.isDirectory(path)) {
                     deleteDirectoryContents(path);
                 }
                 Files.delete(path);
