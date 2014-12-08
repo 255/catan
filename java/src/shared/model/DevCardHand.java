@@ -126,11 +126,9 @@ public class DevCardHand implements IDevCardHand {
     }
 
     @Override
-    public DevCardType drawCard() {
+    public DevCardType drawCard(Random rand) {
 
-        DevCardType drawnCard = null;
-
-        final Random rand = new Random();
+        DevCardType drawnCard;
 
         int randomNumber = rand.nextInt(getCount());
 

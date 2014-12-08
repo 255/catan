@@ -47,9 +47,13 @@ public abstract class AbstractCommand implements ICommand {
     @Override
     public final void execute() {
         logger.entering(this.getClass().getCanonicalName(), "execute");
+        assert getGame().verifyResourceAmount();
+
         getGame().incrementVersion();
         logAction();
         performAction();
+
+        assert getGame().verifyResourceAmount();
         logger.exiting(this.getClass().getCanonicalName(), "execute");
     }
 

@@ -30,7 +30,7 @@ public class BuyDevCardCommand extends AbstractCommand {
      */
     public void performAction() {
         // Randomly pick a dev card from the dev card hand
-        DevCardType devCard = getGame().getDevCards().drawCard();
+        DevCardType devCard = getGame().getDevCards().drawCard(getGame().getRandom());
 
         // Put it in the player's newDevCards hand unless it is a monument, in which case it goes straight to playable
         if (devCard == DevCardType.MONUMENT) {
@@ -46,6 +46,6 @@ public class BuyDevCardCommand extends AbstractCommand {
         // Put removed resources in the Game ResourceBank
         getGame().getResourceBank().add(Prices.DEV_CARD);
 
-        assert (getGame().verifyResourceAmount());
+        assert (getGame().verifyResourceAmount()) : "Incorrect resources!";
     }
 }

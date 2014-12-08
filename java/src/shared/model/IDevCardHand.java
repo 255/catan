@@ -3,6 +3,7 @@ package shared.model;
 import shared.definitions.DevCardType;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * A collection of development cards.
@@ -54,6 +55,7 @@ public interface IDevCardHand extends Serializable {
      * Draws a random card from the DevCardHand
      *
      * @return the type of dev card that was drawn
+     * @param rand the random number generator to use
      */
-    public DevCardType drawCard();
+    public DevCardType drawCard(Random rand);
 }

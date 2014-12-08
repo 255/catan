@@ -19,6 +19,7 @@ public class Game extends Observable implements IGame {
     // only used server side
     private String m_name;
     private Integer m_id;
+    private Random m_random;
 
     private GameState m_state;
     private IPlayer m_currentPlayer;
@@ -35,6 +36,7 @@ public class Game extends Observable implements IGame {
     private IPlayer m_winner;
 
     public Game() {
+        m_random = new Random();
         m_name = null;
         m_id = null;
         reset();
@@ -48,6 +50,7 @@ public class Game extends Observable implements IGame {
      * @param randomNumbers whether to randomize number placement
      */
     public Game(String gameName, int id, boolean randomPorts, boolean randomTiles, boolean randomNumbers) throws ModelException {
+        m_random = new Random();
         m_name = gameName;
         m_id = id;
 
@@ -93,6 +96,11 @@ public class Game extends Observable implements IGame {
     @Override
     public Integer getID() {
         return m_id;
+    }
+
+    @Override
+    public Random getRandom() {
+        return m_random;
     }
 
     @Override
@@ -639,7 +647,7 @@ public class Game extends Observable implements IGame {
 
         // Choose and remove a random card from the victim's hand
         if (victim != null) {
-            ResourceType resource = victim.getResources().drawRandom();
+            ResourceType resource = victim.getResources().drawRandom(m_random);
 
             // Add that random card to the player's hand
             player.getResources().add(1, resource);
@@ -751,6 +759,7 @@ public class Game extends Observable implements IGame {
     public boolean verifyResourceAmount() {
         IResourceBank allResources = new ResourceBank();
         allResources.add(m_resourceBank);
+
         for (IPlayer player : m_players) {
             allResources.add(player.getResources());
         }
@@ -780,6 +789,4 @@ public class Game extends Observable implements IGame {
 
         return false;
     }
-
-
 }

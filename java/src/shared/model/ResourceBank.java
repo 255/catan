@@ -8,6 +8,8 @@ import java.util.Random;
  * Created by jeffreybacon on 9/25/14.
  */
 public class ResourceBank implements IResourceBank {
+    static final long serialVersionUID = 7157637162661465358l;
+
     public static final int NUM_RESOURCES = 5;
 
     private int wood;
@@ -143,45 +145,18 @@ public class ResourceBank implements IResourceBank {
 
 
     @Override
-    public IResourceBank subtract(IResourceBank resources) {
+    public void subtract(IResourceBank resources) {
         IResourceBank bundle = new ResourceBank(resources.getWood(), resources.getBrick(), resources.getSheep(),
                 resources.getWheat(), resources.getOre());
 
-        if (wood >= resources.getWood()) {
-            setWood(wood - resources.getWood());
-        } else {
-            bundle.setWood(wood);
-            setWood(0);
-        }
+        assert wood >= resources.getWood() && brick >= resources.getBrick() && sheep >= resources.getSheep()
+                && wheat >= resources.getWheat() && ore >= resources.getOre() : "Trying to subtract more than is in the bank!";
 
-        if (brick >= resources.getBrick()) {
-            setBrick(brick - resources.getBrick());
-        } else {
-            bundle.setBrick(brick);
-            setBrick(0);
-        }
-
-        if (sheep >= resources.getSheep()) {
-            setSheep(sheep - resources.getSheep());
-        } else {
-            bundle.setSheep(sheep);
-            setSheep(0);
-        }
-
-        if (wheat >= resources.getWheat()) {
-            setWheat(wheat - resources.getWheat());
-        } else {
-            bundle.setWheat(wheat);
-            setWheat(0);
-        }
-
-        if (ore >= resources.getOre()) {
-            setOre(ore - resources.getOre());
-        } else {
-            bundle.setOre(ore);
-            setOre(0);
-        }
-        return bundle;
+        setWood(wood - resources.getWood());
+        setBrick(brick - resources.getBrick());
+        setSheep(sheep - resources.getSheep());
+        setWheat(wheat - resources.getWheat());
+        setOre(ore - resources.getOre());
     }
 
     @Override
@@ -264,12 +239,11 @@ public class ResourceBank implements IResourceBank {
      * Draws a random card from the ResourceBank
      *
      * @return the type of resource card that was drawn
+     * @param rand
      */
     @Override
-    public ResourceType drawRandom() {
+    public ResourceType drawRandom(Random rand) {
         assert getCount() > 0 : "Tried to draw from an empty resource bank!";
-
-        final Random rand = new Random();
 
         ResourceType drawnCard = null;
 
@@ -298,5 +272,16 @@ public class ResourceBank implements IResourceBank {
         boolean giving = (wood > 0 || brick > 0 || sheep > 0 || wheat > 0 || ore > 0);
 
         return giving && (wood < 0 || brick < 0 || sheep < 0 || wheat < 0 || ore < 0);
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceBank{" +
+                "wood=" + wood +
+                ", brick=" + brick +
+                ", sheep=" + sheep +
+                ", wheat=" + wheat +
+                ", ore=" + ore +
+                '}';
     }
 }

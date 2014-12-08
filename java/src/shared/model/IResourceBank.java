@@ -3,6 +3,7 @@ package shared.model;
 import shared.definitions.ResourceType;
 
 import java.io.Serializable;
+import java.util.Random;
 
 /**
  * A bank of resources. Resources can be added and subtracted as ResourceBanks.
@@ -29,7 +30,7 @@ public interface IResourceBank extends Serializable {
      * resources in the resource bank, an exception is thrown.
      * @param resources the bundle of resources to remove from the bank
      */
-    public IResourceBank subtract(IResourceBank resources);
+    public void subtract(IResourceBank resources);
 
     /**
      * Subtract the specified resources from the resource bank.
@@ -165,8 +166,9 @@ public interface IResourceBank extends Serializable {
      * Draws a random card from the ResourceBank
      *
      * @return the type of resource card that was drawn
+     * @param rand the random number generator to use
      */
-    public ResourceType drawRandom();
+    public ResourceType drawRandom(Random rand);
 
     /**
      * Check if a resource bank includes both positive and negative values for resources.

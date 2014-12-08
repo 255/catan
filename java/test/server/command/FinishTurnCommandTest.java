@@ -49,7 +49,7 @@ public class FinishTurnCommandTest {
         DevCardType dc = DevCardType.MONUMENT;
         int preNewDCSize = 0;
         while(dc == DevCardType.MONUMENT) {
-            dc = game.getDevCards().drawCard();
+            dc = game.getDevCards().drawCard(game.getRandom());
             player.getNewDevCards().add(dc);
             preNewDCSize = player.getNewDevCards().getCount();
         }

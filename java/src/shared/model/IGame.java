@@ -8,10 +8,7 @@ import shared.locations.HexLocation;
 import shared.locations.VertexLocation;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Observer;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The Game object holds pointers to all of the essential components of the game.
@@ -31,6 +28,12 @@ public interface IGame extends Serializable {
      * Get the game's gameID
      */
     public Integer getID();
+
+    /**
+     * Get the Java Random object this game uses for random numbers.
+     * @return the Random object for generating random numbers
+     */
+    public Random getRandom();
 
     /**
      * Get the game's model number.
