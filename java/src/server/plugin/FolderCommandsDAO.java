@@ -26,10 +26,16 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
 
     @Override
     public void saveCommand(ICommand command) throws PersistenceException {
-        // TODO: implement checkpoint thingy
+        // write the new command to the disk
         String gameFolder = Integer.toString(command.getGame().getID());
         AbstractPersistenceManager.ensureDirectoryExists(getDirectory().resolve(gameFolder));
         writeFile(command, gameFolder, Integer.toString(command.getGame().getModelVersion()));
+
+        // TODO: implement checkpoint thingy saving
+        // check the number of commands in the commands directory for the game
+        // if the number of saved commands is N
+            // save the current game to disk
+            // clear the commands folder
     }
 
     @Override
@@ -56,5 +62,10 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
         catch (ModelException e) {
             throw new PersistenceException("Failed executing command.", e);
         }
+
+        // TODO: implement checkpoint thingy loading
+        // after all the commands have been applied to the game
+            // save the game
+            // clear the commands folder
     }
 }
