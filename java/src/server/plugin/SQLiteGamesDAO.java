@@ -1,5 +1,7 @@
-package server.persistence;
+package server.plugin;
 
+import server.persistence.IGamesDAO;
+import server.persistence.PersistenceException;
 import shared.model.GameManager;
 import shared.model.IGame;
 import shared.model.Game;
@@ -23,7 +25,7 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
     @Override
     public void saveGame(IGame game) throws PersistenceException {
         String sql = "INSERT INTO Games (GameId, GameData) VALUES (?, ?)";
-        writeToDB(sql, game.getID(), game, -1);
+        writeToDB(sql, game.getID(), game);
     }
 
     @Override

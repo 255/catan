@@ -1,4 +1,7 @@
-package server.persistence;
+package server.plugin;
+
+import server.persistence.PersistenceException;
+import server.plugin.SQLitePersistenceManager;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayOutputStream;
@@ -19,7 +22,7 @@ public abstract class AbstractSQLiteDAO {
         m_persistenceManager = manager;
     }
 
-    protected void writeToDB(String sql, int id, Object obj, int id2) throws PersistenceException {
+    protected void writeToDB(String sql, int id, Object obj) throws PersistenceException {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
@@ -33,9 +36,6 @@ public abstract class AbstractSQLiteDAO {
 
             stmt.setInt(1, id);
             stmt.setBlob(2, blob);
-            if (id2 != -1) {
-                stmt.setInt(3, id2);
-            }
 
             rs = stmt.executeQuery();
         } catch (SQLException e) {

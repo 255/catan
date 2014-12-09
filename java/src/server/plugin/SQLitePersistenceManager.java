@@ -1,4 +1,6 @@
-package server.persistence;
+package server.plugin;
+
+import server.persistence.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
