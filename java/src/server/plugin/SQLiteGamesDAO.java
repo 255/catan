@@ -24,7 +24,7 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
 
     @Override
     public void saveGame(IGame game) throws PersistenceException {
-        String sql = "INSERT INTO Games (GameId, GameData) VALUES (?, ?)";
+        String sql = "insert into Games (GameId, GameData) values (?, ?)";
         writeToDB(sql, game.getID(), game);
     }
 
@@ -32,7 +32,7 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
     public IGameManager loadGames() throws PersistenceException {
         IGameManager gameManager = new GameManager();
 
-        String sql = "SELECT GameData FROM Games";
+        String sql = "select GameData from Games";
         ResultSet rs = readFromDB(sql);
         int index = 1;
         try {
