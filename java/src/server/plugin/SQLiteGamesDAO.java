@@ -33,7 +33,7 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
         IGameManager gameManager = new GameManager();
 
         String sql = "select GameData from Games";
-        ResultSet rs = readFromDB(sql);
+        ResultSet rs = readFromDB(sql, -1);
         int index = 1;
         try {
             while(rs.next()) {

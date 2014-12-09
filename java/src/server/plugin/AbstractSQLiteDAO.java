@@ -56,11 +56,14 @@ public abstract class AbstractSQLiteDAO {
         }
     }
 
-    protected ResultSet readFromDB(String sql) throws PersistenceException {
+    protected ResultSet readFromDB(String sql, int queryValue) throws PersistenceException {
         PreparedStatement stmt;
         ResultSet rs;
         try {
             stmt = m_persistenceManager.getConnection().prepareStatement(sql);
+            if (queryValue != -1) {
+                stmt.setInt(1, queryValue);
+            }
             rs = stmt.executeQuery();
         } catch (SQLException e) {
             throw new PersistenceException();
@@ -68,4 +71,68 @@ public abstract class AbstractSQLiteDAO {
         m_persistenceManager.endTransaction(true);
         return rs;
     }
+
+    protected void deleteFromDB(String sql, int queryValue) throws PersistenceException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = m_persistenceManager.getConnection().prepareStatement(sql);
+            stmt.setInt(1, queryValue);
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new PersistenceException();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                throw new PersistenceException();
+            }
+        }
+        m_persistenceManager.endTransaction(true);
+    }
+
+    protected void updateDB(String sql, Object obj, int id) throws PersistenceException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
+            objectStream.writeObject(obj);
+            objectStream.close();
+            Blob blob = new SerialBlob(byteStream.toByteArray());
+
+            stmt = m_persistenceManager.getConnection().prepareStatement(sql);
+
+            stmt.setBlob(1, blob);
+            stmt.setInt(2, id);
+
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new PersistenceException();
+        } catch (IOException e) {
+            throw new PersistenceException();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                throw new PersistenceException();
+            }
+        }
+    }
+
+
+    protected SQLitePersistenceManager getPersistenceManager() {
+        return m_persistenceManager;
+    }
+
 }
