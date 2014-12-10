@@ -7,10 +7,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.sql.Blob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Handle interacting with a SQLite database.
@@ -24,29 +21,25 @@ public abstract class AbstractSQLiteDAO {
 
     protected void writeToDB(String sql, int id, Object obj) throws PersistenceException {
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
             objectStream.writeObject(obj);
-            objectStream.close();
             Blob blob = new SerialBlob(byteStream.toByteArray());
 
             stmt = m_persistenceManager.getConnection().prepareStatement(sql);
 
             stmt.setInt(1, id);
-            stmt.setBlob(2, blob);
+            stmt.setBytes(2, byteStream.toByteArray());
 
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
             throw new PersistenceException();
         } catch (IOException e) {
             throw new PersistenceException();
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (stmt != null) {
                     stmt.close();
                 }

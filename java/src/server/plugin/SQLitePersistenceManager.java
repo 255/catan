@@ -30,7 +30,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
         connectionURL = "jdbc:sqlite:" + dbName;
 
         try {
-            Class.forName(Paths.get("org.sqlite.JDBC").toString());
+            Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
             System.out.println("I GOT THROWN");
         }
@@ -94,15 +94,15 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            sql = "delete from Users";
+            sql = "delete from users";
             stmt = getConnection().prepareStatement(sql);
             rs = stmt.executeQuery();
 
-            sql = "delete from Groups";
+            sql = "delete from games";
             stmt = getConnection().prepareStatement(sql);
             rs = stmt.executeQuery();
 
-            sql = "delete from Commands";
+            sql = "delete from commands";
             stmt = getConnection().prepareStatement(sql);
             rs = stmt.executeQuery();
 
