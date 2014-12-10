@@ -153,7 +153,7 @@
 
 	<target name="our-server" depends="package" description="compiles, packages, and runs the student server">
 		<java jar="${java.dist}/catan-server.jar" dir="${java.dist}" fork="yes">
-            <arg value="${port.arg}"/>
+      		<arg value="${port.arg}"/>
 			<arg value="${plugin.arg}"/>
 			<arg value="${N.arg}"/>
 			<sysproperty key="com.sun.management.jmxremote" value=""/>
@@ -169,13 +169,13 @@
 
 <!-- Compile the plugins -->
     <target name="compile-plugins" depends="compile" description="compiles the Plugins">
-        <jar destfile="${dist.plugins}/SQLite-Plugin.jar"
+        <jar destfile="${dist.plugins}/SQLitePersistenceManager.jar"
      	    basedir="${java.build.plugin}"
 			includes="*SQLite*.class"/>
-        <jar destfile="${dist.plugins}/Folder-Plugin.jar"
+        <jar destfile="${dist.plugins}/FolderPersistenceManager.jar"
      	    basedir="${java.build.plugin}"
 			includes="*Folder*.class"/>
-		<jar destfile="${dist.plugins}/NoPersistence-Plugin.jar"
+		<jar destfile="${dist.plugins}/NoPersistenceManager.jar"
 			 basedir="${java.build.plugin}"
 			 includes="*NoPersistence*.class"/>
     </target>
