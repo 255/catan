@@ -16,6 +16,7 @@
 		<property name="java.src.dir" value="${java.dir}/src"/>
 		<property name="java.test.dir" value="${java.dir}/test"/>
 		<property name="java.lib.dir" value="${java.dir}/lib"/>
+		<property name="java.plugin.dir" value="${java.src.dir}/server/plugin"/>
 		<!-- JavaScript source folder -->
 		<property name="javascript.dir" value="gameplay/js"/>
 		
@@ -84,8 +85,10 @@
 	<property name="java.test" location="${java.dir}/test/"/>
 	<property name="java.images" location="${java.dir}/images"/>
 	<property name="java.build" location="${java.dir}/build"/>
+	<property name="java.build.plugin" location="${java.build}/server/plugin"/>
 	<property name="java.dist" location="${java.dir}/dist"/>
 	<property name="java.lib" location="${java.dir}/lib"/>
+	<property name="dist.plugins" value="${java.dist}/plugins" />
  
 	<target name="init" description="create build directories">
 		<tstamp/>
@@ -163,6 +166,20 @@
 		<target name="make-tester-zip" depends="package" description="makes a zip file for your testing team">
 				<zip destfile="./tester.zip" basedir="${java.dist}" />
 		</target>
+
+<!-- Compile the plugins -->
+    <target name="compile-plugins" depends="compile" description="compiles the Plugins">
+        <jar destfile="${dist.plugins}/SQLite-Plugin.jar"
+     	    basedir="${java.build.plugin}"
+			includes="*SQLite*.class"/>
+        <jar destfile="${dist.plugins}/Folder-Plugin.jar"
+     	    basedir="${java.build.plugin}"
+			includes="*Folder*.class"/>
+		<jar destfile="${dist.plugins}/NoPersistence-Plugin.jar"
+			 basedir="${java.build.plugin}"
+			 includes="*NoPersistence*.class"/>
+    </target>
+
 
 <!-- JUnit 4 Tests -->
     <target name="compile-tests" depends="compile" description="compiles the JUnit tests">
