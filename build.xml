@@ -17,6 +17,7 @@
 		<property name="java.test.dir" value="${java.dir}/test"/>
 		<property name="java.lib.dir" value="${java.dir}/lib"/>
 		<property name="java.plugin.dir" value="${java.src.dir}/server/plugin"/>
+		<property name="java.build" location="${java.dir}/build"/>
 		<!-- JavaScript source folder -->
 		<property name="javascript.dir" value="gameplay/js"/>
 		
@@ -84,7 +85,6 @@
 	<property name="java.src" location="${java.dir}/src"/>
 	<property name="java.test" location="${java.dir}/test/"/>
 	<property name="java.images" location="${java.dir}/images"/>
-	<property name="java.build" location="${java.dir}/build"/>
 	<property name="java.build.plugin" location="${java.build}/server/plugin"/>
 	<property name="java.dist" location="${java.dir}/dist"/>
 	<property name="java.lib" location="${java.dir}/lib"/>
