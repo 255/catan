@@ -28,7 +28,7 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
     public void saveCommand(ICommand command) throws PersistenceException {
 
         String checkpointQuery = "select commandsData from commands where gameId = ?";
-        List commands = super.readFromDB(checkpointQuery, command.getGame().getID());
+        List commands = super.readFromDB(checkpointQuery, command.getGame().getID(), "commandData");
 
         int commandsSaved = commands.size();
 
@@ -54,22 +54,13 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
     @Override
     public void loadCommands(IGame game) throws PersistenceException {
         String query = "select commandsData from users where gameId = ? nhbgb";
-        List commands = super.readFromDB(query, game.getID());
+        List commands = super.readFromDB(query, game.getID(), "commandData");
 
         SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
 
-//        try {
-//            while (rs.next()) {
-//                byte[] byteArray = (byte[]) rs.getObject("commandData");
-//                ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
-//                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-//                ICommand command = (ICommand) objectInputStream.readObject();
-//
-//                orderedCommands.put(rs.getRow(), command);
-//            }
-//        } catch (Exception ex) {
-//
-//        }
+        for (int i = 0; i < commands.size(); ++i) {
+            orderedCommands.put(i, (ICommand) commands.get(i));
+        }
 
         try {
             for (ICommand command : orderedCommands.values()) {

@@ -47,7 +47,7 @@ public abstract class AbstractSQLiteDAO {
         }
     }
 
-    protected List readFromDB(String sql, int queryValue) throws PersistenceException {
+    protected List readFromDB(String sql, int queryValue, String columnToRetrieve) throws PersistenceException {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List returnValues = new ArrayList();
@@ -58,7 +58,7 @@ public abstract class AbstractSQLiteDAO {
             }
             rs = stmt.executeQuery();
             while (rs.next()) {
-                byte[] objectBytes = rs.getBytes("userData");
+                byte[] objectBytes = rs.getBytes(columnToRetrieve);
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(objectBytes);
                 ObjectInputStream objectStream = new ObjectInputStream(inputStream);
                 returnValues.add(objectStream.readObject());

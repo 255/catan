@@ -40,7 +40,7 @@ public class SQLiteUsersDAO extends AbstractSQLiteDAO implements IUsersDAO {
                 userManager.loadUser((User)user);
             }
         } catch (Exception ex) {
-
+            throw new PersistenceException(ex);
         }
 
         return userManager;

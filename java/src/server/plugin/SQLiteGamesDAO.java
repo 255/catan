@@ -25,7 +25,7 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
 
     @Override
     public void saveGame(IGame game) throws PersistenceException {
-        String sql = "insert into Games (GameId, GameData) values (?, ?)";
+        String sql = "insert into games (gameId, gameData) values (?, ?)";
         writeToDB(sql, game.getID(), game);
     }
 
@@ -33,25 +33,16 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
     public IGameManager loadGames() throws PersistenceException {
         IGameManager gameManager = new GameManager();
 
-        String sql = "select GameData from Games";
-        List games = readFromDB(sql, -1);
+        String sql = "select * from games";
+        List games = readFromDB(sql, -1, "gameData");
         int index = 1;
-//        try {
-//            while(rs.next()) {
-//                try {
-//                    ByteArrayInputStream byteStream = new ByteArrayInputStream(((byte[])rs.getObject(index++)));
-//                    ObjectInputStream objectStream = new ObjectInputStream(byteStream);
-//                    IGame game = (Game)objectStream.readObject();
-//                    gameManager.loadGame(game);
-//                } catch (IOException e) {
-//                    throw new PersistenceException();
-//                } catch (ClassNotFoundException e) {
-//                    throw new PersistenceException();
-//                }
-//            }
-//        } catch (SQLException e) {
-//            throw new PersistenceException();
-//        }
+        try {
+            for (Object game : games) {
+                gameManager.loadGame((Game) game);
+            }
+        } catch (Exception e) {
+            throw new PersistenceException(e);
+        }
 
         return gameManager;
     }
