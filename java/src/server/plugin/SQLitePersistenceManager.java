@@ -92,27 +92,23 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
 
         String sql;
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
             sql = "delete from users";
             stmt = getConnection().prepareStatement(sql);
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
 
             sql = "delete from games";
             stmt = getConnection().prepareStatement(sql);
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
 
             sql = "delete from commands";
             stmt = getConnection().prepareStatement(sql);
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new PersistenceException();
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (stmt != null) {
                     stmt.close();
                 }
