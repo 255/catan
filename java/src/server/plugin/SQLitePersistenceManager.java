@@ -2,6 +2,8 @@ package server.plugin;
 
 import server.persistence.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.io.File;
@@ -18,15 +20,37 @@ import java.util.logging.Logger;
 public class SQLitePersistenceManager extends AbstractPersistenceManager {
     private static Logger logger = Logger.getLogger("catanserver");
 
-    private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
+    static final Path DB_FILE = Paths.get("data", "catandb.sqlite");
+	static final String CONNECTION_URL = "jdbc:sqlite:" + DB_FILE;
 
-    private static String dbName;
-    private static String connectionURL;
+	/**
+	 * Initialize the database by loading the database driver
+	 */
+	public static void initialize() throws PersistenceException {
+		logger.entering("server.plugin.SQLitePersistenceManager", "initialize");
+
+		try {
+			// Load the database driver
+			final String driver = "org.sqlite.JDBC";
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			logger.log(Level.SEVERE, "The database driver failed to load.", e);
+			throw new PersistenceException(e);
+		}
+
+        logger.exiting("server.plugin.SQLitePersistenceManager", "initialize");
+	}
+
+    private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
 
     public SQLitePersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         super(commandsBetweenCheckpoints);
-        dbName = Paths.get("data") + File.separator + "catandb.sqlite";
-        connectionURL = "jdbc:sqlite:" + dbName;
+
+        initialize();
+
+        if (!Files.isRegularFile(DB_FILE)) {
+            throw new PersistenceException("Database file " + DB_FILE + " not found!");
+        }
     }
 
     /**
@@ -34,40 +58,49 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
      */
     public void startTransaction() throws PersistenceException {
         try {
-            connection.set(DriverManager.getConnection(connectionURL));
-            connection.get().setAutoCommit(false);
+            assert (getConnection() == null);
+            setConnection(DriverManager.getConnection(CONNECTION_URL));
+            getConnection().setAutoCommit(false);
         } catch (SQLException e) {
-            throw new PersistenceException();
+            throw new PersistenceException(e);
         }
     }
+
+
 
     /**
      * Ends a transaction with the persistence layer.
      */
     public void endTransaction(boolean commit) {
+        assert getConnection() != null : "Trying to end a transaction with a null connection!";
+
         try {
             if (commit) {
-                connection.get().commit();
+                getConnection().commit();
             } else {
-                connection.get().rollback();
+                getConnection().rollback();
             }
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Failed to end transaction.", e);
         } finally {
-            if (connection.get() != null) {
+            if (getConnection() != null) {
                 try {
-                    connection.get().close();
+                    getConnection().close();
                 } catch (SQLException e) {
                     logger.log(Level.WARNING, "Failed to close connection.", e);
                 }
             }
-        }
 
-        connection.set(null);
+            setConnection(null);
+        }
     }
 
     public Connection getConnection() {
         return connection.get();
+    }
+
+    private void setConnection(Connection conn) {
+        connection.set(conn);
     }
 
     /**
@@ -78,32 +111,28 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
 
         String sql;
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
-            sql = "delete from Users";
+            sql = "delete from users";
             stmt = getConnection().prepareStatement(sql);
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
 
-            sql = "delete from Groups";
+            sql = "delete from games";
             stmt = getConnection().prepareStatement(sql);
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
 
-            sql = "delete from Commands";
+            sql = "delete from commands";
             stmt = getConnection().prepareStatement(sql);
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new PersistenceException();
+            throw new PersistenceException(e);
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (stmt != null) {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new PersistenceException();
+                throw new PersistenceException(e);
             }
         }
 

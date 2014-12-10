@@ -8,8 +8,10 @@ import shared.model.User;
 import shared.model.UserManager;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.sql.ResultSet;
+import java.util.List;
 
 /**
  * Created by jeffreybacon on 12/7/14.
@@ -28,21 +30,17 @@ public class SQLiteUsersDAO extends AbstractSQLiteDAO implements IUsersDAO {
 
     @Override
     public IUserManager loadUsers() throws PersistenceException {
-        String query = "select userId, userData from users";
-        ResultSet rs = super.readFromDB(query, -1);
+        String query = "select * from users";
+        List users = super.readFromDB(query, -1);
 
         IUserManager userManager = new UserManager();
 
         try {
-            while (rs.next()) {
-                byte[] byteArray = (byte[]) rs.getObject(1);
-                ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                User user = (User) objectInputStream.readObject();
-                userManager.loadUser(user);
+            for (Object user : users) {
+                userManager.loadUser((User)user);
             }
         } catch (Exception ex) {
-
+            throw new PersistenceException(ex);
         }
 
         return userManager;

@@ -4,13 +4,10 @@ import server.persistence.PersistenceException;
 import server.plugin.SQLitePersistenceManager;
 
 import javax.sql.rowset.serial.SerialBlob;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.sql.Blob;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handle interacting with a SQLite database.
@@ -24,29 +21,23 @@ public abstract class AbstractSQLiteDAO {
 
     protected void writeToDB(String sql, int id, Object obj) throws PersistenceException {
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
             objectStream.writeObject(obj);
-            objectStream.close();
             Blob blob = new SerialBlob(byteStream.toByteArray());
 
             stmt = m_persistenceManager.getConnection().prepareStatement(sql);
 
             stmt.setInt(1, id);
-            stmt.setBlob(2, blob);
+            stmt.setBytes(2, byteStream.toByteArray());
 
-            rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new PersistenceException();
-        } catch (IOException e) {
-            throw new PersistenceException();
+            stmt.executeUpdate();
+
+        } catch (SQLException | IOException e) {
+            throw new PersistenceException(e);
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (stmt != null) {
                     stmt.close();
                 }
@@ -56,20 +47,37 @@ public abstract class AbstractSQLiteDAO {
         }
     }
 
-    protected ResultSet readFromDB(String sql, int queryValue) throws PersistenceException {
-        PreparedStatement stmt;
-        ResultSet rs;
+    protected List readFromDB(String sql, int queryValue, String columnToRetrieve) throws PersistenceException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List returnValues = new ArrayList();
         try {
             stmt = m_persistenceManager.getConnection().prepareStatement(sql);
             if (queryValue != -1) {
                 stmt.setInt(1, queryValue);
             }
             rs = stmt.executeQuery();
+            while (rs.next()) {
+                byte[] objectBytes = rs.getBytes(columnToRetrieve);
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(objectBytes);
+                ObjectInputStream objectStream = new ObjectInputStream(inputStream);
+                returnValues.add(objectStream.readObject());
+            }
         } catch (SQLException e) {
-            throw new PersistenceException();
+            throw new PersistenceException(e);
+        } catch (Exception e1) {
+            throw new PersistenceException(e1);
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException ex) {
+                throw new PersistenceException(ex);
+            }
         }
-        m_persistenceManager.endTransaction(true);
-        return rs;
+
+        return returnValues;
     }
 
     protected void deleteFromDB(String sql, int queryValue) throws PersistenceException {
@@ -80,7 +88,7 @@ public abstract class AbstractSQLiteDAO {
             stmt.setInt(1, queryValue);
             rs = stmt.executeQuery();
         } catch (SQLException e) {
-            throw new PersistenceException();
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (rs != null) {
@@ -90,10 +98,9 @@ public abstract class AbstractSQLiteDAO {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new PersistenceException();
+                throw new PersistenceException(e);
             }
         }
-        m_persistenceManager.endTransaction(true);
     }
 
     protected void updateDB(String sql, Object obj, int id) throws PersistenceException {
@@ -112,10 +119,8 @@ public abstract class AbstractSQLiteDAO {
             stmt.setInt(2, id);
 
             rs = stmt.executeQuery();
-        } catch (SQLException e) {
-            throw new PersistenceException();
-        } catch (IOException e) {
-            throw new PersistenceException();
+        } catch (SQLException | IOException e) {
+            throw new PersistenceException(e);
         } finally {
             try {
                 if (rs != null) {
@@ -125,14 +130,12 @@ public abstract class AbstractSQLiteDAO {
                     stmt.close();
                 }
             } catch (SQLException e) {
-                throw new PersistenceException();
+                throw new PersistenceException(e);
             }
         }
     }
 
-
     protected SQLitePersistenceManager getPersistenceManager() {
         return m_persistenceManager;
     }
-
 }

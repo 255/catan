@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -27,21 +28,17 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
     public void saveCommand(ICommand command) throws PersistenceException {
 
         String checkpointQuery = "select commandsData from commands where gameId = ?";
-        ResultSet rs = super.readFromDB(checkpointQuery, command.getGame().getID());
+        List commands = super.readFromDB(checkpointQuery, command.getGame().getID(), "commandData");
 
-        int commandsSaved = 0;
+        int commandsSaved = commands.size();
 
         try {
-            while (rs.next()) {
-                ++commandsSaved;
-            }
-
             if (commandsSaved < getPersistenceManager().getCommandsBetweenCheckpoints()) {
                 String sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
                 super.writeToDB(sql, command.getGame().getID(), command);
             } else {
-                String sql = "insert into games (gameId, gameData) values (?, ?)";
-                super.writeToDB(sql, command.getGame().getID(), command.getGame());
+                String sql = "update games set gameData = ? where gameId = ?";
+                super.updateDB(sql, command.getGame(), command.getGame().getID());
 
                 sql = "delete from commands where gameId = ?";
                 super.deleteFromDB(sql, command.getGame().getID());
@@ -49,7 +46,7 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
                 sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
                 super.writeToDB(sql, command.getGame().getID(), command);
             }
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
 
         }
     }
@@ -57,21 +54,12 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
     @Override
     public void loadCommands(IGame game) throws PersistenceException {
         String query = "select commandsData from users where gameId = ? nhbgb";
-        ResultSet rs = super.readFromDB(query, game.getID());
+        List commands = super.readFromDB(query, game.getID(), "commandData");
 
         SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
 
-        try {
-            while (rs.next()) {
-                byte[] byteArray = (byte[]) rs.getObject("commandData");
-                ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArray);
-                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-                ICommand command = (ICommand) objectInputStream.readObject();
-
-                orderedCommands.put(rs.getRow(), command);
-            }
-        } catch (Exception ex) {
-
+        for (int i = 0; i < commands.size(); ++i) {
+            orderedCommands.put(i, (ICommand) commands.get(i));
         }
 
         try {

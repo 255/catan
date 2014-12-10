@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by jeffreybacon on 12/7/14.
@@ -24,14 +25,14 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
 
     @Override
     public void saveGame(IGame game) throws PersistenceException {
-        String readSql = "select * from Games where GameId = ?";
+        String readSql = "select * from games where gameId = ?";
         ResultSet rs = readFromDB(readSql, game.getID());
         try {
             if(rs.next()) {
-                String sql = "update Games set GameData = ? where GameId = ?";
+                String sql = "update games set gameData = ? where gameId = ?";
                 updateDB(sql, game, game.getID());
             } else {
-                String sql = "insert into Games (GameId, GameData) values (?, ?)";
+                String sql = "insert into games (gameId, gameData) values (?, ?)";
                 writeToDB(sql, game.getID(), game);
             }
         } catch (SQLException e) {
@@ -43,24 +44,15 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
     public IGameManager loadGames() throws PersistenceException {
         IGameManager gameManager = new GameManager();
 
-        String sql = "select GameData from Games";
-        ResultSet rs = readFromDB(sql, -1);
+        String sql = "select * from games";
+        List games = readFromDB(sql, -1, "gameData");
         int index = 1;
         try {
-            while(rs.next()) {
-                try {
-                    ByteArrayInputStream byteStream = new ByteArrayInputStream(((byte[])rs.getObject(index++)));
-                    ObjectInputStream objectStream = new ObjectInputStream(byteStream);
-                    IGame game = (Game)objectStream.readObject();
-                    gameManager.loadGame(game);
-                } catch (IOException e) {
-                    throw new PersistenceException();
-                } catch (ClassNotFoundException e) {
-                    throw new PersistenceException();
-                }
+            for (Object game : games) {
+                gameManager.loadGame((Game) game);
             }
-        } catch (SQLException e) {
-            throw new PersistenceException();
+        } catch (Exception e) {
+            throw new PersistenceException(e);
         }
 
         return gameManager;
