@@ -8,7 +8,7 @@
 		<property name="web.arg" value="gameplay"/>
 		<property name="requests.arg" value="ug"/>
     
-		<property name="server.plugin.arg" value=""/>
+		<property name="plugin.arg" value=""/>
 		<property name="N.arg" value=""/>
 		 
 		<!-- Input folders -->
