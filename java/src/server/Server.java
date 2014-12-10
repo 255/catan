@@ -69,19 +69,26 @@ public class Server {
 	
 	public Server() {}
 
-    public HttpServer run(int portNumber) throws InvalidPluginException {
-        return run(portNumber, null, DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS);
+    public HttpServer run() throws InvalidPluginException {
+        IPersistenceManagerLoader loader = new PersistenceManagerLoader();
+        return run(DEFAULT_PORT, loader.createPersistenceManager(DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS));
+    }
+
+
+    public HttpServer run(int portNumber, IPersistenceManager persistenceManager) throws InvalidPluginException {
+        IPersistenceManagerLoader loader = new PersistenceManagerLoader();
+        return run(portNumber, loader.createPersistenceManager(DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS));
     }
 
     /**
      * Start the server.
      * @param portNumber the port number to use
-     * @param persistenceOption the name of the persistence server.plugin to user
+     * @param persistenceManager the persistence manager to use
      * @param commandsBetweenCheckpoints the number of commands to put save between checkpoints
      * @return the HttpServer object that is running
      * @throws InvalidPluginException if the persistenceOption specified is invalid
      */
-	public HttpServer run(int portNumber, String persistenceOption, int commandsBetweenCheckpoints) throws InvalidPluginException {
+	public HttpServer run(int portNumber,  IPersistenceManager persistenceManager, int commandsBetweenCheckpoints) throws InvalidPluginException {
 		logger.entering("server.Server", "run");
 		
 		try {
@@ -95,10 +102,7 @@ public class Server {
 			return null;
 		}
 
-        IPersistenceManagerLoader persistenceLoader = new PersistenceManagerLoader();
-        persistenceLoader.loadPersistencePlugin(persistenceOption);
-
-        setupHandlers(server, persistenceLoader.createPersistenceManager(commandsBetweenCheckpoints));
+        setupHandlers(server, persistenceManager);
 
 		logger.info("Starting server on port " + portNumber + ".");
 		server.start();
@@ -355,13 +359,24 @@ public class Server {
 	 */
 	public static void main(String[] args) {
         // Check if there are extra arguments
-        if (args.length > 3 || args.length < 1) {
-            System.err.println("Usage:\njava Server PORT_NUMBER [PERSISTENCE_MANAGER] [COMMANDS_BETWEEN_CHECKPOINTS]");
+        if (args.length > 3) {
+            System.err.println("Usage:\njava Server [-clear] PORT_NUMBER [PERSISTENCE_MANAGER] [COMMANDS_BETWEEN_CHECKPOINTS]");
             System.exit(1);
         }
 
+        // process command line arguments
         String persistenceOption = args.length > 1 ? args[1] : null;
+
         try {
+            IPersistenceManagerLoader persistenceLoader = new PersistenceManagerLoader();
+            persistenceLoader.loadPersistencePlugin(persistenceOption);
+
+            // if called with -clear, simply clear and return
+            if (args.length > 0 && args[0].equalsIgnoreCase("-clear")) {
+                persistenceLoader.createPersistenceManager(0).clear();
+                return;
+            }
+
             int portNumber = DEFAULT_PORT;
             int commandsBetweenCheckpoints = DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS;
 
@@ -381,7 +396,7 @@ public class Server {
                 }
             }
 
-            new Server().run(portNumber, persistenceOption, commandsBetweenCheckpoints);
+            new Server().run(portNumber, persistenceLoader.createPersistenceManager(commandsBetweenCheckpoints));
         }
         catch (NumberFormatException e) {
             System.err.println("Invalid number format: " + e.getMessage());
@@ -394,6 +409,9 @@ public class Server {
         }
         catch (InvalidPluginException e) {
             System.err.println("Cannot load persistence server.plugin " + persistenceOption);
+            e.printStackTrace();
+        } catch (PersistenceException e) {
+            System.err.println("Failed to clear persistence data.");
             e.printStackTrace();
         }
     }

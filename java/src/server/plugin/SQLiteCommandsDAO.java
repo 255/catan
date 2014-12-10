@@ -5,6 +5,7 @@ import server.persistence.AbstractPersistenceManager;
 import server.persistence.ICommandsDAO;
 import server.persistence.PersistenceException;
 import shared.model.IGame;
+import shared.model.ModelException;
 import shared.model.User;
 
 import java.io.ByteArrayInputStream;
@@ -28,38 +29,34 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
     public void saveCommand(ICommand command) throws PersistenceException {
 
         String checkpointQuery = "select commandsData from commands where gameId = ?";
-        List commands = super.readFromDB(checkpointQuery, command.getGame().getID(), "commandData");
+        List<ICommand> commands = super.readFromDB(checkpointQuery, command.getGame().getID(), "commandData");
 
         int commandsSaved = commands.size();
 
-        try {
-            if (commandsSaved < getPersistenceManager().getCommandsBetweenCheckpoints()) {
-                String sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
-                super.writeToDB(sql, command.getGame().getID(), command);
-            } else {
-                String sql = "update games set gameData = ? where gameId = ?";
-                super.updateDB(sql, command.getGame(), command.getGame().getID());
+        if (commandsSaved < getPersistenceManager().getCommandsBetweenCheckpoints()) {
+            String sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
+            super.writeToDB(sql, command.getGame().getID(), command);
+        } else {
+            String sql = "update games set gameData = ? where gameId = ?";
+            super.updateDB(sql, command.getGame(), command.getGame().getID());
 
-                sql = "delete from commands where gameId = ?";
-                super.deleteFromDB(sql, command.getGame().getID());
+            sql = "delete from commands where gameId = ?";
+            super.deleteFromDB(sql, command.getGame().getID());
 
-                sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
-                super.writeToDB(sql, command.getGame().getID(), command);
-            }
-        } catch (Exception ex) {
-
+            sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
+            super.writeToDB(sql, command.getGame().getID(), command);
         }
     }
 
     @Override
     public void loadCommands(IGame game) throws PersistenceException {
         String query = "select commandsData from users where gameId = ?";
-        List commands = super.readFromDB(query, game.getID(), "commandData");
+        List<ICommand> commands = super.readFromDB(query, game.getID(), "commandData");
 
         SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
 
         for (int i = 0; i < commands.size(); ++i) {
-            orderedCommands.put(i, (ICommand) commands.get(i));
+            orderedCommands.put(i, commands.get(i));
         }
 
         try {
@@ -67,8 +64,8 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
                 command.setGameAndPlayers(game);
                 command.execute();
             }
-        } catch (Exception ex) {
-
+        } catch (ModelException e) {
+            throw new PersistenceException("Failed executing stored command.", e);
         }
 
         String sqlQuery = "update games set gameData = ? where gameId = ?";

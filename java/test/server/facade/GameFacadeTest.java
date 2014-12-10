@@ -1,15 +1,11 @@
 package server.facade;
 
-import client.network.GameAdministrator;
-import client.network.IGameAdministrator;
 import com.sun.net.httpserver.HttpServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import server.Server;
 import server.handler.CookieJar;
-import shared.definitions.CatanColor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +30,7 @@ public class GameFacadeTest {
 
     @Before
     public void setUp() throws Exception {
-        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+        m_server = new server.Server().run();
     }
 
     @After

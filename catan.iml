@@ -44,6 +44,17 @@
     <orderEntry type="library" name="sqlite-jdbc-3.7.2" level="project" />
     <orderEntry type="library" name="sqlite-jdbc-3.7.2" level="project" />
     <orderEntry type="library" name="sqlite-jdbc-3.7.2" level="project" />
+    <orderEntry type="module-library">
+      <library name="sqlite-jdbc-3.7.2">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/java/lib/sqlite-jdbc-3.7.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/java/lib/sqlite-jdbc-3.7.2.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
 

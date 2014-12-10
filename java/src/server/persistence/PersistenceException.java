@@ -6,9 +6,10 @@ package server.persistence;
 @SuppressWarnings("serial")
 public class PersistenceException extends Exception {
 	/**
-	 * Construct an exception with no specified message.
+	 * Construct an exception with no specified message or cause.
+     * Never do this.
 	 */
-    public PersistenceException() {}
+    private PersistenceException() {}
 
 	/**
 	 * Construct an exception with a specified message.

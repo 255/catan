@@ -19,7 +19,7 @@ public class ServerProxyTest {
 
     @Before
     public void setUp() throws Exception {
-        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+        m_server = new server.Server().run();
 
         m_httpCommunicator = new HttpCommunicator();
         m_serverProxy = new ServerProxy(m_httpCommunicator);

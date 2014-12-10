@@ -36,7 +36,7 @@ public class GameManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+        m_server = new server.Server().run();
 
         m_gameAdmin = GameAdministrator.getInstance();
         m_gameName = "testGame";

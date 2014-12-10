@@ -27,7 +27,7 @@ public class UserManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        m_server = new server.Server().run(server.Server.DEFAULT_PORT);
+        m_server = new server.Server().run();
 
         userManager = new UserManager();
 

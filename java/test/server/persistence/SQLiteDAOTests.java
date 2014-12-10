@@ -92,7 +92,7 @@ public class SQLiteDAOTests {
                 game2 = new Game("My Game", 2, true, true, true);
                 game3 = new Game("Another Game", 3, false, false, false);
             } catch (ModelException e) {
-                throw new PersistenceException();
+                throw new PersistenceException(e);
             }
 
             sqlGames.saveGame(game1);
@@ -157,7 +157,7 @@ public class SQLiteDAOTests {
                 game2 = new Game("Your Game", 2, true, true, true);
                 game3 = new Game("The Game", 3, false, false, false);
             } catch (ModelException e) {
-                throw new PersistenceException();
+                throw new PersistenceException(e);
             }
 
             sqlGames.saveGame(game1);

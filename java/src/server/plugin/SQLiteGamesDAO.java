@@ -26,7 +26,7 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
     @Override
     public void saveGame(IGame game) throws PersistenceException {
         String readSql = "select * from games where gameId = ?";
-        List games = readFromDB(readSql, game.getID(), "gameData");
+        List<IGame> games = readFromDB(readSql, game.getID(), "gameData");
         if(games.size() > 0) {
             String sql = "update games set gameData = ? where gameId = ?";
             updateDB(sql, game, game.getID());
@@ -41,11 +41,11 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
         IGameManager gameManager = new GameManager();
 
         String sql = "select * from games";
-        List games = readFromDB(sql, -1, "gameData");
+        List<IGame> games = readFromDB(sql, -1, "gameData");
         int index = 1;
         try {
-            for (Object game : games) {
-                gameManager.loadGame((Game) game);
+            for (IGame game : games) {
+                gameManager.loadGame(game);
             }
         } catch (Exception e) {
             throw new PersistenceException(e);

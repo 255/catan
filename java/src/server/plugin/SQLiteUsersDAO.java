@@ -31,13 +31,13 @@ public class SQLiteUsersDAO extends AbstractSQLiteDAO implements IUsersDAO {
     @Override
     public IUserManager loadUsers() throws PersistenceException {
         String query = "select * from users";
-        List users = super.readFromDB(query, -1, "userData");
+        List<IUser> users = super.readFromDB(query, -1, "userData");
 
         IUserManager userManager = new UserManager();
 
         try {
-            for (Object user : users) {
-                userManager.loadUser((User)user);
+            for (IUser user : users) {
+                userManager.loadUser(user);
             }
         } catch (Exception ex) {
             throw new PersistenceException(ex);
