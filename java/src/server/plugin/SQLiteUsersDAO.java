@@ -16,7 +16,7 @@ import java.sql.ResultSet;
  */
 public class SQLiteUsersDAO extends AbstractSQLiteDAO implements IUsersDAO {
 
-    protected SQLiteUsersDAO(SQLitePersistenceManager manager) {
+    public SQLiteUsersDAO(SQLitePersistenceManager manager) {
         super(manager);
     }
 

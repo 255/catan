@@ -23,7 +23,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
     private static String dbName;
     private static String connectionURL;
 
-    protected SQLitePersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+    public SQLitePersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         super(commandsBetweenCheckpoints);
         dbName = Paths.get("data") + File.separator + "catandb.sqlite";
         connectionURL = "jdbc:sqlite:" + dbName;
