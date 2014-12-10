@@ -74,21 +74,14 @@ public class Server {
         return run(DEFAULT_PORT, loader.createPersistenceManager(DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS));
     }
 
-
-    public HttpServer run(int portNumber, IPersistenceManager persistenceManager) throws InvalidPluginException {
-        IPersistenceManagerLoader loader = new PersistenceManagerLoader();
-        return run(portNumber, loader.createPersistenceManager(DEFAULT_COMMANDS_BETWEEN_CHECKPOINTS));
-    }
-
     /**
      * Start the server.
      * @param portNumber the port number to use
      * @param persistenceManager the persistence manager to use
-     * @param commandsBetweenCheckpoints the number of commands to put save between checkpoints
      * @return the HttpServer object that is running
      * @throws InvalidPluginException if the persistenceOption specified is invalid
      */
-	public HttpServer run(int portNumber,  IPersistenceManager persistenceManager, int commandsBetweenCheckpoints) throws InvalidPluginException {
+	public HttpServer run(int portNumber,  IPersistenceManager persistenceManager) throws InvalidPluginException {
 		logger.entering("server.Server", "run");
 		
 		try {

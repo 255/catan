@@ -20,7 +20,14 @@ public class PersistenceManagerLoader implements IPersistenceManagerLoader {
 
     private Class<? extends IPersistenceManager> m_persistenceManagerClass;
 
-    public PersistenceManagerLoader() {
+    public PersistenceManagerLoader() throws InvalidPluginException {
+        try {
+            AbstractPersistenceManager.ensureDirectoryExists(Paths.get("plugins"));
+        }
+        catch (PersistenceException e) {
+            throw new InvalidPluginException(e);
+        }
+
         // default to no persistence
         m_persistenceManagerClass = NoPersistenceManager.class;
     }

@@ -2,6 +2,7 @@ package server.plugin;
 
 import server.persistence.*;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -20,8 +21,9 @@ import java.util.logging.Logger;
 public class SQLitePersistenceManager extends AbstractPersistenceManager {
     private static Logger logger = Logger.getLogger("catanserver");
 
-    static final Path DB_FILE = Paths.get("data", "catandb.sqlite");
-	static final String CONNECTION_URL = "jdbc:sqlite:" + DB_FILE;
+    private static final String DB_FILE_NAME = "catandb.sqlite";
+    private static final Path DB_FILE = Paths.get("data", DB_FILE_NAME);
+	private static final String CONNECTION_URL = "jdbc:sqlite:" + DB_FILE;
 
 	/**
 	 * Initialize the database by loading the database driver
@@ -48,8 +50,13 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
 
         initialize();
 
-        if (!Files.isRegularFile(DB_FILE)) {
-            throw new PersistenceException("Database file " + DB_FILE + " not found!");
+        if (!Files.exists(DB_FILE)) {
+            try {
+                Files.copy(Paths.get("..", DB_FILE_NAME), DB_FILE);
+            }
+            catch (IOException e) {
+                throw new PersistenceException("Database file " + DB_FILE + " not found and can't create it for some reason.!");
+            }
         }
     }
 
