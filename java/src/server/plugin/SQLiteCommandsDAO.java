@@ -40,8 +40,8 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
                 String sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
                 super.writeToDB(sql, command.getGame().getID(), command);
             } else {
-                String sql = "insert into games (gameId, gameData) values (?, ?)";
-                super.writeToDB(sql, command.getGame().getID(), command.getGame());
+                String sql = "update games set gameData = ? where gameId = ?";
+                super.updateDB(sql, command.getGame(), command.getGame().getID());
 
                 sql = "delete from commands where gameId = ?";
                 super.deleteFromDB(sql, command.getGame().getID());

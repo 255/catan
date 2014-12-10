@@ -19,6 +19,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
     private static Logger logger = Logger.getLogger("catanserver");
 
     private static final ThreadLocal<Connection> connection = new ThreadLocal<>();
+//    private Connection connection;
 
     private static String dbName;
     private static String connectionURL;
@@ -27,19 +28,32 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
         super(commandsBetweenCheckpoints);
         dbName = Paths.get("data") + File.separator + "catandb.sqlite";
         connectionURL = "jdbc:sqlite:" + dbName;
+
+        try {
+            Class.forName(Paths.get("org.sqlite.JDBC").toString());
+        } catch (ClassNotFoundException ex) {
+            System.out.println("I GOT THROWN");
+        }
     }
+
 
     /**
      * Begins a transaction with the persistence layer.
      */
     public void startTransaction() throws PersistenceException {
         try {
+//            assert (connection == null);
+//            connection = DriverManager.getConnection("jdbc:sqlite:data/catandb.sqlite");
+//            connection.setAutoCommit(false);
+
             connection.set(DriverManager.getConnection(connectionURL));
             connection.get().setAutoCommit(false);
         } catch (SQLException e) {
             throw new PersistenceException();
         }
     }
+
+
 
     /**
      * Ends a transaction with the persistence layer.
