@@ -26,14 +26,14 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
         // write the new command to the disk
         String gameFolder = Integer.toString(command.getGame().getID());
         AbstractPersistenceManager.ensureDirectoryExists(getDirectory().resolve(gameFolder));
+        saveCheckpoint(command.getGame());
         writeFile(command, gameFolder, Integer.toString(command.getGame().getModelVersion()));
-        saveCheckpoint(command);
     }
 
     @Override
     public void loadCommands(IGame game) throws PersistenceException {
         SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getDirectory().resolve(Integer.toString(game.getID())))) {
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getGameFolder(game))) {
             // read in all of the commands
             for (Path path : directoryStream) {
                 ICommand command = readFile(path);
@@ -55,43 +55,35 @@ public class FolderCommandsDAO extends AbstractFolderDAO implements ICommandsDAO
             throw new PersistenceException("Failed executing command.", e);
         }
 
-        // TODO: implement checkpoint thingy loading - needs code review
         // after all the commands have been applied to the game
         // save the game and clear the folder
         saveGameAndClear(game);
     }
 
-    private void saveCheckpoint(ICommand command) throws PersistenceException {
-        // TODO: implement checkpoint thingy saving - needs code review
+    private void saveCheckpoint(IGame game) throws PersistenceException {
         // check the number of commands in the commands directory for the game
-        DirectoryStream<Path> directoryStream = null;
-        try {
-            directoryStream = Files.newDirectoryStream(getDirectory().resolve(Integer.toString(command.getGame().getID())));
+        int numCommands = 0;
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(getGameFolder(game))) {
+            // if the number of saved commands is N or greater
+            for (Path p : directoryStream) {
+                numCommands++;
+            }
         } catch (IOException e) {
             throw new PersistenceException("Failed to read in the commands directory", e);
         }
 
-        // if the number of saved commands is N or greater
-        int numCommands = 0;
-        for(Path p : directoryStream) {
-            numCommands++;
-        }
-
         // save game and clear the folder
-        if(numCommands >= getPersistenceManager().getCommandsBetweenCheckpoints()) {
-            saveGameAndClear(command);
+        if (numCommands >= getPersistenceManager().getCommandsBetweenCheckpoints()) {
+            saveGameAndClear(game);
         }
-    }
-
-    private void saveGameAndClear(ICommand command) throws PersistenceException {
-        saveGameAndClear(command.getGame());
     }
 
     private void saveGameAndClear(IGame game) throws PersistenceException {
-        // save the current game to disk
         getPersistenceManager().createGamesDAO().saveGame(game);
+        deleteDirectoryContents(getGameFolder(game));
+    }
 
-        // clear the commands folder
-        clear();
+    private Path getGameFolder(IGame game) throws PersistenceException {
+        return getDirectory().resolve(Integer.toString(game.getID()));
     }
 }

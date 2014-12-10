@@ -46,17 +46,19 @@ public abstract class AbstractFolderDAO {
      * @param directory the directory to clear
      */
     public static void deleteDirectoryContents(Path directory) throws PersistenceException {
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
-            for (Path path : directoryStream) {
-                // delete everything, ignoring subfolders
-                if (Files.isDirectory(path)) {
-                    deleteDirectoryContents(path);
+        if (Files.isDirectory(directory)) {
+            try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
+                for (Path path : directoryStream) {
+                    // delete everything, ignoring subfolders
+                    if (Files.isDirectory(path)) {
+                        deleteDirectoryContents(path);
+                    }
+                    Files.deleteIfExists(path);
                 }
-                Files.delete(path);
             }
-        }
-        catch (IOException e) {
-            throw new PersistenceException("Failed to delete persistence data.", e);
+            catch (IOException e) {
+                throw new PersistenceException("Failed to delete persistence data.", e);
+            }
         }
     }
 

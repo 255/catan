@@ -355,7 +355,7 @@ public class Server {
 	 */
 	public static void main(String[] args) {
         // Check if there are extra arguments
-        if (args.length > 3) {
+        if (args.length > 3 || args.length < 1) {
             System.err.println("Usage:\njava Server PORT_NUMBER [PERSISTENCE_MANAGER] [COMMANDS_BETWEEN_CHECKPOINTS]");
             System.exit(1);
         }
