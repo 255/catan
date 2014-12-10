@@ -207,4 +207,18 @@ public class SQLiteDAOTests {
         assertTrue("The games db was read, but the GameManager does not contain all of the updated games", game1Updated && game2Updated && game3Updated);
     }
 
+    @Test
+    public void sqlCommandsTest() {
+
+        // Make new game
+
+        // Save game to database
+
+        // Write 10 commands
+
+        // Write one more
+
+    }
+
+
 }

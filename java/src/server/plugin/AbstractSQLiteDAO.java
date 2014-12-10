@@ -69,6 +69,9 @@ public abstract class AbstractSQLiteDAO {
             throw new PersistenceException(e1);
         } finally {
             try {
+                if (rs != null) {
+                    rs.close();
+                }
                 if (stmt != null) {
                     stmt.close();
                 }
@@ -82,18 +85,16 @@ public abstract class AbstractSQLiteDAO {
 
     protected void deleteFromDB(String sql, int queryValue) throws PersistenceException {
         PreparedStatement stmt = null;
-        ResultSet rs = null;
+
         try {
             stmt = m_persistenceManager.getConnection().prepareStatement(sql);
             stmt.setInt(1, queryValue);
-            rs = stmt.executeQuery();
+
+            stmt.executeUpdate();
         } catch (SQLException e) {
             throw new PersistenceException(e);
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (stmt != null) {
                     stmt.close();
                 }
@@ -105,7 +106,6 @@ public abstract class AbstractSQLiteDAO {
 
     protected void updateDB(String sql, Object obj, int id) throws PersistenceException {
         PreparedStatement stmt = null;
-        ResultSet rs = null;
         try {
             ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             ObjectOutputStream objectStream = new ObjectOutputStream(byteStream);
@@ -123,9 +123,6 @@ public abstract class AbstractSQLiteDAO {
             throw new PersistenceException(e);
         } finally {
             try {
-                if (rs != null) {
-                    rs.close();
-                }
                 if (stmt != null) {
                     stmt.close();
                 }
