@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by jeffreybacon on 12/7/14.
@@ -33,24 +34,24 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
         IGameManager gameManager = new GameManager();
 
         String sql = "select GameData from Games";
-        ResultSet rs = readFromDB(sql, -1);
+        List games = readFromDB(sql, -1);
         int index = 1;
-        try {
-            while(rs.next()) {
-                try {
-                    ByteArrayInputStream byteStream = new ByteArrayInputStream(((byte[])rs.getObject(index++)));
-                    ObjectInputStream objectStream = new ObjectInputStream(byteStream);
-                    IGame game = (Game)objectStream.readObject();
-                    gameManager.loadGame(game);
-                } catch (IOException e) {
-                    throw new PersistenceException();
-                } catch (ClassNotFoundException e) {
-                    throw new PersistenceException();
-                }
-            }
-        } catch (SQLException e) {
-            throw new PersistenceException();
-        }
+//        try {
+//            while(rs.next()) {
+//                try {
+//                    ByteArrayInputStream byteStream = new ByteArrayInputStream(((byte[])rs.getObject(index++)));
+//                    ObjectInputStream objectStream = new ObjectInputStream(byteStream);
+//                    IGame game = (Game)objectStream.readObject();
+//                    gameManager.loadGame(game);
+//                } catch (IOException e) {
+//                    throw new PersistenceException();
+//                } catch (ClassNotFoundException e) {
+//                    throw new PersistenceException();
+//                }
+//            }
+//        } catch (SQLException e) {
+//            throw new PersistenceException();
+//        }
 
         return gameManager;
     }

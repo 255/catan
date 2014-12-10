@@ -107,6 +107,7 @@ public class DAOTests {
 
         try {
             SQLitePersistenceManager pm = new SQLitePersistenceManager(10);
+
             pm.startTransaction();
 
             IUsersDAO sqlUser = new SQLiteUsersDAO(pm);

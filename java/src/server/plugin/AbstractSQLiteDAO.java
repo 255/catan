@@ -4,10 +4,10 @@ import server.persistence.PersistenceException;
 import server.plugin.SQLitePersistenceManager;
 
 import javax.sql.rowset.serial.SerialBlob;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handle interacting with a SQLite database.
@@ -47,20 +47,37 @@ public abstract class AbstractSQLiteDAO {
         }
     }
 
-    protected ResultSet readFromDB(String sql, int queryValue) throws PersistenceException {
-        ResultSet rs;
-
-        try (PreparedStatement stmt = m_persistenceManager.getConnection().prepareStatement(sql)) {
+    protected List readFromDB(String sql, int queryValue) throws PersistenceException {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List returnValues = new ArrayList();
+        try {
+            stmt = m_persistenceManager.getConnection().prepareStatement(sql);
             if (queryValue != -1) {
                 stmt.setInt(1, queryValue);
             }
-            stmt.execute();
             rs = stmt.executeQuery();
+            while (rs.next()) {
+                byte[] objectBytes = rs.getBytes("userData");
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(objectBytes);
+                ObjectInputStream objectStream = new ObjectInputStream(inputStream);
+                returnValues.add(objectStream.readObject());
+            }
         } catch (SQLException e) {
             throw new PersistenceException(e);
+        } catch (Exception e1) {
+            throw new PersistenceException(e1);
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException ex) {
+                throw new PersistenceException(ex);
+            }
         }
 
-        return rs;
+        return returnValues;
     }
 
     protected void deleteFromDB(String sql, int queryValue) throws PersistenceException {
