@@ -26,17 +26,13 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
     @Override
     public void saveGame(IGame game) throws PersistenceException {
         String readSql = "select * from games where gameId = ?";
-        ResultSet rs = readFromDB(readSql, game.getID());
-        try {
-            if(rs.next()) {
-                String sql = "update games set gameData = ? where gameId = ?";
-                updateDB(sql, game, game.getID());
-            } else {
-                String sql = "insert into games (gameId, gameData) values (?, ?)";
-                writeToDB(sql, game.getID(), game);
-            }
-        } catch (SQLException e) {
-            throw new PersistenceException();
+        List games = readFromDB(readSql, game.getID(), "gameData");
+        if(games.size() > 0) {
+            String sql = "update games set gameData = ? where gameId = ?";
+            updateDB(sql, game, game.getID());
+        } else {
+            String sql = "insert into games (gameId, gameData) values (?, ?)";
+            writeToDB(sql, game.getID(), game);
         }
     }
 

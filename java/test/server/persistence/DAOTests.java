@@ -5,6 +5,7 @@ import server.plugin.*;
 import shared.model.*;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import static org.junit.Assert.assertTrue;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class DAOTests {
     @Test
-    public void folderUserDAOtest() {
+    public void folderUserDAOTest() {
         boolean usersWritten = true;
 
         try {
@@ -60,12 +61,12 @@ public class DAOTests {
         }
 
         assertTrue("The user file was not read", userRead);
-        assertTrue("The user file was read, but the user manager repoted some users as not existing",
+        assertTrue("The user file was read, but the user manager reported some users as not existing",
                 userExists && userExists1 && userExists2 && userExists3);
     }
 
     @Test
-    public void sqlUserDAOtest() {
+    public void sqlUserDAOTest() {
         boolean usersWritten = true;
 
         try {
@@ -125,7 +126,7 @@ public class DAOTests {
         }
 
         assertTrue("The user file was not read", userRead);
-        assertTrue("The user file was read, but the user manager repoted some users as not existing",
+        assertTrue("The user file was read, but the user manager reported some users as not existing",
                 userExists && userExists1 && userExists2 && userExists3);
     }
 
@@ -139,10 +140,11 @@ public class DAOTests {
 
             IGamesDAO sqlGames = pm.createGamesDAO();
 
-            IGame game1 = new Game();
+            IGame game1;
             IGame game2;
             IGame game3;
             try {
+                game1 = new Game("First Game", 1, true, false, true);
                 game2 = new Game("My Game", 2, true, true, true);
                 game3 = new Game("Another Game", 3, false, false, false);
             } catch (ModelException e) {
@@ -164,6 +166,9 @@ public class DAOTests {
         assertTrue("The games file was not written", gamesWritten);
 
         boolean gamesRead = true;
+        boolean game1Exists = false;
+        boolean game2Exists = false;
+        boolean game3Exists = false;
 
         try {
             SQLitePersistenceManager pm = new SQLitePersistenceManager(10);
@@ -175,10 +180,11 @@ public class DAOTests {
 
             Collection<IGame> games = gm.listGames();
 
-//            gameExists = gm.doesUserExist("myBuddy");
-//            userExists1 = um.doesUserExist("myBuddy1");
-//            userExists2 = um.doesUserExist("myBuddy2");
-//            userExists3 = um.doesUserExist("myBuddy3");
+            Iterator iterator = games.iterator();
+
+            game1Exists = (((IGame)iterator.next()).getName().equals("First Game"));
+            game2Exists = (((IGame)iterator.next()).getName().equals("My Game"));
+            game3Exists = (((IGame)iterator.next()).getName().equals("Another Game"));
 
             pm.endTransaction(true);
 
@@ -187,6 +193,73 @@ public class DAOTests {
             e.printStackTrace();
             gamesRead = false;
         }
-    }
 
+        assertTrue("The games db was not read", gamesRead);
+        assertTrue("The games db was read, but the GameManager does not contain all of the written games", game1Exists && game2Exists && game3Exists);
+
+        boolean gamesUpdated = true;
+
+        try {
+            SQLitePersistenceManager pm = new SQLitePersistenceManager(10);
+            pm.startTransaction();
+
+            IGamesDAO sqlGames = pm.createGamesDAO();
+
+            IGame game1;
+            IGame game2;
+            IGame game3;
+            try {
+                game1 = new Game("Second Game", 1, true, false, true);
+                game2 = new Game("Your Game", 2, true, true, true);
+                game3 = new Game("The Game", 3, false, false, false);
+            } catch (ModelException e) {
+                throw new PersistenceException();
+            }
+
+            sqlGames.saveGame(game1);
+            sqlGames.saveGame(game2);
+            sqlGames.saveGame(game3);
+
+            pm.endTransaction(true);
+
+        } catch (PersistenceException e) {
+            System.out.println("Failed to write to SQLite database\n" + e.getMessage());
+            e.printStackTrace();
+            gamesUpdated = false;
+        }
+
+        assertTrue("The games file was not updated", gamesUpdated);
+
+        boolean gamesReread = true;
+        boolean game1Updated = false;
+        boolean game2Updated = false;
+        boolean game3Updated = false;
+
+        try {
+            SQLitePersistenceManager pm = new SQLitePersistenceManager(10);
+            pm.startTransaction();
+
+            IGamesDAO sqlGames = pm.createGamesDAO();
+
+            IGameManager gm = sqlGames.loadGames();
+
+            Collection<IGame> games = gm.listGames();
+
+            Iterator iterator = games.iterator();
+
+            game1Updated = (((IGame)iterator.next()).getName().equals("Second Game"));
+            game2Updated = (((IGame)iterator.next()).getName().equals("Your Game"));
+            game3Updated = (((IGame)iterator.next()).getName().equals("The Game"));
+
+            pm.endTransaction(true);
+
+        } catch (PersistenceException e) {
+            System.out.println("Failed to read user from disk\n" + e.getMessage());
+            e.printStackTrace();
+            gamesReread = false;
+        }
+
+        assertTrue("The games db was not read", gamesReread);
+        assertTrue("The games db was read, but the GameManager does not contain all of the updated games", game1Updated && game2Updated && game3Updated);
+    }
 }

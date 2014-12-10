@@ -115,10 +115,10 @@ public abstract class AbstractSQLiteDAO {
 
             stmt = m_persistenceManager.getConnection().prepareStatement(sql);
 
-            stmt.setBlob(1, blob);
+            stmt.setBytes(1, byteStream.toByteArray());
             stmt.setInt(2, id);
 
-            rs = stmt.executeQuery();
+            stmt.executeUpdate();
         } catch (SQLException | IOException e) {
             throw new PersistenceException(e);
         } finally {
