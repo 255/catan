@@ -57,6 +57,8 @@ public class UserManagerTest {
 
         user2 = null;
         returnedUser2 = null;
+
+        Thread.sleep(100);
     }
 
     @Test

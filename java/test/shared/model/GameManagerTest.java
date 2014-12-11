@@ -48,6 +48,7 @@ public class GameManagerTest {
     @After
     public void tearDown() throws Exception {
         m_server.stop(0);
+        Thread.sleep(100);
 
         m_gameAdmin = null;
         m_gameName = null;

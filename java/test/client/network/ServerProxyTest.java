@@ -31,10 +31,13 @@ public class ServerProxyTest {
     @After
     public void takeDown() throws Exception {
         m_server.stop(0);
+        m_server = null;
 
         m_httpCommunicator = null;
         m_serverProxy = null;
         m_gameAdminProxy = null;
+
+        Thread.sleep(100);
     }
 
     @Test
@@ -42,7 +45,7 @@ public class ServerProxyTest {
         IGameAdministrator gameAdmin = GameAdministrator.getInstance();
         gameAdmin.setGameAdminServerProxy(m_gameAdminProxy);
 
-        String response = m_serverProxy.sendChat(0, "Test Message");
+        String response = m_serverProxy.sendChat(m_httpCommunicator.getPlayerId(), "Test Message");
         assertNotNull("Should have returned game state.", response);
 
         response = m_serverProxy.sendChat(-1, "Test Message");

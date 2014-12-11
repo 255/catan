@@ -34,8 +34,9 @@ public class GameFacadeTest {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws Exception {
         m_server.stop(0);
+        Thread.sleep(100);
     }
 
     @Test

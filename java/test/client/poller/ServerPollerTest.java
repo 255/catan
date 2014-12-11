@@ -23,6 +23,7 @@ public class ServerPollerTest {
     @After
     public void takeDown() throws Exception {
         m_server.stop(0);
+        Thread.sleep(100);
     }
 
     @Test

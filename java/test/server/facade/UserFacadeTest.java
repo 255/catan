@@ -16,9 +16,10 @@ public class UserFacadeTest {
     private HttpServer m_server;
 
     @After
-    public void tearDown() {
+    public void tearDown() throws Exception {
         m_gameAdmin = null;
         m_server.stop(0);
+        Thread.sleep(100);
     }
 
     @Before
