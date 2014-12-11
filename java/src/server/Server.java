@@ -81,7 +81,7 @@ public class Server {
      * @return the HttpServer object that is running
      * @throws InvalidPluginException if the persistenceOption specified is invalid
      */
-	public HttpServer run(int portNumber,  IPersistenceManager persistenceManager) throws InvalidPluginException {
+	public HttpServer run(int portNumber, IPersistenceManager persistenceManager) throws InvalidPluginException {
 		logger.entering("server.Server", "run");
 		
 		try {
@@ -122,9 +122,10 @@ public class Server {
             persistenceManager.endTransaction(true);
         }
         catch (PersistenceException e) {
-            logger.log(Level.WARNING, "Failed to load persistence data from disk.", e);
+            persistenceManager.endTransaction(false);
             userManager = new UserManager();
             gameManager = new GameManager();
+            logger.log(Level.WARNING, "Failed to load persistence data from disk.", e);
         }
 
         // setup the facades
