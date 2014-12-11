@@ -151,7 +151,7 @@
 		</java>
 	</target>
 
-	<target name="our-server" depends="package" description="compiles, packages, and runs the student server">
+	<target name="our-server" depends="package,compile-plugins" description="compiles, packages, and runs the student server">
 		<java jar="${java.dist}/catan-server.jar" dir="${java.dist}" fork="yes">
       		<arg value="${port.arg}"/>
 			<arg value="${plugin.arg}"/>
