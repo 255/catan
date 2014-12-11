@@ -50,7 +50,7 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
 
     @Override
     public void loadCommands(IGame game) throws PersistenceException {
-        String query = "select commandData from users where gameId = ?";
+        String query = "select commandData from commands where gameId = ?";
         List<ICommand> commands = super.readFromDB(query, game.getID(), "commandData");
 
         SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
