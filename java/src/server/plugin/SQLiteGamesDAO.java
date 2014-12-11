@@ -42,7 +42,6 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
 
         String sql = "select * from games";
         List<IGame> games = readFromDB(sql, -1, "gameData");
-        int index = 1;
 
         for (IGame game : games) {
             getPersistenceManager().createCommandsDAO().loadCommands(game);
