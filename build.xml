@@ -188,10 +188,10 @@
         </javac>
     </target>
 
-    <target name="test" depends="compile-tests" description="runs all tests">
+    <target name="test" depends="compile-tests,compile-plugins" description="runs all tests">
         <echo>Make sure there are NO instances of the Catan server running!</echo>
         <echo>Individual tests start the server as needed.</echo>
-        <junit dir="./" fork="yes" outputtoformatters="false">
+        <junit dir="${java.dist}" fork="yes" outputtoformatters="false">
             <classpath>
                 <path refid="java.lib.classpath" />
                 <path location="${java.build}" />

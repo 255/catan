@@ -6,6 +6,7 @@ import org.junit.Test;
 import shared.definitions.DevCardType;
 import shared.model.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -40,7 +41,7 @@ public class FinishTurnCommandTest {
         int postModelVersion = game.getVersion();
 
         // check if post is one more than pre
-        assertTrue("The version number did not increment by one", (preModelVersion + 1) == postModelVersion);
+        assertEquals("The version number did not increment by one", preModelVersion, postModelVersion - 1);
     }
 
     @Test

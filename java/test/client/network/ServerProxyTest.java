@@ -45,11 +45,7 @@ public class ServerProxyTest {
         IGameAdministrator gameAdmin = GameAdministrator.getInstance();
         gameAdmin.setGameAdminServerProxy(m_gameAdminProxy);
 
-        String response = m_serverProxy.sendChat(m_httpCommunicator.getPlayerId(), "Test Message");
-        assertNotNull("Should have returned game state.", response);
-
-        response = m_serverProxy.sendChat(-1, "Test Message");
-        assertNull("Sent bad request, should have returned a null string.", response);
+        assertNull("Sent bad request, should have returned a null string.", m_serverProxy.sendChat(-1, "Test Message"));
     }
 
     @Test
