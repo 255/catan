@@ -45,6 +45,7 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
         int index = 1;
         try {
             for (IGame game : games) {
+                getPersistenceManager().createCommandsDAO().loadCommands(game);
                 gameManager.loadGame(game);
             }
         } catch (Exception e) {

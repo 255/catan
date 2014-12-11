@@ -28,13 +28,13 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
     @Override
     public void saveCommand(ICommand command) throws PersistenceException {
 
-        String checkpointQuery = "select commandsData from commands where gameId = ?";
+        String checkpointQuery = "select commandData from commands where gameId = ?";
         List<ICommand> commands = super.readFromDB(checkpointQuery, command.getGame().getID(), "commandData");
 
         int commandsSaved = commands.size();
 
         if (commandsSaved < getPersistenceManager().getCommandsBetweenCheckpoints()) {
-            String sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
+            String sql = "insert into commands (gameId, commandData) values (?, ?)";
             super.writeToDB(sql, command.getGame().getID(), command);
         } else {
             String sql = "update games set gameData = ? where gameId = ?";
@@ -43,14 +43,14 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
             sql = "delete from commands where gameId = ?";
             super.deleteFromDB(sql, command.getGame().getID());
 
-            sql = "insert into commands (commandsId, gameId, commandsData) values (?, ?, ?)";
+            sql = "insert into commands (gameId, commandData) values (?, ?)";
             super.writeToDB(sql, command.getGame().getID(), command);
         }
     }
 
     @Override
     public void loadCommands(IGame game) throws PersistenceException {
-        String query = "select commandsData from users where gameId = ?";
+        String query = "select commandData from users where gameId = ?";
         List<ICommand> commands = super.readFromDB(query, game.getID(), "commandData");
 
         SortedMap<Integer, ICommand> orderedCommands = new TreeMap<>();
