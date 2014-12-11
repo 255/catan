@@ -375,6 +375,8 @@ public class Server {
             // if called with -clear, simply clear and return
             if (args.length > 0 && args[0].equalsIgnoreCase("-clear")) {
                 persistenceLoader.createPersistenceManager(0).clear();
+                logger.info("Cleared persistence data for " +
+                        (persistenceOption != null ? persistenceOption : "the default persistence manager."));
                 return;
             }
 
