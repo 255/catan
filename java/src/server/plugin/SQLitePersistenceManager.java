@@ -53,7 +53,7 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
 
         if (!Files.exists(DB_FILE)) {
             try {
-                Files.copy(Paths.get("..", DB_FILE_NAME), DB_FILE);
+                Files.copy(Paths.get("..", "CLEAN_" + DB_FILE_NAME), DB_FILE);
             }
             catch (IOException e) {
                 throw new PersistenceException("Database file " + DB_FILE + " not found and can't create it for some reason.!");
