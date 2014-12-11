@@ -6,7 +6,7 @@ import server.persistence.*;
  * A persistence manager that does nothing.
  */
 public class NoPersistenceManager extends AbstractPersistenceManager {
-     NoPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
+    public NoPersistenceManager(int commandsBetweenCheckpoints) throws PersistenceException {
         super(commandsBetweenCheckpoints);
     }
 
