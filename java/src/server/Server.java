@@ -345,6 +345,8 @@ public class Server {
         server.createContext("/docs/api/data", new SwaggerHandler.JSONAppender(""));
         server.createContext("/docs/api/view", new SwaggerHandler.BasicFile(""));
     }
+
+    private static final String USAGE = "Usage:\njava Server [-clear] PORT_NUMBER PERSISTENCE_MANAGER COMMANDS_BETWEEN_CHECKPOINTS";
 	
 	/**
 	 * Start and run the server.
@@ -353,12 +355,18 @@ public class Server {
 	public static void main(String[] args) {
         // Check if there are extra arguments
         if (args.length > 3) {
-            System.err.println("Usage:\njava Server [-clear] PORT_NUMBER [PERSISTENCE_MANAGER] [COMMANDS_BETWEEN_CHECKPOINTS]");
+            System.err.println(USAGE);
             System.exit(1);
         }
 
         // process command line arguments
         String persistenceOption = args.length > 1 ? args[1] : null;
+        if (persistenceOption == null) {
+            logger.info("Not using a persistence manager.");
+        }
+        else {
+            logger.info("Using persistence manager \"" + persistenceOption + "\"");
+        }
 
         try {
             IPersistenceManagerLoader persistenceLoader = new PersistenceManagerLoader();
@@ -367,6 +375,8 @@ public class Server {
             // if called with -clear, simply clear and return
             if (args.length > 0 && args[0].equalsIgnoreCase("-clear")) {
                 persistenceLoader.createPersistenceManager(0).clear();
+                logger.info("Cleared persistence data for " +
+                        (persistenceOption != null ? persistenceOption : "the default persistence manager."));
                 return;
             }
 
@@ -398,7 +408,7 @@ public class Server {
             System.err.println("" + args[0] + " is not a valid port number.");
             System.err.println("The port number must be an integer greater than 1023 and "
                     + "less than 65536.");
-            System.err.println("Usage:\n\tjava Server PORT_NUMBER");
+            System.err.println(USAGE);
         }
         catch (InvalidPluginException e) {
             System.err.println("Cannot load persistence server.plugin " + persistenceOption);

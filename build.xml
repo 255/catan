@@ -8,8 +8,8 @@
 		<property name="web.arg" value="gameplay"/>
 		<property name="requests.arg" value="ug"/>
     
-		<property name="plugin.arg" value=""/>
-		<property name="N.arg" value=""/>
+		<property name="plugin.arg" value="SQLitePersistenceManager"/>
+		<property name="N.arg" value="10"/>
 		 
 		<!-- Input folders -->
 		<property name="java.dir" value="java"/>
@@ -136,8 +136,8 @@
 		<jar jarfile="${java.dist}/catan-server.jar" basedir="${java.build}">
 			<manifest>
 				<attribute name="Main-Class" value="server.Server"/>
-				<attribute name="Class-Path" 
-					value="lib/gson-2.2.4.jar" />
+				<attribute name="Class-Path"
+					value="lib/gson-2.2.4.jar lib/sqlite-jdbc-3.7.2.jar" />
 			</manifest>
 		</jar>
 	</target>

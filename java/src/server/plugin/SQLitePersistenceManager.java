@@ -35,7 +35,8 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
 			// Load the database driver
 			final String driver = "org.sqlite.JDBC";
 			Class.forName(driver);
-		} catch (ClassNotFoundException e) {
+		}
+        catch (ClassNotFoundException e) {
 			logger.log(Level.SEVERE, "The database driver failed to load.", e);
 			throw new PersistenceException(e);
 		}
