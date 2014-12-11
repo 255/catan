@@ -43,13 +43,10 @@ public class SQLiteGamesDAO extends AbstractSQLiteDAO implements IGamesDAO {
         String sql = "select * from games";
         List<IGame> games = readFromDB(sql, -1, "gameData");
         int index = 1;
-        try {
-            for (IGame game : games) {
-                getPersistenceManager().createCommandsDAO().loadCommands(game);
-                gameManager.loadGame(game);
-            }
-        } catch (Exception e) {
-            throw new PersistenceException(e);
+
+        for (IGame game : games) {
+            getPersistenceManager().createCommandsDAO().loadCommands(game);
+            gameManager.loadGame(game);
         }
 
         return gameManager;

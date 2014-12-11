@@ -117,34 +117,23 @@ public class SQLitePersistenceManager extends AbstractPersistenceManager {
     public void clear() throws PersistenceException {
         startTransaction();
 
-        String sql;
-        PreparedStatement stmt = null;
         try {
-            sql = "delete from users";
-            stmt = getConnection().prepareStatement(sql);
-            stmt.executeUpdate();
-
-            sql = "delete from games";
-            stmt = getConnection().prepareStatement(sql);
-            stmt.executeUpdate();
-
-            sql = "delete from commands";
-            stmt = getConnection().prepareStatement(sql);
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch (SQLException e) {
-                throw new PersistenceException(e);
-            }
+            executeSQLUpdate(getConnection(), "delete from users");
+            executeSQLUpdate(getConnection(), "delete from games");
+            executeSQLUpdate(getConnection(), "delete from commands");
+        }
+        catch (SQLException e) {
+            endTransaction(false);
+            throw new PersistenceException("Failed to clear tables.", e);
         }
 
         endTransaction(true);
+    }
+
+    private static void executeSQLUpdate(Connection connection, String sql) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.executeUpdate();
+        }
     }
 
     /**

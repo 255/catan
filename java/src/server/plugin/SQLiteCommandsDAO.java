@@ -33,9 +33,10 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
 
         int commandsSaved = commands.size();
 
+        final String SAVE_COMMAND_SQL = "insert into commands (gameId, commandData) values (?, ?)";
+
         if (commandsSaved < getPersistenceManager().getCommandsBetweenCheckpoints()) {
-            String sql = "insert into commands (gameId, commandData) values (?, ?)";
-            super.writeToDB(sql, command.getGame().getID(), command);
+            super.writeToDB(SAVE_COMMAND_SQL, command.getGame().getID(), command);
         } else {
             String sql = "update games set gameData = ? where gameId = ?";
             super.updateDB(sql, command.getGame(), command.getGame().getID());
@@ -43,8 +44,7 @@ public class SQLiteCommandsDAO extends AbstractSQLiteDAO implements ICommandsDAO
             sql = "delete from commands where gameId = ?";
             super.deleteFromDB(sql, command.getGame().getID());
 
-            sql = "insert into commands (gameId, commandData) values (?, ?)";
-            super.writeToDB(sql, command.getGame().getID(), command);
+            super.writeToDB(SAVE_COMMAND_SQL, command.getGame().getID(), command);
         }
     }
 
